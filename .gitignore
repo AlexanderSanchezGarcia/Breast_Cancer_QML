@@ -1,0 +1,7 @@
+# Ignore Data Folder
+Data/
+
+# For the Docs folder ignore all files except Technical_Report.tex and Technical_Report.pdf
+Docs/*
+!Docs/Technical_Report.tex
+!Docs/Technical_Report.pdf
