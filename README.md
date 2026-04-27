@@ -1,28 +1,28 @@
-# Modelo de Transformación Cuántica Variacional para un Sistema Híbrido de Prediagnóstico de Cáncer de Mama
+# Variational Quantum Transform Model for a Hybrid Breast Cancer Pre-diagnosis System
 
-**Trabajo Terminal No. 2026-B039**  
-Licenciatura en Ciencia de Datos — ESCOM, Instituto Politécnico Nacional
+**Terminal Work No. 2026-B039**  
+Bachelor of Science in Data Science — ESCOM, National Polytechnic Institute
 
-**Alumno:** Sánchez García Miguel Alexander  
-
----
-
-## Descripción
-
-Este proyecto explora el uso de transformaciones cuánticas variacionales (VQC) implementadas
-en Qiskit como mecanismo de codificación de características extraídas de mamografías digitales,
-integrando dichas representaciones cuánticas como entrada de una red neuronal clásica (PyTorch)
-para la clasificación binaria de cáncer de mama (benigno / maligno).
-
-El dataset utilizado es el **CBIS-DDSM** (Curated Breast Imaging Subset of Digital Database
-for Screening Mammography), disponible públicamente en The Cancer Imaging Archive (TCIA).
-
-> ⚠️ Este proyecto es un prototipo de investigación académica.
-> No constituye un dispositivo de diagnóstico médico certificado.
+**Student:** Sánchez García Miguel Alexander  
 
 ---
 
-## Estructura del repositorio
+## Description
+
+This project explores the use of variational quantum transforms (VQT) implemented
+in Qiskit as a feature encoding mechanism for characteristics extracted from digital mammograms,
+integrating these quantum representations as input to a classical neural network (PyTorch)
+for binary classification of breast cancer (benign / malignant).
+
+The dataset used is **CBIS-DDSM** (Curated Breast Imaging Subset of Digital Database
+for Screening Mammography), publicly available at The Cancer Imaging Archive (TCIA).
+
+> ⚠️ This project is an academic research prototype.
+> It does not constitute a certified medical diagnostic device.
+
+---
+
+## Repository Structure
 ```
 TT/
 ├── Code/
@@ -41,17 +41,17 @@ TT/
 │   └── modulo7_evaluacion/
 │       └── modulo7_evaluacion.ipynb
 ├── Data/
-│   ├── manifest-*/               # Manifest NBIA para descarga de imágenes DICOM
+│   ├── manifest-*/               # NBIA Manifest for downloading DICOM images
 │   ├── mass_case_description_train_set.csv
 │   ├── mass_case_description_test_set.csv
 │   ├── calc_case_description_train_set.csv
 │   └── calc_case_description_test_set.csv
-│   # ⚠️ Las imágenes DICOM NO están incluidas en este repositorio.
-│   # Descárgalas desde TCIA (ver sección Dataset).
+│   # ⚠️ DICOM images are NOT included in this repository.
+│   # Download them from TCIA (see Dataset section).
 ├── Docs/
 │   ├── Logos/
-│   ├── Technical_Report.tex      # Reporte técnico principal (LaTeX)
-│   └── Technical_Report.pdf      # Versión compilada
+│   ├── Technical_Report.tex      # Main technical report (LaTeX)
+│   └── Technical_Report.pdf      # Compiled version
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -62,129 +62,129 @@ TT/
 
 ## Dataset
 
-Las imágenes mamográficas **no están incluidas** en este repositorio por su tamaño (163 GB)
-y por las condiciones de uso de TCIA.
+Mammographic images **are not included** in this repository due to their size (163 GB)
+and TCIA usage terms.
 
-Para reproducir los experimentos:
+To reproduce the experiments:
 
-1. Crea una cuenta gratuita en [The Cancer Imaging Archive](https://www.cancerimagingarchive.net)
-2. Descarga el [NBIA Data Retriever](https://wiki.cancerimagingarchive.net/display/NBIA/Downloading+TCIA+Images)
-3. Abre el archivo `Data/manifest-*/` con el NBIA Data Retriever
-4. Los archivos CSV de metadatos ya están incluidos en `Data/`
+1. Create a free account at [The Cancer Imaging Archive](https://www.cancerimagingarchive.net)
+2. Download the [NBIA Data Retriever](https://wiki.cancerimagingarchive.net/display/NBIA/Downloading+TCIA+Images)
+3. Open the `Data/manifest-*/` file with the NBIA Data Retriever
+4. Metadata CSV files are already included in `Data/`
 
-**Cita obligatoria del dataset (licencia CC BY 3.0):**
+**Mandatory dataset citation (CC BY 3.0 license):**
 > Sawyer-Lee, R., Gimenez, F., Hoogi, A., & Rubin, D. (2016).
 > Curated Breast Imaging Subset of Digital Database for Screening Mammography (CBIS-DDSM).
 > The Cancer Imaging Archive. https://doi.org/10.7937/K9/TCIA.2016.7O02S9CY
 
 ---
 
-## Instalación del entorno
+## Environment Setup
 
-### Prerequisitos
+### Prerequisites
 - Python 3.10
-- Anaconda o Miniconda
+- Anaconda or Miniconda
 
-### Pasos
+### Steps
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/TT-2026-B039.git
+# 1. Clone the repository
+git clone https://github.com/your-username/TT-2026-B039.git
 cd TT-2026-B039
 
-# 2. Crear el entorno virtual
+# 2. Create the virtual environment
 conda create -n qml_cancer python=3.10 -y
 conda activate qml_cancer
 
-# 3. Instalar dependencias
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Registrar el kernel en VSCode / Jupyter
+# 4. Register the kernel in VSCode / Jupyter
 python -m ipykernel install --user --name qml_cancer --display-name "QML Cancer"
 ```
 
 ---
 
-## Stack tecnológico
+## Technology Stack
 
-| Herramienta | Versión | Rol |
+| Tool | Version | Role |
 |---|---|---|
-| Python | 3.10 | Lenguaje principal |
-| pydicom | 3.0.1 | Lectura de archivos DICOM |
-| pandas | 2.3.3 | Manipulación de metadatos CSV |
-| numpy | 1.26.4 | Operaciones matriciales |
-| OpenCV | 4.13.0 | Preprocesamiento de imagen (CLAHE, recorte ROI) |
-| scikit-learn | — | PCA, métricas de evaluación |
-| PyRadiomics | — | Extracción de features radiómicas |
-| qiskit | 2.3.0 | Circuitos cuánticos variacionales |
-| qiskit-aer | 0.17.2 | Simulador cuántico local |
+| Python | 3.10 | Main language |
+| pydicom | 3.0.1 | DICOM file reading |
+| pandas | 2.3.3 | CSV metadata manipulation |
+| numpy | 1.26.4 | Matrix operations |
+| OpenCV | 4.13.0 | Image preprocessing (CLAHE, ROI cropping) |
+| scikit-learn | — | PCA, evaluation metrics |
+| PyRadiomics | — | Radiomics feature extraction |
+| qiskit | 2.3.0 | Variational quantum circuits |
+| qiskit-aer | 0.17.2 | Local quantum simulator |
 | qiskit-machine-learning | 0.9.0 | EstimatorQNN, TorchConnector |
-| PyTorch | 2.10.0 | Red neuronal clásica downstream |
-| matplotlib / seaborn | — | Visualización |
+| PyTorch | 2.10.0 | Classical downstream neural network |
+| matplotlib / seaborn | — | Visualization |
 
 ---
 
-## Pipeline del sistema
+## System Pipeline
 ```
 CBIS-DDSM (DICOM + CSV)
         │
         ▼
-[Módulo 1] Lectura DICOM + Metadatos CSV
+[Module 1] DICOM Reading + CSV Metadata
         │
         ▼
-[Módulo 2] Normalización → CLAHE → Recorte ROI
+[Module 2] Normalization → CLAHE → ROI Cropping
         │
         ▼
-[Módulo 3] Extracción de features (PyRadiomics / CNN encoder)
+[Module 3] Feature extraction (PyRadiomics / CNN encoder)
         │
         ▼
-[Módulo 4] Reducción dimensional PCA → vector x ∈ ℝⁿ (n = 8–32)
+[Module 4] Dimensional reduction PCA → vector x ∈ ℝⁿ (n = 8–32)
         │
         ▼
-[Módulo 5] Quantum Embedding U(x, θ) → ⟨Z_i⟩   ← Qiskit VQC
+[Module 5] Quantum Embedding U(x, θ) → ⟨Z_i⟩   ← Qiskit VQT
         │
         ▼
-[Módulo 6] Red Neuronal Clásica (MLP) → P(maligno)
+[Module 6] Classical Neural Network (MLP) → P(malignant)
         │
         ▼
-[Módulo 7] Evaluación → AUC-ROC | F1 | Accuracy
+[Module 7] Evaluation → AUC-ROC | F1 | Accuracy
 ```
 
 ---
 
-## Metodología
+## Methodology
 
-Este proyecto sigue la metodología **CRISP-DM** adaptada a cómputo cuántico,
-con las siguientes fases:
+This project follows the **CRISP-DM** methodology adapted for quantum computing,
+with the following phases:
 
-1. **Comprensión del negocio** — Definición del problema de prediagnóstico
-2. **Comprensión de los datos** — Análisis exploratorio del CBIS-DDSM
-3. **Preparación de los datos** — Preprocesamiento y extracción de features
-4. **Modelado** — Implementación VQC en Qiskit + red clásica en PyTorch
-5. **Evaluación** — Comparación clásico vs. cuántico con métricas estándar
-6. **Despliegue** — Reporte técnico y registro INDAUTOR
-
----
-
-## Resultados esperados
-
-- Embeddings cuánticos generados para todos los casos del split de prueba
-- Comparación de AUC-ROC entre modelo baseline clásico y modelo híbrido cuántico
-- Análisis de separabilidad de clases en el espacio cuántico
-- Documentación de restricciones prácticas del simulador Qiskit Aer
+1. **Business Understanding** — Definition of the pre-diagnosis problem
+2. **Data Understanding** — Exploratory analysis of CBIS-DDSM
+3. **Data Preparation** — Preprocessing and feature extraction
+4. **Modeling** — VQT implementation in Qiskit + classical network in PyTorch
+5. **Evaluation** — Comparison of classical vs. quantum with standard metrics
+6. **Deployment** — Technical report and INDAUTOR registration
 
 ---
 
-## Licencia
+## Expected Results
 
-El código fuente de este repositorio está bajo la licencia **MIT**.
-Consulta el archivo [LICENSE](LICENSE) para más detalles.
-
-Las imágenes del dataset CBIS-DDSM están bajo licencia **CC BY 3.0** de TCIA
-y deben descargarse directamente desde su fuente oficial.
+- Quantum embeddings generated for all test split cases
+- AUC-ROC comparison between classical baseline and hybrid quantum model
+- Analysis of class separability in quantum space
+- Documentation of practical limitations of Qiskit Aer simulator
 
 ---
 
-## Contacto
+## License
 
-**Alumno:** Sánchez García Miguel Alexander — msanchezg1904@alumno.ipn.mx  
-**Institución:** Escuela Superior de Cómputo (ESCOM) — IPN, México
+The source code in this repository is under the **MIT** license.
+See the [LICENSE](LICENSE) file for more details.
+
+The images in the CBIS-DDSM dataset are under **CC BY 3.0** license from TCIA
+and must be downloaded directly from their official source.
+
+---
+
+## Contact
+
+**Student:** Sánchez García Miguel Alexander — msanchezg1904@alumno.ipn.mx  
+**Institution:** Superior School of Computing (ESCOM) — IPN, Mexico

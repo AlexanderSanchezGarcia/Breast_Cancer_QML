@@ -18,7 +18,7 @@
 \usepackage[spanish]{babel}
 
 % Tipografía — compatible con pdflatex
-\usepackage{lmodern}           % Fuente moderna con soporte completo de caracteres
+\usepackage{lmodern}  
 
 % Márgenes y geometría de página
 \usepackage[
@@ -30,7 +30,7 @@
 
 % Interlineado
 \usepackage{setspace}
-\setstretch{2}                 % Doble espacio (equivalente al documento original)
+\setstretch{1.2}
 
 % Imágenes y gráficos
 \usepackage{graphicx}
@@ -53,6 +53,17 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{pdflscape}
+\usepackage{pifont}
+
+% Definir checkmark y xmark
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
 
 % Espaciado entre párrafos
 \usepackage{parskip}
@@ -109,12 +120,12 @@
 
 % --- Institución y programa ---
 \begin{center}
-  {\large \textbf{INSTITUTO POLITÉCNICO NACIONAL}}\\[0.5em]
-  {\large \textbf{Escuela Superior de Cómputo}}\\[0.5em]
-  {\large \textit{Licenciatura en Ciencia de Datos}}\\[1em]
+  {\large \textbf{\\ INSTITUTO POLITÉCNICO NACIONAL}}\\[0.5em]
+  {\large \textbf{\\ Escuela Superior de Cómputo}}\\[0.5em]
+  {\large \textit{Licenciatura en Ciencia de Datos}}\\[5em]
   TT No. 2026 -- B039\\[1em]
   ``Modelo de transformación cuántica variacional de características de cáncer
-  de mama para un sistema híbrido de prediagnóstico''\\[3em]
+  de mama para un sistema híbrido de prediagnóstico''\\[5em]
 \end{center}
 
 \vspace{1.5em}
@@ -177,22 +188,21 @@ Las disparidades regionales son significativas y tienen implicaciones directas p
 
 \textbf{Panorama en México}{}
 
-En el contexto nacional, la situación es igualmente urgente. Según datos del Instituto Nacional de Estadística y Geografía (INEGI), en 2024 el cáncer de mama fue la principal causa de muerte por tumores malignos en México, con aproximadamente 8,500 defunciones registradas, de los cuales el 99.2\% correspondieron a mujeres, con una tasa de mortalidad de 18.7 por cada 100,000 mujeres de 20 años o más \cite{CancerMexico2025}. Este indicador refleja un deterioro; durante la última década, la tasa de defunciones por cáncer de mama se incrementó de 15.7 en 2015 a 18.7 en 2024 por cada 100,000 mujeres de 20 años o más. \cite{INEGI2025}
+En el contexto nacional, la situación es igualmente urgente. Según datos del Instituto Nacional de Estadística y Geografía (INEGI), en 2024 el cáncer de mama fue la principal causa de muerte por tumores malignos en México, con aproximadamente 8,500 defunciones registradas, de los cuales el 99.2\% correspondieron a mujeres, con una tasa de mortalidad de 18.7 por cada 100,000 mujeres de 20 años o más \cite{CancerMexico2025}. Este indicador refleja un deterioro; durante la última década, la tasa de defunciones por cáncer de mama se incrementó de 15.69 en 2015 a 18.68 en 2024 por cada 100,000 mujeres de 20 años o más como se muestra en la Figura \ref{fig:MexicoBreastCancerStats}. \cite{INEGI2025}
 
-% Figura 1.1.1 — Incidencia y mortalidad por cáncer de mama en México (INEGI 2025)
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.65\textwidth]{Figures/Figura_1_1_1.png}
-  \caption{Incidencia y mortalidad por cáncer de mama en México (INEGI 2025) \cite{INEGI2025}}\label{fig:MexicoBreastCancerStats}
-\end{figure}
-
-A nivel estatal, la distribución es heterogénea, siendo Chihuahua y Baja California Sur los estados con mayor tasa de mortalidad, mientras que Guerrero y Tlaxcala registran las tasas más bajas. Por grupo de edad, el segmento más afectado es el de mujeres entre 50 y 59 años.
-
-% Figura 1.1.1 — Incidencia y mortalidad por cáncer de mama en México (INEGI 2025)
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.6\textwidth]{Figures/Figura_1_1_2.png}
-  \caption{Incidencia y mortalidad por cáncer de mama en México por Estado (INEGI 2025) \cite{INEGI2025}}\label{fig:MexicoBreastCancerStats}
+% Figuras 1.1.1 y 1.1.2 — Incidencia y mortalidad por cáncer de mama en México
+\begin{figure}[t]
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Figures/Figura_1_1_1.png}
+    \caption{Tasa de mortalidad en México (INEGI 2025) desde 2015 al 2024 \cite{INEGI2025}}\label{fig:MexicoBreastCancerStats}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Figures/Figura_1_1_2.png}
+    \caption{Incidencia y mortalidad por entidad federativa en México en 2025 (INEGI 2025) \cite{INEGI2025}}\label{fig:MexicoBreastCancerStatsByState}
+  \end{subfigure}
 \end{figure}
 
 \textbf{La detección temprana como factor determinante}{}
@@ -324,7 +334,7 @@ En conjunto, estos tres diferenciadores posicionan el presente trabajo como una 
 % -----------------------------------------------------------
 \subsubsection{Objetivo general}
 
-Evaluar el impacto de transformaciones cuánticas variacionales implementadas en Qiskit sobre la separabilidad de características morfológicas extraídas de imágenes mamográficas del dataset CBIS-DDSM, integrando dichas representaciones cuánticas como entrada de un modelo clasico de clasificación, con el fin de determinar si los quantum embeddings generados mejoran la capacidad de clasificación binaria (benigno/maligno) frente a representaciones obtenidas mediante métodos clásicos.
+Analizar la capacidad de las transformaciones cuánticas variacionales, implementadas mediante ZZFeatureMap y PauliFeatureMap en Qiskit sobre características morfológicas extraídas de imágenes mamográficas del dataset CBIS-DDSM, para generar espacios de representación con mayor separabilidad de clases benigno/maligno, cuantificando dicha separabilidad mediante métricas como kernel alignment, índice Davies-Bouldin y distancia Fisher, comparando contra representaciones clásicas de referencia como PCA lineal, Kernel PCA con kernel RBF y LDA, e integrando todos los embeddings resultantes como entrada de un mismo clasificador MLP para determinar si la mejora en separabilidad se traduce en una mejora en la capacidad de clasificación binaria.
 
 % -----------------------------------------------------------
 % 1.4.2 Objetivos específicos
@@ -345,6 +355,29 @@ Evaluar el impacto de transformaciones cuánticas variacionales implementadas en
 % -----------------------------------------------------------
 \subsection{Alcance y limitaciones}
 
+El presente trabajo tiene como propósito central evaluar la viabilidad de las transformaciones cuánticas variacionales como mecanismo de codificación de características morfológicas extraídas de imágenes mamográficas, determinando si los quantum embeddings generados en el espacio de Hilbert mejoran la separabilidad de clases benigno/maligno frente a representaciones clásicas equivalentes. El sistema desarrollado constituye un prototipo de investigación académica, no un sistema de diagnóstico clínico, y su alcance está delimitado por los siguientes criterios:
+
+El sistema opera exclusivamente sobre el subconjunto de imágenes del dataset CBIS-DDSM que corresponden a masas y calcificaciones con diagnóstico patológico confirmado, procesadas como imágenes recortadas de región de interés (ROI). El problema abordado es la clasificación binaria benigno/maligno; la detección de lesiones, la localización espacial y la segmentación precisa de tumores quedan explícitamente fuera del alcance. La totalidad de los experimentos cuánticos se ejecuta en simulación clásica mediante el backend Qiskit Aer, sin acceso a hardware cuántico real. Los resultados, por tanto, corresponden a condiciones ideales libres de ruido cuántico físico, lo cual es una condición deliberada del diseño experimental y no una deficiencia metodológica.
+
+\textbf{El objetivo no es superar lo existente, sino explorar lo posible}
+
+Un error frecuente en la evaluación de trabajos de QML aplicado consiste en juzgar su validez en función de si el modelo cuántico supera en precisión a los mejores modelos clásicos disponibles. Este criterio, aunque pertinente para trabajos en etapas más avanzadas de madurez tecnológica, resulta inapropiado para el momento histórico en que se encuentra la computación cuántica.
+
+El objetivo del presente trabajo no es demostrar que los quantum embeddings superan a una CNN de última generación en AUC-ROC. El objetivo es responder una pregunta anterior y más fundamental: ¿las transformaciones cuánticas variacionales generan representaciones con mayor separabilidad intrínseca de clases cuando se aplican a características morfológicas mamográficas reales?. Un resultado positivo en separabilidad, incluso sin mejora en la métrica de clasificación final, constituye evidencia científica válida y valiosa sobre el comportamiento de estos circuitos en un dominio de alta complejidad clínica.
+
+\textbf{La analogía del ENIAC: dónde estamos en el tiempo}
+
+Para situar correctamente el alcance de este trabajo, resulta útil mencionar a un referente histórico. La primera contribución del ENIAC, más allá de su capacidad operativa, fue demostrar que era posible construir una computadora. Había muchos detractores de las tecnologías de cómputo, pero el éxito del ENIAC inspiró a otros a construir computadoras mejorando las limitaciones existentes. Como resultado, a lo largo de los años las computadoras se desarrollaron para ser más pequeñas, más capaces y más asequibles.
+
+Completada en 1945, la ENIAC fue aclamada como un \" cerebro gigante \" por la prensa. Sin embargo, reprogramar la máquina para un nuevo problema requería días de recableado, lo que la hacía difícilmente util para distintas tareas. No obstante, era el dispositivo de cálculo más poderoso construido hasta esa fecha.
+
+La computación cuántica se encuentra hoy en un momento análogo al de la ENIAC en 1946. Ya existen máquinas con capacidades cuánticas reales: el procesador IBM Osprey de 433 qubits demostró progreso significativo en control de coherencia y uniformidad de fabricación; IBM, Rigetti, IonQ y Microsoft continúan avanzando en sus respectivas rutas hacia sistemas modulares y con corrección de errores. Sin embargo, al igual que en 1946 nadie sabía todavía cómo aprovechar la ENIAC para resolver problemas generales de ingeniería, hoy la comunidad científica está en el proceso de descubrir cómo formular correctamente los problemas computacionales en el lenguaje de los circuitos cuánticos, qué tipos de datos se benefician de la proyección al espacio de Hilbert, y bajo qué condiciones los embeddings cuánticos ofrecen ventajas reales sobre sus contrapartes clásicas. El presente trabajo es una contribución a ese proceso de descubrimiento, no una afirmación de superioridad tecnológica.
+
+\textbf{Las limitaciones inherentes al paradigma NISQ}
+
+La era actual de la computación cuántica está definida por los dispositivos NISQ (Noisy Intermediate-Scale Quantum), caracterizados por un número limitado de qubits, alta tasa de errores de compuerta, tiempos de coherencia cortos y conectividad restringida entre qubits. Las limitaciones inherentes del hardware NISQ (número restringido de qubits, fidelidad imperfecta de compuertas y conectividad limitada entre qubits) imponen obstáculos fundamentales, y lograr una ventaja cuántica definitiva sobre los métodos clásicos para problemas prácticos permanece sin resolver.
+
+Una limitación teórica particularmente relevante para este trabajo es el comportamiento de los dispositivos NISQ frente a algoritmos de búsqueda. El algoritmo de Grover, considerado uno de los algoritmos cuánticos fundamentales, ofrece una aceleración cuadrática sobre la búsqueda clásica no estructurada: encuentra un elemento en una base de datos de N entradas en $O(\sqrt{N})$ operaciones frente a $O(N)$ clásico. Esta aceleración, que se extiende a problemas de optimización, representa el tipo de ventaja cuántica más prometedor para tareas de búsqueda, clasificación y optimización de hiperparámetros. Sin embargo, para la búsqueda no estructurada, se ha demostrado que los dispositivos NISQ no pueden lograr la aceleración cuadrática tipo Grover sobre las computadoras clásicas.
 
 % -----------------------------------------------------------
 % 2. ANTECEDENTES
@@ -355,6 +388,286 @@ Evaluar el impacto de transformaciones cuánticas variacionales implementadas en
 % 2.1 Estado del arte
 % -----------------------------------------------------------
 \subsection{Estado del arte}
+
+% -----------------------------------------------------------
+% 2.1.1 ML Clásico en diagnóstico de cáncer de mama
+% -----------------------------------------------------------
+\subsubsection{Machine Learning clásico en el diagnóstico mamográfico}
+
+El diagnóstico asistido por computadora en mamografía tiene sus origenes en los sistemas CAD (Computer-Aided Detection/Diagnosis) desarrollados desde la década de 1990, cuyo objetivo era reducir la variabilidad inter-observador en la interpretación radiológica y apoyar la detección temprana de lesiones. Estos sistemas clásicos se estructuran en dos etapas fundamentales: la extracción manual de características y la clasificación mediante algoritmos de aprendizaje supervisado.
+
+\textbf{Extracción de características en mamografía}
+
+La extracción de características ha constituido históricamente el núcleo de los sistemas CAD clásicos. Las características derivadas de la Matriz de Co-ocurrencia de Niveles de Grises (GLCM, por sus siglas en inglés) han sido las más ampliamente utilizadas en la literatura. La técnica GLCM presenta la tasa superior de uso en extracción de características según los trabajos revisados en la literatura de sistemas CAD para detección de cáncer de mama. En clasificación, tanto los métodos de machine learning tradicionales como de deep learning se emplean para clasificar las características extraídas en diferentes clases. Ademas, se han utilizado descriptores de forma y margen para masas (como la excentricidad, el área y el perímetro del contorno de la lesión) y características de distribución espacial para calcificaciones, como la densidad del cluster y la varianza morfológica entre puntos. \cite{TandFOnline2021}
+
+\textbf{Clasificadores clásicos predominantes}
+
+El clasificador de mayor uso en este dominio ha sido la Máquina de Vectores de Soporte (SVM). Aproximadamente el 44\% de los estudios publicados entre 2020 y 2025 emplearon SVM como clasificador para la detección de cáncer de mama; SVM fue el mas frecuente con imágenes de mamografía, aunque algunos estudios también lo utilizaron con ultrasonido y termografía. La preferencia por SVM se explica por su capacidad para manejar datos de alta dimensionalidad, encontrar hiperplanos de separación óptimos en espacios de características transformados mediante funciones kernel, y su robustez frente al sobreajuste en conjuntos de entrenamiento pequeños. \cite{Mashekova2025AIBreastCancer}
+
+El Random Forest (RF) ha constituido la segunda alternativa más frecuente, seguido de redes neuronales artificiales poco profundas (ANN/MLP), k-Nearest Neighbors (k-NN) y Naive Bayes. Al comparar el desempeño de SVM, RF, ANN, NB y DT para clasificación benigno/maligno en imágenes mamográficas con características GLCM y GLRLM, los métodos SVM, RF y ANN mostraron el mejor desempeño en métricas de accuracy, sensibilidad y AUC; el rendimiento de los modelos fue sensible a la combinación de algoritmos de preprocesamiento aplicados antes de la extracción de características. \cite{Avci2023MammographyEnhancement}
+
+
+\textbf{Alccances y limitaciones del enfoque clásico}
+
+El ML clásico en mamografía ha alcanzado resultados notables en condiciones controladas. Una evaluación sistemática de pipelines CNN, SVM y XGBoost sobre el dataset CBIS-DDSM reportó que una CNN (ResNet-50) alcanzó el mejor desempeño con AUC-ROC de 0.95 y sensibilidad de 89\%, seguido de XGBoost con AUC-ROC de 0.90, mientras que SVM obtuvo AUC-ROC de 0.84. \cite{Anez2025AIPipeline}
+
+Sin embargo, la limitación de estos métodos se encuentra en que la capacidad discriminativa del clasificador está completamente delimitada por la riqueza de las características extraídas manualmente. Las relaciones no lineales y de alto orden entre características morfológicas (que son precisamente las que distinguen lesiones malignas de bordes sutiles de lesiones benignas similares) resultan difícilmente capturables mediante descriptores diseñados por expertos. Esta limitación fue la que dio lugar a enfoques basados en deep learning, que aprenden representaciones directamente desde los píxeles de la imagen, y posteriormente el interés en representaciones cuánticas, que proyectan estas características en espacios de Hilbert de dimensionalidad aun mayor. El ML se ha convertido en una herramienta de impresindible para el análisis de patrones en datos clínicos de cáncer, permitiendo identificar relaciones difícilmente detectables por métodos estadísticos convencionales; sin embargo, la eficacia de los modelos depende directamente de la calidad de la representación de los datos de entrada.
+
+
+% -----------------------------------------------------------
+% 2.1.2 Deep Learning en diagnóstico de cáncer de mama
+% -----------------------------------------------------------
+\subsubsection{Deep Learning en el diagnóstico mamográfico}
+
+\textbf{El avance de las CNN en mamografías}
+
+La aplicación de redes neuronales convolucionales (CNN) en el análisis de mamografías marcó un nuevo paradignma respecto a los sistemas CAD clásicos. A diferencia de los enfoques basados en features manuales, las CNN aprenden representaciones jerárquicas directamente desde los píxeles de la imagen, eliminando la dependencia de descriptores diseñados por expertos. Las CNN poco profundas fueron utilizadas para investigar el cáncer de mama desde 1995; sin embargo, fue a partir de 2012, con el surgimiento de Alex-Net y el aumento de la capacidad computacional, la disponibilidad de hardware de menor costo, los algoritmos de código abierto y el auge del big data, cuando las CNN se volvieron predominantes en el procesamiento de imágenes médicas. Arquitecturas como VGG, ResNet, DenseNet e InceptionV3 se convirtieron en la base de la mayoría de los sistemas CAD modernos para mamografía. \cite{Abdelhafiz2019DeepCNN}
+
+\textbf{Resultados reportados en distintos datasets}
+
+Los modelos de deep learning han alcanzado resultados notables en condiciones controladas sobre los datasets más utilizados en la comunidad. Shen et. al \cite{Shen2019DeepLearning} desarrollaron un sistema de CNN de extremo a extremo sobre CBIS-DDSM con un enfoque que aprovecha tanto anotaciones de lesiones como etiquetas de imagen completa, el mejor modelo individual alcanzó un AUC por imagen de 0.88 sobre el conjunto de prueba del CBIS-DDSM, y el promedio de cuatro modelos mejoró este resultado a un AUC de 0.91, con una especificidad de 80.1\% a una sensibilidad de 86.1\%, comparable al promedio estimado de radiólogos en Estados Unidos.
+
+En el dominio específico de las calcificaciones, la comparación entre arquitecturas evidencia diferencias significativas según el tipo de lesión. Al evaluar modelos ResNet-50, ResNet-101 y cinco variantes de EfficientNet (B0 a B4) para clasificación de microcalcificaciones benignas y malignas usando validación cruzada de cinco pliegues sobre imágenes mamográficas con etiquetas BI-RADS confirmadas, todos los modelos EfficientNet superaron significativamente a las variantes ResNet en F1-score; adicionalmente, bajo validación externa con CBIS-DDSM, EfficientNet-B3 mantuvo su superioridad con mayor recall tanto para clases benignas como malignas. Este hallazgo nos muestra que el performace de un modelo es sensible no solo al dataset de entrenamiento sino al tipo de hallazgo mamográfico analizado, lo que refuerza la necesidad de evaluar masas y calcificaciones de forma separada. \cite{Shia2025MicrocalcClassification}
+
+\textbf{El problema de la generalización}
+
+A pesar de los resultados prometedores reportados en validación interna, existe un problema estructural que la literatura ha mencionado de manera consistente, los modelos de deep learning no generalizan entre datasets con distribuciones distintas. Wang et al. (2020) realizaron el análisis más sistemático de este fenómeno, evaluando seis modelos sobre cuatro datasets diferentes. Como se señaló en la sección 1.1.2, los modelos que reportaron AUC de validación entre 0.88 y 0.95 mostraron caídas hasta el rango de 0.44--0.65 al evaluarse sobre datos externos. La variabilidad entre lectores y la dificultad intrínseca de interpretar características radiográficas sutiles limitan frecuentemente la precisión del diagnóstico; el impacto del cambio de dominio queda evidenciado en pruebas de generalización, que marcan la necesidad de conjuntos de datos diversos durante el entrenamiento para construir herramientas de tamizaje confiables y ampliamente aplicables.
+
+Este problema tiene raíces más profundas que la simple escasez de datos. La investigación futura debe enfocarse en enriquecer los algoritmos de deep learning, garantizar la privacidad de los datos, mejorar la interpretabilidad de los modelos y establecer la generalización para integrar exitosamente el diagnóstico asistido por deep learning en programas rutinarios de tamizaje de cáncer de mama.
+
+\textbf{La representación como problema central}
+
+El análisis de la literatura permite identificar que el problema no es la arquitectura del clasificador sino la calidad de la representación que este recibe. Los modelos de deep learning operan en el espacio de píxeles o en espacios de features aprendidos mediante backpropagation, cuya geometría está determinada por la función de pérdida de clasificación y el conjunto de entrenamiento disponible. Esta representación puede ser altamente efectiva dentro del dominio de entrenamiento pero frágil ante cambios de distribución. La pregunta que motiva el presente trabajo es si la proyección de estas características al espacio de Hilbert mediante transformaciones cuánticas variacionales puede generar representaciones con mayor separabilidad intrínseca de clases, abordando el problema desde la etapa de codificación y no desde la arquitectura del clasificador.
+
+% -----------------------------------------------------------
+% 2.1.3 Fundamentos de QML y codificación cuántica de datos
+% -----------------------------------------------------------
+\subsubsection{Fundamentos de quantum machine learning y codificación cuántica de datos}
+
+\textbf{El origen teórico, QML como extensión de kernerls}
+
+El quantum machine learning (QML) surge de una observación fundamental establecida por Schuld y Killoran en 2019, la idea básica de la computación cuántica es sorprendentemente similar a la de los métodos kernel en machine learning, es decir, realizar eficientemente cómputos en un espacio de Hilbert de tamaño intratable. El proceso de codificar entradas en un estado cuántico se interpreta como un mapa de características no lineal que mapea datos al espacio de Hilbert cuántico; en este espacio de características, el dispositivo cuántico puede estimar productos internos de estados cuánticos para computar un kernel clásicamente intratable, el cual puede alimentar cualquier modelo clásico como una máquina de vectores de soporte.
+Esta formalización sentó las bases teóricas de todo el campo del QML moderno y es la justificación fundamental del presente trabajo: si el espacio de Hilbert de $2^n$ dimensiones generado por $n$ qubits ofrece una geometría más favorable para la separación de clases morfológicas mamográficas, entonces la proyección cuántica aporta valor real al pipeline de clasificación. \cite{Schuld2019QuantumML}
+
+El trabajo de Havlíček et al. (2019) en IBM Nature formalizó esta idea operacionalmente, demostrando dos algoritmos de clasificación que usan el espacio de estados cuánticos para producir mapas de características, probados en procesadores superconductores. Esto estableció el ZZFeatureMap como referencia estándar en la comunidad y demostró la posibilidad de ventaja cuántica cuando el espacio de características es grande y las funciones kernel son computacionalmente costosas de estimar clásicamente.
+
+\textbf{Circuitos cuánticos variacionales}
+
+Los circuitos cuánticos variacionales (VQC) son la arquitectura predominante en QML para el régimen NISQ actual. Los VQC son un tipo específico de circuito cuántico parametrizado (PQC) que combina circuitos cuánticos con optimizadores clásicos; son ampliamente utilizados en algoritmos cuánticos y, entre los distintos tipos de PQC, son el enfoque que típicamente optimiza sus parámetros mediante métodos variacionales, minimizando una función de costo mediante optimización híbrida cuántico-clásica. \cite{Long2025HybridQCQ}
+
+Un VQC está estructurado en tres bloques consecutivos que corresponden directamente a la arquitectura a implementar en el presente trabajo. El primero es el mapa de características $U(x)$, que codifica el vector clásico $x$ en el estado cuántico inicial $|\phi(x)\rangle = U(x)|0\rangle^{\otimes n}$. El segundo es el ansatz variacional $W(\theta)$, que aplica rotaciones parametrizadas y compuertas de entrelazamiento entrenables, generando el estado final $|\psi(x,\theta)\rangle = W(\theta)|\phi(x)\rangle$. El tercero es la medición, que extrae el vector de valores de expectativa $\langle Z_i \rangle$ de cada qubit como salida clásica del circuito.
+
+Los parámetros $\theta$ se optimizan mediante el método de
+parameter-shift, que calcula el gradiente exacto del circuito evaluándolo en dos puntos desplazados: $\nabla_\theta \langle O \rangle = \frac{1}{2}[\langle O \rangle_{\theta+\pi/2} - \langle O \rangle_{\theta-\pi/2}]$.
+Este método es diferenciable durante el proceso de entrenamiento y compatible con backpropagation clásico, lo que habilita el entrenamiento conjunto del circuito cuántico y la red neuronal clásica downstream mediante optimizadores estándar de PyTorch.
+
+\textbf{Los métodos de codificación cuántica}
+
+La elección del método de codificación es la decisión de diseño más importante en un sistema QML, ya que determina la geometría del espacio de Hilbert donde los datos quedan representados. La integración de técnicas de codificación cuántica de datos en algoritmos de machine learning clásicos contribuye a mejorar la precisión de clasificación y los valores F1, de manera particularmente notable en modelos que se benefician intrínsecamente de una representación de características enriquecida.
+
+Los tres tipos de codifiacación más utilizados en la literatura son:
+
+\begin{itemize}
+  \item \textbf{Angle encoding}: codifica cada componente del vector de características como un ángulo de rotación en un qubit, por ejemplo, $x_i$ se codifica como una rotación $R_y(x_i)$ en el qubit $i$. Es simple pero puede requerir muchos qubits para vectores de alta dimensionalidad. Su principal ventaja es la simplicidad y la diferenciabilidad directa; su limitación es que las relaciones entre características solo se pueden expresar a través de las capas variacionales posteriores, no en la etapa de codificación.
+  \item \textbf{ZZFeatureMap}: construido sobre el mapa angular, agrega compuertas de entrelazamiento entre pares de qubits que codifican productos de features: $e^{i x_i x_j Z_i Z_j}$. El ZZFeatureMap captura interacciones de features por pares, pero algunos datasets requieren interacciones de orden superior.
+  \item \textbf{PauliFeatureMap}: generaliza el ZZFeatureMap agregando rotaciones alrededor de los tres ejes de Pauli $(X, Y, Z)$ y operaciones de entrelazamiento más complejas. El PauliFeatureMap extiende la codificación utilizando rotaciones multi-eje y entrelazamiento cuántico complejo para codificar dependencias de características más profundas; es altamente expresivo, capaz de capturar interacciones de orden superior y patrones ocultos dentro de los datos, siendo particularmente poderoso para datasets donde las relaciones entre características son complejas y no lineales. Su mayor expresividad tiene como contrapartida una mayor sensibilidad al ruido cuántico, relevante incluso en simulación cuando el número de shots es limitado.
+
+\end{itemize}
+
+La elección entre estos métodos de codificación no es trivial y depende de la estructura de correlación de los datos de entrada. Un estudio reciente aplicó los tres métodos a la clasificación de cáncer de pulmón con QSVM, obteniendo que ZZFeatureMap alcanzó una accuracy de 0.91 y F1-score de 0.91, mientras que PauliFeatureMap logró un rendimiento consistente de 0.96 en todas las métricas incluyendo accuracy, precisión, recall y F1-score; la elección del mapa apropiado depende de dos factores principales, la naturaleza de los datos y la resiliencia al ruido del dispositivo cuántico. Estos resultados motivan la estrategia del presente trabajo de comparar ambos métodos de codifiación sobre características morfológicas mamográficas.
+
+
+\textbf{El problema "barren plateau"}
+
+Una limitación teórica importante de los VQC profundos es el fenómeno del *barren plateau*. A medida que el circuito aumenta en número de qubits y capas, la optimización se vuelve exponencialmente plana, con gradientes que convergen a cero. Esto hace el entrenamiento prácticamente imposible para circuitos de gran profundidad con una inicialización aleatoria de parámetros. 
+Esta limitación tiene implicaciones directas para el diseño del experimento, justifica el uso de circuitos de profundidad moderada y la estrategia de inicialización cuidadosa de los parámetros $\theta$.
+
+\textbf{El uso de Qiskit como plataforma de desarrollo}
+
+Qiskit, es el framework de código abierto de IBM para computación cuántica, provee la infraestructura completa para implementar el pipeline descrito. Su ecosistema de machine learning (qiskit-machine-learning) ofrece EstimatorQNN, que encapsula un VQC y devuelve vectores de valores de expectativa diferenciables; TorchConnector, que envuelve el QNN como una capa nn.Module de PyTorch habilitando backpropagation a través del circuito; y el simulador Qiskit Aer con backend AerSimulator, que permite ejecutar circuitos de hasta 20--30 qubits con simulación de alta fidelidad en hardware estándar. La disponibilidad de estos componentes maduros y bien documentados, combinados con el acceso a los servidores del CIC del IPN, garantiza la viabilidad técnica del prototipo experimental.
+
+
+% -----------------------------------------------------------
+% 2.1.4 Modelos híbridos cuántico.clasico en el sector salud
+% -----------------------------------------------------------
+\subsubsection{Modelos híbridos-cuántico.clasico en el sector salud}
+
+La aplicación de arquitecturas híbridas cuántico-clásicas en diagnóstico médico por imagen es una línea de investigación activa. Una revisión sistemática de 28 estudios publicados entre 2018 y 2024 reporta el uso prevalente de QSVM, QCNN y modelos híbridos cuántico-clásicos en aplicaciones que incluyen clasificación de tumores cerebrales, lesiones cutáneas y detección de COVID-19, demostrando resultados prometedores en accuracy, sensibilidad y especificidad; sin embargo, se identifican retos constantes en la codificación de imágenes médicas para procesamiento cuántico, la escalabilidad limitada del hardware actual y la necesidad de modelos con una mejor interpretación. \cite{Radhi2025QuantumDeepLearning}
+
+\textbf{Aplicaciones específicas en cáncer de mama}
+
+En el dominio de la mamografía, Xiang et al. (2024) propusieron el modelo QCCNN evaluado sobre datasets tabulares (GBSG, SEER, WDBC), reportando mejoras de hasta 5\% en accuracy respecto a CNN y regresión logística clásicas. Un trabajo más reciente aplicó un modelo ResNet50 como extractor de características y una QNN downstream sobre el dataset BreastMNIST, alcanzando 69\% de accuracy frente a 67\% de métodos híbridos comparables, reconociendo explícitamente las restricciones del hardware cuántico actual como limitante de la precisión del modelo. Estos resultados son consistentes con la propuesta del presente trabajo, la ventaja cuántica en este dominio no debe medirse en precisión final sino en la calidad de la representación generada.
+
+\textbf{Limitaciones comunes reportadoos}
+
+La literatura identifica tres limitaciones en la mayor parte de  los trabajos revisados, los experimentos se ejecutan en simulación clásica sin ruido cuántico real; los datasets utilizados son tabulares o imágenes muy reducidas (28×28), lejos de las mamografías DICOM de alta resolución; y ninguno analiza explícitamente la separabilidad de clases en el espacio de Hilbert como métrica de evaluación intermedia. Estas tres brechas son precisamente las que el presente trabajo aborda.
+
+
+% -----------------------------------------------------------
+% 2.1.5 Trabajos específicos sobre el dataset CBIS-DDSM
+% -----------------------------------------------------------
+\subsubsection{Trabajos específicos sobre el dataset CBIS-DDSM}
+
+El CBIS-DDSM se ha convertido como el dataset de referencia más utilizado en investigación de CADx mamográfico, precisamente por su partición train-test previamente definida, sus máscaras ROI validadas patológicamente y su licencia pública CC BY 3.0. 
+
+\textbf{Trabajos clásicos en CBIS-DDSM}
+
+El trabajo de Shen et al. (2019) estableció una línea base de rendimiento con CNN sobre este dataset, alcanzando AUC de 0.91 con un ensemble de modelos ResNet y VGG. Baccouche et al. (2022) propusieron un ensemble de modelos ResNet (ResNet50V2, ResNet101V2, ResNet152V2) que alcanzó una accuracy de 95.13\% en clasificación de patología y 90.02\% en clasificación de forma sobre CBIS-DDSM, demostrando la ventaja del aprendizaje por ensemble para superar las metodologías de deep learning individuales más recientes.
+
+\textbf{Trabajos de QML en CBIS-DDSM}
+
+La revisión de la literatura no ha identificado ningún trabajo publicado que aplique circuitos cuánticos variacionales reales (con codificación de datos en estados cuánticos mediante compuertas cuánticas) directamente sobre imágenes del dataset CBIS-DDSM. El trabajo más cercano en el dominio del QML aplicado a mamografías es el de Azevedo et al. (2022), que implementa quantum transfer learning mediante redes neuronales híbridas clásico-cuánticas con angle embedding sobre el dataset BCDR (Barcelona Digital Breast Cancer Dataset), obteniendo 84\% de accuracy y señalando como trabajo futuro explícito la necesidad de evaluar la distribución de los datos en el espacio de Hilbert resultante para verificar la separabilidad de clases. Este trabajo, aunque no usa CBIS-DDSM, establece el único precedente de QML con circuitos reales en imagen mamográfica y define las brechas metodológicas que el presente trabajo aborda.
+
+
+% -----------------------------------------------------------
+% 2.1.6 Tabla comparativa y brechaa identificadas
+% -----------------------------------------------------------
+\subsubsection{Tabla comparativa y brechas identificadas}
+
+\begin{landscape}
+\begin{table}[htbp]
+\centering
+\caption{Comparativa de trabajos relacionados en el estado del arte}
+\label{tab:estado_arte}
+\renewcommand{\arraystretch}{1.4}
+\small
+
+\begin{tabularx}{\linewidth}{@{}p{3.2cm}p{3.5cm}p{1.8cm}p{3.0cm}p{2.4cm}p{1.8cm}p{2.0cm}p{2.2cm}p{1.5cm}@{}}
+
+\toprule
+\textbf{Trabajo} &
+\textbf{Dataset} &
+\textbf{Circuito cuántico real} &
+\textbf{Framework QML} &
+\textbf{Feature map} &
+\textbf{CBIS-DDSM DICOM} &
+\textbf{Análisis separabilidad} &
+\textbf{Masas/calcs. por separado} &
+\textbf{AUC-ROC} \\
+\midrule
+
+\multicolumn{9}{@{}l}{\cellcolor{gray!12}\small\textit{ML clásico en mamografía}} \\[2pt]
+
+Shen et al. (2019)
+& CBIS-DDSM
+& \xmark
+& ResNet / VGG
+& ---
+& \cmark
+& \xmark
+& \xmark
+& 0.91 \\
+
+Wang et al. (2020)
+& DDSM / INbreast / MIAS / UKy
+& \xmark
+& CNN (6 modelos)
+& ---
+& Parcial
+& \xmark
+& \xmark
+& 0.44--0.95 \\
+
+Baccouche et al. (2022)
+& CBIS-DDSM / INbreast
+& \xmark
+& Ensemble ResNet
+& ---
+& \cmark
+& \xmark
+& \xmark
+& 0.95 \\
+
+\multicolumn{9}{@{}l}{\cellcolor{gray!12}\small\textit{Optimización cuántico-inspirada en mamografía}} \\[2pt]
+
+Bilal et al. (2025)
+& CBIS-DDSM / MIAS / INbreast / DDSM
+& Inspirado
+& Q-BGWO + SqueezeNet + SVM
+& ---
+& \cmark
+& \xmark
+& \xmark
+& --- \\
+
+Singh et al. (2025)
+& CBIS-DDSM
+& Inspirado
+& SeQTLBOGA + SVM
+& ---
+& \cmark
+& \xmark
+& \xmark
+& --- \\
+
+\multicolumn{9}{@{}l}{\cellcolor{gray!12}\small\textit{QML real en imagen médica (no mamografía)}} \\[2pt]
+
+Ajlouni et al. (2023)
+& Kaggle Brain MRI
+& \cmark
+& Hybrid QCNN
+& PQC
+& \xmark
+& \xmark
+& ---
+& --- \\
+
+Xiang et al. (2024)
+& GBSG / SEER / WDBC
+& \cmark
+& QCCNN (PennyLane)
+& Capa cuántica conv.
+& \xmark
+& \xmark
+& ---
+& --- \\
+
+\multicolumn{9}{@{}l}{\cellcolor{gray!12}\small\textit{QML real en mamografía}} \\[2pt]
+
+Azevedo et al. (2022)
+& BCDR
+& \cmark
+& QTL (PennyLane)
+& Angle embedding
+& \xmark
+& \xmark
+& \xmark
+& --- \\
+
+\midrule
+\multicolumn{9}{@{}l}{\cellcolor{blue!8}\small\textit{Presente trabajo}} \\[2pt]
+
+\rowcolor{blue!8}
+\textbf{Sánchez García (2026)}
+& \textbf{CBIS-DDSM}
+& \cmark
+& \textbf{VQC (Qiskit)}
+& \textbf{ZZFeatureMap /} \newline \textbf{PauliFeatureMap}
+& \cmark
+& \cmark
+& \cmark
+& Por det. \\
+
+\bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+\footnotesize
+\textbf{Notas:}
+\cmark\ = cumple la condición;\quad
+\xmark\ = no cumple;\quad
+Inspirado = algoritmo cuántico-inspirado sin circuitos cuánticos reales;\quad
+--- = no reportado o no aplica.
+\end{table}
+\end{landscape}
+
+
+La tabla anterior resume los trabajos revisados en las secciones 2.1.1 a 2.1.5 a lo largo de ocho caractericticas relevantes para el presente trabajo.
+La intersección de tres condiciones simultáneas (circuito cuántico variacional real, dataset CBIS-DDSM con imágenes DICOM, y análisis explícito de separabilidad diferenciado por tipo de hallazgo) no está cubierta por ningún trabajo publicado en la literatura revisada. Esta triple intersección define la contribución del presente trabajo.
+Adicionalmente, el presente trabajo introduce una cuarta característica no presente en ninguno de los trabajos anteriores, el uso de Qiskit con ZZFeatureMap y PauliFeatureMap como componente de embedding, en contraste con el uso exclusivo de PennyLane con angle embedding en los únicos trabajos de QML real en imagen médica disponibles. Esto aporta evidencia comparativa sobre el comportamiento de distintos frameworks y feature maps en este dominio clínico específico.
+
+
+
 
 
 % -----------------------------------------------------------
@@ -385,6 +698,7 @@ características del dataset CBIS-DDSM, y se organizan en requerimientos
 funcionales, que describen las capacidades que el sistema debe proveer,
 y requerimientos no funcionales, que establecen las condiciones de calidad, 
 reproducibilidad y viabilidad bajo las cuales el sistema debe operar.
+
 
 % -----------------------------------------------------------
 % 4.1.1 Requerimientos funcionales
@@ -422,6 +736,19 @@ RF-07 & Retorno de vector de expectativas $\langle Z_i \rangle
         \in [-1,1]^n$ como quantum embedding de entrada a la 
         red clásica. 
         & OE-2, OE-3 & Alta \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\ContinuedFloat
+\caption[]{Requerimientos funcionales del sistema \emph{(continuación)}}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}lXcc@{}}
+\toprule
+\textbf{ID} & \textbf{Descripción} & \textbf{OE} & \textbf{Prioridad} \\
+\midrule
 RF-08 & Medición de separabilidad mediante kernel alignment, 
         distancias inter/intra-clase y PCA 2D. 
         & OE-3 & Alta \\
@@ -440,6 +767,7 @@ RF-12 & Documentación cuantitativa de restricciones del
 \bottomrule
 \end{tabularx}
 \end{table}
+
 
 
 % -----------------------------------------------------------
@@ -471,10 +799,7 @@ RNF-05 & Escalabilidad    & Circuito parametrizable: qubits
                              (512--8192). \\
 RNF-06 & Portabilidad     & Ejecutable en Google Colab T4, sin hardware 
                              cuántico real. \\
-RNF-07 & Ética y datos    & Cumplimiento de licencia CC BY 3.0 
-                             de TCIA; sin transmisión de datos 
-                             identificables. \\
-RNF-08 & Propiedad intelectual & Registro del código fuente en 
+RNF-07 & Propiedad intelectual & Registro del código fuente en 
                                   INDAUTOR. \\
 \bottomrule
 \end{tabularx}
@@ -593,6 +918,81 @@ RNF-08 & Propiedad intelectual & Registro del código fuente en
     Alvarez-Estevez, D. (2024). Benchmarking quantum machine learning kernel training
     for classification tasks. arXiv preprint arXiv:2408.10274.
     \url{https://doi.org/10.48550/arXiv.2408.10274}
+
+  % --- Referencia 19: Artificial Intelligence in Medical Imaging ---
+  \bibitem{TandFOnline2021}
+    Author(s). (2021). [Article title]. \textit{AI Magazine}, 42(4), [pages].
+    \url{https://doi.org/10.1080/08839514.2021.2001177}
+
+  % --- Referencia 20: Machine Learning and Deep Learning in Mammography ---
+  \bibitem{Gao2023MammographyReview}
+    Gao, Y., Lin, J., Zhou, Y., \& Lin, R. (2023). The application of traditional
+    machine learning and deep learning techniques in mammography: a review.
+    \textit{Frontiers in Oncology}, 13, 1213045.
+    \url{https://doi.org/10.3389/fonc.2023.1213045}
+
+  % --- Referencia 21: AI Techniques for Breast Cancer Detection - Multimodal Review ---
+  \bibitem{Mashekova2025AIBreastCancer}
+    Mashekova, A., Zhao, M. Y., Zarikas, V., Mukhmetov, O., Aidossov, N., Ng, E. Y. K., \& Wang, D. (2025).
+    Review of artificial intelligence techniques for breast cancer detection with different modalities:
+    Mammography, ultrasound, and thermography images. \textit{Bioengineering}, 12(10), 1110.
+    \url{https://doi.org/10.3390/bioengineering12101110}
+
+  % --- Referencia 22: Medical Image Enhancement for Breast Cancer Detection ---
+  \bibitem{Avci2023MammographyEnhancement}
+    Avcı, H., \& Karakaya, J. (2023). A novel medical image enhancement algorithm for breast cancer
+    detection on mammography images using machine learning. \textit{Diagnostics}, 13(3), 348.
+    \url{https://doi.org/10.3390/diagnostics13030348}
+
+  % --- Referencia 23: AI Pipeline for Mammography Breast Cancer Detection - PRISMA Review ---
+  \bibitem{Anez2025AIPipeline}
+    Añez, D., Conti, G., Uriarte, J. J., Serrano-Olmedo, J.-J., Martínez-Murillo, R., \& Casanova-Carvajal, O. (2025).
+    Artificial intelligence pipeline for mammography-based breast cancer detection: An integrated systematic review and
+    large-scale experimental validation. \textit{Medicina}, 61(12), 2237.
+    \url{https://doi.org/10.3390/medicina61122237}
+
+  % --- Referencia 24: Deep Convolutional Neural Networks for Mammography ---
+  \bibitem{Abdelhafiz2019DeepCNN}
+    Abdelhafiz, D., Yang, C., Ammar, R., et al. (2019). Deep convolutional neural networks for mammography:
+    advances, challenges and applications. \textit{BMC Bioinformatics}, 20(Suppl 11), 281.
+    \url{https://doi.org/10.1186/s12859-019-2823-4}
+
+  % --- Referencia 25: Deep Learning to Improve Breast Cancer Detection on Screening Mammography ---
+  \bibitem{Shen2019DeepLearning}
+    Shen, L., Margolies, L. R., Rothstein, J. H., et al. (2019). Deep learning to improve breast cancer
+    detection on screening mammography. \textit{Scientific Reports}, 9, 12495.
+    \url{https://doi.org/10.1038/s41598-019-48995-4}
+
+  % --- Referencia 26: Integrated Framework for Breast Mass Classification Using Residual Neural Networks ---
+  \bibitem{Baccouche2022ResidualNN}
+    Baccouche, A., Garcia-Zapirain, B., \& Elmaghraby, A. S. (2022). An integrated framework for breast mass
+    classification and diagnosis using stacked ensemble of residual neural networks. \textit{Scientific Reports}, 12, 12259.
+    \url{https://doi.org/10.1038/s41598-022-15632-6}
+
+  % --- Referencia 27: Deep Learning Classification of Breast Microcalcifications ---
+  \bibitem{Shia2025MicrocalcClassification}
+    Shia, W. C. (2025). Deep learning-based classification of benign and malignant breast microcalcifications in
+    mammography. \textit{Scientific Reports}, 15, 42768.
+    \url{https://doi.org/10.1038/s41598-025-27149-9}
+
+  % --- Referencia 28: Quantum Machine Learning in Feature Hilbert Spaces ---
+  \bibitem{Schuld2019QuantumML}
+    Schuld, M., \& Killoran, N. (2019). Quantum machine learning in feature {H}ilbert spaces.
+    \textit{Physical Review Letters}, 122(4), 040504.
+    \url{https://doi.org/10.1103/PhysRevLett.122.040504}
+
+  % --- Referencia 29: Hybrid Quantum-Classical-Quantum Convolutional Neural Networks ---
+  \bibitem{Long2025HybridQCQ}
+    Long, C., Huang, M., Ye, X., et al. (2025). Hybrid quantum-classical-quantum convolutional neural networks.
+    \textit{Scientific Reports}, 15, 31780.
+    \url{https://doi.org/10.1038/s41598-025-13417-1}
+
+  % --- Referencia 30: Quantum Machine and Deep Learning for Medical Image Classification ---
+  \bibitem{Radhi2025QuantumDeepLearning}
+    Radhi, E. A., Kamil, M. Y., \& Mohammed, M. A. (2025). Quantum machine and deep learning for medical image
+    classification: A systematic review of trends, methodologies, and future directions. \textit{Iraqi Journal for Computer
+    Science and Mathematics}, 6(2), Article 9.
+    \url{https://doi.org/10.52866/2788-7421.1252}
 
 \end{thebibliography}
 
