@@ -11,30 +11,32 @@
 % PREÁMBULO — paquetes y configuración general
 % ------------------------------------------------------------
 \documentclass[12pt, letterpaper]{article}
-
 % Codificación y lenguaje
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
 
 % Tipografía — compatible con pdflatex
-\usepackage{lmodern}  
+\usepackage{mathptmx}  % Times New Roman
 
 % Márgenes y geometría de página
 \usepackage[
-  top=2.54cm,
-  bottom=2.54cm,
-  left=2.54cm,
-  right=2.54cm
+  top=2cm,
+  bottom=2cm,
+  left=3cm,
+  right=2cm
 ]{geometry}
 
 % Interlineado
 \usepackage{setspace}
-\setstretch{1.2}
+\setstretch{1.3}
 
 % Imágenes y gráficos
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{adjustbox}
 
 % Hipervínculos y tabla de contenidos
 \usepackage{hyperref}
@@ -43,26 +45,87 @@
   linkcolor  = black,
   urlcolor   = blue,
   citecolor  = black
+  }
+  
+  % Numeración de figuras por subsección
+  \usepackage{amsmath}
+  \numberwithin{figure}{subsection}
+  
+  % Tablas
+  \usepackage{booktabs}
+  \usepackage{array}
+  \usepackage{tabularx}
+  \usepackage{caption}
+  \usepackage{subcaption}
+  \usepackage{colortbl}
+  \usepackage{xcolor}
+  \usepackage{pdflscape}
+  \usepackage{pifont}
+  \usepackage{longtable}
+  
+  % Definir checkmark y xmark
+  \newcommand{\cmark}{\ding{51}}
+  \newcommand{\xmark}{\ding{55}}
+  
+  % TikZ para elementos gráficos
+\usepackage[dvipsnames, table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usepackage{amssymb}
+
+\definecolor{colTeal}  {HTML}{0F6E56}
+\definecolor{colTealBg}{HTML}{E1F5EE}
+\definecolor{colPurp}  {HTML}{534AB7}
+\definecolor{colPurpBg}{HTML}{EEEDFE}
+\definecolor{colAmber} {HTML}{854F0B}
+\definecolor{colAmberBg}{HTML}{FAEEDA}
+\definecolor{colCoral} {HTML}{993C1D}
+\definecolor{colCoralBg}{HTML}{FAECE7}
+\definecolor{colGrayBg}{HTML}{F1EFE8}
+\definecolor{colGray}  {HTML}{5F5E5A}
+
+% ── Estilos TikZ ─────────────────────────────────────────
+\tikzset{
+  blk/.style={
+    rectangle, rounded corners=5pt,
+    text width=10cm, minimum height=1.1cm,
+    align=center, inner sep=6pt,
+    font=\small\bfseries,
+    draw=#1!60, fill=#1!10
+  },
+  blkTeal/.style  = {blk=colTeal},
+  blkCoral/.style = {blk=colCoral},
+  blkAmber/.style = {blk=colAmber},
+  blkGray/.style  = {
+    rectangle, rounded corners=5pt,
+    text width=10cm, minimum height=1.1cm,
+    align=center, inner sep=6pt,
+    font=\small\bfseries,
+    draw=colGray!60, fill=colGrayBg
+  },
+  cond/.style={
+    rectangle, rounded corners=4pt,
+    text width=2.3cm, minimum height=1.6cm,
+    align=center, inner sep=4pt,
+    font=\scriptsize\bfseries,
+    draw=colGray!50, fill=colGrayBg
+  },
+  condQ/.style={
+    rectangle, rounded corners=5pt,
+    text width=2.5cm, minimum height=1.9cm,
+    align=center, inner sep=4pt,
+    font=\scriptsize\bfseries,
+    draw=colPurp!70, fill=colPurpBg,
+    line width=0.8pt
+  },
+  arr/.style={
+    -{Stealth[length=4pt, width=4pt]},
+    line width=0.6pt, color=colGray
+  }
 }
 
-% Numeración de figuras por subsección
-\usepackage{amsmath}
-\numberwithin{figure}{subsection}
-
-% Tablas
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{tabularx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{colortbl}
-\usepackage{xcolor}
-\usepackage{pdflscape}
-\usepackage{pifont}
-
-% Definir checkmark y xmark
-\newcommand{\cmark}{\ding{51}}
-\newcommand{\xmark}{\ding{55}}
+% Encabezados y pies de página personalizados
+\usepackage{fancyhdr}
 
 
 % Espaciado entre párrafos
@@ -100,46 +163,180 @@
 % PORTADA
 % ============================================================
 
-% --- Logos institucionales ---
-\begin{figure}[H]
+\thispagestyle{empty}
+
+\begin{tikzpicture}[remember picture, overlay]
+  % Línea vertical azul gruesa (exterior)
+  \draw[line width=4pt, color=blue!70!black]
+    (current page.north west) ++(0.75cm, -1.5cm) -- ++(0, -25.5cm);
+  % Línea vertical azul delgada (interior, paralela)
+  \draw[line width=1.5pt, color=blue!70!black]
+    (current page.north west) ++(1.15cm, -1.5cm) -- ++(0, -25.5cm);
+\end{tikzpicture}
+
+\vspace{0.5cm}
+
+% --- Logo IPN flotando a la izquierda sin afectar el centrado ---
+\noindent
+\begin{minipage}[t]{0.16\textwidth}
   \centering
-  % Logo izquierdo (ESCOM / IPN)
-  \begin{minipage}{0.30\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{Logos/IPN_logo.png}  % Reemplazar con la imagen real
-  \end{minipage}
-  \hfill
-  % Logo derecho (ESCOM)
-  \begin{minipage}{0.30\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{Logos/ESCOM_logo.png}  % Reemplazar con la imagen real
-  \end{minipage}
-\end{figure}
+  \includegraphics[width=\linewidth]{Logos/IPN_logo.png}
+\end{minipage}%
+\begin{minipage}[t]{0.64\textwidth}
+  \centering
+  {\fontsize{20}{24}\selectfont \textbf{INSTITUTO POLITÉCNICO NACIONAL}}\\[0.3em]
+  {\fontsize{16}{20}\selectfont \textbf{ESCUELA SUPERIOR DE CÓMPUTO}}
+\end{minipage}%
+\begin{minipage}[t]{0.18\textwidth}
+  % espacio simétrico vacío
+\end{minipage}
 
-\vspace{1em}
+\vspace{2.5em}
 
-% --- Institución y programa ---
+% --- Título del trabajo ---
 \begin{center}
-  {\large \textbf{\\ INSTITUTO POLITÉCNICO NACIONAL}}\\[0.5em]
-  {\large \textbf{\\ Escuela Superior de Cómputo}}\\[0.5em]
-  {\large \textit{Licenciatura en Ciencia de Datos}}\\[5em]
-  TT No. 2026 -- B039\\[1em]
-  ``Modelo de transformación cuántica variacional de características de cáncer
-  de mama para un sistema híbrido de prediagnóstico''\\[5em]
+  {\fontsize{16}{20}\selectfont \textbf{\\[2em] ``Modelo de transformación cuántica variacional}}\\
+  {\fontsize{16}{20}\selectfont \textbf{de características de cáncer de mama para un}}\\
+  {\fontsize{16}{20}\selectfont \textbf{sistema híbrido de prediagnóstico''}}\\[2.5em]
+
+  % --- Identificación ---
+  {\fontsize{14}{18}\selectfont \textit{Trabajo Terminal}}\\[0.5em]
+  {\fontsize{14}{18}\selectfont TT No. 2026 -- B039}\\[2.5em]
 \end{center}
 
-\vspace{1.5em}
-
-% --- Tabla de presentadores y directores ---
+% --- Presenta ---
 \begin{center}
-  \begin{tabular}{p{0.42\textwidth} p{0.10\textwidth} p{0.42\textwidth}}
-    \textbf{Presenta}: & & \textbf{Directores}: \\[0.4em]
-    Miguel Alexander Sánchez García
-    & &
-    Dra. Ana María Winfield Reyes \\
-    & & Dr. Jesús Yaljá Montiel Pérez \\
+  {\fontsize{12}{14}\selectfont \textit{\\[1em]Presenta}}\\[0.4em]
+  {\fontsize{12}{14}\selectfont \textbf{Miguel Alexander Sánchez García}}
+\end{center}
+
+\vspace{2em}
+
+% --- Directores ---
+\begin{center}
+  {\fontsize{12}{14}\selectfont \textit{Directores}}\\[0.6em]
+  {\fontsize{12}{14}\selectfont \textbf{Dra. Ana María Winfield Reyes}
+  \hspace{2em}
+  \textbf{Dr. Jesús Yaljá Montiel Pérez}}
+\end{center}
+
+\vfill
+
+% --- Logo ESCOM a la izquierda + fecha centrada en la página ---
+\noindent
+\begin{minipage}[b]{0.18\textwidth}
+  \centering
+  \includegraphics[width=0.85\linewidth]{Logos/ESCOM_logo.png}
+\end{minipage}%
+\begin{minipage}[b]{0.64\textwidth}
+  \centering
+  {\fontsize{12}{16}\selectfont 19 Mayo de 2026}
+\end{minipage}%
+\begin{minipage}[b]{0.18\textwidth}
+  % espacio simétrico vacío
+\end{minipage}
+
+\vspace{0.5cm}
+
+
+% ── Segunda portada ──────────────────────────────────────────
+\newpage
+\newgeometry{
+  top    = 2.5cm,
+  bottom = 2.5cm,
+  left   = 2.5cm,
+  right  = 2.5cm
+}
+\thispagestyle{empty}
+
+% ── Encabezado con logos e institución ───────────────────────
+\begin{center}
+
+\begin{tabular}{ccc}
+  \includegraphics[height=2.5cm]{Logos/ipn_logo.png}
+  &
+  \begin{minipage}{11cm}
+    \centering
+    \textbf{INSTITUTO POLITÉCNICO NACIONAL}\\[2pt]
+    \textbf{ESCUELA SUPERIOR DE CÓMPUTO}\\[2pt]
+    \textbf{SUBDIRECCIÓN ACADÉMICA}
+  \end{minipage}
+  &
+  \includegraphics[height=2.2cm]{Logos/escom_logo.png}
+\end{tabular}
+
+\vspace{0.8cm}
+
+\end{center}
+
+% ── Número de TT y fecha ─────────────────────────────────────
+\vspace{0.3cm}
+\noindent
+\begin{tabular}{p{7cm} p{8.5cm}}
+  No. de TT 2026 -- B039
+  &
+  \hfill 19 de Mayo de 2026
+\end{tabular}
+
+\vspace{0.9cm}
+
+% ── Tipo de documento ────────────────────────────────────────
+\begin{center}
+  Documento Técnico
+\end{center}
+
+\vspace{0.8cm}
+
+% ── Título ───────────────────────────────────────────────────
+\begin{center}
+  \large\textbf{%
+    ``Modelo de Transformación Cuántica Variacional para\\
+    un Sistema Híbrido de Prediagnóstico de Cáncer de Mama''%
+  }
+\end{center}
+
+\vspace{1.8cm}
+
+% ── Participantes ────────────────────────────────────────────
+\begin{center}
+  \textit{Presenta}\\[0.5cm]
+  \large\textbf{Sánchez García Miguel Alexander}$^{1}$
+\end{center}
+
+\vspace{1.5cm}
+
+% ── Directores ───────────────────────────────────────────────
+\begin{center}
+  \textit{Directores}\\[0.6cm]
+  \begin{tabular}{p{7cm} p{7cm}}
+    \centering
+    \textbf{Dra. Winfield Reyes Ana María}
+    &
+    \centering
+    \textbf{Dr. Montiel Pérez Jesús Yaljá}
   \end{tabular}
 \end{center}
+
+\vspace{\fill}
+
+% ── Nota al pie ──────────────────────────────────────────────
+\noindent\rule{\textwidth}{0.4pt}
+\footnotesize{$^{1}$msanchezg1904@alumno.ipn.mx}
+
+\newpage
+
+
+
+% ============================================================
+% FIN PORTADA — restaurar márgenes normales
+% ============================================================
+\newpage
+\newgeometry{
+  top    = 2.5cm,
+  bottom = 2.5cm,
+  left   = 2.5cm,
+  right  = 2.5cm
+}
 
 % ============================================================
 % TABLA DE CONTENIDOS (ÍNDICE)
@@ -151,7 +348,62 @@
 % SECCIÓN: RESUMEN
 % ============================================================
 \newpage
-\section*{Resumen}
+
+\begin{abstract}
+
+El cáncer de mama representa la principal causa de muerte
+por tumores malignos en mujeres en México, con 8{,}451
+defunciones registradas en 2024. La detección temprana
+mediante mamografía es el factor determinante para
+incrementar las tasas de supervivencia; sin embargo,
+los modelos de diagnóstico asistido por computadora
+basados en \textit{deep learning} presentan caídas de
+hasta 0.44 puntos en AUC-ROC al evaluarse sobre datos
+externos, evidenciando limitaciones estructurales en la
+calidad de las representaciones clásicas de características
+morfológicas mamográficas.
+
+El presente trabajo evalúa la viabilidad de las
+transformaciones cuánticas variacionales como mecanismo
+de codificación alternativo. Se implementan dos
+\textit{feature maps} cuánticos ---\textit{ZZFeatureMap}
+y \textit{PauliFeatureMap}--- sobre características
+radiómicas extraídas de imágenes mamográficas del dataset
+CBIS-DDSM (1{,}566 pacientes, formato DICOM) mediante
+Qiskit y el simulador Qiskit Aer. Los \textit{quantum
+embeddings} generados ---vectores de valores de expectativa
+$\langle Z_i\rangle \in [-1,1]^n$--- se integran como
+entrada de un clasificador MLP en PyTorch mediante
+\texttt{TorchConnector}. El sistema se evalúa bajo cinco
+condiciones experimentales: \textit{baseline} crudo,
+PCA lineal, Kernel PCA con kernel RBF, ZZFeatureMap y
+PauliFeatureMap, todas sobre el mismo vector de entrada
+y el mismo clasificador, garantizando que la única
+variable independiente sea la transformación aplicada.
+
+La separabilidad de cada representación se cuantifica
+mediante \textit{kernel-target alignment}, \textit{geometric
+difference} respecto al kernel RBF clásico, índice
+Davies-Bouldin y distancia Fisher; el desempeño
+clasificatorio se reporta mediante AUC-ROC y F1-Score,
+diferenciados por tipo de hallazgo (masas y
+calcificaciones). El objetivo central no es superar la
+precisión del estado del arte clásico, sino determinar
+si el espacio de Hilbert inducido por los circuitos
+variacionales ofrece mayor separabilidad intrínseca de
+clases y documentar la viabilidad práctica de estas
+técnicas sobre datos médicos reales en el régimen NISQ
+actual.
+
+\end{abstract}
+
+\noindent\textbf{Keywords:}
+Variational quantum circuits,
+quantum embeddings, ZZFeatureMap, PauliFeatureMap,
+breast cancer diagnosis, CBIS-DDSM, kernel-target
+alignment, geometric difference, hybrid quantum-classical
+systems.
+
 \addcontentsline{toc}{section}{Resumen}
 
 % [Contenido del resumen — pendiente de redacción]
@@ -161,6 +413,47 @@
 % ============================================================
 \newpage
 \section*{Abstract}
+
+Breast cancer represents the leading cause of death from
+malignant tumors in women in Mexico, with 8{,}451
+registered deaths in 2024. Early detection through
+mammography is the determining factor for improving
+survival rates; however, computer-aided diagnosis models
+based on deep learning exhibit AUC-ROC drops of up to
+0.44 points when evaluated on external data, revealing
+structural limitations in the quality of classical
+representations of mammographic morphological features.
+
+This work evaluates the viability of variational quantum
+transformations as an alternative encoding mechanism.
+Two quantum feature maps,\textit{ZZFeatureMap} and
+\textit{PauliFeatureMap}, are implemented over radiomic
+features extracted from mammographic images of the
+CBIS-DDSM dataset (1{,}566 patients, DICOM format) using
+Qiskit and the Qiskit Aer simulator. The generated quantum
+embeddings, expectation value vectors
+$\langle Z_i\rangle \in [-1,1]^n$, are integrated as
+input to a PyTorch MLP classifier via
+\texttt{TorchConnector}. The system is evaluated under
+five experimental conditions: raw baseline, linear PCA,
+Kernel PCA with RBF kernel, ZZFeatureMap, and
+PauliFeatureMap, all sharing the same input vector and
+the same classifier, ensuring that the only independent
+variable is the applied transformation.
+
+The separability of each representation is quantified
+through kernel-target alignment, geometric difference
+with respect to the classical RBF kernel, Davies-Bouldin
+index, and Fisher distance; classification performance
+is reported through AUC-ROC and F1-Score, differentiated
+by finding type (masses and calcifications). The central
+objective is not to surpass state-of-the-art classical
+accuracy, but to determine whether the Hilbert space
+induced by variational circuits offers greater intrinsic
+class separability and to document the practical viability
+of these techniques on real medical data in the current
+NISQ era.
+
 \addcontentsline{toc}{section}{Abstract}
 
 % [Contenido del abstract — pendiente de redacción]
@@ -180,7 +473,7 @@
 % ----------------------------------------------------------
 \subsubsection{Contexto clínico del cáncer de mama}
 
-El cáncer de mama es una enferdad caracterizada pro la proliferación descontrolada de células en el tejido mamario, que forma tumores malignos con capacidad de expandirse sistemáticamente si no recibe tratamiento oportuno. A nivel mundial, constituye el cáncer más frecuente diagnosticado en mujeres y la principal causa de muerte por cáncer femenino, superando incluso el cáncer de pulmón en incidencia global.
+El cáncer de mama es una enferdad caracterizada por la proliferación descontrolada de células en el tejido mamario, que forma tumores malignos con capacidad de expandirse sistemáticamente si no recibe tratamiento oportuno. A nivel mundial, constituye el cáncer más frecuente diagnosticado en mujeres y la principal causa de muerte por cáncer femenino, superando incluso el cáncer de pulmón en incidencia global.
 
 Según los datos de GLOBOCAN 2022 de la Agencia Internacional para la Investigación sobre el Cáncer (IARC), en 2022 se registraron aproximadamente 2.3 millones casos nuevos de cáncer de mama y una mortalidad de alrededor de 670,000 mujeres a nivel mundial \cite{GLOBOCAN2022}. El cáncer de mama representa actualmente uno de cada cuatro cánceres en mujeres a nivel global, y desde 2008 la incidencia mundial ha aumentado más de 20\%, mientras que la mortalidad se ha incrementado en un 14\% \cite{BCRF2025}. Las proyecciones son igualmente preocupantes: si las tasas nacionales actuales se mantienen estables, para 2050 el número de casos nuevos y defunciones por cáncer de mama a nivel mundial aumentará más de 50\% y 70\% respectivamente, impulsando principalmente por el crecimiento y envejecimiento de la población \cite{StopBreastCancer2025}
 
@@ -229,7 +522,7 @@ La interpretación manual de mamografías está sujeta a una variabilidad inhere
 
 El estudio de Wang et al. (2020), publicado en el Journal of the American College of Radiology, es uno de los trabajos más citados al respecto. Los tres modelos publicados con alto rendimiento reportaron puntuaciones AUC-ROC de validación entre 0.88 y 0.95 en el conjunto de datos de entrenamiento; sin embargo, al evaluarse sobre tres conjuntos de datos externos, el rendimiento de los seis modelos disminuyó significativamente, obteniéndose valores de AUC-ROC de apenas entre 0.44 y 0.65. Este hallazgo es especialmente relevante para la presente investigación, ya que demuestra que el alto rendimiento de un modelo de deep learning en un dataset específico no garantiza su transferibilidad a datos con distribuciones distintas, una condición inevitable en entornos clínicos reales donde los equipos de adquisición, las poblaciones de pacientes y los protocolos de imagen varían considerablemente.
 
-\textbf{Limitaciones de interpretabilidad}{}
+\textbf{\\ Limitaciones de interpretabilidad}{}
 
 Es importante abordar los desafíos asociados a la implementación de deep learning en entornos clínicos; la investigación futura debe enfocarse en mejorar la interpretabilidad de los modelos y garantizar su generalización para integrar exitosamente el diagnóstico asistido por deep learning en programas rutinarios de tamizaje de cáncer de mama. \cite{Kim2025GlobalBreastCancer}. La naturaleza de caja negra de las CNN profundas genera desconfianza clínica, ya que los radiólogos no pueden verificar el razonamiento que conlleva a una predicción, lo cual es un requisito indispensable para cualquier herramienta de apoyo a la decisión médica.
 
@@ -248,9 +541,10 @@ Ante las limitaciones descritas, la computación cuántica emerge como un paradi
 
 \textbf{El espacio de Hilbert como espacio de representación}{}
 
-El fundamento teórico de la ventaja cuántica en tareas de clasificación reside en la naturaleza del espacio en el que opera un circuito cuántico. Cuando los datos se mapean desde su dimensión de entrada al espacio de Hilbert en una computadora cuántica, se proyectan a un espacio de mayor dimensión. La clasificación lineal de datos puede lograrse eficazmente mediante clasificadores cuánticos basados en kernel, y el circuito cuántico variacional encuentra la función de costo para un conjunto dado de parámetros, siendo el bloque de construcción fundamental de los modelos de quantum machine learning.
+El fundamento teórico de la ventaja cuántica en tareas de clasificación reside en la naturaleza del espacio en el que opera un circuito cuántico. Un circuito de codificación $U(\mathbf{x})$ define un mapeo no lineal  $\phi: \mathbb{R}^n \rightarrow \mathcal{H}$ que transforma un vector de características clásico $\mathbf{x} \in \mathbb{R}^n$ en un estado cuántico $|\phi(\mathbf{x})\rangle$ en el espacio de Hilbert $\mathcal{H}$. Este espacio no es simplemente una versión de mayor dimensión del espacio clásico de entrada: es un espacio de representación cualitativamente distinto, cuya geometría está determinada por los productos internos cuánticos $|\langle \phi(\mathbf{x}) | \phi(\mathbf{x'}) \rangle|^2$ entre estados, y no por distancias euclidianas entre vectores; asimismo la estructura de este espacio depende directamente del diseño del circuito  de codificación.
 
-Este mecanismo tiene una implicación directa para el problema de separabilidad de clases en mamografía: características morfológicas de lesiones mamarias, que resultan difícilmente distinguibles en el espacio de representación clásico, pueden volverse linealmente separables al proyectarse en el espacio de Hilbert de dimensión exponencialmente mayor que genera un circuito cuántico de n qubits.
+Este mecanismo tiene una implicación directa para el problema de 
+separabilidad de clases en mamografía. Características morfológicas de lesiones mamarias que resultan difícilmente distinguibles en el espacios de representación clásicos pueden adquirir una representación más favorable en el espacio de Hilbert inducido por el circuito cuántico, no porque ese espacio sea necesariamente de mayor dimensión, sino porque el mapeo $\phi$ introduce correlaciones de orden superior entre características que los métodos de codificación clásicos no capturan. Determinar si esta propiedad se cumple para las características morfológicas del dataset CBIS-DDSM, y bajo qué condiciones de diseño del circuito, es precisamente el objeto de estudio del presente trabajo.
 
 \textbf{Modelos híbridos cuántico-clásicos para diagnósticos}{}
 
@@ -272,15 +566,19 @@ Es importante reconocer el estado emergente del campo. Los algoritmos de QML han
 % -----------------------------------------------------------
 \subsection{Planteamiento del problema}
 
-\textbf{El problema de representación en el diagnóstico asistido por mamografía}{}
+\textbf{El problema de representación en el diagnóstico asistido 
+por mamografía}{}
 
-El diagnóstico asistido por computadora en mamografía enfrenta un problema estructural de representación: las características morfológicas que distinguen lesiones benignas de malignas (forma, margen, textura y distribución espacial) existen en un espacio de alta dimensionalidad cuyas relaciones internas son no lineales y difícilmente separables mediante los métodos de codificación clásicos. Como se documentó en la sección anterior, los modelos de deep learning entrenados sobre un dataset específico presentan caídas de AUC-ROC de hasta 0.44 puntos al evaluarse sobre datos externos, evidenciando que el problema no reside únicamente en la arquitectura del clasificador, sino en la calidad de la representación que este recibe como entrada.
+El diagnóstico asistido por computadora en mamografía enfrenta un problema estructural de representación: las características morfológicas que distinguen lesiones benignas de malignas (forma, margen, textura y distribución espacial) existen en un espacio de alta dimensionalidad cuyas relaciones internas son no lineales. Los métodos de codificación clásicos predominantes, como la normalización de píxeles, la extracción de descriptores texturales (GLCM, LBP) o la proyección lineal mediante PCA, representan los datos en espacios euclidianos donde la similitud entre puntos se mide por distancias lineales. Esta geometría euclidiana es insuficiente para capturar correlaciones de orden superior entre características morfológicas: dos lesiones con descriptores individualmente similares pueden tener patrones de co-ocurrencia entre características cualitativamente distintos, diferencia que una representación lineal no puede resolver. Como 
+consecuencia, las clases benigna y maligna permanecen entremezcladas en el espacio de representación clásico, dificultando la tarea del clasificador. Este resultado se manifiesta en la falta de generalización de los modelos, como se documentó en la sección anterior, modelos de deep learning entrenados sobre un dataset específico presentan caídas de AUC-ROC de hasta 0.44 puntos al evaluarse sobre datos externos, evidenciando que el problema no reside únicamente en la arquitectura del clasificador, sino en la calidad de la representación que este recibe como entrada.
 
-\textbf{La brecha en quantum machine learning aplicado a imágenes mamográficas reales}{}
+\textbf{La brecha en quantum machine learning aplicado a imágenes 
+mamográficas reales}{}
 
-La computación cuántica ofrece un mecanismo alternativo de representación mediante la proyección de datos clásicos en espacios de Hilbert de dimensionalidad exponencialmente mayor. El fundamento de los kernels cuánticos es que los circuitos cuánticos pueden calcular eficientemente productos internos en espacios de Hilbert exponencialmente grandes, capturando potencialmente relaciones entre datos que resultan intratables para los métodos clásicos. Sin embargo, la evidencia experimental de esta ventaja sobre datos médicos reales es aún escasa. La aplicabilidad práctica de estos métodos sigue siendo una pregunta abierta, particularmente más allá del contexto de problemas de juguete específicamente construidos, y dadas las limitaciones actuales del hardware cuántico.
-
-Los trabajos existentes que aplican QML en clasificación de cáncer de mama operan predominantemente sobre datasets tabulares de características clínicas numéricas, como Wisconsin (WDBC), SEER o GBSG, y no sobre imágenes mamográficas reales en formato DICOM. Azevedo et al. (2022), en uno de los pocos trabajos que aplica quantum transfer learning directamente sobre el dataset CBIS-DDSM, identifica explícitamente como trabajo futuro pendiente tanto la separación del análisis por tipo de hallazgo (masas vs. calcificaciones) como la evaluación de la distribución de los datos en el espacio de Hilbert resultante. A la fecha de este trabajo, ningún estudio publicado reporta la implementación y evaluación de quantum embeddings mediante Qiskit sobre imágenes mamográficas DICOM del CBIS-DDSM con análisis explícito de separabilidad de clases.
+La computación cuántica ofrece un mecanismo alternativo de representación cualitativamente distinto al clásico. Un circuito de codificación $U(\mathbf{x})$ define un mapeo no lineal $\phi: \mathbb{R}^n \rightarrow \mathcal{H}$ que transforma un vector de características clásico $\mathbf{x}$ en un estado cuántico $|\phi(\mathbf{x})\rangle$ en el espacio de Hilbert $\mathcal{H}$. 
+Este espacio no es una versión ampliada del espacio clásico de entrada, es un espacio de representación con una geometría fundamentalmente diferente, en la que la similitud entre puntos está determinada por productos internos cuánticos $|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ y no por distancias euclidianas. El mapeo $\phi$ introduce correlaciones de 
+orden superior entre características que los métodos de codificación clásicos no capturan, lo que puede sugerir una representación más favorable de las clases en ese espacio de representación. Esta propiedad es la que motiva el uso de circuitos cuánticos variacionales como mecanismo de codificación en el presente trabajo, no se busca un espacio más grande, sino un espacio con una estructura geométrica distinta que potencialmente mejore la separabilidad intrínseca de las clases benigna y maligna. Sin embargo, la evidencia experimental de esta ventaja sobre datos médicos reales es aún escasa. La 
+aplicación práctica de estos métodos sigue siendo una pregunta abierta, particularmente más allá de problemas de prueba específicamente construidos y dadas las limitaciones actuales del hardware cuántico.
 
 \textbf{El problema de la elección del feature map y su impacto en la separabilidad}{}
 
@@ -306,7 +604,7 @@ Esta pregunta de investigación reconoce tres dimensiones del problema que deben
 
 El campo del quantum machine learning atraviesa una etapa crítica de consolidación en la que la comunidad científica demanda evidencia empírica rigurosa sobre dominios de aplicación reales. La mayoría de los estudios que evalúan quantum embeddings y circuitos variacionales lo hacen sobre datasets sintéticos o tabulares de baja dimensionalidad, diseñados específicamente para ilustrar propiedades teóricas del modelo. La transferencia de estos resultados a dominios de imagen médica de alta complejidad, como la mamografía digital, permanece como una brecha experimental documentada en la literatura.
 
-El presente trabajo contribuye a cerrar esta brecha de tres formas concretas. Primero, genera evidencia empírica sobre el comportamiento de ZZFeatureMap y PauliFeatureMap de Qiskit aplicados a características extraídas de imágenes mamográficas reales en formato DICOM, un dominio que no ha sido abordado con este nivel de especificidad en la literatura consultada. Segundo, introduce el análisis de separabilidad de clases en el espacio de Hilbert —mediante kernel alignment y distancias inter e intra-clase— como métrica de evaluación intermedia en el pipeline, a diferencia de los trabajos existentes que reportan únicamente métricas de clasificación final. Tercero, retoma y ejecuta las dos líneas de trabajo futuro identificadas por Azevedo et al. (2022) como pendientes: la separación del análisis por tipo de hallazgo mamográfico y la evaluación de la distribución de datos en el espacio cuántico resultante. De esta forma, el trabajo no solo produce resultados experimentales sino que los sitúa en una trayectoria acumulativa de investigación en QML para diagnóstico médico.
+El presente trabajo contribuye a cerrar esta brecha de tres formas concretas. Primero, genera evidencia empírica sobre el comportamiento de ZZFeatureMap y PauliFeatureMap de Qiskit aplicados a características extraídas de imágenes mamográficas reales en formato DICOM. Segundo, introduce el análisis de separabilidad de clases en el espacio de Hilbert, mediante kernel alignment y distancias inter e intra-clase, como métricas de evaluación en el pipeline, a diferencia de los trabajos existentes que reportan únicamente métricas de clasificación final. Tercero, retoma y ejecuta las dos líneas de trabajo futuro identificadas por Azevedo et al. (2022) como pendientes: la separación del análisis por tipo de hallazgo mamográfico y la evaluación de la distribución de datos en el espacio cuántico resultante. De esta forma, el trabajo no solo produce resultados experimentales sino que los sitúa en una trayectoria acumulativa de investigación en QML para diagnóstico médico.
 
 \textbf{Relevancia social}{}
 
@@ -320,7 +618,7 @@ Para la etapa de simulación cuántica se garantiza la capacidad computacional n
 
 \textbf{Novedad y posicionamiento frente a trabajos previos}{}
 
-El posicionamiento del presente trabajo puede definirse en tres diferenciadores que, en conjunto, constituyen su aportación original. El primero es el dominio de datos, operar sobre imágenes mamográficas DICOM del CBIS-DDSM en lugar de datos tabulares clínicos como Wisconsin, SEER o GBSG, que son los datasets predominantes en la literatura de QML oncológico. El segundo es el rol del componente cuántico, utilizar el circuito variacional exclusivamente como capa de embedding (cuya función es transformar el espacio de representación) y no como sustituto de una capa de procesamiento dentro de una CNN, lo que permite analizar de forma aislada la contribución cuántica a la separabilidad de clases. El tercero es el análisis de viabilidad, convertir las restricciones prácticas del simulador en un objetivo de investigación explícito y medible, produciendo datos cuantitativos sobre tiempo de ejecución, estabilidad de expectativas y costo del entrenamiento que la literatura existente menciona pero no sistematiza.
+El posicionamiento del presente trabajo puede definirse en tres diferenciadores que, en conjunto, constituyen su aportación original. El primero es el dominio de datos, operar sobre imágenes mamográficas DICOM del CBIS-DDSM en lugar de datos tabulares clínicos como Wisconsin, SEER o GBSG, que son los datasets predominantes en la literatura de QML oncológico. El segundo es el rol del componente cuántico, utilizar el circuito variacional exclusivamente como capa de embedding y no como sustituto de una capa de procesamiento dentro de una CNN, lo que permite analizar de forma aislada la contribución cuántica a la separabilidad de clases. El tercero es el análisis de viabilidad, convertir las restricciones prácticas del simulador en un objetivo de investigación explícito y medible, produciendo datos cuantitativos sobre tiempo de ejecución, estabilidad de expectativas y costo del entrenamiento que la literatura existente menciona pero no sistematiza.
 En conjunto, estos tres diferenciadores posicionan el presente trabajo como una contribución experimental concreta a una línea de investigación activa, con potencial de servir como referencia metodológica para futuros trabajos que busquen aplicar quantum embeddings en dominios de imagen médica de alta dimensionalidad.
 
 
@@ -334,7 +632,8 @@ En conjunto, estos tres diferenciadores posicionan el presente trabajo como una 
 % -----------------------------------------------------------
 \subsubsection{Objetivo general}
 
-Analizar la capacidad de las transformaciones cuánticas variacionales, implementadas mediante ZZFeatureMap y PauliFeatureMap en Qiskit sobre características morfológicas extraídas de imágenes mamográficas del dataset CBIS-DDSM, para generar espacios de representación con mayor separabilidad de clases benigno/maligno, cuantificando dicha separabilidad mediante métricas como kernel alignment, índice Davies-Bouldin y distancia Fisher, comparando contra representaciones clásicas de referencia como PCA lineal, Kernel PCA con kernel RBF y LDA, e integrando todos los embeddings resultantes como entrada de un mismo clasificador MLP para determinar si la mejora en separabilidad se traduce en una mejora en la capacidad de clasificación binaria.
+Analizar la capacidad de las transformaciones cuánticas variacionales implementadas mediante \textit{ZZFeatureMap} y \textit{PauliFeatureMap} en Qiskit, sobre características morfológicas extraídas de imágenes mamográficas del dataset CBIS-DDSM, para generar espacios de representación con mayor separabilidad de clases benigno/maligno, cuantificando dicha separabilidad mediante \textit{kernel-target alignment}, \textit{geometric difference} respecto al kernel RBF clásico, índice Davies-Bouldin y distancia Fisher, comparando contra representaciones clásicas de referencia (sin transformación, PCA lineal y Kernel PCA con kernel RBF) sobre el mismo vector de características seleccionadas y escaladas, e integrando
+todos los embeddings resultantes como entrada de un mismo clasificador MLP para determinar si la mejora en separabilidad se traduce en una mejora en la capacidad de clasificación binaria.
 
 % -----------------------------------------------------------
 % 1.4.2 Objetivos específicos
@@ -342,11 +641,12 @@ Analizar la capacidad de las transformaciones cuánticas variacionales, implemen
 \subsubsection{Objetivos específicos}
 
 \begin{enumerate}
-  \item Construir un pipeline de preprocesamiento sobre el dataset CBIS-DDSM que comprenda la lectura de imágenes en formato DICOM, normalización, recorte de regiones de interés (ROI), y extracción de un vector de características compacto, diferenciando el procesamiento de casos de masas y calcificaciones.
-  \item Implementar y comparar al menos dos métodos de codificación cuántica de datos mediante Qiskit y el simulador Qiskit Aer, combinados con una capa variacional parametrizada, para generar quantum embeddings a partir de los vectores de características extraídos.
-  \item Analizar la separabilidad de las representaciones cuánticas generadas mediante métricas cuantitativas de distancia, complementadas con visualizaciones en baja dimensión del espacio de embeddings, evaluando por separado los subconjuntos de masas y calcificaciones del CBIS-DDSM.
-  \item Integrar los quantum embeddings generados como vector de entrada de una red neuronal clásica, para la clasificación binaria de casos benignos y malignos.
-  \item Comparar el desempeño del modelo híbrido cuántico-clásico frente a un modelo baseline puramente clásico de arquitectura equivalente, utilizando las métricas AUC-ROC, F1-Score, Accuracy, Precision y Recall, reportadas de forma separada para masas y calcificaciones.
+  \item
+  Construir un pipeline de preprocesamiento sobre el dataset CBIS-DDSM que comprenda la lectura de imágenes en formato DICOM, normalización, recorte de región de interés (ROI), extracción de un vector de características mediante features radiómicas (PyRadiomics) o un encoder CNN preentrenado, y selección de las $k$ características más discriminativas mediante SelectKBest con escalado angular al rango $[0,\pi]$, diferenciando el procesamiento de casos de masas y calcificaciones como subproblemas independientes.
+  \item Implementar las cinco condiciones de transformación del experimento sobre el mismo vector de entrada: (a) sin transformación como \textit{baseline} crudo; (b) PCA lineal como \textit{baseline} lineal; (c) Kernel PCA con kernel RBF como \textit{baseline} no lineal; (d) circuito cuántico variacional con ZZFeatureMap implementado en Qiskit Aer con capa variacional RealAmplitudes; y (e) circuito cuántico variacional con PauliFeatureMap, asegurando que todas las condiciones produzcan vectores de representación de dimensión $k$ como entrada al clasificador MLP.
+  \item Analizar y comparar la separabilidad de clases benigno/maligno en los espacios de representación generados por las cinco condiciones experimentales mediante: \textit{kernel-target alignment} (KTA) respecto al kernel ideal de clasificación; \textit{geometric difference} entre el kernel cuántico y el kernel RBF clásico para cuantificar si el espacio cuántico captura estructura inaccesible para métodos clásicos; índice Davies-Bouldin como medida de compacidad y separación de \textit{clusters}; y distancia Fisher como razón de dispersión inter-clase sobre intra-clase; aplicando el análisis de forma independiente para masas y calcificaciones.
+  \item Entrenar un mismo clasificador MLP  sobre cada uno de los cinco vectores de representación generados en OE-2, manteniendo idéntica arquitectura, hiperparámetros y protocolo de entrenamiento en todas las condiciones.
+  \item Evaluar si la mejora en separabilidad observada en OE-3 se traduce en una mejora en la capacidad de clasificación binaria,comparando las métricas AUC-ROC, F1-Score, Accuracy, Precision y Recall obtenidas por el MLP en las cinco condiciones, analizando la correlación entre el ranking de separabilidad y el ranking de clasificación, reportando todos los resultados de forma separada para masas y calcificaciones del CBIS-DDSM.
   \item Evaluar o analizar los beneficios o limitaciones prácticas, incluyendo restricciones computacionales y características del simulador cuántico, para determinar la viabilidad real de aplicar estas técnicas en un contexto de salud.
 \end{enumerate}
 
@@ -667,15 +967,1031 @@ La intersección de tres condiciones simultáneas (circuito cuántico variaciona
 Adicionalmente, el presente trabajo introduce una cuarta característica no presente en ninguno de los trabajos anteriores, el uso de Qiskit con ZZFeatureMap y PauliFeatureMap como componente de embedding, en contraste con el uso exclusivo de PennyLane con angle embedding en los únicos trabajos de QML real en imagen médica disponibles. Esto aporta evidencia comparativa sobre el comportamiento de distintos frameworks y feature maps en este dominio clínico específico.
 
 
-
-
-
 % -----------------------------------------------------------
 % 3. MARCO TEÓRICO
 % -----------------------------------------------------------
 \newpage
 \section{Marco Teórico}
 % -----------------------------------------------------------
+
+% -----------------------------------------------------------
+% 5.1 Fundamentos de computación cuántica
+% -----------------------------------------------------------
+\subsection{Fundamentos de computación cuántica}
+
+El presente bloque introduce los conceptos y formalismos matemáticos de la computación cuántica que sustentan la implementación del circuito variacional desarrollado en este trabajo. La referencia estándar para esta sección es Nielsen y Chuang \cite{nielsen2010quantum}.
+
+% -----------------------------------------------------------
+\subsubsection{El qubit como unidad de información cuántica}
+% -----------------------------------------------------------
+
+La unidad fundamental de información en la computación cuántica es el \textit{qubit} (quantum bit). A diferencia de un bit clásico, que solo puede tomar los valores 0 o 1, un qubit puede encontrarse en una \textit{superposición} de ambos estados simultáneamente. Formalmente, el estado de un qubit se representa como un vector unitario en un espacio de Hilbert bidimensional $\mathcal{H} = \mathbb{C}^2$:
+
+\begin{equation}
+    |\psi\rangle = \alpha|0\rangle + \beta|1\rangle, 
+    \quad \alpha, \beta \in \mathbb{C}, 
+    \quad |\alpha|^2 + |\beta|^2 = 1
+    \label{eq:qubit}
+\end{equation}
+
+\noindent donde $|0\rangle$ y $|1\rangle$ son los vectores de la base computacional estándar, análogos a los estados 0 y 1 clásicos:
+
+\begin{equation}
+    |0\rangle = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \qquad
+    |1\rangle = \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+    \label{eq:basis}
+\end{equation}
+
+\noindent Los coeficientes $\alpha$ y $\beta$ son \textit{amplitudes de probabilidad}: al medir el qubit, se obtiene el estado $|0\rangle$ con probabilidad $|\alpha|^2$ y el estado $|1\rangle$ con probabilidad $|\beta|^2$. La medición es irreversible y colapsa el estado a uno de los dos valores de la base.
+
+La representación geométrica estándar de un qubit es la 
+\textit{esfera de Bloch}, que parametriza el estado general de 
+un qubit (salvo fase global) mediante dos ángulos reales:
+
+\begin{equation}
+    |\psi\rangle = \cos\!\left(\frac{\theta}{2}\right)|0\rangle 
+    + e^{i\varphi}\sin\!\left(\frac{\theta}{2}\right)|1\rangle,
+    \quad \theta \in [0, \pi],\; \varphi \in [0, 2\pi)
+    \label{eq:bloch}
+\end{equation}
+
+\noindent donde $\theta$ determina la mezcla entre $|0\rangle$ y $|1\rangle$, y $\varphi$ es la fase relativa entre ambos. Esta parametrización es fundamental para entender las compuertas de rotación que conforman los circuitos variacionales del presente trabajo \cite{nielsen2010quantum}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Figures/Figura_3_1_1.png}
+    \caption{Esfera de Bloch: representación geométrica de un qubit. 
+    El estado $|\psi\rangle$ se representa como un punto en la 
+    superficie de la esfera, determinado por los ángulos $\theta$ y 
+    $\varphi$.}
+    \label{fig:bloch}
+\end{figure}
+
+% -----------------------------------------------------------
+\subsubsection{Compuertas cuánticas de un qubit}
+% -----------------------------------------------------------
+
+Las operaciones sobre qubits se realizan mediante \textit{compuertas cuánticas}, representadas por matrices unitarias $U \in \mathbb{C}^{2\times 2}$ que satisfacen $UU^\dagger = I$. La unitariedad garantiza la reversibilidad de la operación y la conservación de la norma del estado. Las compuertas más relevantes para los circuitos variacionales son las rotaciones parametrizadas alrededor de los ejes de la esfera de Bloch \cite{nielsen2010quantum}:
+
+\begin{equation}
+    R_X(\theta) = e^{-i\frac{\theta}{2}X} = 
+    \begin{pmatrix} 
+        \cos\frac{\theta}{2}  & -i\sin\frac{\theta}{2} \\ 
+        -i\sin\frac{\theta}{2} & \cos\frac{\theta}{2} 
+    \end{pmatrix}
+    \label{eq:rx}
+\end{equation}
+
+\begin{equation}
+    R_Y(\theta) = e^{-i\frac{\theta}{2}Y} = 
+    \begin{pmatrix} 
+        \cos\frac{\theta}{2}  & -\sin\frac{\theta}{2} \\ 
+        \sin\frac{\theta}{2}  & \cos\frac{\theta}{2} 
+    \end{pmatrix}
+    \label{eq:ry}
+\end{equation}
+
+\begin{equation}
+    R_Z(\theta) = e^{-i\frac{\theta}{2}Z} = 
+    \begin{pmatrix} 
+        e^{-i\frac{\theta}{2}} & 0 \\ 
+        0 & e^{i\frac{\theta}{2}} 
+    \end{pmatrix}
+    \label{eq:rz}
+\end{equation}
+
+\noindent donde $X$, $Y$ y $Z$ son las matrices de Pauli:
+
+\begin{equation}
+    X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
+    Y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}, \quad
+    Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+    \label{eq:pauli}
+\end{equation}
+
+Estas compuertas de rotación son los bloques de construcción del ansatz variacional implementado en Qiskit, donde los ángulos $\theta$ son los parámetros entrenables del circuito. La compuerta de Hadamard, definida como:
+
+\begin{equation}
+    H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 
+    \end{pmatrix}
+    \label{eq:hadamard}
+\end{equation}
+
+\noindent transforma el estado base $|0\rangle$ en la 
+superposición uniforme 
+$\frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)$, y es 
+ampliamente utilizada como compuerta de inicialización en 
+circuitos cuánticos.
+
+% -----------------------------------------------------------
+\subsubsection{Sistemas de múltiples qubits y entrelazamiento}
+% -----------------------------------------------------------
+
+El estado de un sistema de $n$ qubits se describe mediante el producto tensorial de los espacios de Hilbert individuales:
+
+\begin{equation}
+    \mathcal{H}^{\otimes n} = 
+    \underbrace{\mathbb{C}^2 \otimes \mathbb{C}^2 \otimes 
+    \cdots \otimes \mathbb{C}^2}_{n}, 
+    \quad \dim(\mathcal{H}^{\otimes n}) = 2^n
+    \label{eq:tensor}
+\end{equation}
+
+\noindent El estado general de $n$ qubits es una superposición 
+de los $2^n$ estados de la base computacional 
+$\{|0\cdots0\rangle, |0\cdots1\rangle, \ldots, 
+|1\cdots1\rangle\}$:
+
+\begin{equation}
+    |\Psi\rangle = \sum_{k=0}^{2^n - 1} c_k |k\rangle, 
+    \quad c_k \in \mathbb{C}, 
+    \quad \sum_{k=0}^{2^n-1} |c_k|^2 = 1
+    \label{eq:multiQubit}
+\end{equation}
+
+El \textit{entrelazamiento cuántico} es la propiedad por la cual el estado de un sistema de múltiples qubits no puede factorizarse como el producto tensorial de estados individuales. Un estado entrelazado no tiene representación separable y exhibe correlaciones entre qubits que no tienen análogo clásico \cite{nielsen2010quantum}. La compuerta estándar para generar entrelazamiento es la \textit{compuerta CNOT} (Controlled-NOT), que opera sobre dos qubits: un qubit de control $c$ y un qubit objetivo $t$, aplicando una negación al objetivo condicionada al estado del control:
+
+\begin{equation}
+    \text{CNOT} = 
+    \begin{pmatrix} 
+        1 & 0 & 0 & 0 \\ 
+        0 & 1 & 0 & 0 \\ 
+        0 & 0 & 0 & 1 \\ 
+        0 & 0 & 1 & 0 
+    \end{pmatrix}
+    \label{eq:cnot}
+\end{equation}
+
+\noindent La combinación de compuertas de rotación de un qubit 
+y compuertas CNOT es suficiente para aproximar cualquier 
+operación unitaria sobre $n$ qubits, propiedad conocida como 
+\textit{universalidad} \cite{nielsen2010quantum}. Esta 
+combinación es precisamente la que estructura el ansatz 
+variacional RealAmplitudes utilizado en el presente trabajo.
+
+% -----------------------------------------------------------
+\subsubsection{Medición y valores de expectativa}
+% -----------------------------------------------------------
+
+La medición en computación cuántica extrae información clásica 
+del estado cuántico al precio de colapsar la superposición. 
+Para un observable $\hat{O}$ representado por un operador 
+hermítico, el \textit{valor de expectativa} cuantifica el 
+valor promedio que se obtendría al medir ese observable 
+repetidamente sobre el estado $|\psi\rangle$:
+
+\begin{equation}
+    \langle \hat{O} \rangle = 
+    \langle \psi | \hat{O} | \psi \rangle
+    \label{eq:expectation}
+\end{equation}
+
+En el presente trabajo, el observable utilizado es el 
+operador de Pauli $Z$ aplicado a cada qubit individualmente. 
+Su valor de expectativa para el qubit $i$ en el estado 
+$|\psi\rangle$ está en el rango:
+
+\begin{equation}
+    \langle Z_i \rangle = 
+    \langle \psi | Z_i | \psi \rangle \in [-1, 1]
+    \label{eq:expZ}
+\end{equation}
+
+\noindent donde $\langle Z_i \rangle = +1$ corresponde al 
+estado $|0\rangle$ y $\langle Z_i \rangle = -1$ al estado 
+$|1\rangle$. El vector de valores de expectativa:
+
+\begin{equation}
+    \mathbf{e} = 
+    \left(\langle Z_1 \rangle, \langle Z_2 \rangle, 
+    \ldots, \langle Z_n \rangle\right) \in [-1, 1]^n
+    \label{eq:embedding_vector}
+\end{equation}
+
+\noindent constituye el \textit{quantum embedding}: la 
+representación clásica extraída del estado cuántico que sirve 
+como vector de entrada a la red neuronal clásica en el 
+pipeline del presente trabajo. La estimación de 
+$\langle Z_i \rangle$ en el simulador Qiskit Aer se realiza 
+mediante el promedio de resultados de medición sobre un número 
+configurable de ejecuciones del circuito (\textit{shots}), de 
+modo que a mayor número de shots, menor es la varianza 
+estadística de la estimación.
+
+
+% -----------------------------------------------------------
+% 5.2 Circuitos cuánticos variacionales y quantum embeddings
+% -----------------------------------------------------------
+\subsection{Circuitos cuánticos variacionales y 
+            \textit{quantum embeddings}}
+
+% -----------------------------------------------------------
+\subsubsection{Circuitos cuánticos parametrizados (PQC)}
+% -----------------------------------------------------------
+
+Un \textit{circuito cuántico parametrizado} (PQC, por sus
+siglas en inglés) es un circuito cuántico cuyas compuertas
+dependen de un conjunto de parámetros reales
+$\boldsymbol{\theta} \in \mathbb{R}^m$ que pueden ajustarse
+mediante optimización clásica \cite{cerezo2021variational}.
+Un \textit{circuito cuántico variacional} (VQC) es un tipo
+específico de PQC que combina un bloque de codificación de
+datos $U(\mathbf{x})$ con un bloque variacional entrenable
+$W(\boldsymbol{\theta})$, produciendo el estado cuántico:
+
+\begin{equation}
+  |\psi(\mathbf{x}, \boldsymbol{\theta})\rangle =
+  W(\boldsymbol{\theta})\,U(\mathbf{x})\,
+  |0\rangle^{\otimes n}
+  \label{eq:vqc_state}
+\end{equation}
+
+\noindent donde $n$ es el número de qubits,
+$U(\mathbf{x})$ es el \textit{feature map} cuántico que
+codifica el vector de características clásico
+$\mathbf{x} \in \mathbb{R}^k$ en el estado cuántico inicial,
+y $W(\boldsymbol{\theta})$ es el \textit{ansatz} variacional
+que introduce correlaciones entre qubits mediante compuertas
+entrenables \cite{schuld2019quantum}.
+
+La arquitectura VQC es la más adecuada para el régimen NISQ
+actual porque mantiene profundidades de circuito moderadas
+y es diferenciable de extremo a extremo mediante el método
+de \textit{parameter-shift}, descrito en la
+sección~\ref{sec:parameter_shift}.
+
+% -----------------------------------------------------------
+\subsubsection{El \textit{feature map} como mapeo no lineal
+               al espacio de Hilbert}
+% -----------------------------------------------------------
+
+El bloque $U(\mathbf{x})$ define un mapeo no lineal:
+
+\begin{equation}
+  \phi: \mathbb{R}^k \rightarrow \mathcal{H}, \qquad
+  \mathbf{x} \mapsto |\phi(\mathbf{x})\rangle =
+  U(\mathbf{x})\,|0\rangle^{\otimes n}
+  \label{eq:feature_map}
+\end{equation}
+
+\noindent donde $\mathcal{H} = \mathbb{C}^{2^n}$ es el
+espacio de Hilbert del sistema de $n$ qubits, de dimensión
+$2^n$. Como se argumentó en la sección del planteamiento
+del problema, este espacio no es simplemente una versión
+ampliada del espacio clásico de entrada: su geometría está
+determinada por productos internos cuánticos
+$\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle$, no por
+distancias euclidianas. El mapeo $\phi$ introduce
+correlaciones de orden superior entre las componentes de
+$\mathbf{x}$ que los métodos de codificación clásicos no
+capturan \cite{schuld2019quantum, havlicek2019supervised}.
+
+Este mapeo define implícitamente un \textit{kernel cuántico}:
+
+\begin{equation}
+  k_Q(\mathbf{x}, \mathbf{x}') =
+  \left|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle
+  \right|^2 =
+  \left|\langle 0|^{\otimes n}\,U^\dagger(\mathbf{x}')\,
+  U(\mathbf{x})\,|0\rangle^{\otimes n}\right|^2
+  \label{eq:quantum_kernel}
+\end{equation}
+
+\noindent La elección del \textit{feature map} $U(\mathbf{x})$
+determina completamente la geometría del espacio de
+representación y, con ello, la capacidad del sistema para
+separar las clases en ese espacio. En el presente trabajo
+se comparan dos diseños de \textit{feature map}:
+\textit{ZZFeatureMap} y \textit{PauliFeatureMap},
+descritos a continuación.
+
+% -----------------------------------------------------------
+\subsubsection{\textit{ZZFeatureMap}: evolución de Pauli-Z
+               de segundo orden}
+% -----------------------------------------------------------
+
+El \textit{ZZFeatureMap} es un circuito de evolución de
+Pauli-Z de segundo orden introducido por Havlíček et al.
+\cite{havlicek2019supervised} y disponible en Qiskit como
+\texttt{qiskit.circuit.library.zz\_feature\_map}.
+Para $n$ qubits y $r$ repeticiones (\texttt{reps}),
+el circuito implementa el unitario:
+
+\begin{equation}
+  U_{\text{ZZ}}(\mathbf{x}) =
+  \left[\mathcal{U}_\Phi(\mathbf{x})\,H^{\otimes n}
+  \right]^r
+  \label{eq:zzfeaturemap}
+\end{equation}
+
+\noindent donde $H^{\otimes n}$ es la capa de compuertas
+de Hadamard que inicializa la superposición uniforme, y
+$\mathcal{U}_\Phi(\mathbf{x})$ es el bloque de codificación
+de datos definido por:
+
+\begin{equation}
+  \mathcal{U}_\Phi(\mathbf{x}) =
+  \exp\!\left(i \sum_{S \subseteq [n],\,|S|\leq 2}
+  \phi_S(\mathbf{x})\,\bigotimes_{j \in S} Z_j\right)
+  \label{eq:Uphi}
+\end{equation}
+
+\noindent Los coeficientes $\phi_S(\mathbf{x})$ codifican
+los datos clásicos en el hamiltoniano de evolución:
+
+\begin{equation}
+  \phi_{\{i\}}(\mathbf{x}) = x_i, \qquad
+  \phi_{\{i,j\}}(\mathbf{x}) =
+  (\pi - x_i)(\pi - x_j)
+  \label{eq:phi_coefficients}
+\end{equation}
+
+\noindent El término de un qubit $\phi_{\{i\}}$ codifica
+cada característica $x_i$ como una rotación alrededor del
+eje $Z$. El término de dos qubits $\phi_{\{i,j\}}$
+introduce \textit{entrelazamiento} entre pares de qubits
+que codifica las interacciones de segundo orden entre
+características, operando mediante la compuerta:
+
+\begin{equation}
+  e^{i\,\phi_{\{i,j\}}(\mathbf{x})\,Z_i Z_j} =
+  \text{CNOT}_{i \to j}\;
+  e^{i\,\phi_{\{i,j\}}(\mathbf{x})\,Z_j}\;
+  \text{CNOT}_{i \to j}
+  \label{eq:zz_gate}
+\end{equation}
+
+\noindent Esta capacidad de capturar interacciones de segundo
+orden entre pares de características es la razón por la que
+el ZZFeatureMap es uno de los métodos
+de codificación de datos más utilizados en tareas de
+clasificación cuántica, dada su capacidad para enriquecer la
+expresividad del espacio de características cuántico y la
+dificultad de simularlo clásicamente. 
+
+Es importante señalar que en Qiskit 2.x el uso de la clase
+\texttt{ZZFeatureMap} está marcado como obsoleto
+(\textit{deprecated}) a favor de la función
+\texttt{zz\_feature\_map()}, que retorna un
+\texttt{QuantumCircuit} estándar \cite{ibmquantum2024docs}.
+En el presente trabajo se utiliza la función actualizada
+compatible con Qiskit 2.x.
+
+% -----------------------------------------------------------
+\subsubsection{\textit{PauliFeatureMap}: generalización
+               multi-eje}
+% -----------------------------------------------------------
+
+El \textit{PauliFeatureMap} es la generalización del
+ZZFeatureMap que permite incorporar operadores de Pauli
+arbitrarios ($X$, $Y$, $Z$) en el bloque de codificación,
+aumentando la expresividad del mapeo al capturar
+interacciones de orden superior \cite{ibmquantum2024docs}.
+El unitario general tiene la forma:
+
+\begin{equation}
+  U_{\text{Pauli}}(\mathbf{x}) =
+  \left[\mathcal{U}_\Phi^{(P)}(\mathbf{x})\,
+  H^{\otimes n}\right]^r
+  \label{eq:paulifeaturemap}
+\end{equation}
+
+\noindent donde el bloque de codificación es:
+
+\begin{equation}
+  \mathcal{U}_\Phi^{(P)}(\mathbf{x}) =
+  \exp\!\left(i \sum_{S \subseteq [n]}
+  \phi_S(\mathbf{x})\,\bigotimes_{j \in S} P_j\right),
+  \qquad P_j \in \{X, Y, Z\}
+  \label{eq:pauli_expansion}
+\end{equation}
+
+\noindent La elección del conjunto de operadores de Pauli
+$\{P_j\}$ y del orden máximo $|S|$ de las interacciones
+define distintas variantes del mapa. El
+PauliFeatureMap es la forma general que permite órdenes de
+interacción superiores, codificando dependencias más
+intrincadas entre características; es altamente expresivo y
+particularmente poderoso para datasets donde las relaciones
+entre características son complejas y no lineales. 
+
+En el presente trabajo se evalúa el PauliFeatureMap con
+operadores $\{Z, ZZ\}$ como configuración de referencia,
+lo que lo hace directamente comparable con el ZZFeatureMap
+al compartir la misma estructura de entrelazamiento pero
+con un espacio de hiperpará\-metros de codificación más amplio.
+
+% -----------------------------------------------------------
+\subsubsection{El \textit{ansatz} variacional: RealAmplitudes}
+% -----------------------------------------------------------
+
+El bloque variacional $W(\boldsymbol{\theta})$ introduce
+capas de rotaciones parametrizadas y compuertas de
+entrelazamiento cuyo propósito es transformar el estado
+codificado $|\phi(\mathbf{x})\rangle$ en una representación
+más discriminativa. En el presente trabajo se utiliza el
+\textit{ansatz} \textit{RealAmplitudes} disponible en Qiskit,
+que alterna capas de rotaciones $R_Y(\theta_i)$ con patrones
+de compuertas CNOT entre qubits adyacentes:
+
+\begin{equation}
+  W(\boldsymbol{\theta}) =
+  \prod_{\ell=1}^{L}
+  \left[
+  \text{CNOT-layer}_\ell \;
+  \bigotimes_{i=1}^{n} R_Y(\theta_{\ell,i})
+  \right]
+  \label{eq:real_amplitudes}
+\end{equation}
+
+\noindent donde $L$ es el número de capas (\texttt{reps})
+y $\boldsymbol{\theta} \in \mathbb{R}^{n \times L}$ son los
+parámetros entrenables. La elección de $R_Y$ en lugar de
+rotaciones complejas garantiza que las amplitudes del estado
+final sean reales, lo que reduce el número de parámetros
+y facilita la optimización en simulación
+\cite{ibmquantum2024docs}.
+
+% -----------------------------------------------------------
+\subsubsection{El \textit{quantum embedding}: vector de salida
+               del circuito}
+\label{sec:quantum_embedding}
+% -----------------------------------------------------------
+
+Dado el estado final
+$|\psi(\mathbf{x}, \boldsymbol{\theta})\rangle =
+W(\boldsymbol{\theta})\,U(\mathbf{x})\,
+|0\rangle^{\otimes n}$, el circuito extrae información
+clásica mediante la medición del valor de expectativa del
+operador de Pauli $Z$ sobre cada qubit $i$:
+
+\begin{equation}
+  \langle Z_i \rangle =
+  \langle\psi(\mathbf{x}, \boldsymbol{\theta})|
+  \,Z_i\,
+  |\psi(\mathbf{x}, \boldsymbol{\theta})\rangle
+  \in [-1, 1]
+  \label{eq:expval}
+\end{equation}
+
+\noindent El \textit{quantum embedding} de la muestra
+$\mathbf{x}$ se define como el vector de $n$ valores de
+expectativa:
+
+\begin{equation}
+  \mathbf{e}(\mathbf{x}, \boldsymbol{\theta}) =
+  \bigl(\langle Z_1\rangle,\,\langle Z_2\rangle,\,
+  \ldots,\,\langle Z_n\rangle\bigr)
+  \in [-1, 1]^n
+  \label{eq:embedding_vector}
+\end{equation}
+
+\noindent Este vector constituye la representación cuántica
+de $\mathbf{x}$ y es la entrada al clasificador MLP en el
+pipeline del presente trabajo. En Qiskit, la estimación de
+$\langle Z_i\rangle$ se realiza mediante el primitivo
+\texttt{Estimator} del simulador \texttt{AerSimulator},
+promediando los resultados de medición sobre un número
+configurable de ejecuciones del circuito
+(\textit{shots} $\geq 1024$).
+
+% -----------------------------------------------------------
+\subsubsection{El método \textit{parameter-shift} para
+               el cálculo del gradiente}
+\label{sec:parameter_shift}
+% -----------------------------------------------------------
+
+El entrenamiento del VQC requiere calcular el gradiente del
+valor de expectativa respecto a los parámetros
+$\boldsymbol{\theta}$. A diferencia de las redes neuronales
+clásicas donde el gradiente se obtiene por
+\textit{backpropagation}, los circuitos cuánticos requieren
+el método de \textit{parameter-shift} \cite{mitarai2018quantum},
+que calcula el gradiente exacto evaluando el circuito en dos
+puntos desplazados:
+
+\begin{equation}
+  \frac{\partial \langle Z_i \rangle}{\partial \theta_j} =
+  \frac{1}{2}\left[
+  \langle Z_i \rangle_{\theta_j + \frac{\pi}{2}} -
+  \langle Z_i \rangle_{\theta_j - \frac{\pi}{2}}
+  \right]
+  \label{eq:parameter_shift}
+\end{equation}
+
+\noindent donde $\langle Z_i\rangle_{\theta_j \pm \pi/2}$
+denota el valor de expectativa del circuito con el parámetro
+$\theta_j$ desplazado en $\pm\pi/2$. Este método tiene
+dos implicaciones prácticas directas para el presente trabajo:
+
+La primera es que cada paso de gradiente requiere $2m$
+evaluaciones del circuito, donde $m$ es el número de
+parámetros entrenables ($m = n \times L$). Para un circuito
+de 8 qubits y 3 capas, esto implica 48 evaluaciones por paso,
+lo que hace el entrenamiento considerablemente más lento que
+una red puramente clásica. Este costo computacional se
+documenta explícitamente como parte del objetivo OE-6.
+
+La segunda es que el método \textit{parameter-shift} es
+exacto (no aproximado) y compatible con \textit{backpropagation}
+clásico, lo que permite integrar el circuito cuántico como
+una capa de PyTorch mediante \texttt{TorchConnector} y
+optimizar conjuntamente los parámetros cuánticos
+$\boldsymbol{\theta}$ y los pesos del MLP con el mismo
+optimizador \cite{qiskitml2024}.
+
+
+% -----------------------------------------------------------
+% 5.3 Red neuronal clásica e integración Qiskit--PyTorch
+% -----------------------------------------------------------
+\subsection{Red neuronal clásica e integración
+            Qiskit--PyTorch}
+
+% -----------------------------------------------------------
+\subsubsection{Perceptrón multicapa (MLP)}
+% -----------------------------------------------------------
+
+La red neuronal clásica utilizada como clasificador
+\textit{downstream} en el pipeline del presente trabajo es
+un perceptrón multicapa (MLP, \textit{Multi-Layer
+Perceptron}), una arquitectura de aprendizaje supervisado
+compuesta por capas de neuronas totalmente conectadas
+\cite{goodfellow2016deep}.
+
+Formalmente, dado un vector de entrada
+$\mathbf{z} \in \mathbb{R}^n$ ---que puede ser el
+\textit{quantum embedding}
+$\mathbf{e}(\mathbf{x}, \boldsymbol{\theta})$ o cualquiera
+de los vectores de las condiciones clásicas--- la
+transformación de la capa $\ell$ se define como:
+
+\begin{equation}
+  \mathbf{h}^{(\ell)} = \sigma\!\left(
+  W^{(\ell)}\,\mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}
+  \right), \qquad \ell = 1, \ldots, L
+  \label{eq:mlp_layer}
+\end{equation}
+
+\noindent donde $W^{(\ell)} \in \mathbb{R}^{d_\ell \times
+d_{\ell-1}}$ es la matriz de pesos, $\mathbf{b}^{(\ell)}
+\in \mathbb{R}^{d_\ell}$ es el vector de sesgos, y
+$\sigma(\cdot)$ es la función de activación no lineal.
+La capa de salida produce una probabilidad de clasificación
+binaria mediante la función sigmoide:
+
+\begin{equation}
+  \hat{y} = \sigma_{\text{sig}}\!\left(
+  W^{(L)}\,\mathbf{h}^{(L-1)} + b^{(L)}
+  \right) =
+  \frac{1}{1 + e^{-(W^{(L)}\mathbf{h}^{(L-1)}
+  + b^{(L)})}}
+  \in [0, 1]
+  \label{eq:sigmoid_output}
+\end{equation}
+
+\noindent El modelo se entrena minimizando la función de
+pérdida de entropía cruzada binaria (\textit{Binary
+Cross-Entropy}, BCE):
+
+\begin{equation}
+  \mathcal{L}_{\text{BCE}}(\hat{y}, y) =
+  -\left[y\log\hat{y} + (1-y)\log(1-\hat{y})\right]
+  \label{eq:bce_loss}
+\end{equation}
+
+\noindent donde $y \in \{0, 1\}$ es la etiqueta real
+(0\,=\,benigno, 1\,=\,maligno). Los parámetros
+$\{W^{(\ell)}, \mathbf{b}^{(\ell)}\}$ se optimizan
+mediante descenso de gradiente estocástico (\textit{Adam}
+o equivalente) a través del algoritmo de
+\textit{backpropagation} \cite{goodfellow2016deep}.
+
+La arquitectura del MLP se mantiene idéntica para las cinco
+condiciones experimentales: mismo número de capas ocultas,
+mismas dimensiones, misma función de activación, mismos
+hiperparámetros y misma semilla aleatoria. Esta
+invarianza es el principio metodológico central que garantiza
+que las diferencias de rendimiento entre condiciones sean
+atribuibles únicamente a la transformación aplicada en M5,
+y no a diferencias en el clasificador.
+
+% -----------------------------------------------------------
+\subsubsection{Ponderación de clases para datos
+               desbalanceados}
+% -----------------------------------------------------------
+
+Dado el desbalance de clases observado en el análisis
+exploratorio del dataset CBIS-DDSM (ratio 1.78:1 en
+calcificaciones), se aplica ponderación de clases durante
+el entrenamiento del MLP. La pérdida ponderada se define
+como:
+
+\begin{equation}
+  \mathcal{L}_w = -\left[
+  w_1\,y\log\hat{y} +
+  w_0\,(1-y)\log(1-\hat{y})
+  \right]
+  \label{eq:weighted_bce}
+\end{equation}
+
+\noindent donde los pesos $w_0$ y $w_1$ se calculan
+inversamente proporcionales a la frecuencia de cada clase
+en el conjunto de entrenamiento:
+
+\begin{equation}
+  w_c = \frac{N}{C \cdot N_c}, \qquad c \in \{0, 1\}
+  \label{eq:class_weights}
+\end{equation}
+
+\noindent siendo $N$ el número total de muestras, $C = 2$
+el número de clases y $N_c$ el número de muestras de la
+clase $c$. Este ajuste se aplica de forma independiente
+para los subconjuntos de masas y calcificaciones.
+
+% -----------------------------------------------------------
+\subsubsection{Integración Qiskit--PyTorch mediante
+               \texttt{TorchConnector}}
+% -----------------------------------------------------------
+
+La integración del circuito cuántico VQC con el clasificador
+MLP de PyTorch se realiza mediante la clase
+\texttt{TorchConnector} del paquete
+\texttt{qiskit-machine-learning} \cite{qiskitml2024}.
+Esta clase envuelve un objeto \texttt{EstimatorQNN} ---que
+encapsula el VQC y la medición de valores de expectativa---
+como una capa \texttt{nn.Module} de PyTorch, habilitando
+el flujo de gradientes a través del circuito cuántico
+mediante el método \textit{parameter-shift}.
+
+El flujo de cómputo en el sistema híbrido durante el
+entrenamiento es el siguiente:
+
+\begin{enumerate}
+  \item El vector de características escalado
+        $\mathbf{x} \in [0,\pi]^k$ se pasa al
+        \texttt{EstimatorQNN}, que construye y ejecuta
+        el circuito $U(\mathbf{x})\,W(\boldsymbol{\theta})$
+        en el simulador \texttt{AerSimulator}.
+
+  \item El \texttt{EstimatorQNN} retorna el vector de
+        embeddings cuánticos
+        $\mathbf{e} = (\langle Z_1\rangle, \ldots,
+        \langle Z_n\rangle) \in [-1,1]^n$.
+
+  \item El vector $\mathbf{e}$ pasa por las capas del
+        MLP y produce la probabilidad $\hat{y}$.
+
+  \item La pérdida $\mathcal{L}$ se propaga hacia atrás:
+        los gradientes respecto a los pesos del MLP se
+        calculan por \textit{backpropagation} clásico,
+        y los gradientes respecto a $\boldsymbol{\theta}$
+        se calculan por \textit{parameter-shift} a través
+        del \texttt{TorchConnector}.
+
+  \item El optimizador de PyTorch actualiza
+        conjuntamente $\{W^{(\ell)}, \mathbf{b}^{(\ell)}\}$
+        y $\boldsymbol{\theta}$ en un solo paso.
+\end{enumerate}
+
+Este entrenamiento \textit{end-to-end} garantiza que los
+parámetros del circuito cuántico se optimicen en función
+del objetivo de clasificación, y no de forma independiente.
+La figura~\ref{fig:pipeline_sistema} ilustra la posición
+de esta integración dentro del pipeline completo del sistema.
+
+% -----------------------------------------------------------
+\subsubsection{Implementación en Qiskit 2.x}
+% -----------------------------------------------------------
+
+En Qiskit 2.x, la implementación del sistema híbrido
+sigue el patrón estándar documentado en
+\cite{qiskitml2024}:
+
+\begin{enumerate}
+  \item Construir el \textit{feature map} con
+        \texttt{zz\_feature\_map()} o
+        \texttt{pauli\_feature\_map()}.
+
+  \item Construir el \textit{ansatz} con
+        \texttt{RealAmplitudes(n\_qubits, reps=L)}.
+
+  \item Componer el circuito VQC:
+        \texttt{qc = feature\_map.compose(ansatz)}.
+
+  \item Crear el \texttt{EstimatorQNN} con el circuito
+        compuesto y los observables
+        \texttt{SparsePauliOp(`Z' * n\_qubits)}.
+
+  \item Envolver con \texttt{TorchConnector} e insertar
+        como primera capa del \texttt{nn.Sequential}
+        del MLP en PyTorch.
+\end{enumerate}
+
+Es importante señalar que las clases
+\texttt{ZZFeatureMap} y \texttt{PauliFeatureMap} están
+marcadas como obsoletas en Qiskit 2.1 a favor de las
+funciones \texttt{zz\_feature\_map()} y
+\texttt{pauli\_feature\_map()}, que retornan un
+\texttt{QuantumCircuit} estándar en lugar de un
+\texttt{BlueprintCircuit} \cite{ibmquantum2024docs}.
+El presente trabajo utiliza las funciones actualizadas
+para garantizar compatibilidad con Qiskit 2.x.
+
+
+% -----------------------------------------------------------
+% 5.4 Métricas de separabilidad y evaluación
+% -----------------------------------------------------------
+\subsection{Métricas de separabilidad y evaluación}
+
+Este bloque formaliza las métricas utilizadas para evaluar
+las representaciones generadas por cada condición
+experimental. Se organizan en dos grupos: métricas de
+separabilidad, que miden la calidad del espacio de
+representación con independencia del clasificador; y
+métricas de clasificación, que miden el desempeño del
+MLP sobre cada representación.
+
+% -----------------------------------------------------------
+\subsubsection{\textit{Kernel-Target Alignment} (KTA)}
+% -----------------------------------------------------------
+
+El \textit{kernel-target alignment} (KTA) es una medida de
+la alineación entre un kernel $K$ y el kernel ideal de
+clasificación $K^* = \mathbf{y}\mathbf{y}^\top$, donde
+$\mathbf{y} \in \{-1, +1\}^N$ es el vector de etiquetas
+de clase \cite{cristianini2002kernel}. Un valor elevado de
+KTA indica que el kernel captura eficientemente la
+estructura de clases de los datos.
+
+Dada una muestra de $N$ puntos, la matriz de kernel
+$K \in \mathbb{R}^{N \times N}$ tiene entradas
+$K_{ij} = k(\mathbf{z}_i, \mathbf{z}_j)$, donde
+$k(\cdot, \cdot)$ es la función kernel correspondiente
+a la condición experimental. El KTA se define como:
+
+\begin{equation}
+  \widehat{\text{KTA}}(K, \mathbf{y}) =
+  \frac{\langle K,\,\mathbf{y}\mathbf{y}^\top\rangle_F}
+  {\|K\|_F \cdot \|\mathbf{y}\mathbf{y}^\top\|_F}
+  \label{eq:kta}
+\end{equation}
+
+\noindent donde $\langle A, B\rangle_F =
+\sum_{i,j} A_{ij} B_{ij}$ es el producto de Frobenius
+y $\|\cdot\|_F$ es la norma de Frobenius. El KTA toma
+valores en $[-1, 1]$, donde 1 indica alineación perfecta
+con las etiquetas de clase y 0 indica ausencia de
+estructura discriminativa.
+
+Para las condiciones cuánticas, el kernel es el kernel
+cuántico definido en la ecuación~\eqref{eq:quantum_kernel}.
+Para las condiciones clásicas, el kernel es la matriz de
+productos internos (baseline crudo), el kernel lineal de
+PCA, o el kernel RBF, según corresponda. Esto permite una
+comparación directa de la alineación de cada condición con
+la estructura de clases del dataset.
+
+% -----------------------------------------------------------
+\subsubsection{\textit{Geometric difference}}
+% -----------------------------------------------------------
+
+La \textit{geometric difference} fue introducida por
+Huang et al. \cite{huang2021power} como una métrica para
+cuantificar si un kernel cuántico captura estructura en
+los datos que el mejor kernel clásico de referencia no
+puede capturar. Dados el kernel cuántico $K_Q$ y el
+kernel clásico de referencia $K_C$ (kernel RBF en el
+presente trabajo), la \textit{geometric difference}
+se define como:
+
+\begin{equation}
+  g(K_C, K_Q) =
+  \sqrt{\left\|
+  \sqrt{K_C}\;K_Q^{-1}\;\sqrt{K_C}
+  \right\|_\infty}
+  \label{eq:geometric_diff}
+\end{equation}
+
+\noindent donde $\|\cdot\|_\infty$ es la norma espectral
+(eigenvalor máximo) y $\sqrt{K_C}$ es la raíz cuadrada
+matricial de $K_C$ obtenida por descomposición de Cholesky.
+
+La interpretación de $g(K_C, K_Q)$ es la siguiente.
+Si $g \approx 1$, ambos kernels capturan la misma
+estructura geométrica en los datos, lo que implica que
+existe un modelo clásico con kernel $K_C$ que puede
+igualar o superar al modelo cuántico. Si $g \gg 1$, el
+kernel cuántico captura estructura que el kernel RBF no
+ve, lo que es condición necesaria (aunque no suficiente)
+para la existencia de ventaja cuántica en ese dominio
+\cite{huang2021power}. Si $g < 1$, el kernel clásico
+captura estructura que el cuántico no, indicando una
+limitación del \textit{feature map} seleccionado.
+
+Dado el costo computacional $O(N^2)$ de construir las
+matrices de kernel, el cálculo de la \textit{geometric
+difference} se realiza sobre una submuestra representativa
+de 150--200 casos por subconjunto (masas y calcificaciones).
+
+% -----------------------------------------------------------
+\subsubsection{Índice Davies-Bouldin}
+% -----------------------------------------------------------
+
+El índice Davies-Bouldin (DB) \cite{davies1979cluster}
+mide la calidad de la separación entre clusters en un
+espacio de representación, combinando la dispersión
+intra-clase con la separación inter-clase. Para el
+problema de clasificación binaria (benigno / maligno),
+el índice se define como:
+
+\begin{equation}
+  \text{DB} =
+  \frac{1}{C}\sum_{i=1}^{C}
+  \max_{j \neq i}
+  \left\{
+  \frac{s_i + s_j}{d(c_i, c_j)}
+  \right\}
+  \label{eq:davies_bouldin}
+\end{equation}
+
+\noindent donde $C = 2$ es el número de clases,
+$s_i$ es la dispersión promedio de los puntos de la
+clase $i$ respecto a su centroide $c_i$:
+
+\begin{equation}
+  s_i = \frac{1}{|C_i|}
+  \sum_{\mathbf{z} \in C_i}
+  \|\mathbf{z} - c_i\|_2
+  \label{eq:dispersion}
+\end{equation}
+
+\noindent y $d(c_i, c_j) = \|c_i - c_j\|_2$ es la
+distancia euclidiana entre los centroides de las clases
+$i$ y $j$. Valores bajos del índice DB indican clusters
+compactos y bien separados; el valor óptimo es 0.
+Esta métrica es independiente del clasificador y puede
+aplicarse directamente sobre el vector de embeddings
+$\mathbf{e}(\mathbf{x}, \boldsymbol{\theta})$ de las
+condiciones cuánticas o sobre los vectores transformados
+de las condiciones clásicas.
+
+% -----------------------------------------------------------
+\subsubsection{Distancia Fisher}
+% -----------------------------------------------------------
+
+La distancia Fisher (o razón de Fisher) cuantifica la
+separabilidad entre dos clases como la razón entre la
+dispersión inter-clase y la dispersión intra-clase en
+el espacio de representación \cite{fisher1936use}. Para
+el caso binario, se define como:
+
+\begin{equation}
+  J_F =
+  \frac{(\mu_{\text{maligno}} - \mu_{\text{benigno}})^2}
+  {\sigma_{\text{maligno}}^2 + \sigma_{\text{benigno}}^2}
+  \label{eq:fisher_distance}
+\end{equation}
+
+\noindent donde $\mu_c$ y $\sigma_c^2$ son la media y
+varianza del espacio de representación para la clase $c$.
+Cuando el espacio de representación es multidimensional
+($\mathbb{R}^n$ con $n > 1$), la distancia Fisher se
+calcula por dimensión y se reporta como el promedio sobre
+las $n$ dimensiones del embedding.
+
+Valores elevados de $J_F$ indican mayor separabilidad,
+las clases tienen medias muy diferentes en relación con
+su varianza interna. Esta métrica cuantifica directamente
+el principio geométrico de separación lineal entre clases,
+una representación con $J_F$ elevado tiene clases bien
+separadas en términos de sus distribuciones marginales,
+lo que facilita la tarea del clasificador MLP
+independientemente de la complejidad de la frontera de
+decisión. En el presente trabajo, $J_F$ se calcula por
+dimensión sobre el vector de embeddings de cada condición
+experimental y se reporta como el promedio sobre las $n$
+dimensiones, permitiendo comparar directamente la
+separabilidad lineal inducida por cada transformación
+sobre el mismo vector de entrada..
+
+% -----------------------------------------------------------
+\subsubsection{Visualización \textit{t-SNE}}
+% -----------------------------------------------------------
+
+El algoritmo \textit{t-Distributed Stochastic Neighbor
+Embedding} (t-SNE) \cite{vandermaaten2008tsne} proyecta
+vectores de alta dimensionalidad a un espacio de dos
+dimensiones preservando la estructura de vecindad local.
+Se utiliza como herramienta de visualización cualitativa
+de la separabilidad de clases en el espacio de embeddings:
+si la proyección t-SNE muestra clusters compactos y bien
+separados por clase, el espacio de representación tiene
+estructura discriminativa.
+
+A diferencia de las métricas anteriores, t-SNE no produce
+un valor escalar comparable entre condiciones sino una
+visualización. Su función en el análisis es complementar
+las métricas cuantitativas (KTA, DB, $J_F$, geometric
+difference) con una inspección visual de la geometría
+del espacio de representación, facilitando la
+interpretación de los resultados para el informe final
+del Trabajo Terminal.
+
+% -----------------------------------------------------------
+\subsubsection{Métricas de clasificación}
+% -----------------------------------------------------------
+
+El desempeño del clasificador MLP sobre cada condición
+experimental se evalúa mediante cinco métricas estándar
+de clasificación binaria \cite{powers2011evaluation},
+calculadas sobre el conjunto de prueba:
+
+\textbf{Exactitud (\textit{Accuracy}):}
+\begin{equation}
+  \text{Acc} =
+  \frac{TP + TN}{TP + TN + FP + FN}
+  \label{eq:accuracy}
+\end{equation}
+
+\textbf{Precisión (\textit{Precision}):}
+\begin{equation}
+  \text{Prec} =
+  \frac{TP}{TP + FP}
+  \label{eq:precision}
+\end{equation}
+
+\textbf{Exhaustividad (\textit{Recall}):}
+\begin{equation}
+  \text{Rec} =
+  \frac{TP}{TP + FN}
+  \label{eq:recall}
+\end{equation}
+
+\textbf{F1-Score:}
+\begin{equation}
+  F_1 =
+  \frac{2 \cdot \text{Prec} \cdot \text{Rec}}
+  {\text{Prec} + \text{Rec}}
+  \label{eq:f1}
+\end{equation}
+
+\textbf{Área bajo la curva ROC (AUC-ROC):}
+\begin{equation}
+  \text{AUC} =
+  \int_0^1 \text{TPR}(t)\,d\,\text{FPR}(t)
+  \label{eq:auc_roc}
+\end{equation}
+
+\noindent donde $TP$, $TN$, $FP$ y $FN$ son los
+verdaderos positivos, verdaderos negativos, falsos
+positivos y falsos negativos respectivamente;
+$\text{TPR}(t) = TP/(TP+FN)$ es la tasa de verdaderos
+positivos y $\text{FPR}(t) = FP/(FP+TN)$ es la tasa
+de falsos positivos, ambas evaluadas al umbral de
+decisión $t$.
+
+El AUC-ROC es la métrica principal de comparación porque
+es insensible al desbalance de clases y mide la
+capacidad discriminativa del modelo independientemente
+del umbral de decisión, lo que la hace más robusta que
+la exactitud para el dataset CBIS-DDSM donde las
+proporciones de clase varían entre masas y
+calcificaciones.
+
+% -----------------------------------------------------------
+\subsubsection{Análisis de correlación
+               separabilidad--clasificación}
+% -----------------------------------------------------------
+
+Un objetivo específico del presente trabajo (OE-5) es
+determinar si la mejora en separabilidad observada en el
+espacio de representación se traduce en una mejora en el
+desempeño del clasificador. Para cuantificar esta relación,
+se calcula el coeficiente de correlación de Spearman
+$\rho_s$ entre el ranking de las cinco condiciones según
+las métricas de separabilidad y su ranking según AUC-ROC:
+
+\begin{equation}
+  \rho_s = 1 -
+  \frac{6\sum_{i=1}^{5} d_i^2}{5(5^2 - 1)}
+  \label{eq:spearman}
+\end{equation}
+
+\noindent donde $d_i$ es la diferencia de rangos de la
+condición $i$ entre ambos rankings. Un valor
+$\rho_s \approx 1$ indicaría que las condiciones con
+mayor separabilidad también producen mejor clasificación,
+validando la hipótesis central del trabajo. Un valor
+$\rho_s \approx 0$ indicaría que la separabilidad en el
+espacio de representación no predice el desempeño
+clasificatorio, lo que constituiría un hallazgo igualmente
+relevante sobre las limitaciones del paradigma de
+quantum embeddings en el régimen NISQ actual.
+
+Se utiliza la correlación de Spearman en lugar de la de
+Pearson porque evalúa la monotonía de la relación entre
+rankings sin asumir linealidad, lo que es apropiado para
+comparar un número pequeño de condiciones ($n = 5$).
 
 
 
@@ -705,105 +2021,1476 @@ reproducibilidad y viabilidad bajo las cuales el sistema debe operar.
 % -----------------------------------------------------------
 \subsubsection{Requerimientos funcionales}
 
-\begin{table}[H]
-\centering
+Se presentan los requerimientos funcionales de mayor relevancia
+para justificar las decisiones de diseño del pipeline,
+organizados por las etapas que determinan la arquitectura
+del sistema. Cada requerimiento está identificado con un
+código RF-XX y vinculado al objetivo específico que lo origina.
+
+
+% Reemplaza el entorno table+tabularx por longtable
+
+\begingroup
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}lp{9.8cm}cc@{}}
+
 \caption{Requerimientos funcionales del sistema}
-\label{tab:req_funcionales}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{@{}lXcc@{}}
+\label{tab:req_funcionales} \\
+
+% ── Encabezado de la PRIMERA página
 \toprule
-\textbf{ID} & \textbf{Descripción} & \textbf{OE} & \textbf{Prioridad} \\
+\textbf{ID} & \textbf{Descripción} &
+\textbf{OE} & \textbf{Prior.} \\
 \midrule
-RF-01 & Lectura de archivos DICOM mediante pydicom, extrayendo 
-        píxeles y metadatos clínicos relevantes. 
-        & OE-1 & Alta \\
-RF-02 & Unificación de los cuatro archivos CSV en un DataFrame 
-        consolidado con etiqueta binaria (BENIGN / MALIGNANT). 
-        & OE-1 & Media \\
-RF-03 & Tratamiento independiente de masas y calcificaciones 
-        por sus características morfológicas distintas. 
-        & OE-1, OE-3 & Alta \\
-RF-04 & Normalización [0,1], CLAHE y recorte de ROI usando 
-        máscaras binarias del dataset. 
-        & OE-1 & Alta \\
-RF-05 & Extracción de vector compacto (8--32 componentes) 
-        mediante PyRadiomics o CNN encoder, seguido de PCA. 
-        & OE-1 & Alta \\
-RF-06 & Implementación y comparación de ZZFeatureMap y 
-        PauliFeatureMap con capa variacional en Qiskit Aer. 
-        & OE-2 & Alta \\
-RF-07 & Retorno de vector de expectativas $\langle Z_i \rangle 
-        \in [-1,1]^n$ como quantum embedding de entrada a la 
-        red clásica. 
-        & OE-2, OE-3 & Alta \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\endfirsthead
 
-\begin{table}[H]
-\centering
-\ContinuedFloat
-\caption[]{Requerimientos funcionales del sistema \emph{(continuación)}}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{@{}lXcc@{}}
+% ── Encabezado de páginas SIGUIENTES
+\multicolumn{4}{c}{%
+  \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
 \toprule
-\textbf{ID} & \textbf{Descripción} & \textbf{OE} & \textbf{Prioridad} \\
+\textbf{ID} & \textbf{Descripción} &
+\textbf{OE} & \textbf{Prior.} \\
 \midrule
-RF-08 & Medición de separabilidad mediante kernel alignment, 
-        distancias inter/intra-clase y PCA 2D. 
-        & OE-3 & Alta \\
-RF-09 & Red neuronal MLP en PyTorch entrenada con embeddings 
-        cuánticos. 
-        & OE-4 & Alta \\
-RF-10 & Modelo baseline clásico de arquitectura equivalente 
-        para comparación directa de desempeño. 
-        & OE-5 & Media \\
-RF-11 & Reporte de AUC-ROC, F1, Accuracy, Precision y Recall 
-        separado por tipo de hallazgo y por modelo. 
-        & OE-5 & Alta \\
-RF-12 & Documentación cuantitativa de restricciones del 
-        simulador: tiempo, qubits, shots y costo. 
-        & OE-6 & Media \\
+\endhead
+
+% ── Pie de páginas intermedias
+\midrule
+\multicolumn{4}{r}{%
+  \small\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+% ── Pie de la ÚLTIMA página
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
 
+% ════════════════════════════════════════════════
+% CONTENIDO — igual que antes
+% ════════════════════════════════════════════════
 
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 1 -- Lectura de datos}} \\[2pt]
+
+RF-01 &
+Leer archivos DICOM del dataset CBIS-DDSM mediante
+\texttt{pydicom}, extrayendo el arreglo de píxeles en
+16 bits y los metadatos clínicos.
+& OE-1 & Alta \\
+
+RF-02 &
+Unificar los cuatro archivos CSV del dataset en un
+DataFrame consolidado con etiqueta binaria
+(BENIGN\,=\,0 / MALIGNANT\,=\,1).
+& OE-1 & Alta \\
+
+RF-03 &
+Tratar de forma independiente masas y calcificaciones
+como subproblemas de clasificación independientes.
+& OE-1, OE-3 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 2 -- Preprocesamiento}} \\[2pt]
+
+RF-04 &
+Normalizar los arreglos de píxeles DICOM de 16 bits
+al rango $[0.0, 1.0]$ en \texttt{float32}.
+& OE-1 & Alta \\
+
+RF-05 &
+Aplicar CLAHE mediante OpenCV para mejorar la
+visibilidad de estructuras en tejidos de alta densidad.
+& OE-1 & Alta \\
+
+RF-06 &
+Recortar la ROI usando las máscaras binarias del
+dataset y redimensionar a 224$\times$224 píxeles.
+& OE-1 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 3 -- Extracción de características}} \\[2pt]
+
+RF-07 &
+Extraer features mediante: (a) PyRadiomics; o (b) CNN encoder
+preentrenado (ResNet-18 / EfficientNet-B0).
+& OE-1 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 4 -- Selección y escalado}} \\[2pt]
+
+RF-08 &
+Seleccionar las $k$ características más discriminativas
+mediante SelectKBest
+($k = n_{\text{qubits}} \in [8,16]$).
+& OE-1, OE-2 & Alta \\
+
+RF-09 &
+Escalar al rango $[0,\pi]$ mediante MinMaxScaler para
+compatibilidad con los ángulos del circuito cuántico.
+& OE-1, OE-2 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 5 -- Transformación (5 condiciones)}} \\[2pt]
+
+RF-10 &
+\textit{Baseline} crudo: vector seleccionado y escalado
+directo al MLP sin transformación adicional.
+& OE-2 & Alta \\
+
+RF-11 &
+\textit{Baseline} lineal: PCA sobre el vector
+seleccionado y escalado, conservando $k$ componentes.
+& OE-2 & Alta \\
+
+RF-12 &
+\textit{Baseline} no lineal: Kernel PCA con kernel RBF sobre el vector seleccionado.
+& OE-2 & Alta \\
+
+RF-13 &
+Condición cuántica ZZFeatureMap: VQC con ZZFeatureMap
+de segundo orden $+$ RealAmplitudes en Qiskit Aer,
+retornando $\langle Z_i\rangle \in [-1,1]^k$.
+& OE-2 & Alta \\
+
+RF-14 &
+Condición cuántica PauliFeatureMap: VQC con
+PauliFeatureMap (operadores X, Y, Z) $+$ RealAmplitudes
+en Qiskit Aer, evaluado independientemente de RF-13.
+& OE-2 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Análisis de separabilidad}} \\[2pt]
+
+RF-15 &
+Calcular la matriz de kernel cuántico sobre submuestra
+de 150--200 casos y computar KTA respecto al kernel
+ideal.
+& OE-3 & Alta \\
+
+RF-16 &
+Calcular \textit{geometric difference}
+$g(K_C,K_Q)=\sqrt{\|\sqrt{K_C}\,K_Q^{-1}\sqrt{K_C}
+\|_\infty}$ entre kernel cuántico y kernel RBF clásico.
+& OE-3 & Alta \\
+
+RF-17 &
+Medir Davies-Bouldin y distancia Fisher por condición, separado para masas y calcificaciones.
+& OE-3 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 6 -- Clasificación}} \\[2pt]
+
+RF-18 &
+Entrenar el mismo MLP (mínimo 2 capas ocultas)
+en las 5 condiciones con idéntica arquitectura e
+hiperparámetros
+& OE-4 & Alta \\
+
+RF-19 &
+Entrenar con ponderación de clases
+(\texttt{class\_weight=`balanced'}) para compensar el
+desbalance observado (ratio 1.78:1 en calcificaciones).
+& OE-4 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 7 -- Evaluación comparativa}} \\[2pt]
+
+RF-20 &
+Reportar AUC-ROC, F1-Score, Accuracy, Precision y
+Recall por condición, separado para masas y
+calcificaciones.
+& OE-5 & Alta \\
+
+RF-21 &
+Analizar la correlación entre ranking de separabilidad
+(OE-3) y ranking de clasificación (OE-5).
+& OE-5 & Alta \\
+
+RF-22 &
+Documentar restricciones del simulador: tiempo por
+muestra, qubits máximos, impacto de \textit{shots} y
+costo del \textit{parameter-shift}.
+& OE-6 & Alta \\
+
+\end{longtable}
+\endgroup
 
 % -----------------------------------------------------------
 % 4.1.2 Requerimientos no funcionales
 % -----------------------------------------------------------
 \subsubsection{Requerimientos no funcionales}
 
+Los requerimientos no funcionales establecen las condiciones
+bajo las cuales el sistema debe operar para garantizar la
+validez científica y reproducibilidad de los resultados.
+
+\begingroup
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}llp{9.5cm}@{}}
+
+\caption{Requerimientos no funcionales del sistema}
+\label{tab:req_no_funcionales} \\
+
+\toprule
+\textbf{ID} & \textbf{Categoría} &
+\textbf{Descripción} \\
+\midrule
+\endfirsthead
+
+\multicolumn{3}{c}{%
+  \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
+\toprule
+\textbf{ID} & \textbf{Categoría} &
+\textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{%
+  \small\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+RNF-01 & Reproducibilidad &
+Fijar semillas aleatorias en \texttt{numpy},
+\texttt{PyTorch} y \texttt{Qiskit} al inicio de cada
+experimento para garantizar resultados idénticos
+entre ejecuciones. \\
+
+RNF-02 & Reproducibilidad &
+Centralizar hiperparámetros en \texttt{config.yaml} con control de
+versiones. \\
+
+RNF-03 & Reproducibilidad &
+Usar la partición train/test estándar del CBIS-DDSM
+(80\,\%/20\,\%, estratificada por BI-RADS) sin
+reordenamiento, aplicada idénticamente a las 5
+condiciones. \\
+
+RNF-04 & Reproducibilidad &
+Aplicar SelectKBest entrenado solo sobre el conjunto
+de entrenamiento para transformar el conjunto de
+prueba, previniendo \textit{data leakage}. \\
+
+RNF-05 & Rendimiento &
+Configurar Qiskit Aer con \textit{shots}
+$\geq 1024$ para estabilidad de
+$\langle Z_i\rangle$, documentando el impacto de
+distintas configuraciones. \\
+
+RNF-06 & Rendimiento &
+Calcular la matriz de kernel cuántico sobre submuestra
+de 150--200 casos por subconjunto para viabilidad
+computacional del cálculo $O(N^2)$ de
+\textit{geometric difference} y KTA. \\
+
+RNF-07 & Escalabilidad &
+Circuito parametrizable: $k \in [8,16]$,
+feature map (ZZFeatureMap / PauliFeatureMap),
+\texttt{reps} $\in [1,6]$,
+\textit{shots} $\in [512, 8192]$. \\
+
+RNF-08 & Mantenibilidad &
+Código PEP\,8 con \textit{docstrings} por función,
+organizado en módulos M1--M7 independientes. \\
+
+RNF- 9 & Propiedad intelectual &
+Registro del trabajo en INDAUTOR. \\
+
+\end{longtable}
+\endgroup
+
+% -----------------------------------------------------------
+% 4.2 Descripción general del proceso
+% -----------------------------------------------------------
+\subsection{Descripción general del proceso}
+
+%% ── ESTILOS (agregar o reemplazar en el preámbulo) ──────────
+\tikzset{
+  blk/.style={
+    rectangle, rounded corners=5pt,
+    text width=10cm, minimum height=1.1cm,
+    align=center, inner sep=6pt,
+    font=\small\bfseries,
+    draw=#1!60, fill=#1!10
+  },
+  blkTeal/.style  = {blk=colTeal},
+  blkCoral/.style = {blk=colCoral},
+  blkAmber/.style = {blk=colAmber},
+  blkGray/.style  = {
+    rectangle, rounded corners=5pt,
+    text width=10cm, minimum height=1.1cm,
+    align=center, inner sep=6pt,
+    font=\small\bfseries,
+    draw=colGray!60, fill=colGrayBg
+  },
+  %% condición clásica
+  cond/.style={
+    rectangle, rounded corners=4pt,
+    text width=1.85cm, minimum height=1.8cm,
+    align=center, inner sep=4pt,
+    font=\scriptsize\bfseries,
+    draw=colGray!50, fill=colGrayBg
+  },
+  %% condición cuántica (destacada)
+  condQ/.style={
+    rectangle, rounded corners=5pt,
+    text width=1.95cm, minimum height=2.0cm,
+    align=center, inner sep=4pt,
+    font=\scriptsize\bfseries,
+    draw=colPurp!70, fill=colPurpBg,
+    line width=0.8pt
+  },
+  arr/.style={
+    -{Stealth[length=4pt, width=4pt]},
+    line width=0.6pt, color=colGray
+  }
+}
+
+%% ── FIGURA ──────────────────────────────────────────────────
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=0.5cm and 0.3cm]
+
+%% ── 1. DATASET
+\node[blkGray] (ds) {%
+  \textbf{CBIS-DDSM Dataset}\\[2pt]
+  {\normalfont\scriptsize
+  1{,}566 pacientes $\cdot$
+  Imágenes DICOM $+$ archivos CSV}%
+};
+
+%% ── 2. M1
+\node[blkTeal, below=of ds] (m1) {%
+  \textbf{M1 $\cdot$ Lectura de datos}\\[2pt]
+  {\normalfont\scriptsize
+  \texttt{pydicom} $\cdot$ \texttt{pandas}
+  $\cdot$ DICOM + CSV unificados}%
+};
+
+%% ── 3. M2
+\node[blkTeal, below=of m1] (m2) {%
+  \textbf{M2 $\cdot$ Preprocesamiento}\\[2pt]
+  {\normalfont\scriptsize
+  Normalización $\cdot$
+  Recorte ROI $\cdot$ 224$\times$224 px}%
+};
+
+%% ── 4. M3
+\node[blkTeal, below=of m2] (m3) {%
+  \textbf{M3 $\cdot$ Extracción de características}\\[2pt]
+  {\normalfont\scriptsize
+  PyRadiomics 
+  $\rightarrow \mathbf{x} \in \mathbb{R}^{n}$}%
+};
+
+%% ── 5. M4 — AHORA ES SELECCIÓN Y ESCALADO (no PCA)
+\node[blkTeal, below=of m3] (m4) {%
+  \textbf{M4 $\cdot$ Selección y escalado}\\[2pt]
+  {\normalfont\scriptsize
+  SelectKBest ($k = n_{\text{qubits}}$)
+  $+$ MinMaxScaler $\rightarrow$
+  $\mathbf{x} \in [0,\pi]^{k}$}%
+};
+
+%% ── ETIQUETA M5
+\node[font=\tiny\color{colGray},
+      below=0.25cm of m4] (lm5) {%
+  M5 $\cdot$ Transformación
+  (5 condiciones experimentales)%
+};
+
+%% ── COORDENADA DE BIFURCACIÓN
+\coordinate (fork) at ($(lm5.south) + (0,-0.2cm)$);
+
+%% ── 6. CINCO CONDICIONES EXPERIMENTALES
+%% c1: baseline crudo
+\node[cond, anchor=north]
+  at ($(fork) + (-6.2cm, -0.1cm)$) (c1){%
+  \textbf{Sin}\\
+  \textbf{transf.}\\[4pt]
+  {\normalfont\tiny Baseline}\\
+  {\normalfont\tiny crudo}%
+};
+
+%% c2: PCA lineal
+\node[cond, anchor=north]
+  at ($(fork) + (-3.1cm, -0.1cm)$) (c2){%
+  \textbf{PCA}\\
+  \textbf{lineal}\\[4pt]
+  {\normalfont\tiny Baseline}\\
+  {\normalfont\tiny lineal}%
+};
+
+%% c3: Kernel PCA
+\node[cond, anchor=north]
+  at ($(fork) + (0cm, -0.1cm)$) (c3){%
+  \textbf{Kernel}\\
+  \textbf{PCA (RBF)}\\[4pt]
+  {\normalfont\tiny Baseline}\\
+  {\normalfont\tiny no lineal}%
+};
+
+%% c4: ZZFeatureMap (cuántico)
+\node[condQ, anchor=north]
+  at ($(fork) + (3.2cm, -0.1cm)$) (c4){%
+  \textbf{VQC $\cdot$ Qiskit}\\
+  \textit{ZZFeatureMap}\\[4pt]
+  {\normalfont\tiny$\langle Z_i\rangle
+  \in [-1,1]^{k}$}%
+};
+
+%% c5: PauliFeatureMap (cuántico)
+\node[condQ, anchor=north]
+  at ($(fork) + (6.3cm, -0.1cm)$) (c5){%
+  \textbf{VQC $\cdot$ Qiskit}\\
+  \textit{PauliFeatureMap}\\[4pt]
+  {\normalfont\tiny$\langle Z_i\rangle
+  \in [-1,1]^{k}$}%
+};
+
+%% ── COORDENADA DE CONVERGENCIA
+%% Usa el nodo más alto (condQ) como referencia
+\coordinate (merge) at
+  ($(c5.south) + (0,-0.5cm)$);
+\coordinate (mergeL) at (merge -| c1);
+\coordinate (mergeR) at (merge -| c5);
+
+%% ── 7. ANÁLISIS DE SEPARABILIDAD
+\node[blkAmber, anchor=north,
+      text width=12cm]
+  at ($(merge) + (0,-0.1cm)$) (sep){%
+  \textbf{Análisis de separabilidad}\\[2pt]
+  {\normalfont\scriptsize
+  KTA (Kernel-Target Alignment) $\cdot$
+  Geometric difference $g(K_C, K_Q)$ $\cdot$
+  Índice Davies-Bouldin $\cdot$
+  Distancia Fisher $\cdot$ t-SNE}%
+};
+
+%% ── 8. M6
+\node[blkCoral, below=of sep,
+      text width=12cm] (m6) {%
+  \textbf{M6 $\cdot$ Clasificación (MLP)}\\[2pt]
+  {\normalfont\scriptsize
+  PyTorch $\cdot$ mismo clasificador MLP
+  en las 5 condiciones $\cdot$
+  \texttt{TorchConnector} para condiciones cuánticas}%
+};
+
+%% ── 9. M7
+\node[blkCoral, below=of m6,
+      text width=12cm] (m7) {%
+  \textbf{M7 $\cdot$ Evaluación comparativa}\\[2pt]
+  {\normalfont\scriptsize
+  AUC-ROC $\cdot$ F1-Score $\cdot$ Accuracy $\cdot$
+  Correlación separabilidad--clasificación $\cdot$
+  Masas vs.\ calcificaciones}%
+};
+
+%% ── 10. RESULTADO
+\node[blkGray, below=of m7,
+      text width=12cm] (res) {%
+  \textbf{Informe de resultados}\\[2pt]
+  {\normalfont\scriptsize
+  Separabilidad $\cdot$
+  Clasificación $\cdot$
+  Viabilidad práctica del simulador Qiskit Aer}%
+};
+
+%% ════════════════════════════════════
+%% FLECHAS
+%% ════════════════════════════════════
+
+%% ── Verticales principales
+\foreach \a/\b in {ds/m1, m1/m2, m2/m3,
+                   m3/m4, sep/m6, m6/m7, m7/res}
+  \draw[arr] (\a.south) -- (\b.north);
+
+%% ── m4 → etiqueta → bifurcación
+\draw[color=colGray, line width=0.4pt]
+  (m4.south) -- (lm5.north);
+\draw[color=colGray, line width=0.4pt]
+  (lm5.south) -- (fork);
+
+%% ── Línea horizontal de bifurcación
+\draw[color=colGray, line width=0.4pt]
+  (fork -| c1.north) -- (fork -| c5.north);
+
+%% ── Bajadas a cada condición
+\foreach \c in {c1, c2, c3, c4, c5}
+  \draw[arr] (fork -| \c.north) -- (\c.north);
+
+%% ── Subidas desde cada condición al merge
+\foreach \c in {c1, c2, c3, c4, c5}
+  \draw[color=colGray, line width=0.4pt]
+    (\c.south) -- (\c.south |- merge);
+
+%% ── Línea horizontal de convergencia
+\draw[color=colGray, line width=0.4pt]
+  (mergeL) -- (mergeR);
+
+%% ── Bajada de merge a separabilidad
+\draw[arr] (merge) -- (sep.north);
+
+\end{tikzpicture}
+
+\caption{%
+  Pipeline del sistema híbrido cuántico-clásico
+  para prediagnóstico de cáncer de mama.
+  El módulo M4 aplica selección de características
+  supervisada (SelectKBest) y escalado angular
+  (MinMaxScaler $\rightarrow [0,\pi]^k$) como
+  preprocesamiento estándar compartido por las
+  5 condiciones experimentales.
+  ZZFeatureMap y PauliFeatureMap se evalúan como
+  condiciones independientes para comparar el impacto
+  del diseño del \textit{feature map} cuántico.%
+}
+\label{fig:pipeline_sistema}
+\end{figure}
+
+
+La metodología adoptada en el presente trabajo es
+\textbf{CRISP-DM} (\textit{Cross Industry Standard Process
+for Data Mining}), adaptada al contexto de cómputo cuántico.
+Esta metodología fue seleccionada por proporcionar un flujo
+estructurado que permite integrar de forma natural
+tanto las etapas clásicas de análisis de datos como las
+etapas cuánticas de codificación y transformación,
+manteniendo trazabilidad entre los objetivos de negocio
+y las decisiones técnicas de implementación.
+
+La correspondencia entre las fases de CRISP-DM y los módulos
+del sistema se describe en la
+Tabla~\ref{tab:crisp_modulos}, y el diagrama completo del
+pipeline se presenta en la
+Figura~\ref{fig:pipeline_sistema}.
+
 \begin{table}[H]
 \centering
-\caption{Requerimientos no funcionales del sistema}
-\label{tab:req_no_funcionales}
+\caption{Correspondencia entre fases CRISP-DM y módulos
+         del sistema}
+\label{tab:crisp_modulos}
 \renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{@{}llX@{}}
 \toprule
-\textbf{ID} & \textbf{Categoría} & \textbf{Descripción} \\
+\textbf{Fase CRISP-DM} & \textbf{Módulo} &
+\textbf{Actividad principal} \\
 \midrule
-RNF-01 & Reproducibilidad & Semillas aleatorias fijas en numpy, 
-                             PyTorch y Qiskit por experimento. \\
-RNF-02 & Reproducibilidad & Hiperparámetros centralizados en 
-                             archivo de configuración con control 
-                             de versiones. \\
-RNF-03 & Reproducibilidad & Partición train/test estándar del 
-                             CBIS-DDSM. \\
-RNF-04 & Rendimiento      & Simulador configurado con 
-                             $\geq 1024$ shots para estabilidad 
-                             de $\langle Z_i \rangle$. \\
-RNF-05 & Escalabilidad    & Circuito parametrizable: qubits 
-                             (4--16), reps (1--6), shots 
-                             (512--8192). \\
-RNF-06 & Portabilidad     & Ejecutable en Google Colab T4, sin hardware 
-                             cuántico real. \\
-RNF-07 & Propiedad intelectual & Registro del código fuente en 
-                                  INDAUTOR. \\
+1. Comprensión del negocio  &
+  ---   &
+  Definición del problema de prediagnóstico,
+  formulación de la pregunta de investigación
+  y criterios de separabilidad. \\
+2. Comprensión de los datos &
+  M1    &
+  Lectura DICOM, análisis exploratorio del
+  dataset CBIS-DDSM (EDA). \\
+3. Preparación de los datos &
+  M2, M3, M4 &
+  Preprocesamiento de imagen, extracción de
+  features y selección/escalado. \\
+4. Modelado &
+  M5, M6 &
+  Implementación de las 5 condiciones de
+  transformación y entrenamiento del MLP. \\
+5. Evaluación &
+  M7    &
+  Análisis de separabilidad, métricas de
+  clasificación y comparación clásico vs.\
+  cuántico. \\
+6. Despliegue &
+  ---   &
+  Documentación de hallazgos, reporte técnico
+  y registro INDAUTOR. \\
 \bottomrule
 \end{tabularx}
 \end{table}
+
+% -----------------------------------------------------------
+\subsection{Módulo 1: Lectura de datos}
+% -----------------------------------------------------------
+
+El primer módulo gestiona la adquisición y unificación de
+los datos del dataset CBIS-DDSM, disponible públicamente
+en The Cancer Imaging Archive (TCIA). El dataset comprende 1,566
+pacientes con imágenes mamográficas digitalizadas en
+formato DICOM y cuatro archivos CSV con metadatos clínicos
+y anotaciones patológicas validadas.
+
+La lectura de los archivos DICOM se realiza mediante la
+librería \texttt{pydicom}, extrayendo el arreglo de píxeles
+en formato de 16 bits y los metadatos clínicos relevantes:
+\texttt{PatientID}, \texttt{Modality},
+\texttt{Rows}, \texttt{Columns}, \texttt{BitsStored} y
+\texttt{PhotometricInterpretation}. El análisis exploratorio
+confirmó que la totalidad de las imágenes del dataset
+utilizan la convención fotométrica \texttt{MONOCHROME2},
+donde los valores altos corresponden al blanco (tejido
+denso) y los valores bajos al negro (fondo), lo que
+elimina la necesidad de inversión de píxeles en el
+preprocesamiento.
+
+Los cuatro archivos CSV del dataset
+(\texttt{mass\_case\_description\_train\_set},
+\texttt{mass\_case\_description\_test\_set},
+\texttt{calc\_case\_description\_train\_set},
+\texttt{calc\_case\_description\_test\_set})
+se unifican en un DataFrame mediante
+\texttt{pandas}, agregando las columnas
+\texttt{finding\_type} (masa / calcificación) y
+\texttt{split} (train / test). La etiqueta objetivo
+\texttt{pathology} se normaliza a una variable binaria:
+\texttt{BENIGN\_WITHOUT\_CALLBACK} se trata equivalente
+a \texttt{BENIGN}, resultando en la codificación
+0\,=\,benigno y 1\,=\,maligno.
+
+El enlace entre los registros CSV y los archivos DICOM
+en disco se resuelve mediante un índice construido
+recursivamente sobre la estructura de carpetas del
+NBIA Data Retriever, identificando para cada caso el
+archivo de mamografía completa, la máscara ROI binaria
+y la imagen recortada. La clasificación entre máscara
+y recorte se realiza leyendo el contenido de píxeles:
+las máscaras presentan exactamente dos valores únicos
+(0 y 255) mientras que las imágenes recortadas presentan
+cientos de valores distintos.
+
+La salida de este módulo es un DataFrame unificado con
+3,568 registros, con rutas resueltas a los archivos DICOM
+correspondientes y etiquetas binarias validadas, que sirve
+como base para todos los módulos posteriores.
+
+% -----------------------------------------------------------
+\subsection{Módulo 2: Preprocesamiento de imagen}
+% -----------------------------------------------------------
+
+El módulo de preprocesamiento transforma las imágenes
+DICOM crudas en representaciones visuales normalizadas
+y centradas en la región de interés (ROI), adecuadas
+para la extracción de características del módulo
+siguiente.
+
+La primera etapa aplica \textbf{ecualización de histograma
+adaptativa con limitación de contraste} (CLAHE,
+\textit{Contrast Limited Adaptive Histogram Equalization})
+mediante OpenCV. CLAHE divide la imagen en bloques locales
+y ecualiza el histograma de cada bloque con un límite de
+contraste configurable, mejorando la visibilidad de
+estructuras finas en tejidos de alta densidad mamaria sin
+amplificar el ruido en regiones homogéneas
+\cite{reza2004realization}.
+
+La segunda etapa realiza el \textbf{recorte de la región
+de interés}: la máscara binaria asociada a cada caso se
+usa para identificar los píxeles de la lesión, y se
+extrae el recorte cuadrado mínimo que contiene la región
+activa de la máscara.
+
+Las imágenes de masas y calcificaciones se procesan por
+separado a lo largo de todo el pipeline, dado que sus
+características morfológicas relevantes son
+cualitativamente distintas: las masas requieren capturar
+geometría global y márgenes, mientras que las
+calcificaciones requieren capturar patrones texturales
+finos y distribución espacial de los depósitos de calcio.
+
+% -----------------------------------------------------------
+\subsection{Módulo 3: Extracción de características}
+% -----------------------------------------------------------
+
+El módulo de extracción de características transforma
+la imagen recortada y normalizada de 224$\times$224
+píxeles en un vector numérico compacto
+$\mathbf{x} \in \mathbb{R}^n$ que captura la información
+morfológica relevante para la clasificación. Este módulo
+soporta dos estrategias de extracción:
+
+\textbf{Estrategia A: Features radiómicas con
+PyRadiomics.} PyRadiomics \cite{vanGriethuysen2017} extrae
+un conjunto de características cuantitativas estandarizadas
+directamente desde la imagen y su máscara ROI,
+organizadas en las siguientes categorías:
+
+\begin{itemize}
+  \item \textit{First-order statistics}: estadísticas de
+        la distribución de intensidades de píxeles
+        (media, varianza, asimetría, curtosis, energía).
+  \item \textit{Shape features}: descriptores geométricos
+        de la forma de la lesión (volumen, superficie,
+        esfericidad, elongación, diámetro máximo).
+  \item \textit{GLCM} (\textit{Gray Level Co-occurrence
+        Matrix}): descriptores de textura basados en
+        la co-ocurrencia de pares de intensidades
+        (contraste, correlación, energía, homogeneidad).
+  \item \textit{GLRLM} (\textit{Gray Level Run Length
+        Matrix}): descriptores de la longitud de secuencias
+        de píxeles con igual intensidad.
+\end{itemize}
+
+Esta estrategia produce típicamente entre 100 y 300
+características por imagen, dependiendo de la
+configuración de PyRadiomics.
+
+\textbf{Estrategia B: CNN encoder preentrenado.}
+Como alternativa, se utiliza una red ResNet-18 o
+EfficientNet-B0 preentrenada en ImageNet como extractor
+de características, reemplazando su capa de clasificación
+final por una capa lineal de dimensión $k$ (igual al
+número de qubits del circuito cuántico). Esta estrategia
+produce directamente un vector de dimensión $k$ sin
+necesidad del módulo de selección posterior, capturando
+representaciones jerárquicas aprendidas desde los datos
+de imagen.
+
+La estrategia seleccionada para los experimentos
+reportados en el presente trabajo es la
+\textbf{Estrategia A} (PyRadiomics), dado que produce
+características con interpretabilidad clínica directa, cada feature tiene un significado morfológico
+definido, lo que facilita el análisis de los resultados
+en términos de qué propiedades de la lesión son más
+discriminativas en el espacio cuántico.
+
+% -----------------------------------------------------------
+\subsection{Módulo 4: Selección y escalado}
+% -----------------------------------------------------------
+
+El módulo de selección y escalado prepara el vector de
+características para su entrada al circuito cuántico,
+resolviendo dos requisitos técnicos: reducir la
+dimensionalidad al número de qubits disponibles y
+garantizar que los valores sean compatibles con los
+ángulos de rotación del \textit{feature map}.
+
+\textbf{Selección de características.}
+Se aplica SelectKBest con criterio $F$-test de ANOVA,
+que selecciona las $k$ características con mayor
+capacidad discriminativa entre clases, medida por la
+razón de varianza inter-clase sobre varianza intra-clase.
+El valor de $k$ se fija igual al número de qubits del
+circuito cuántico ($k \in [8, 16]$), de forma que cada
+qubit recibe exactamente una característica. El selector
+se entrena exclusivamente sobre el conjunto de
+entrenamiento y se aplica al conjunto de prueba para
+prevenir \textit{data leakage}.
+
+\textbf{Escalado angular.}
+El vector seleccionado se escala al rango $[0, \pi]$
+mediante MinMaxScaler:
+
+\begin{equation}
+  x_i^{\text{scaled}} =
+  \pi \cdot
+  \frac{x_i - x_i^{\min}}{x_i^{\max} - x_i^{\min}}
+  \label{eq:minmax_scaling}
+\end{equation}
+
+\noindent Este escalado es necesario porque el
+ZZFeatureMap codifica cada característica $x_i$ como
+el ángulo de una rotación cuántica $R_Z(x_i)$, que
+tiene significado físico solo en el rango $[0, 2\pi]$.
+Escalar a $[0, \pi]$ garantiza que el circuito explore
+la mitad superior del espacio de fases, evitando
+redundancias por periodicidad y haciendo los términos
+de entrelazamiento $(\pi - x_i)(\pi - x_j)$
+numéricamente estables.
+
+El vector resultante $\mathbf{x} \in [0,\pi]^k$ es
+compartido por las cinco condiciones experimentales del
+módulo M5, garantizando que el único elemento variable
+entre condiciones sea la transformación aplicada.
+
+% -----------------------------------------------------------
+\subsection{Módulo 5: Transformación}
+\label{sec:modulo5}
+% -----------------------------------------------------------
+
+El módulo de transformación implementa las cinco
+condiciones experimentales del estudio. Todas parten
+del mismo vector $\mathbf{x} \in [0,\pi]^k$ producido
+por M4 y producen un vector de representación de
+dimensión $k$ que alimenta el mismo clasificador MLP
+en M6. La Tabla~\ref{tab:condiciones} resume las
+cinco condiciones.
+
+\begin{table}[H]
+\centering
+\caption{Cinco condiciones experimentales del Módulo 5}
+\label{tab:condiciones}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}llXl@{}}
+\toprule
+\textbf{ID} & \textbf{Nombre} &
+\textbf{Transformación} & \textbf{Tipo} \\
+\midrule
+C1 & Baseline crudo &
+  Sin transformación. El vector $\mathbf{x}$ pasa
+  directamente al MLP.
+  & Clásico \\
+C2 & PCA lineal &
+  Proyección a los $k$ componentes principales de
+  mayor varianza explicada.
+  & Clásico \\
+C3 & Kernel PCA (RBF) &
+  Kernel PCA con kernel RBF
+  ($\gamma = 1/k$),
+  proyección no lineal a $k$ dimensiones.
+  & Clásico \\
+C4 & ZZFeatureMap &
+  VQC con ZZFeatureMap de segundo orden
+  $+$ RealAmplitudes en Qiskit Aer.
+  Salida: $\langle Z_i\rangle \in [-1,1]^k$.
+  & Cuántico \\
+C5 & PauliFeatureMap &
+  VQC con PauliFeatureMap (operadores Z, ZZ)
+  $+$ RealAmplitudes en Qiskit Aer.
+  Salida: $\langle Z_i\rangle \in [-1,1]^k$.
+  & Cuántico \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Las condiciones C1, C2 y C3 constituyen los
+\textit{baselines} clásicos y permiten establecer el
+nivel de referencia de separabilidad y clasificación
+alcanzable sin componentes cuánticos. La condición C1
+sirve como piso mínimo; C2 como referencia de la
+mejor transformación lineal posible; y C3 como
+referencia de la mejor transformación no lineal
+clásica mediante kernels.
+
+Las condiciones C4 y C5 implementan las
+transformaciones cuánticas variacionales y se evalúan
+de forma independiente para comparar el impacto del
+diseño del \textit{feature map}: ZZFeatureMap captura
+interacciones de segundo orden entre pares de
+características mediante el término
+$(\pi - x_i)(\pi - x_j)$, mientras que PauliFeatureMap
+generaliza esta codificación con operadores de Pauli
+multi-eje. El circuito VQC se ejecuta en el simulador
+\texttt{AerSimulator} de Qiskit con un número de
+\textit{shots} $\geq 1024$ para garantizar estimaciones
+estadísticamente estables de los valores de expectativa
+$\langle Z_i\rangle$.
+
+% -----------------------------------------------------------
+\subsection{Módulo 6: Clasificación}
+% -----------------------------------------------------------
+
+El módulo de clasificación entrena y evalúa un mismo
+clasificador MLP en PyTorch sobre los cinco vectores
+de representación producidos por M5. La arquitectura
+del MLP consiste en una capa de entrada de dimensión
+$k$, dos capas ocultas con activación ReLU, y una
+capa de salida con activación sigmoide que produce
+la probabilidad $\hat{y} \in [0,1]$ de malignidad.
+
+El entrenamiento se realiza minimizando la función de
+pérdida de entropía cruzada binaria ponderada
+(ecuación~\eqref{eq:weighted_bce}), con pesos de clase calculados según
+la ecuación~\eqref{eq:class_weights} para compensar
+el desbalance observado en el EDA (ratio 1.78:1 en
+calcificaciones). Se aplica la misma semilla aleatoria
+en todas las condiciones para garantizar inicialización
+idéntica de los pesos del MLP.
+
+Para las condiciones cuánticas C4 y C5, la integración
+del VQC con el MLP se realiza mediante
+\texttt{TorchConnector}, que permite la optimización
+conjunta de los parámetros cuánticos
+$\boldsymbol{\theta}$ y los pesos del MLP en un solo
+ciclo de entrenamiento.
+
+% -----------------------------------------------------------
+\subsection{Módulo 7: Evaluación comparativa}
+% -----------------------------------------------------------
+
+El módulo de evaluación cuantifica el desempeño de
+cada condición experimental en dos dimensiones
+complementarias: la calidad del espacio de
+representación (separabilidad) y el desempeño del
+clasificador (clasificación).
+
+\textbf{Análisis de separabilidad.}
+Para cada condición experimental se calculan las
+métricas formalizadas en la
+sección~\ref{sec:metricas}: KTA respecto al kernel
+ideal de clasificación, \textit{geometric difference}
+$g(K_C, K_Q)$ para las condiciones cuánticas respecto
+al kernel RBF, índice Davies-Bouldin e índice Fisher,
+complementados con visualizaciones t-SNE 2D. El análisis
+se realiza de forma independiente para los subconjuntos
+de masas y calcificaciones del CBIS-DDSM.
+
+\textbf{Análisis de clasificación.}
+Se reportan AUC-ROC, F1-Score, Accuracy, Precision y
+Recall sobre el conjunto de prueba para cada condición,
+separado por tipo de hallazgo. El AUC-ROC es la métrica
+principal de comparación por su robustez ante el
+desbalance de clases y su independencia del umbral de
+decisión.
+
+\textbf{Análisis de correlación
+separabilidad--clasificación.}
+Se calcula el coeficiente de correlación de Spearman
+$\rho_s$ entre el ranking de las cinco condiciones
+según las métricas de separabilidad y su ranking según
+AUC-ROC (ecuación~\eqref{eq:spearman}), para determinar
+si la mejora en separabilidad en el espacio de
+representación predice el desempeño clasificatorio.
+Este análisis responde directamente la pregunta de
+investigación del presente trabajo.
+
+\textbf{Documentación de restricciones del simulador.}
+Como parte del objetivo OE-6, se documentan
+cuantitativamente las restricciones prácticas del
+simulador Qiskit Aer: tiempo de ejecución por muestra,
+número máximo viable de qubits, impacto del número de
+\textit{shots} en la estabilidad de
+$\langle Z_i\rangle$, y costo computacional del
+entrenamiento por \textit{parameter-shift}. Estos
+datos constituyen una contribución metodológica sobre
+la viabilidad práctica de las técnicas cuánticas en
+dominios de imagen médica de alta complejidad.
+
+% -----------------------------------------------------------
+% 7. Análisis Exploratorio de Datos
+% -----------------------------------------------------------
+\section{Análisis Exploratorio de Datos}
+
+El análisis exploratorio de datos (EDA) se realizó sobre
+el dataset CBIS-DDSM completo, procesando los cuatro
+archivos CSV y enlazándolos con los 3,568 archivos DICOM
+descargados mediante el NBIA Data Retriever. El análisis
+se organiza en cuatro bloques: validación y saneamiento
+de los datos, análisis de la variable objetivo, análisis
+de variables clínicas, y análisis de las imágenes DICOM.
+Todos los resultados descritos en esta sección fueron
+obtenidos mediante el notebook
+\texttt{modulo1\_EDA.ipynb} disponible en el repositorio
+del proyecto.
+
+% -----------------------------------------------------------
+\subsection{Validación y limpieza de los datos}
+% -----------------------------------------------------------
+
+La carga y unificación de los cuatro archivos CSV produjo
+un DataFrame consolidado de 3,568 registros, con las
+columnas \texttt{finding\_type} (masa / calcificación) y
+\texttt{split} (train / test) agregadas para facilitar
+el análisis por subconjunto. La Tabla~\ref{tab:eda_resumen}
+presenta el resumen de la composición del dataset.
+
+\begin{table}[H]
+\centering
+\caption{Composición del dataset CBIS-DDSM unificado}
+\label{tab:eda_resumen}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}Xrr@{}}
+\toprule
+\textbf{Subconjunto} &
+\textbf{Train} & \textbf{Test} \\
+\midrule
+Masas (mass)           & 1{,}318 & 378 \\
+Calcificaciones (calc) & 1{,}546 & 326 \\
+\midrule
+\textbf{Total}         & \textbf{2{,}864} &
+                         \textbf{704} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La etiqueta objetivo \texttt{pathology} presentó tres
+valores distintos en los datos originales:
+\texttt{BENIGN} (1{,}548 casos),
+\texttt{MALIGNANT} (1{,}457 casos) y
+\texttt{BENIGN\_WITHOUT\_CALLBACK} (563 casos).
+Los casos \texttt{BENIGN\_WITHOUT\_CALLBACK} fueron
+normalizados a \texttt{BENIGN} por equivalencia clínica,
+resultando en la codificación binaria
+0\,=\,benigno (2{,}111 casos, 59.2\,\%) y
+1\,=\,maligno (1{,}457 casos, 40.8\,\%).
+
+La validación de nulos confirmó que las columnas
+\texttt{mass\_shape}, \texttt{mass\_margins},
+\texttt{calc\_type} y \texttt{calc\_distribution}
+presentan valores faltantes de naturaleza estructural:
+los registros de calcificaciones no tienen valores en
+las columnas de masas y viceversa, por diseño del
+dataset. No se identificaron errores de datos que
+requirieran corrección.
+
+La verificación del enlace entre registros CSV y
+archivos DICOM en disco arrojó una cobertura del
+100\,\% (3{,}568/3{,}568 registros con archivo
+DICOM encontrado), confirmando la integridad de la
+descarga del dataset.
+
+% -----------------------------------------------------------
+\subsection{Análisis de la variable objetivo}
+% -----------------------------------------------------------
+
+\subsubsection{Distribución de clases y balance}
+
+La Figura~\ref{fig:class_distribution} presenta la
+distribución de la variable objetivo a nivel global,
+por tipo de hallazgo y por split.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/B1_class_distribution.png}
+  \caption{Distribución de clases global, por tipo de
+           hallazgo y por split train/test.}
+  \label{fig:class_distribution}
+\end{figure}
+
+El dataset presenta un desbalance global moderado de
+1.45:1 (benigno/maligno), que se distribuye de forma
+heterogénea entre los dos tipos de hallazgo.
+La Figura~\ref{fig:imbalance_by_finding} ilustra
+esta asimetría mediante gráficas de pastel por
+subconjunto.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]
+    {Figures/B2_imbalance_by_finding.png}
+  \caption{Desbalance de clases por tipo de hallazgo.}
+  \label{fig:imbalance_by_finding}
+\end{figure}
+
+Las masas presentan un balance casi simétrico (ratio
+1.16:1), con 912 casos benignos y 784 malignos.
+Las calcificaciones muestran un desbalance más
+pronunciado (ratio 1.78:1), con 1{,}199 casos benignos
+frente a 673 malignos. Esta asimetría tiene una
+implicación metodológica directa: se requiere
+ponderación de clases (\texttt{class\_weight=balanced})
+durante el entrenamiento del MLP, aplicada de forma
+independiente para cada subconjunto, como se
+especifica en el requerimiento RF-19.
+
+\subsubsection{Distribución BI-RADS}
+
+La Figura~\ref{fig:birads_distribution} muestra la
+distribución de la categoría BI-RADS por patología
+y tipo de hallazgo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/B3_birads_distribution.png}
+  \caption{Distribución de categorías BI-RADS por
+           patología y tipo de hallazgo.}
+  \label{fig:birads_distribution}
+\end{figure}
+
+Se observa una concentración de casos malignos en las
+categorías BI-RADS 4 y 5 (sospechoso y altamente
+sospechoso), mientras que los casos benignos se
+distribuyen predominantemente en las categorías 2 y
+3. Esta distribución valida la coherencia clínica del
+dataset: la categoría BI-RADS refleja directamente
+el nivel de sospecha de malignidad asignado por el
+radiólogo.
+
+\subsubsection{Análisis de subtlety}
+
+La Figura~\ref{fig:subtlety_distribution} presenta
+la distribución de la puntuación de dificultad de
+detección (\textit{subtlety}) por patología y tipo
+de hallazgo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/B4_subtlety_distribution.png}
+  \caption{Distribución de \textit{subtlety} por
+           patología y tipo de hallazgo.
+           (1\,=\,muy sutil, 5\,=\,obvio).}
+  \label{fig:subtlety_distribution}
+\end{figure}
+
+La media de \textit{subtlety} en casos malignos
+(3.1 para masas, 2.8 para calcificaciones) es
+ligeramente inferior a la de casos benignos (3.4 y
+3.2 respectivamente), aunque la diferencia es pequeña.
+Este hallazgo refuta la intuición de que las lesiones
+malignas son necesariamente más difíciles de detectar
+visualmente: la dificultad de detección es
+aproximadamente ortogonal a la patología, lo que
+explica parcialmente por qué los modelos de deep
+learning enfrentan dificultades de generalización al
+no poder apoyarse en la obviedad visual como señal
+discriminativa.
+
+
+% -----------------------------------------------------------
+\subsection{Análisis de variables clínicas}
+% -----------------------------------------------------------
+
+\subsubsection{Densidad mamaria}
+
+La Figura~\ref{fig:breast_density} muestra la
+distribución de densidad mamaria por patología y
+tipo de hallazgo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/C1_breast_density.png}
+  \caption{Distribución de densidad mamaria
+           (1\,=\,grasa, 4\,=\,extremadamente densa)
+           por patología y tipo de hallazgo.}
+  \label{fig:breast_density}
+\end{figure}
+
+La densidad mamaria más frecuente en el dataset es
+la categoría 2 (tejido disperso). El análisis de
+correlación confirmó que la densidad mamaria tiene
+una correlación casi nula con la etiqueta de
+patología ($r = -0.03$ para masas, $r = +0.09$ para
+calcificaciones), lo que indica que la densidad
+no predice la malignidad de la lesión. Sin embargo,
+se observó una correlación negativa moderada entre
+densidad y \textit{subtlety} ($r = -0.31$ para masas),
+confirmando que las lesiones son más difíciles de
+detectar visualmente en tejidos más densos, donde
+el tejido glandular camufla las estructuras anómalas.
+
+
+\subsubsection{Lateralidad y vista mamográfica}
+
+La Figura~\ref{fig:laterality_view} presenta la
+distribución de lateralidad (izquierda / derecha)
+y vista mamográfica (CC / MLO).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/C2_laterality_view.png}
+  \caption{Distribución de lateralidad y vista
+           mamográfica en el dataset.}
+  \label{fig:laterality_view}
+\end{figure}
+
+La distribución de lateralidad es prácticamente
+simétrica (1{,}819 casos izquierdos vs.\ 1{,}749
+derechos, ratio 1.04:1), lo que indica ausencia de
+sesgo de adquisición por lado. El ligero predominio
+de la vista MLO sobre la CC (1{,}896 vs.\ 1{,}672)
+es esperado clínicamente, dado que la vista
+MLO captura mayor volumen de tejido mamario
+incluyendo la región axilar.
+
+\subsubsection{Morfología de masas}
+
+La Figura~\ref{fig:mass_morphology} muestra la
+distribución de forma y margen de las masas por
+patología.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/C3_mass_morphology.png}
+  \caption{Distribución de forma y margen de masas
+           por patología (benigno / maligno).}
+  \label{fig:mass_morphology}x
+\end{figure}
+
+Los resultados revelan una separación morfológica
+marcada entre clases. Las masas malignas se asocian
+predominantemente con formas \textit{IRREGULAR} y
+márgenes \textit{SPICULATED}, patrón clínico clásico
+del carcinoma invasivo, donde el tumor crece
+desordenadamente con extensiones hacia el tejido
+circundante. Las masas benignas presentan formas
+\textit{OVAL} con bordes \textit{CIRCUMSCRIBED},
+patrón típico de fibroadenomas o quistes encapsulados.
+Esta separación morfológica sugiere que las
+características extraídas de masas deberían ser
+intrínsecamente más separables en cualquier espacio
+de representación, incluyendo el espacio de Hilbert
+cuántico generado por los \textit{feature maps}.
+
+\subsubsection{Morfología de calcificaciones}
+
+La Figura~\ref{fig:calc_morphology} presenta la
+distribución de tipo y distribución de las
+calcificaciones por patología.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/C4_calc_morphology.png}
+  \caption{Distribución de tipo y distribución
+           espacial de calcificaciones por patología.}
+  \label{fig:calc_morphology}
+\end{figure}
+
+A diferencia de las masas, las calcificaciones
+presentan el tipo morfológico más frecuente
+(\textit{PLEOMORPHIC}) compartido entre ambas clases.
+Este solapamiento morfológico implica que las
+calcificaciones constituyen un problema de
+clasificación intrínsecamente más complejo, donde
+la separabilidad en el espacio de representación
+clásico es menor. Este escenario es particularmente
+relevante para el presente trabajo: es precisamente
+en estos casos de baja separabilidad clásica donde
+las transformaciones cuánticas variacionales tienen
+mayor potencial de aporte, al proyectar los datos
+en un espacio de Hilbert con geometría
+cualitativamente distinta que puede revelar estructura
+discriminativa no accesible para los métodos clásicos.
+
+\subsubsection{Correlaciones entre variables clínicas}
+
+La Figura~\ref{fig:correlation_matrix} presenta la
+matriz de correlación de las variables clínicas
+numéricas del dataset.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/C5_correlation_matrix.png}
+  \caption{Matriz de correlación de variables clínicas
+           numéricas por tipo de hallazgo.}
+  \label{fig:correlation_matrix}
+\end{figure}
+
+La variable \texttt{assessment} (categoría BI-RADS)
+presenta la correlación más alta con la etiqueta de
+patología ($r = +0.51$ para masas, $r = +0.43$ para
+calcificaciones), lo cual es esperado dado que el
+BI-RADS fue diseñado precisamente como escala de
+sospecha de malignidad. Sin embargo, esta variable
+no puede utilizarse como \textit{feature} de entrada
+al modelo porque constituye \textit{data leakage}:
+es una etiqueta clínica derivada de la imagen, no
+una característica morfológica independiente.
+
+Las variables \texttt{breast\_density} y
+\texttt{subtlety} presentan correlaciones
+prácticamente nulas con la etiqueta de patología
+($|r| < 0.12$ en todos los casos), confirmando que
+el poder predictivo reside en las características
+morfológicas de la imagen y no en los metadatos
+clínicos del CSV. Este resultado valida la decisión
+metodológica de extraer \textit{features} directamente
+de las imágenes DICOM mediante PyRadiomics.
+
+
+% -----------------------------------------------------------
+\subsection{Análisis de imágenes DICOM}
+% -----------------------------------------------------------
+
+\subsubsection{Dimensiones y características técnicas}
+
+La Figura~\ref{fig:image_dimensions} muestra la
+distribución de dimensiones de las mamografías
+completas en la muestra analizada.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/D1_image_dimensions.png}
+  \caption{Distribución de dimensiones (altura y
+           anchura en píxeles) de las mamografías
+           completas (muestra n\,=\,300).}
+  \label{fig:image_dimensions}
+\end{figure}
+
+Las mamografías completas presentan dimensiones
+medianas de 5{,}037\,$\times$\,2{,}960 píxeles con
+profundidad de 16 bits, lo que confirma que su tamaño
+es incompatible con la entrada directa a un circuito
+cuántico. Este hallazgo valida la decisión de diseño
+de trabajar con las imágenes recortadas de ROI
+(224\,$\times$\,224 píxeles) en lugar de las
+mamografías completas.
+
+La inspección de los metadatos DICOM reveló que las
+imágenes del dataset son de tipo \textit{Secondary
+Capture} (\texttt{SOPClassUID}:
+1.2.840.10008.5.1.4.1.1.7), generadas mediante
+MATLAB (\texttt{SecondaryCaptureDeviceManufacturer}:
+MathWorks) como parte del proceso de digitalización
+y curaduría del CBIS-DDSM. La convención fotométrica
+es \texttt{MONOCHROME2} de forma uniforme en todo el
+dataset, lo que elimina la necesidad de inversión de
+píxeles en el preprocesamiento.
+
+
+\subsubsection{Variabilidad inter-escáner}
+
+La Figura~\ref{fig:manufacturers} presenta la
+distribución de fabricantes de escáner en la muestra.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]
+    {Figures/D2_manufacturers.png}
+  \caption{Distribución de fabricantes de escáner
+           en la muestra analizada.}
+  \label{fig:manufacturers}
+\end{figure}
+
+El campo \texttt{Manufacturer} del estándar DICOM
+reporta \texttt{UNKNOWN} de forma uniforme, dado que
+las imágenes son \textit{Secondary Capture} procesadas
+por MATLAB y no retienen los metadatos del escáner
+original. Esta uniformidad implica que no es posible
+realizar un análisis de variabilidad inter-escáner
+mediante metadatos.
+
+\subsubsection{Distribución de intensidades de píxeles}
+
+La Figura~\ref{fig:pixel_intensities} compara las
+distribuciones de estadísticas de intensidad de
+píxeles entre casos benignos y malignos en las
+imágenes recortadas de ROI.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/D3_pixel_intensities.png}
+  \caption{Distribución de estadísticas de
+           intensidad de píxeles (media, desviación
+           estándar y máximo) en imágenes recortadas
+           de ROI, por patología.}
+  \label{fig:pixel_intensities}
+\end{figure}
+
+Las imágenes recortadas presentan valores de
+intensidad media en el rango de 45{,}000--50{,}000
+sobre un máximo posible de 65{,}535 (16 bits),
+con máximos frecuentemente en el límite superior.
+Las distribuciones de casos benignos y malignos
+muestran solapamiento considerable en las tres
+estadísticas analizadas, confirmando que la
+información discriminativa no reside en estadísticas
+globales de intensidad sino en patrones texturales
+y morfológicos de orden superior, que son precisamente
+los que capturan las \textit{features} radiómicas
+de PyRadiomics.
+
+\subsubsection{Galería de casos representativos}
+
+La Figura~\ref{fig:sample_gallery} presenta una
+galería de casos representativos del dataset,
+mostrando para cada caso la mamografía completa,
+la máscara binaria ROI y la imagen recortada
+centrada en la lesión.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/D4_sample_gallery.png}
+  \caption{Galería de casos representativos:
+           mamografía completa, máscara ROI e imagen
+           recortada, para masas y calcificaciones
+           benignas y malignas.}
+  \label{fig:sample_gallery}
+\end{figure}
+
+La galería ilustra visualmente las diferencias
+morfológicas descritas en el análisis de variables
+clínicas: las masas malignas muestran bordes
+irregulares y espiculados, mientras que las masas
+benignas presentan contornos lisos y bien definidos.
+En las calcificaciones, la distinción visual entre
+clases es menos evidente, consistente con el hallazgo
+de que PLEOMORPHIC es el tipo morfológico más
+frecuente en ambas clases.
+
+La Figura~\ref{fig:roi_overlays} muestra la
+superposición de la máscara ROI sobre la mamografía
+completa para cuatro casos seleccionados.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]
+    {Figures/D5_roi_overlays.png}
+  \caption{Superposición de la máscara ROI (región
+           en rojo) sobre la mamografía completa
+           para cuatro casos representativos.}
+  \label{fig:roi_overlays}
+\end{figure}
+
+La visualización confirma que las máscaras ROI
+delimitan con precisión la región de la lesión
+dentro de la mamografía completa, validando su
+uso como guía para el recorte en el preprocesamiento.
+
+% -----------------------------------------------------------
+\subsection{Hallazgos principales y consideraciones
+            para el modelado}
+% -----------------------------------------------------------
+
+El análisis exploratorio permite identificar los
+siguientes hallazgos de mayor relevancia para el
+diseño del pipeline experimental:
+
+\begin{enumerate}
+
+\item \textbf{Desbalance de clases diferenciado.}
+El ratio benigno/maligno es 1.16:1 para masas y
+1.78:1 para calcificaciones. La ponderación de
+clases durante el entrenamiento del MLP es
+necesaria para calcificaciones pero opcional para
+masas. Los modelos se evalúan con AUC-ROC como
+métrica principal por su robustez ante este
+desbalance.
+
+\item \textbf{Asimetría de separabilidad esperada.}
+Las masas presentan patrones morfológicos
+claramente diferenciados entre clases
+(IRREGULAR/SPICULATED vs.\ OVAL/CIRCUMSCRIBED),
+prediciendo mayor separabilidad en el espacio
+de representación. Las calcificaciones comparten
+el tipo morfológico más frecuente (PLEOMORPHIC)
+entre ambas clases, prediciendo menor separabilidad
+y constituyendo el caso de prueba más exigente
+para los quantum embeddings.
+
+\item \textbf{Variables clínicas no predictivas.}
+La densidad mamaria y el \textit{subtlety}
+tienen correlación prácticamente nula con la
+patología. La información discriminativa reside
+en los patrones morfológicos de la imagen,
+validando el uso de PyRadiomics como extractor
+de características.
+
+\item \textbf{Imágenes de alta dimensionalidad.}
+Las mamografías completas tienen dimensiones
+medianas de 5{,}037\,$\times$\,2{,}960 píxeles,
+incompatibles con entrada directa al circuito
+cuántico. El trabajo con imágenes recortadas de
+ROI (224\,$\times$\,224 píxeles) seguido de
+extracción de características y selección de $k$
+features es la única estrategia viable para el
+régimen de simulación cuántica disponible.
+
+\item \textbf{Convención fotométrica uniforme.}
+La totalidad del dataset utiliza MONOCHROME2,
+eliminando la necesidad de inversión de píxeles
+en el preprocesamiento y simplificando la
+normalización de intensidades.
+
+\end{enumerate}
+
+
 
 
 
@@ -993,6 +3680,91 @@ RNF-07 & Propiedad intelectual & Registro del código fuente en
     classification: A systematic review of trends, methodologies, and future directions. \textit{Iraqi Journal for Computer
     Science and Mathematics}, 6(2), Article 9.
     \url{https://doi.org/10.52866/2788-7421.1252}
+
+    \bibitem{nielsen2010quantum}
+    Nielsen, M. A., \& Chuang, I. L. (2010). \textit{Quantum computation and quantum information: 10th anniversary edition}.
+    Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511976667}
+
+  % --- Referencia 31: Variational Quantum Algorithms ---
+  \bibitem{cerezo2021variational}
+    Cerezo, M., Arrasmith, A., Babbush, R., Benjamin, S. C., Endo, S., Fujii, K., McClean, J. R., Mitarai, K., Yuan, X., Cincio, L., \& Coles, P. J. (2021). Variational quantum algorithms. \textit{Nature Reviews Physics}, 3, 625--644. \url{https://doi.org/10.1038/s42254-021-00348-9}
+
+  % --- Referencia 32: Quantum Circuit Learning ---
+  \bibitem{mitarai2018quantum}
+    Mitarai, K., Negoro, M., Kitagawa, M., \& Fujii, K. (2018). Quantum circuit learning. \textit{Physical Review A}, 98(3), 032309. \url{https://doi.org/10.1103/PhysRevA.98.032309}
+
+  % --- Referencia 33: Qiskit Circuit Library Documentation ---
+  \bibitem{ibmquantum2024docs}
+    IBM Quantum. (2024). Qiskit Circuit Library: \texttt{zz\_feature\_map} and \texttt{PauliFeatureMap}. IBM Quantum Documentation. \url{https://docs.quantum.ibm.com/api/qiskit/qiskit.circuit.library.zz_feature_map}
+
+  % --- Referencia 34: Qiskit Machine Learning Documentation ---
+  \bibitem{qiskitml2024}
+    IBM Quantum. (2024). Qiskit Machine Learning: \texttt{EstimatorQNN} and \texttt{TorchConnector}. Qiskit Machine Learning Documentation. \url{https://qiskit-community.github.io/qiskit-machine-learning/}
+
+  % --- Referencia 35: Deep Learning ---
+  \bibitem{goodfellow2016deep}
+    Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \textit{Deep Learning}. MIT Press.
+    \url{https://www.deeplearningbook.org}
+
+  % --- Referencia 36: Kernel-Target Alignment ---
+  \bibitem{cristianini2002kernel}
+    Cristianini, N., Shawe-Taylor, J., Elisseeff, A., \& Kandola, J. (2002). On kernel-target alignment.
+    In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 14.
+    \url{https://proceedings.neurips.cc/paper/2001/hash/1f71e393b3809197ed66df836fe833e5-Abstract.html}
+
+  % --- Referencia 37: Davies-Bouldin Cluster Separation Measure ---
+  \bibitem{davies1979cluster}
+    Davies, D. L., \& Bouldin, D. W. (1979). A cluster separation measure.
+    \textit{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 1(2), 224--227.
+    \url{https://doi.org/10.1109/TPAMI.1979.4766909}
+
+  % --- Referencia 38: Fisher’s Linear Discriminant ---
+  \bibitem{fisher1936use}
+    Fisher, R. A. (1936). The use of multiple measurements in taxonomic problems.
+    \textit{Annals of Eugenics}, 7(2), 179--188.
+    \url{https://doi.org/10.1111/j.1469-1809.1936.tb02137.x}
+
+  % --- Referencia 39: t-SNE Data Visualization ---
+  \bibitem{vandermaaten2008tsne}
+    van der Maaten, L., \& Hinton, G. (2008). Visualizing data using \textit{t-SNE}.
+    \textit{Journal of Machine Learning Research}, 9, 2579--2605.
+    \url{https://jmlr.org/papers/v9/vandermaaten08a.html}
+
+  % --- Referencia 40: Evaluation Metrics for Machine Learning ---
+  \bibitem{powers2011evaluation}
+    Powers, D. M. W. (2011). Evaluation: from precision, recall and \textit{F-measure} to \textit{ROC}, informedness, markedness and correlation.
+    \textit{Journal of Machine Learning Technologies}, 2(1), 37--63.
+    \url{https://arxiv.org/abs/2010.16061}
+
+  % --- Referencia 41: Quantum Machine Learning in Feature Hilbert Spaces ---
+  \bibitem{schuld2019quantum}
+    Schuld, M., \& Killoran, N. (2019). Quantum machine learning in feature {H}ilbert spaces.
+    \textit{Physical Review Letters}, 122(4), 040504.
+    \url{https://doi.org/10.1103/PhysRevLett.122.040504}
+
+  % --- Referencia 42: Supervised Learning with Quantum-Enhanced Feature Spaces ---
+  \bibitem{havlicek2019supervised}
+    Havl{\'{i}}{\v{c}}ek, V., C{\'{o}}rcoles, A. D., Temme, K., Harrow, A. W., Kandala, A., Chow, J. M., \& Gambetta, J. M. (2019). Supervised learning with quantum-enhanced feature spaces.
+    \textit{Nature}, 567, 209--212.
+    \url{https://doi.org/10.1038/s41586-019-0980-2}
+
+  % --- Referencia 43: Power of Data in Quantum Machine Learning ---
+  \bibitem{huang2021power}
+    Huang, H.-Y., Broughton, M., Mohseni, M., Babbush, R., Boixo, S., Neven, H., \& McClean, J. R. (2021). Power of data in quantum machine learning.
+    \textit{Nature Communications}, 12, 2631.
+    \url{https://doi.org/10.1038/s41467-021-22539-9}
+
+  % --- Referencia 44: Realization of Contrast Limited Adaptive Histogram Equalization ---
+  \bibitem{reza2004realization}
+    Reza, A. M. (2004). Realization of the contrast limited adaptive histogram equalization (CLAHE) for real-time image enhancement.
+    \textit{Journal of VLSI Signal Processing}, 38, 35--44.
+    \url{https://doi.org/10.1023/B:VLSI.0000028532.53893.82}
+
+  % --- Referencia 45: Computational Radiomics System to Decode the Radiographic Phenotype ---
+  \bibitem{vanGriethuysen2017}
+    van Griethuysen, J. J. M., et al. (2017). Computational radiomics system to decode the radiographic phenotype.
+    \textit{Cancer Research}, 77(21), e104--e107.
+    \url{https://doi.org/10.1158/0008-5472.CAN-17-0339}
 
 \end{thebibliography}
 
