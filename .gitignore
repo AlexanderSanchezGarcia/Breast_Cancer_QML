@@ -5,3 +5,9 @@ Data/
 Docs/*
 !Docs/Technical_Report.tex
 !Docs/Technical_Report.pdf
+
+# Ignore CLAUDE.md file
+CLAUDE.md
+
+# macOS
+.DS_Store
