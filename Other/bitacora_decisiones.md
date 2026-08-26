@@ -1,0 +1,355 @@
+# Bitácora de decisiones · TT 2026-B039
+
+> Registro vivo del desarrollo. Cada entrada dice **por qué** se hizo algo, no solo qué.
+> En noviembre esto alimenta las secciones 6–8 del reporte técnico, y es lo que se defiende ante el jurado.
+
+**Cómo usar esto.** Tres tipos de entrada, porque no son lo mismo:
+
+| Tipo | Es | Lo que no puede faltar |
+|---|---|---|
+| **D** · Decisión | Elegiste entre opciones | Las alternativas y el porqué |
+| **H** · Hallazgo | Descubriste algo que no sabías | La evidencia numérica y la consecuencia |
+| **Q** · Pregunta abierta | Aún no está resuelto | La fecha límite para resolverla |
+
+Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no se borra**: se marca `Revertida` y se enlaza la que la reemplaza — el jurado valora más un cambio de rumbo justificado que un historial impecable. Las plantillas están al final.
+
+---
+
+## Índice
+
+### Decisiones
+
+| # | Fecha | Decisión | Módulo | Estado | → Reporte |
+|---|---|---|---|---|---|
+| D-001 | 2026-05 | SelectKBest + MinMaxScaler en lugar de PCA antes del circuito | M4 | Firme | §4.6, §7.2 |
+| D-002 | 2026-05 | ZZFeatureMap y PauliFeatureMap como condiciones separadas | M5 | Firme | §4.7, §7.2 |
+| D-003 | 2026-05 | Geometric difference como métrica de ventaja cuántica potencial | M7 | Firme | §3.4.2, §7.2 |
+| D-004 | 2026-05 | Escalado angular a [0,π] y no a [0,2π] | M4 | Firme | §4.6 |
+| D-005 | 2026-05 | Masas y calcificaciones como subproblemas independientes | todos | Firme | §4.4 |
+| D-006 | 2026-05 | PyRadiomics (Estrategia A) en lugar de encoder CNN | M3 | Firme | §4.5 |
+| D-007 | 2026-08-25 | Entorno `radiomics` separado, compilado desde GitHub | infra | Firme | §8.x |
+| D-008 | 2026-08-25 | `binCount=32` en lugar de `binWidth` | M3 | Firme | §8.x |
+| D-009 | 2026-08-25 | Sin resize a 224×224 en la ruta radiómica | M2 | Firme | §4.4, §8.x |
+| D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Provisional | §4.4 |
+| D-011 | 2026-08-25 | Unidad de análisis = lesión/ROI, no paciente | M4 | Provisional | §4.6 |
+
+### Hallazgos
+
+| # | Fecha | Hallazgo | Impacto |
+|---|---|---|---|
+| H-001 | 2026-08-24 | 86 mamografías faltantes; cobertura real 97.6 %, no 100 % | Corrige una cifra del reporte de TT1 |
+| H-002 | 2026-08-24 | `PixelSpacing` y `Manufacturer` ausentes en el 100 % de los DICOM | Limitación metodológica, insumo del OE-6 |
+| H-003 | 2026-08-25 | Los 5 features más discriminativos en masas son todos `shape2D` | Justifica D-009 con datos |
+| H-004 | 2026-08-25 | 80 casos (2.3 %) con máscara de dimensiones distintas a la imagen | Requisito nuevo de M2 |
+| H-005 | 2026-08-24 | 0 fuga de pacientes intra-subproblema; 31 cruzan si se juntan | Defiende D-005 ante el jurado |
+| H-006 | 2026-08-25 | El sdist de PyRadiomics en PyPI es incompilable | Justifica D-007 |
+| H-007 | 2026-08-25 | `binWidth` sobre 16 bits: 38 h contra 8 min | Justifica D-008 |
+| H-008 | 2026-08-24 | 2.28 ROIs por paciente; 56 pacientes con ambas etiquetas | Obliga a declarar la unidad de análisis |
+| H-009 | 2026-08-24 | Defectos verificables en el PDF de TT1 | Lista de correcciones para la Fase 7 |
+
+### Preguntas abiertas
+
+| # | Pregunta | Bloquea | Límite |
+|---|---|---|---|
+| Q-001 | ¿C2 se declara control nulo o se añade C2′? | Fase 4 | 2 oct |
+| Q-002 | ¿Con qué θ se mide la separabilidad? | Fase 4 | 25 sep |
+| Q-003 | ¿Sobre qué kernel se calcula la *geometric difference*? | Fase 3 | 11 sep |
+| Q-004 | ¿Azevedo et al. (2022) o Incudini et al. (2022)? | Fase 7 | 3 nov |
+| Q-005 | ¿Validación cruzada o justificación de su ausencia? | Fase 6 | 23 oct |
+| Q-006 | ¿Qué k y reps finales? | Fase 3 | 11 sep |
+
+---
+
+## Decisiones
+
+### D-007 · Entorno `radiomics` separado, compilado desde GitHub
+**Fecha:** 2026-08-25 · **Módulo:** infraestructura · **Estado:** Firme · **→ Reporte:** §8.x
+
+**Contexto.** PyRadiomics no estaba instalado y M2/M3 no podían empezar. Los tres caminos habituales fallaron (ver H-006).
+
+**Alternativas.**
+- *conda-forge* — descartada: no existe feedstock de PyRadiomics.
+- *`pip install pyradiomics`* — descartada: el sdist de PyPI no compila.
+- *Instalar en `qml_cancer`* — descartada: mezcla el stack cuántico con uno que exigía restricciones distintas de numpy, y un fallo contaminaría el entorno que ya funciona.
+- *Compilar desde el repo de GitHub en un entorno aparte* — **elegida**.
+
+**Decisión.** Entorno conda `radiomics` (Python 3.10) con PyRadiomics compilado desde el commit `8ed5793` (2025-06-16) del repo AIM-Harvard/pyradiomics. M2 y M3 viven ahí y escriben `.parquet`; `qml_cancer` lee ese parquet y se encarga de M4–M7.
+
+**Por qué.** Desacopla el riesgo: si PyRadiomics se rompe, el stack cuántico sigue intacto. Master ya migró a `scikit-build-core` y declara soporte para `numpy>=2.0`, así que el entorno quedó en numpy 2.2.6 — la misma versión de `qml_cancer` y la configuración que upstream realmente prueba.
+
+**Evidencia.** Extracción validada sobre casos reales del CBIS-DDSM: 67 features (firstorder 18, shape2D 9, GLCM 24, GLRLM 16), 0 NaN, escritura a parquet correcta.
+
+**Consecuencias.** Hay que cambiar de kernel entre M3 y M4. La versión reporta `0.1.dev1+g8ed579383` porque el clon es *shallow* y `setuptools_scm` no ve los tags: **lo que ancla la reproducibilidad es el commit, no ese número**, y debe quedar escrito en el reporte.
+
+---
+
+### D-008 · `binCount=32` en lugar de `binWidth`
+**Fecha:** 2026-08-25 · **Módulo:** M3 · **Estado:** Firme · **→ Reporte:** §8.x
+
+**Contexto.** La primera extracción tardaba 30–53 s por caso, lo que daba ~38 h para los 3,482 casos.
+
+**Alternativas.** `binWidth` fijo (habitual en TC, donde las unidades Hounsfield están calibradas) contra `binCount` fijo (número fijo de niveles).
+
+**Decisión.** `binCount=32`.
+
+**Por qué.** No es solo velocidad. El CBIS-DDSM tiene intensidades **arbitrarias y no calibradas**: película digitalizada, sin `PixelSpacing`, convertida por MATLAB a Secondary Capture (ver H-002). IBSI recomienda número fijo de bins precisamente para modalidades de intensidad arbitraria. `binWidth` supone unidades con significado físico que aquí no existen.
+
+**Evidencia.** Ver H-007. Con `binWidth=25` sobre datos de 16 bits salen 1,139 niveles de gris y una GLCM de 1139×1139.
+
+**Consecuencias.** Los valores de GLCM/GLRLM no son comparables con literatura que use `binWidth`. Hay que declarar el parámetro explícitamente en el reporte.
+
+---
+
+### D-009 · Sin resize a 224×224 en la ruta radiómica
+**Fecha:** 2026-08-25 · **Módulo:** M2 · **Estado:** Firme · **→ Reporte:** §4.4, §8.x
+
+**Contexto.** El reporte de TT1 dice que M2 entrega 224×224 y que M3 opera sobre esa imagen. Eso es herencia de la Estrategia B (encoder CNN), que fue descartada en D-006.
+
+**Decisión.** PyRadiomics opera sobre el recorte ROI a **resolución original**, con la máscara alineada. El 224×224 solo aplicaría si algún día se retoma la Estrategia B.
+
+**Por qué.** Redimensionar iguala artificialmente el tamaño de las lesiones. Los *bounding boxes* reales van de 41×65 px a 1137×1641 px: una microcalcificación y una masa grande acabarían del mismo tamaño.
+
+**Evidencia.** H-003 — los 5 features más discriminativos en masas son todos de tamaño, con |d| de Cohen ≈ 1.41–1.43. El resize destruye justo la señal más fuerte disponible.
+
+**Consecuencias.** Contradice el texto de TT1; hay que corregirlo en §4.4 y explicar el cambio en §8.x. El coste computacional no sube de forma apreciable (0.14 s/caso).
+
+---
+
+### D-010 · CLAHE fuera de la ruta radiómica
+**Fecha:** 2026-08-25 · **Módulo:** M2 · **Estado:** Provisional · **→ Reporte:** §4.4
+
+**Contexto.** El diseño de TT1 aplica CLAHE antes de extraer características.
+
+**Decisión provisional.** Extraer las features del recorte crudo. Generar además la variante con CLAHE y **reportar el efecto de ambas**.
+
+**Por qué.** CLAHE es correcto para entrada a CNN o para visualización, pero es una ecualización local dependiente del contenido: rompe la reproducibilidad de *first-order* y GLCM bajo IBSI.
+
+**Por qué sigue provisional.** Correr ambas variantes cuesta poco y convierte una objeción potencial en media sección de resultados. Se cierra cuando existan los dos conjuntos de features.
+
+---
+
+### D-011 · Unidad de análisis = lesión/ROI
+**Fecha:** 2026-08-25 · **Módulo:** M4 · **Estado:** Provisional · **→ Reporte:** §4.6
+
+**Contexto.** El reporte de TT1 nunca declara si la unidad de análisis es la lesión o el paciente.
+
+**Decisión provisional.** La unidad es la **lesión (ROI)**. Las métricas se reportan por lesión, no por paciente.
+
+**Por qué.** Es lo que corresponde al problema planteado (clasificar hallazgos) y lo que hace comparable el trabajo con la literatura sobre CBIS-DDSM. La alternativa por paciente exigiría una regla de agregación que el diseño actual no define.
+
+**Evidencia.** H-008 — hay 2.28 ROIs por paciente (máx. 24) y 56 pacientes con lesiones benignas y malignas a la vez, así que la etiqueta a nivel paciente sería ambigua.
+
+**Consecuencias.** Hay que declararlo explícitamente; es una pregunta previsible del jurado.
+
+---
+
+> Las decisiones **D-001 a D-006** se tomaron durante TT1 y ya están documentadas en el reporte (§7.2 · *Decisiones metodológicas aprendidas*). Se listan en el índice para tener la traza completa; si alguna se revisa en TT2, se le abre entrada propia aquí.
+
+---
+
+## Hallazgos
+
+### H-001 · Cobertura real del dataset: 97.6 %, no 100 %
+**Fecha:** 2026-08-24 · **→ Reporte:** §5.1
+
+El reporte de TT1 afirma cobertura DICOM del 100 % (3,568/3,568), y la columna `dicom_found` vale `True` en las 3,568 filas. La verificación contra disco lo desmiente:
+
+```
+path_full_mammo : 3568 no-nulos -> 3482 existen,  86 ROTAS
+path_roi_mask   : 3568 no-nulos -> 3568 existen,   0 rotas
+path_cropped    :  115 NULOS    -> 3453 existen
+Usables (completa + máscara): 3482 / 3568 = 97.6 %
+```
+
+Las 86 rutas rotas apuntan a **carpetas que existen pero están vacías**: descarga incompleta del NBIA Data Retriever, no un error del índice. Se corrige re-ejecutando el manifiesto.
+
+**Impacto.** Hay que corregir la cifra en §5.1 y re-validar antes de M2.
+
+---
+
+### H-002 · Sin `PixelSpacing` ni `Manufacturer` en todo el dataset
+**Fecha:** 2026-08-24 · **→ Reporte:** §5.4, OE-6
+
+Sobre muestra de 25 mamografías: `PixelSpacing` e `ImagerPixelSpacing` **ausentes en el 100 %**, `Manufacturer` también. Son conversiones de MATLAB a Secondary Capture; `Modality` = MG, `BitsStored` = 16, `PhotometricInterpretation` = MONOCHROME2 en todos.
+
+**Impacto.** PyRadiomics asume espaciado (1,1), así que las *shape features* salen en píxeles sin escala física. Como el DDSM original se digitalizó con escáneres de distinta resolución (µm/píxel distintos) y `Manufacturer` es UNKNOWN, **no hay forma de corregirlo**: el mismo tumor en mm da distinto número de píxeles según el digitalizador. Es una limitación real que conviene declarar como aportación del OE-6, no esconder. El reporte ya documenta el `Manufacturer` UNKNOWN en §5.4.2 pero no saca esta consecuencia.
+
+---
+
+### H-003 · La discriminación en masas está dominada por el tamaño
+**Fecha:** 2026-08-25 · **→ Reporte:** §6.x
+
+Sobre 20 masas, tamaño de efecto (|d| de Cohen) benigno contra maligno:
+
+```
+original_shape2D_MaximumDiameter    1.427
+original_shape2D_MinorAxisLength    1.418
+original_shape2D_MajorAxisLength    1.413
+original_shape2D_MeshSurface        1.412
+original_shape2D_PixelSurface       1.412
+```
+
+Los cinco primeros son medidas de tamaño, con efectos muy fuertes.
+
+**Impacto.** Confirma D-009 con datos. Advertencia para M4: `SelectKBest` va a elegir casi puro `shape2D`, lo que puede dejar al circuito cuántico sin información textural. Vale la pena reportar qué familias sobreviven a la selección.
+
+---
+
+### H-004 · 80 casos con máscara desalineada
+**Fecha:** 2026-08-25 · **→ Reporte:** §8.x
+
+Auditoría de dimensiones sobre los 3,482 casos usables:
+
+```
+mass            78 / 1650  (4.7 %)
+calcification    2 / 1832  (0.1 %)
+TOTAL           80 / 3482  (2.3 %)
+```
+
+**Impacto.** PyRadiomics exige geometría idéntica entre imagen y máscara. M2 tiene que resamplear la máscara al espacio de la imagen con vecino más cercano; descartarlos perdería 78 masas.
+
+---
+
+### H-005 · Sin fuga de pacientes dentro de cada subproblema
+**Fecha:** 2026-08-24 · **→ Reporte:** §4.6
+
+```
+[mass]          train=691  test=201  SOLAPADOS=0
+[calcification] train=602  test=151  SOLAPADOS=0
+[GLOBAL]        train=1248 test=349  SOLAPADOS=31
+```
+
+Los 31 solapes globales existen porque el split oficial del CBIS-DDSM se hizo por separado para cada tipo de hallazgo: un paciente puede tener masas en train y calcificaciones en test.
+
+**Impacto.** Es **evidencia a favor de D-005**. Tratar masas y calcificaciones como subproblemas independientes elimina la fuga por construcción; juntarlos la introduciría. Conviene ponerlo en el reporte como defensa preparada ante la pregunta previsible sobre *data leakage*.
+
+---
+
+### H-006 · El sdist de PyRadiomics en PyPI es incompilable
+**Fecha:** 2026-08-25 · **→ Reporte:** §8.x
+
+Tres bugs encadenados de empaquetado, ninguno atribuible al proyecto:
+1. No existe feedstock en conda-forge.
+2. `pyproject.toml` declara `version = "3.0.1a1"` mientras `PKG-INFO` dice `3.1.0`; pip lo rechaza por *inconsistent version*.
+3. `MANIFEST.in` dice `recursive-include src/radiomics *` cuando la ruta real es `radiomics/src` — **invertida**. El tarball trae `cmatrices.c` pero no `cmatrices.h`, y la compilación muere en el `#include`.
+
+**Impacto.** Justifica D-007. Vale la pena mencionarlo en §8.x como parte del análisis de viabilidad práctica: la reproducibilidad de un pipeline radiómico depende de dependencias frágiles.
+
+---
+
+### H-007 · El binning dominaba el coste, no la E/S
+**Fecha:** 2026-08-25 · **→ Reporte:** §8.x, OE-6
+
+| Config | Niveles de gris | Tiempo/caso | ETA 3,482 casos |
+|---|---|---|---|
+| `binWidth=25` | 1,139 | 29.8 s | ~38 h |
+| `binCount=32` | 32 | **0.14 s** | **8 min** |
+| `binCount=64` | 64 | 0.1 s | ~10 min |
+
+Leer el DICOM completo cuesta 0.01 s: la E/S era irrelevante. El coste estaba en construir una GLCM de 1139×1139 sobre datos de 16 bits con rango 0–65535.
+
+**Impacto.** Justifica D-008. Es también un dato citable para el OE-6 sobre coste computacional del pipeline.
+
+---
+
+### H-008 · Estructura por paciente del dataset
+**Fecha:** 2026-08-24 · **→ Reporte:** §5.1
+
+3,568 registros sobre 1,566 pacientes: media de **2.28 ROIs por paciente**, máximo 24. **56 pacientes** tienen lesiones benignas y malignas a la vez.
+
+**Impacto.** Obliga a declarar la unidad de análisis (D-011) y descarta agregar por paciente sin una regla explícita.
+
+---
+
+### H-009 · Defectos verificables en el PDF de TT1
+**Fecha:** 2026-08-24 · **→ Reporte:** Fase 7
+
+- `sección ??` literal en la p. 56 — falta `\label{sec:metricas}` en la subsección 3.4
+- 11 `\bibitem` nunca citados, entre ellos `Wang2020DeepLearning`, `Azevedo2022QuantumTransfer`, `Xiang2024QuantumCNN` y `Baccouche2022ResidualNN`, todos discutidos por nombre en el texto sin `\cite`
+- Label `eq:embedding_vector` duplicado; *float* de 33 pt en la línea 973; 12 `Overfull \hbox`; `RNF- 9` con espacio
+- "BCDR (Barcelona Digital Breast Cancer Dataset)" — es el **Breast Cancer Digital Repository**, portugués
+- `Logos/ipn_logo.png` en minúsculas contra `IPN_logo.png` real: compila en macOS, revienta en Overleaf o Linux
+- `Technical_Report.bib` tiene una llave `}` de más y solo 2 entradas, mientras la bibliografía real es un `thebibliography` manual de 47
+
+---
+
+## Preguntas abiertas
+
+### Q-001 · ¿C2 se declara control nulo o se añade C2′?
+**Bloquea:** Fase 4 · **Límite:** 2 oct
+
+M4 ya reduce a `k` features, así que C2 hace PCA de k → k: una rotación ortogonal invertible. Davies-Bouldin, Fisher y KTA son invariantes bajo rotación, de modo que **C2 dará métricas idénticas a C1**, y el MLP absorbe la rotación en su primera capa.
+
+Salidas: (a) declararlo control nulo, que es defendible y hasta elegante — demuestra que las métricas no se dejan engañar por transformaciones lineales; (b) añadir C2′ con PCA desde el vector radiómico completo (n ≈ 100–300) → k, que es el baseline clásico honesto. Hacer las dos cuesta poco.
+
+---
+
+### Q-002 · ¿Con qué θ se mide la separabilidad?
+**Bloquea:** Fase 4 · **Límite:** 25 sep
+
+C4/C5 entrenan θ contra las etiquetas vía `TorchConnector`; C2 y C3 son no supervisados. Medir separabilidad post-entrenamiento haría salir la ventaja cuántica por construcción, y es atacable.
+
+Propuesta: medir el OE-3 con el **feature map solo** (sin ansatz, o con θ aleatorio fijo por semilla), que además es literalmente la pregunta de investigación — si la *codificación* mejora la separabilidad. El entrenamiento end-to-end se queda para OE-4/OE-5. Reportar separabilidad pre y post sería un análisis adicional valioso.
+
+---
+
+### Q-003 · ¿Sobre qué kernel se calcula la *geometric difference*?
+**Bloquea:** Fase 3 · **Límite:** 11 sep
+
+`g(K_C, K_Q)` de Huang et al. está definida **kernel contra kernel**. M5 produce ⟨Zᵢ⟩ ∈ [-1,1]^k, que es un vector, no un kernel cuántico: construir un RBF sobre los ⟨Zᵢ⟩ ya no es K_Q y el marco de Huang no aplica.
+
+Propuesta: calcular el kernel de fidelidad K_Q(x,x') = |⟨φ(x)|φ(x')⟩|² aparte, con `FidelityQuantumKernel`, usando solo el feature map — el mismo objeto que resuelve Q-002.
+
+---
+
+### Q-004 · ¿Azevedo et al. (2022) o Incudini et al. (2022)?
+**Bloquea:** Fase 7 · **Límite:** 3 nov
+
+El reporte atribuye a **Azevedo et al. (2022)** las dos líneas de trabajo futuro sobre las que se construye el proyecto (§1.3 y §2.1.5), y es internamente consistente. El contexto persistente del proyecto dice **Incudini et al. (2022)**. Son papers distintos. Hay que verificar contra la fuente cuál afirma qué y unificar.
+
+---
+
+### Q-005 · ¿Validación cruzada o justificación de su ausencia?
+**Bloquea:** Fase 6 · **Límite:** 23 oct
+
+Aparece en el cronograma del reporte (ago–sep) y en el acta de los directores como compromiso, pero **no existe en la metodología** (§4.9). O se implementa, o se justifica explícitamente por el coste del *parameter-shift*. No puede quedarse sin respuesta.
+
+---
+
+### Q-006 · ¿Qué k y reps finales?
+**Bloquea:** Fase 3 · **Límite:** 11 sep
+
+Depende del benchmark de la semana 1. El reporte declara k ∈ [8,16] y `reps` ∈ [1,6] (RNF-07). Hay que fijar el valor de trabajo con datos medidos, no por defecto.
+
+---
+
+## Plantillas
+
+```markdown
+### D-0XX · <título en una línea>
+**Fecha:** AAAA-MM-DD · **Módulo:** MX · **Estado:** Firme | Provisional | Revertida · **→ Reporte:** §X.X
+
+**Contexto.** Qué problema apareció.
+**Alternativas.** A (por qué no), B (por qué no), C (elegida).
+**Decisión.** Qué se hace exactamente.
+**Por qué.** El argumento. Si hay un supuesto, decirlo.
+**Evidencia.** Número, medición o cita. Si no hay, escribir "ninguna todavía".
+**Consecuencias.** Qué habilita y qué rompe.
+```
+
+```markdown
+### H-0XX · <título en una línea>
+**Fecha:** AAAA-MM-DD · **→ Reporte:** §X.X
+
+Qué se descubrió, con el dato o la salida que lo respalda.
+
+**Impacto.** Qué cambia en el diseño, en el reporte o en el calendario.
+```
+
+```markdown
+### Q-0XX · <la pregunta, en forma de pregunta>
+**Bloquea:** Fase X · **Límite:** DD mes
+
+Por qué está abierta y cuáles son las salidas posibles.
+Cuando se cierre: convertir en D-0XX y dejar aquí el enlace.
+```
