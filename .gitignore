@@ -1,10 +1,21 @@
 # Ignore Data Folder
 Data/
 
-# For the Docs folder ignore all files except Technical_Report.tex and Technical_Report.pdf
-Docs/*
-!Docs/Technical_Report.tex
-!Docs/Technical_Report.pdf
+# LaTeX: se versionan las fuentes (.tex, .bib), las figuras y el PDF compilado.
+# Solo se ignoran los auxiliares que regenera cada compilacion.
+Docs/*.aux
+Docs/*.log
+Docs/*.fls
+Docs/*.fdb_latexmk
+Docs/*.out
+Docs/*.toc
+Docs/*.lof
+Docs/*.lot
+Docs/*.synctex.gz
+Docs/*.bbl
+Docs/*.blg
+Docs/*.bcf
+Docs/*.run.xml
 
 # Ignore CLAUDE.md file
 CLAUDE.md
