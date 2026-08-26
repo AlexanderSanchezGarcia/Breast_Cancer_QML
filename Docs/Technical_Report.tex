@@ -343,6 +343,12 @@
 % ============================================================
 \newpage
 \tableofcontents
+\newpage
+\listoftables
+\addcontentsline{toc}{section}{Índice de tablas}
+
+\listoffigures
+\addcontentsline{toc}{section}{Índice de figuras}
 
 % ============================================================
 % SECCIÓN: RESUMEN
@@ -473,7 +479,7 @@ NISQ era.
 % ----------------------------------------------------------
 \subsubsection{Contexto clínico del cáncer de mama}
 
-El cáncer de mama es una enferdad caracterizada por la proliferación descontrolada de células en el tejido mamario, que forma tumores malignos con capacidad de expandirse sistemáticamente si no recibe tratamiento oportuno. A nivel mundial, constituye el cáncer más frecuente diagnosticado en mujeres y la principal causa de muerte por cáncer femenino, superando incluso el cáncer de pulmón en incidencia global.
+El cáncer de mama es una enfermedad caracterizada por la proliferación descontrolada de células en el tejido mamario, que forma tumores malignos con capacidad de expandirse sistemáticamente si no recibe tratamiento oportuno. A nivel mundial, constituye el cáncer más frecuente diagnosticado en mujeres y la principal causa de muerte por cáncer femenino, superando incluso el cáncer de pulmón en incidencia global.
 
 Según los datos de GLOBOCAN 2022 de la Agencia Internacional para la Investigación sobre el Cáncer (IARC), en 2022 se registraron aproximadamente 2.3 millones casos nuevos de cáncer de mama y una mortalidad de alrededor de 670,000 mujeres a nivel mundial \cite{GLOBOCAN2022}. El cáncer de mama representa actualmente uno de cada cuatro cánceres en mujeres a nivel global, y desde 2008 la incidencia mundial ha aumentado más de 20\%, mientras que la mortalidad se ha incrementado en un 14\% \cite{BCRF2025}. Las proyecciones son igualmente preocupantes: si las tasas nacionales actuales se mantienen estables, para 2050 el número de casos nuevos y defunciones por cáncer de mama a nivel mundial aumentará más de 50\% y 70\% respectivamente, impulsando principalmente por el crecimiento y envejecimiento de la población \cite{StopBreastCancer2025}
 
@@ -518,7 +524,7 @@ El diagnóstico asistido por computadora (CADx) en mamografía ha experimentado 
 
 \textbf{Variabilidad e inconsistencia diagnóstica}{}
 
-La interpretación manual de mamografías está sujeta a una variabilidad inherente entre radiólogos. La variabilidad entre lectores y la dificultad intrínseca de interpretar características radiográficas sutiles limitan con frecuencia la precisión del diagnóstico mamográfico \cite{GlobalCancerStatistics2024_2}, lo que motivó el desarrollo de sistemas CADx automatizados. Sin emabargo, los modelos de deep learning han heredado parte de esta inconsistencia de una forma distinta: en lugar de variar entre observadores humanos, varían entre conjuntos de datos.
+La interpretación manual de mamografías está sujeta a una variabilidad inherente entre radiólogos. La variabilidad entre lectores y la dificultad intrínseca de interpretar características radiográficas sutiles limitan con frecuencia la precisión del diagnóstico mamográfico \cite{GlobalCancerStatistics2024_2}, lo que motivó el desarrollo de sistemas CADx automatizados. Sin embargo, los modelos de deep learning han heredado parte de esta inconsistencia de una forma distinta: en lugar de variar entre observadores humanos, varían entre conjuntos de datos.
 
 El estudio de Wang et al. (2020), publicado en el Journal of the American College of Radiology, es uno de los trabajos más citados al respecto. Los tres modelos publicados con alto rendimiento reportaron puntuaciones AUC-ROC de validación entre 0.88 y 0.95 en el conjunto de datos de entrenamiento; sin embargo, al evaluarse sobre tres conjuntos de datos externos, el rendimiento de los seis modelos disminuyó significativamente, obteniéndose valores de AUC-ROC de apenas entre 0.44 y 0.65. Este hallazgo es especialmente relevante para la presente investigación, ya que demuestra que el alto rendimiento de un modelo de deep learning en un dataset específico no garantiza su transferibilidad a datos con distribuciones distintas, una condición inevitable en entornos clínicos reales donde los equipos de adquisición, las poblaciones de pacientes y los protocolos de imagen varían considerablemente.
 
@@ -694,7 +700,7 @@ Una limitación teórica particularmente relevante para este trabajo es el compo
 % -----------------------------------------------------------
 \subsubsection{Machine Learning clásico en el diagnóstico mamográfico}
 
-El diagnóstico asistido por computadora en mamografía tiene sus origenes en los sistemas CAD (Computer-Aided Detection/Diagnosis) desarrollados desde la década de 1990, cuyo objetivo era reducir la variabilidad inter-observador en la interpretación radiológica y apoyar la detección temprana de lesiones. Estos sistemas clásicos se estructuran en dos etapas fundamentales: la extracción manual de características y la clasificación mediante algoritmos de aprendizaje supervisado.
+El diagnóstico asistido por computadora en mamografía tiene sus orígenes en los sistemas CAD (Computer-Aided Detection/Diagnosis) desarrollados desde la década de 1990, cuyo objetivo era reducir la variabilidad inter-observador en la interpretación radiológica y apoyar la detección temprana de lesiones. Estos sistemas clásicos se estructuran en dos etapas fundamentales: la extracción manual de características y la clasificación mediante algoritmos de aprendizaje supervisado.
 
 \textbf{Extracción de características en mamografía}
 
@@ -707,7 +713,7 @@ El clasificador de mayor uso en este dominio ha sido la Máquina de Vectores de 
 El Random Forest (RF) ha constituido la segunda alternativa más frecuente, seguido de redes neuronales artificiales poco profundas (ANN/MLP), k-Nearest Neighbors (k-NN) y Naive Bayes. Al comparar el desempeño de SVM, RF, ANN, NB y DT para clasificación benigno/maligno en imágenes mamográficas con características GLCM y GLRLM, los métodos SVM, RF y ANN mostraron el mejor desempeño en métricas de accuracy, sensibilidad y AUC; el rendimiento de los modelos fue sensible a la combinación de algoritmos de preprocesamiento aplicados antes de la extracción de características. \cite{Avci2023MammographyEnhancement}
 
 
-\textbf{Alccances y limitaciones del enfoque clásico}
+\textbf{Alcances y limitaciones del enfoque clásico}
 
 El ML clásico en mamografía ha alcanzado resultados notables en condiciones controladas. Una evaluación sistemática de pipelines CNN, SVM y XGBoost sobre el dataset CBIS-DDSM reportó que una CNN (ResNet-50) alcanzó el mejor desempeño con AUC-ROC de 0.95 y sensibilidad de 89\%, seguido de XGBoost con AUC-ROC de 0.90, mientras que SVM obtuvo AUC-ROC de 0.84. \cite{Anez2025AIPipeline}
 
@@ -790,9 +796,9 @@ Qiskit, es el framework de código abierto de IBM para computación cuántica, p
 % -----------------------------------------------------------
 % 2.1.4 Modelos híbridos cuántico.clasico en el sector salud
 % -----------------------------------------------------------
-\subsubsection{Modelos híbridos-cuántico.clasico en el sector salud}
+\subsubsection{Modelos híbridos cuántico-clasico en el sector salud}
 
-La aplicación de arquitecturas híbridas cuántico-clásicas en diagnóstico médico por imagen es una línea de investigación activa. Una revisión sistemática de 28 estudios publicados entre 2018 y 2024 reporta el uso prevalente de QSVM, QCNN y modelos híbridos cuántico-clásicos en aplicaciones que incluyen clasificación de tumores cerebrales, lesiones cutáneas y detección de COVID-19, demostrando resultados prometedores en accuracy, sensibilidad y especificidad; sin embargo, se identifican retos constantes en la codificación de imágenes médicas para procesamiento cuántico, la escalabilidad limitada del hardware actual y la necesidad de modelos con una mejor interpretación. \cite{Radhi2025QuantumDeepLearning}
+La aplicación de arquitecturas híbridas cuántico-clásicas en diagnóstico médico por imagen es una línea de investigación activa. Una revisión sistemática de 28 estudios publicados entre 2018 y 2024 reporta el uso prevalente de QSVM, QCNN y modelos híbridos cuántico-clásicos en aplicaciones que incluyen clasificación de tumores cerebrales, lesiones cutáneas y detección de COVID-19, demostrando resultados prometedores en accuracy, sensibilidad y especificidad; sin embargo, se identifican retos constantes en la codificación de imágenes médicas para procesamiento cuántico, la escalabilidad limitada del hardware actual y la necesidad de modelos con una mejor interpretación. \cite {Radhi2025QuantumDeepLearning}
 
 \textbf{Aplicaciones específicas en cáncer de mama}
 
@@ -823,6 +829,12 @@ La revisión de la literatura no ha identificado ningún trabajo publicado que a
 % 2.1.6 Tabla comparativa y brechaa identificadas
 % -----------------------------------------------------------
 \subsubsection{Tabla comparativa y brechas identificadas}
+
+La tabla \ref{tab:estado_arte} resume los trabajos revisados en las secciones 2.1.1 a 2.1.5 a lo largo de ocho caractericticas relevantes para el presente trabajo.
+La intersección de tres condiciones simultáneas (circuito cuántico variacional real, dataset CBIS-DDSM con imágenes DICOM, y análisis explícito de separabilidad diferenciado por tipo de hallazgo) no está cubierta por ningún trabajo publicado en la literatura revisada. Esta triple intersección define la contribución del presente trabajo.
+Adicionalmente, el presente trabajo introduce una cuarta característica no presente en ninguno de los trabajos anteriores, el uso de Qiskit con ZZFeatureMap y PauliFeatureMap como componente de embedding, en contraste con el uso exclusivo de PennyLane con angle embedding en los únicos trabajos de QML real en imagen médica disponibles. Esto aporta evidencia comparativa sobre el comportamiento de distintos frameworks y feature maps en este dominio clínico específico.
+
+
 
 \begin{landscape}
 \begin{table}[htbp]
@@ -960,12 +972,6 @@ Inspirado = algoritmo cuántico-inspirado sin circuitos cuánticos reales;\quad
 --- = no reportado o no aplica.
 \end{table}
 \end{landscape}
-
-
-La tabla anterior resume los trabajos revisados en las secciones 2.1.1 a 2.1.5 a lo largo de ocho caractericticas relevantes para el presente trabajo.
-La intersección de tres condiciones simultáneas (circuito cuántico variacional real, dataset CBIS-DDSM con imágenes DICOM, y análisis explícito de separabilidad diferenciado por tipo de hallazgo) no está cubierta por ningún trabajo publicado en la literatura revisada. Esta triple intersección define la contribución del presente trabajo.
-Adicionalmente, el presente trabajo introduce una cuarta característica no presente en ninguno de los trabajos anteriores, el uso de Qiskit con ZZFeatureMap y PauliFeatureMap como componente de embedding, en contraste con el uso exclusivo de PennyLane con angle embedding en los únicos trabajos de QML real en imagen médica disponibles. Esto aporta evidencia comparativa sobre el comportamiento de distintos frameworks y feature maps en este dominio clínico específico.
-
 
 % -----------------------------------------------------------
 % 3. MARCO TEÓRICO
@@ -2001,364 +2007,30 @@ comparar un número pequeño de condiciones ($n = 5$).
 \newpage
 \section{Metodología}
 
+La metodología adoptada en el presente trabajo es
+\textbf{CRISP-DM} (\textit{Cross Industry Standard Process
+for Data Mining}), adaptada al contexto de cómputo cuántico.
+Esta metodología fue seleccionada por proporcionar un flujo
+estructurado que permite integrar de forma natural
+tanto las etapas clásicas de análisis de datos como las
+etapas cuánticas de codificación y transformación,
+manteniendo trazabilidad entre los objetivos de negocio
+y las decisiones técnicas de implementación.
+
+La correspondencia entre las fases de CRISP-DM y los módulos
+del sistema se describe en la
+Tabla~\ref{tab:crisp_modulos}, y el diagrama completo del
+pipeline se presenta en la
+Figura~\ref{fig:pipeline_sistema}.
 % -----------------------------------------------------------
-% 4.1 Requerimientos del sistema
-% -----------------------------------------------------------
-\subsection{Requerimientos del sistema}
-
-El sistema desarrollado en el presente trabajo constituye un prototipo de 
-investigación cuyo diseño responde a restricciones tanto técnicas como 
-experimentales. Los requerimientos aquí presentados fueron definidos en 
-concordancia con los objetivos específicos del proyecto y con las 
-características del dataset CBIS-DDSM, y se organizan en requerimientos 
-funcionales, que describen las capacidades que el sistema debe proveer,
-y requerimientos no funcionales, que establecen las condiciones de calidad, 
-reproducibilidad y viabilidad bajo las cuales el sistema debe operar.
-
-
-% -----------------------------------------------------------
-% 4.1.1 Requerimientos funcionales
-% -----------------------------------------------------------
-\subsubsection{Requerimientos funcionales}
-
-Se presentan los requerimientos funcionales de mayor relevancia
-para justificar las decisiones de diseño del pipeline,
-organizados por las etapas que determinan la arquitectura
-del sistema. Cada requerimiento está identificado con un
-código RF-XX y vinculado al objetivo específico que lo origina.
-
-
-% Reemplaza el entorno table+tabularx por longtable
-
-\begingroup
-\renewcommand{\arraystretch}{1.35}
-\begin{longtable}{@{}lp{9.8cm}cc@{}}
-
-\caption{Requerimientos funcionales del sistema}
-\label{tab:req_funcionales} \\
-
-% ── Encabezado de la PRIMERA página
-\toprule
-\textbf{ID} & \textbf{Descripción} &
-\textbf{OE} & \textbf{Prior.} \\
-\midrule
-\endfirsthead
-
-% ── Encabezado de páginas SIGUIENTES
-\multicolumn{4}{c}{%
-  \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
-\toprule
-\textbf{ID} & \textbf{Descripción} &
-\textbf{OE} & \textbf{Prior.} \\
-\midrule
-\endhead
-
-% ── Pie de páginas intermedias
-\midrule
-\multicolumn{4}{r}{%
-  \small\textit{Continúa en la siguiente página}} \\
-\endfoot
-
-% ── Pie de la ÚLTIMA página
-\bottomrule
-\endlastfoot
-
-% ════════════════════════════════════════════════
-% CONTENIDO — igual que antes
-% ════════════════════════════════════════════════
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 1 -- Lectura de datos}} \\[2pt]
-
-RF-01 &
-Leer archivos DICOM del dataset CBIS-DDSM mediante
-\texttt{pydicom}, extrayendo el arreglo de píxeles en
-16 bits y los metadatos clínicos.
-& OE-1 & Alta \\
-
-RF-02 &
-Unificar los cuatro archivos CSV del dataset en un
-DataFrame consolidado con etiqueta binaria
-(BENIGN\,=\,0 / MALIGNANT\,=\,1).
-& OE-1 & Alta \\
-
-RF-03 &
-Tratar de forma independiente masas y calcificaciones
-como subproblemas de clasificación independientes.
-& OE-1, OE-3 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 2 -- Preprocesamiento}} \\[2pt]
-
-RF-04 &
-Normalizar los arreglos de píxeles DICOM de 16 bits
-al rango $[0.0, 1.0]$ en \texttt{float32}.
-& OE-1 & Alta \\
-
-RF-05 &
-Aplicar CLAHE mediante OpenCV para mejorar la
-visibilidad de estructuras en tejidos de alta densidad.
-& OE-1 & Alta \\
-
-RF-06 &
-Recortar la ROI usando las máscaras binarias del
-dataset y redimensionar a 224$\times$224 píxeles.
-& OE-1 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 3 -- Extracción de características}} \\[2pt]
-
-RF-07 &
-Extraer features mediante: (a) PyRadiomics; o (b) CNN encoder
-preentrenado (ResNet-18 / EfficientNet-B0).
-& OE-1 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 4 -- Selección y escalado}} \\[2pt]
-
-RF-08 &
-Seleccionar las $k$ características más discriminativas
-mediante SelectKBest
-($k = n_{\text{qubits}} \in [8,16]$).
-& OE-1, OE-2 & Alta \\
-
-RF-09 &
-Escalar al rango $[0,\pi]$ mediante MinMaxScaler para
-compatibilidad con los ángulos del circuito cuántico.
-& OE-1, OE-2 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 5 -- Transformación (5 condiciones)}} \\[2pt]
-
-RF-10 &
-\textit{Baseline} crudo: vector seleccionado y escalado
-directo al MLP sin transformación adicional.
-& OE-2 & Alta \\
-
-RF-11 &
-\textit{Baseline} lineal: PCA sobre el vector
-seleccionado y escalado, conservando $k$ componentes.
-& OE-2 & Alta \\
-
-RF-12 &
-\textit{Baseline} no lineal: Kernel PCA con kernel RBF sobre el vector seleccionado.
-& OE-2 & Alta \\
-
-RF-13 &
-Condición cuántica ZZFeatureMap: VQC con ZZFeatureMap
-de segundo orden $+$ RealAmplitudes en Qiskit Aer,
-retornando $\langle Z_i\rangle \in [-1,1]^k$.
-& OE-2 & Alta \\
-
-RF-14 &
-Condición cuántica PauliFeatureMap: VQC con
-PauliFeatureMap (operadores X, Y, Z) $+$ RealAmplitudes
-en Qiskit Aer, evaluado independientemente de RF-13.
-& OE-2 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Análisis de separabilidad}} \\[2pt]
-
-RF-15 &
-Calcular la matriz de kernel cuántico sobre submuestra
-de 150--200 casos y computar KTA respecto al kernel
-ideal.
-& OE-3 & Alta \\
-
-RF-16 &
-Calcular \textit{geometric difference}
-$g(K_C,K_Q)=\sqrt{\|\sqrt{K_C}\,K_Q^{-1}\sqrt{K_C}
-\|_\infty}$ entre kernel cuántico y kernel RBF clásico.
-& OE-3 & Alta \\
-
-RF-17 &
-Medir Davies-Bouldin y distancia Fisher por condición, separado para masas y calcificaciones.
-& OE-3 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 6 -- Clasificación}} \\[2pt]
-
-RF-18 &
-Entrenar el mismo MLP (mínimo 2 capas ocultas)
-en las 5 condiciones con idéntica arquitectura e
-hiperparámetros
-& OE-4 & Alta \\
-
-RF-19 &
-Entrenar con ponderación de clases
-(\texttt{class\_weight=`balanced'}) para compensar el
-desbalance observado (ratio 1.78:1 en calcificaciones).
-& OE-4 & Alta \\
-
-\multicolumn{4}{@{}l}{%
-  \cellcolor{gray!10}\small\textit{%
-  Módulo 7 -- Evaluación comparativa}} \\[2pt]
-
-RF-20 &
-Reportar AUC-ROC, F1-Score, Accuracy, Precision y
-Recall por condición, separado para masas y
-calcificaciones.
-& OE-5 & Alta \\
-
-RF-21 &
-Analizar la correlación entre ranking de separabilidad
-(OE-3) y ranking de clasificación (OE-5).
-& OE-5 & Alta \\
-
-RF-22 &
-Documentar restricciones del simulador: tiempo por
-muestra, qubits máximos, impacto de \textit{shots} y
-costo del \textit{parameter-shift}.
-& OE-6 & Alta \\
-
-\end{longtable}
-\endgroup
-
-% -----------------------------------------------------------
-% 4.1.2 Requerimientos no funcionales
-% -----------------------------------------------------------
-\subsubsection{Requerimientos no funcionales}
-
-Los requerimientos no funcionales establecen las condiciones
-bajo las cuales el sistema debe operar para garantizar la
-validez científica y reproducibilidad de los resultados.
-
-\begingroup
-\renewcommand{\arraystretch}{1.35}
-\begin{longtable}{@{}llp{9.5cm}@{}}
-
-\caption{Requerimientos no funcionales del sistema}
-\label{tab:req_no_funcionales} \\
-
-\toprule
-\textbf{ID} & \textbf{Categoría} &
-\textbf{Descripción} \\
-\midrule
-\endfirsthead
-
-\multicolumn{3}{c}{%
-  \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
-\toprule
-\textbf{ID} & \textbf{Categoría} &
-\textbf{Descripción} \\
-\midrule
-\endhead
-
-\midrule
-\multicolumn{3}{r}{%
-  \small\textit{Continúa en la siguiente página}} \\
-\endfoot
-
-\bottomrule
-\endlastfoot
-
-RNF-01 & Reproducibilidad &
-Fijar semillas aleatorias en \texttt{numpy},
-\texttt{PyTorch} y \texttt{Qiskit} al inicio de cada
-experimento para garantizar resultados idénticos
-entre ejecuciones. \\
-
-RNF-02 & Reproducibilidad &
-Centralizar hiperparámetros en \texttt{config.yaml} con control de
-versiones. \\
-
-RNF-03 & Reproducibilidad &
-Usar la partición train/test estándar del CBIS-DDSM
-(80\,\%/20\,\%, estratificada por BI-RADS) sin
-reordenamiento, aplicada idénticamente a las 5
-condiciones. \\
-
-RNF-04 & Reproducibilidad &
-Aplicar SelectKBest entrenado solo sobre el conjunto
-de entrenamiento para transformar el conjunto de
-prueba, previniendo \textit{data leakage}. \\
-
-RNF-05 & Rendimiento &
-Configurar Qiskit Aer con \textit{shots}
-$\geq 1024$ para estabilidad de
-$\langle Z_i\rangle$, documentando el impacto de
-distintas configuraciones. \\
-
-RNF-06 & Rendimiento &
-Calcular la matriz de kernel cuántico sobre submuestra
-de 150--200 casos por subconjunto para viabilidad
-computacional del cálculo $O(N^2)$ de
-\textit{geometric difference} y KTA. \\
-
-RNF-07 & Escalabilidad &
-Circuito parametrizable: $k \in [8,16]$,
-feature map (ZZFeatureMap / PauliFeatureMap),
-\texttt{reps} $\in [1,6]$,
-\textit{shots} $\in [512, 8192]$. \\
-
-RNF-08 & Mantenibilidad &
-Código PEP\,8 con \textit{docstrings} por función,
-organizado en módulos M1--M7 independientes. \\
-
-RNF- 9 & Propiedad intelectual &
-Registro del trabajo en INDAUTOR. \\
-
-\end{longtable}
-\endgroup
-
-% -----------------------------------------------------------
-% 4.2 Descripción general del proceso
+% 4.1 Descripción general del proceso
 % -----------------------------------------------------------
 \subsection{Descripción general del proceso}
 
-%% ── ESTILOS (agregar o reemplazar en el preámbulo) ──────────
-\tikzset{
-  blk/.style={
-    rectangle, rounded corners=5pt,
-    text width=10cm, minimum height=1.1cm,
-    align=center, inner sep=6pt,
-    font=\small\bfseries,
-    draw=#1!60, fill=#1!10
-  },
-  blkTeal/.style  = {blk=colTeal},
-  blkCoral/.style = {blk=colCoral},
-  blkAmber/.style = {blk=colAmber},
-  blkGray/.style  = {
-    rectangle, rounded corners=5pt,
-    text width=10cm, minimum height=1.1cm,
-    align=center, inner sep=6pt,
-    font=\small\bfseries,
-    draw=colGray!60, fill=colGrayBg
-  },
-  %% condición clásica
-  cond/.style={
-    rectangle, rounded corners=4pt,
-    text width=1.85cm, minimum height=1.8cm,
-    align=center, inner sep=4pt,
-    font=\scriptsize\bfseries,
-    draw=colGray!50, fill=colGrayBg
-  },
-  %% condición cuántica (destacada)
-  condQ/.style={
-    rectangle, rounded corners=5pt,
-    text width=1.95cm, minimum height=2.0cm,
-    align=center, inner sep=4pt,
-    font=\scriptsize\bfseries,
-    draw=colPurp!70, fill=colPurpBg,
-    line width=0.8pt
-  },
-  arr/.style={
-    -{Stealth[length=4pt, width=4pt]},
-    line width=0.6pt, color=colGray
-  }
-}
-
 %% ── FIGURA ──────────────────────────────────────────────────
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.5cm and 0.3cm]
+\begin{tikzpicture}[every node/.style={scale=0.7}, node distance=0.5cm and 0.3cm]
 
 %% ── 1. DATASET
 \node[blkGray] (ds) {%
@@ -2559,21 +2231,307 @@ Registro del trabajo en INDAUTOR. \\
 \end{figure}
 
 
-La metodología adoptada en el presente trabajo es
-\textbf{CRISP-DM} (\textit{Cross Industry Standard Process
-for Data Mining}), adaptada al contexto de cómputo cuántico.
-Esta metodología fue seleccionada por proporcionar un flujo
-estructurado que permite integrar de forma natural
-tanto las etapas clásicas de análisis de datos como las
-etapas cuánticas de codificación y transformación,
-manteniendo trazabilidad entre los objetivos de negocio
-y las decisiones técnicas de implementación.
+% -----------------------------------------------------------
+% 4.2 Requerimientos del sistema
+% -----------------------------------------------------------
+\subsection{Requerimientos del sistema}
 
-La correspondencia entre las fases de CRISP-DM y los módulos
-del sistema se describe en la
-Tabla~\ref{tab:crisp_modulos}, y el diagrama completo del
-pipeline se presenta en la
-Figura~\ref{fig:pipeline_sistema}.
+El sistema desarrollado en el presente trabajo constituye un prototipo de 
+investigación cuyo diseño responde a restricciones tanto técnicas como 
+experimentales. Los requerimientos aquí presentados fueron definidos en 
+concordancia con los objetivos específicos del proyecto y con las 
+características del dataset CBIS-DDSM, y se organizan en requerimientos 
+funcionales, que describen las capacidades que el sistema debe proveer,
+y requerimientos no funcionales, que establecen las condiciones de calidad, 
+reproducibilidad y viabilidad bajo las cuales el sistema debe operar.
+
+
+% -----------------------------------------------------------
+% 4.2.1 Requerimientos funcionales
+% -----------------------------------------------------------
+\subsubsection{Requerimientos funcionales}
+
+Se presentan los requerimientos funcionales de mayor relevancia
+para justificar las decisiones de diseño del pipeline,
+organizados por las etapas que determinan la arquitectura
+del sistema. Cada requerimiento está identificado con un
+código RF-XX y vinculado al objetivo específico que lo origina.
+
+
+\begingroup
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}lp{9.8cm}cc@{}}
+
+\caption{Requerimientos funcionales del sistema}
+\label{tab:req_funcionales} \\
+
+% ── Encabezado de la PRIMERA página
+\toprule
+\textbf{ID} & \textbf{Descripción} &
+\textbf{OE} & \textbf{Prior.} \\
+\midrule
+\endfirsthead
+
+% ── Encabezado de páginas SIGUIENTES
+\multicolumn{4}{c}{%
+  \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
+\toprule
+\textbf{ID} & \textbf{Descripción} &
+\textbf{OE} & \textbf{Prior.} \\
+\midrule
+\endhead
+
+% ── Pie de páginas intermedias
+\midrule
+\multicolumn{4}{r}{%
+  \small\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+% ── Pie de la ÚLTIMA página
+\bottomrule
+\endlastfoot
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 1 -- Lectura de datos}} \\[2pt]
+
+RF-01 &
+Leer archivos DICOM del dataset CBIS-DDSM mediante
+\texttt{pydicom}, extrayendo el arreglo de píxeles en
+16 bits y los metadatos clínicos.
+& OE-1 & Alta \\
+
+RF-02 &
+Unificar los cuatro archivos CSV del dataset en un
+DataFrame consolidado con etiqueta binaria
+(BENIGN\,=\,0 / MALIGNANT\,=\,1).
+& OE-1 & Alta \\
+
+RF-03 &
+Tratar de forma independiente masas y calcificaciones
+como subproblemas de clasificación independientes.
+& OE-1, OE-3 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 2 -- Preprocesamiento}} \\[2pt]
+
+RF-04 &
+Normalizar los arreglos de píxeles DICOM de 16 bits
+al rango $[0.0, 1.0]$ en \texttt{float32}.
+& OE-1 & Alta \\
+
+RF-05 &
+Aplicar CLAHE mediante OpenCV para mejorar la
+visibilidad de estructuras en tejidos de alta densidad.
+& OE-1 & Alta \\
+
+RF-06 &
+Recortar la ROI usando las máscaras binarias del
+dataset y redimensionar a 224$\times$224 píxeles.
+& OE-1 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 3 -- Extracción de características}} \\[2pt]
+
+RF-07 &
+Extraer features mediante: (a) PyRadiomics; o (b) CNN encoder
+preentrenado (ResNet-18 / EfficientNet-B0).
+& OE-1 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 4 -- Selección y escalado}} \\[2pt]
+
+RF-08 &
+Seleccionar las $k$ características más discriminativas
+mediante SelectKBest
+($k = n_{\text{qubits}} \in [8,16]$).
+& OE-1, OE-2 & Alta \\
+
+RF-09 &
+Escalar al rango $[0,\pi]$ mediante MinMaxScaler para
+compatibilidad con los ángulos del circuito cuántico.
+& OE-1, OE-2 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 5 -- Transformación (5 condiciones)}} \\[2pt]
+
+RF-10 &
+\textit{Baseline} crudo: vector seleccionado y escalado
+directo al MLP sin transformación adicional.
+& OE-2 & Alta \\
+
+RF-11 &
+\textit{Baseline} lineal: PCA sobre el vector
+seleccionado y escalado, conservando $k$ componentes.
+& OE-2 & Alta \\
+
+RF-12 &
+\textit{Baseline} no lineal: Kernel PCA con kernel RBF sobre el vector seleccionado.
+& OE-2 & Alta \\
+
+RF-13 &
+Condición cuántica ZZFeatureMap: VQC con ZZFeatureMap
+de segundo orden $+$ RealAmplitudes en Qiskit Aer,
+retornando $\langle Z_i\rangle \in [-1,1]^k$.
+& OE-2 & Alta \\
+
+RF-14 &
+Condición cuántica PauliFeatureMap: VQC con
+PauliFeatureMap (operadores X, Y, Z) $+$ RealAmplitudes
+en Qiskit Aer, evaluado independientemente de RF-13.
+& OE-2 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Análisis de separabilidad}} \\[2pt]
+
+RF-15 &
+Calcular la matriz de kernel cuántico sobre submuestra
+de 150--200 casos y computar KTA respecto al kernel
+ideal.
+& OE-3 & Alta \\
+
+RF-16 &
+Calcular \textit{geometric difference}
+$g(K_C,K_Q)=\sqrt{\|\sqrt{K_C}\,K_Q^{-1}\sqrt{K_C}
+\|_\infty}$ entre kernel cuántico y kernel RBF clásico.
+& OE-3 & Alta \\
+
+RF-17 &
+Medir Davies-Bouldin y distancia Fisher por condición, separado para masas y calcificaciones.
+& OE-3 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 6 -- Clasificación}} \\[2pt]
+
+RF-18 &
+Entrenar el mismo MLP (mínimo 2 capas ocultas)
+en las 5 condiciones con idéntica arquitectura e
+hiperparámetros
+& OE-4 & Alta \\
+
+RF-19 &
+Entrenar con ponderación de clases
+(\texttt{class\_weight=`balanced'}) para compensar el
+desbalance observado (ratio 1.78:1 en calcificaciones).
+& OE-4 & Alta \\
+
+\multicolumn{4}{@{}l}{%
+  \cellcolor{gray!10}\small\textit{%
+  Módulo 7 -- Evaluación comparativa}} \\[2pt]
+
+RF-20 &
+Reportar AUC-ROC, F1-Score, Accuracy, Precision y
+Recall por condición, separado para masas y
+calcificaciones.
+& OE-5 & Alta \\
+
+RF-21 &
+Analizar la correlación entre ranking de separabilidad
+(OE-3) y ranking de clasificación (OE-5).
+& OE-5 & Alta \\
+
+RF-22 &
+Documentar restricciones del simulador: tiempo por
+muestra, qubits máximos, impacto de \textit{shots} y
+costo del \textit{parameter-shift}.
+& OE-6 & Alta \\
+
+\end{longtable}
+\endgroup
+
+% -----------------------------------------------------------
+% 4.2.2 Requerimientos no funcionales
+% -----------------------------------------------------------
+\subsubsection{Requerimientos no funcionales}
+
+Los requerimientos no funcionales establecen las condiciones
+bajo las cuales el sistema debe operar para garantizar la
+validez científica y reproducibilidad de los resultados.
+
+\begingroup
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}llp{9.5cm}@{}}
+
+\caption{Requerimientos no funcionales del sistema}
+\label{tab:req_no_funcionales} \\
+
+\toprule
+\textbf{ID} & \textbf{Categoría} &
+\textbf{Descripción} \\
+\midrule
+\endfirsthead
+
+\multicolumn{3}{c}{%
+  \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
+\toprule
+\textbf{ID} & \textbf{Categoría} &
+\textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{%
+  \small\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+RNF-01 & Reproducibilidad &
+Fijar semillas aleatorias en \texttt{numpy},
+\texttt{PyTorch} y \texttt{Qiskit} al inicio de cada
+experimento para garantizar resultados idénticos
+entre ejecuciones. \\
+
+RNF-02 & Reproducibilidad &
+Centralizar hiperparámetros en \texttt{config.yaml} con control de
+versiones. \\
+
+RNF-03 & Reproducibilidad &
+Usar la partición train/test estándar del CBIS-DDSM
+(80\,\%/20\,\%, estratificada por BI-RADS) sin
+reordenamiento, aplicada idénticamente a las 5
+condiciones. \\
+
+RNF-04 & Reproducibilidad &
+Aplicar SelectKBest entrenado solo sobre el conjunto
+de entrenamiento para transformar el conjunto de
+prueba, previniendo \textit{data leakage}. \\
+
+RNF-05 & Rendimiento &
+Configurar Qiskit Aer con \textit{shots}
+$\geq 1024$ para estabilidad de
+$\langle Z_i\rangle$, documentando el impacto de
+distintas configuraciones. \\
+
+RNF-06 & Rendimiento &
+Calcular la matriz de kernel cuántico sobre submuestra
+de 150--200 casos por subconjunto para viabilidad
+computacional del cálculo $O(N^2)$ de
+\textit{geometric difference} y KTA. \\
+
+RNF-07 & Escalabilidad &
+Circuito parametrizable: $k \in [8,16]$,
+feature map (ZZFeatureMap / PauliFeatureMap),
+\texttt{reps} $\in [1,6]$,
+\textit{shots} $\in [512, 8192]$. \\
+
+RNF-08 & Mantenibilidad &
+Código PEP\,8 con \textit{docstrings} por función,
+organizado en módulos M1--M7 independientes. \\
+
+RNF- 9 & Propiedad intelectual &
+Registro del trabajo en INDAUTOR. \\
+
+\end{longtable}
+\endgroup
+
 
 \begin{table}[H]
 \centering
@@ -2965,6 +2923,7 @@ dominios de imagen médica de alta complejidad.
 % -----------------------------------------------------------
 % 7. Análisis Exploratorio de Datos
 % -----------------------------------------------------------
+\newpage
 \section{Análisis Exploratorio de Datos}
 
 El análisis exploratorio de datos (EDA) se realizó sobre
@@ -3303,7 +3262,7 @@ completas en la muestra analizada.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]
+  \includegraphics[width=0.8\textwidth]
     {Figures/D1_image_dimensions.png}
   \caption{Distribución de dimensiones (altura y
            anchura en píxeles) de las mamografías
@@ -3395,7 +3354,7 @@ centrada en la lesión.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]
+  \includegraphics[width=0.4\textwidth]
     {Figures/D4_sample_gallery.png}
   \caption{Galería de casos representativos:
            mamografía completa, máscara ROI e imagen
@@ -3434,8 +3393,7 @@ dentro de la mamografía completa, validando su
 uso como guía para el recorte en el preprocesamiento.
 
 % -----------------------------------------------------------
-\subsection{Hallazgos principales y consideraciones
-            para el modelado}
+\subsection{Hallazgos principales}
 % -----------------------------------------------------------
 
 El análisis exploratorio permite identificar los
@@ -3479,8 +3437,7 @@ incompatibles con entrada directa al circuito
 cuántico. El trabajo con imágenes recortadas de
 ROI (224\,$\times$\,224 píxeles) seguido de
 extracción de características y selección de $k$
-features es la única estrategia viable para el
-régimen de simulación cuántica disponible.
+features es la estrategia viable para la simulación cuántica disponible.
 
 \item \textbf{Convención fotométrica uniforme.}
 La totalidad del dataset utiliza MONOCHROME2,
@@ -3491,7 +3448,141 @@ normalización de intensidades.
 \end{enumerate}
 
 
+% ============================================================
+% SECCIÓN: RESULTADOS
+% ============================================================
+\newpage
+\section{Resultados}
+\addcontentsline{toc}{section}{Resultados}
 
+Los resultados experimentales del presente trabajo serán
+obtenidos durante la segunda etapa del Trabajo Terminal
+(TT2), correspondiente a la implementación y evaluación
+del pipeline híbrido cuántico-clásico diseñado en TT1.
+
+
+% ============================================================
+% SECCIÓN: CONCLUSIONES
+% ============================================================
+\newpage
+\section{Conclusiones}
+\addcontentsline{toc}{section}{Conclusiones}
+
+La primera etapa del presente Trabajo Terminal (TT1)
+permitió establecer los fundamentos teóricos, metodológicos
+y experimentales del sistema híbrido cuántico-clásico
+propuesto. A continuación se presentan los hallazgos y
+aprendizajes más relevantes de esta fase.
+
+\subsection{Hallazgos del análisis exploratorio}
+
+El análisis exploratorio del dataset CBIS-DDSM reveló
+tres hallazgos de impacto directo sobre el diseño
+experimental. Primero, el desbalance de clases es
+heterogéneo entre subconjuntos (ratio 1.16:1 para masas
+vs.\ 1.78:1 para calcificaciones), lo que exige estrategias
+de entrenamiento independientes para cada tipo de hallazgo.
+Segundo, las masas presentan patrones morfológicos
+claramente diferenciados entre clases (IRREGULAR/SPICULATED
+vs.\ OVAL/CIRCUMSCRIBED), prediciendo alta separabilidad
+en el espacio de representación; las calcificaciones, en
+cambio, comparten el tipo morfológico más frecuente
+(PLEOMORPHIC) entre ambas clases, constituyendo el
+escenario de mayor complejidad para los quantum embeddings.
+Tercero, las variables clínicas numéricas del CSV
+(\texttt{breast\_density}, \texttt{subtlety}) presentan
+correlación prácticamente nula con la patología, validando
+la decisión de extraer características directamente de las
+imágenes DICOM mediante PyRadiomics.
+
+\subsection{Decisiones metodológicas aprendidas}
+
+El proceso de diseño del pipeline generó tres decisiones
+metodológicas de alta relevancia. La primera
+fue la sustitución de PCA como etapa previa al circuito
+cuántico por la combinación de SelectKBest y MinMaxScaler,
+eliminando una inconsistencia metodológica que habría
+comprometido la validez de la comparación experimental:
+el PCA hubiera introducido una transformación lineal
+adicional en la condición cuántica que no estaría presente
+en los baselines clásicos. La segunda fue la separación
+de ZZFeatureMap y PauliFeatureMap como condiciones
+experimentales independientes, permitiendo comparar el
+impacto del diseño del \textit{feature map} de forma
+aislada. La tercera fue la incorporación de la
+\textit{geometric difference} como métrica formal de
+ventaja cuántica potencial, lo que sitúa el análisis de
+separabilidad en el marco teórico establecido por Huang
+et al.\ (2021) y permite responder directamente si el
+espacio cuántico captura estructura inaccesible para el
+mejor kernel clásico.
+
+
+% ============================================================
+% SECCIÓN: TRABAJO A FUTURO
+% ============================================================
+\newpage
+\section{Trabajo a Futuro}
+\addcontentsline{toc}{section}{Trabajo a Futuro}
+
+\subsection{Actividades planificadas para TT2}
+
+La segunda etapa del Trabajo Terminal comprende la
+implementación, experimentación y evaluación del pipeline
+diseñado en TT1. Las actividades se organizan en cuatro
+fases secuenciales:
+
+\textbf{Fase 1: Implementación del pipeline de
+preprocesamiento (Módulos 2--4).}
+Desarrollo y validación del código de preprocesamiento
+de imágenes DICOM,
+extracción de features radiómicas mediante PyRadiomics
+sobre los subconjuntos de masas y calcificaciones del
+CBIS-DDSM, y construcción del pipeline de selección
+(SelectKBest) y escalado angular (MinMaxScaler) compartido
+por las cinco condiciones experimentales.
+
+\textbf{Fase 2: Diseño e implementación de la
+transformación cuántica (Módulo 5).}
+Implementación de los circuitos VQC con ZZFeatureMap
+y PauliFeatureMap en Qiskit 2.x, validación de la
+ejecución en el simulador Qiskit Aer (AerSimulator),
+y pruebas de profundidad y recursos computacionales
+para determinar el número óptimo de qubits y capas
+variacionales dentro de las restricciones del hardware
+disponible.
+
+\textbf{Fase 3: Generación de embeddings y análisis
+de separabilidad.}
+Generación de los vectores de embeddings cuánticos
+$\langle Z_i\rangle$ para todos los casos del dataset,
+cálculo de las métricas de separabilidad y visualizaciones t-SNE, aplicados de forma
+independiente para masas y calcificaciones.
+
+\textbf{Fase 4: Entrenamiento, evaluación y
+documentación de resultados (Módulos 6--7).}
+Entrenamiento del clasificador MLP sobre las cinco
+condiciones experimentales, cálculo de métricas de
+clasificación, análisis de correlación Spearman entre
+separabilidad y clasificación, documentación cuantitativa
+de las restricciones del simulador, y redacción del
+reporte técnico final con registro INDAUTOR.
+
+\subsection{Cronograma general del Trabajo Terminal}
+
+La Figura~\ref{fig:cronograma} presenta el cronograma
+completo del proyecto, abarcando ambas etapas del
+Trabajo Terminal.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Figures/cronograma.jpeg}
+  \caption{Cronograma general del Trabajo Terminal
+           No.\ 2026-B039. Las actividades sombreadas
+           corresponden a TT1 (completadas); las
+           actividades restantes corresponden a TT2.}
+  \label{fig:cronograma}
+\end{figure}
 
 
 % ============================================================
@@ -3765,6 +3856,12 @@ normalización de intensidades.
     van Griethuysen, J. J. M., et al. (2017). Computational radiomics system to decode the radiographic phenotype.
     \textit{Cancer Research}, 77(21), e104--e107.
     \url{https://doi.org/10.1158/0008-5472.CAN-17-0339}
+
+  % --- Referencia 46: IBM Quantum Learning - Basics of Quantum Information ---
+  \bibitem{ibmquantum2024learning}
+  IBM Quantum. (2024). Basics of quantum information.
+  IBM Quantum Learning.
+  \url{https://learning.quantum.ibm.com/course/basics-of-quantum-information}  
 
 \end{thebibliography}
 
