@@ -32,6 +32,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-009 | 2026-08-25 | Sin resize a 224×224 en la ruta radiómica | M2 | Firme | §4.4, §8.x |
 | D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Provisional | §4.4 |
 | D-011 | 2026-08-25 | Unidad de análisis = lesión/ROI, no paciente | M4 | Provisional | §4.6 |
+| D-012 | 2026-09-21 | Descargar por la API REST de TCIA, no con NBIA Data Retriever | M1 | Firme | §8.x |
 
 ### Hallazgos
 
@@ -46,6 +47,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-007 | 2026-08-25 | `binWidth` sobre 16 bits: 38 h contra 8 min | Justifica D-008 |
 | H-008 | 2026-08-24 | 2.28 ROIs por paciente; 56 pacientes con ambas etiquetas | Obliga a declarar la unidad de análisis |
 | H-009 | 2026-08-24 | Defectos verificables en el PDF de TT1 | Lista de correcciones para la Fase 7 |
+| H-010 | 2026-09-21 | El manifiesto NBIA original nunca se guardó y la vía oficial de descarga falla | Justifica D-012; reproducibilidad del dataset |
+| H-011 | 2026-09-21 | El entrenamiento conjunto VQC↔MLP no escala más allá de k=8 | Obliga a decidir Q-007; RNF-07 es inalcanzable tal como está |
 
 ### Preguntas abiertas
 
@@ -57,6 +60,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-004 | ¿Azevedo et al. (2022) o Incudini et al. (2022)? | Fase 7 | 3 nov |
 | Q-005 | ¿Validación cruzada o justificación de su ausencia? | Fase 6 | 23 oct |
 | Q-006 | ¿Qué k y reps finales? | Fase 3 | 11 sep |
+| Q-007 | ¿Entrenamiento conjunto o embedding precomputado? | Fases 4 y 5 | 25 sep |
 
 ---
 
@@ -143,6 +147,27 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 
 ---
 
+### D-012 · Descargar por la API REST de TCIA, no con NBIA Data Retriever
+**Fecha:** 2026-09-21 · **Módulo:** M1 · **Estado:** Firme · **→ Reporte:** §8.x
+
+**Contexto.** Faltaban 84 series del dataset (H-001) y la vía oficial de descarga no funcionaba (H-010).
+
+**Alternativas.**
+- *Relanzar el manifiesto original* — imposible: nunca se guardó.
+- *Reconstruir un manifiesto `.tcia`* — se hizo, con los `Series UID` de `metadata.csv`, pero el Data Retriever lo rechaza con *"incorrect response from the server"*.
+- *Re-descargar el dataset completo* — descartada: son 148 GB y solo había 30 GB libres.
+- *Descargar por la API REST de TCIA* — **elegida**.
+
+**Decisión.** Un script pide cada serie a `nbia-api/services/v1/getImage?SeriesInstanceUID=…`, que devuelve un ZIP, extrae el `.dcm` y lo coloca en la carpeta que el índice del proyecto ya espera.
+
+**Por qué.** Descarga solo lo que falta (4.77 GB en vez de 148 GB), permite reintentos por serie y controla el nombre final del archivo, que es crítico: el ZIP entrega `00000001.dcm` mientras las rutas del índice esperan `1-1.dcm`. Con el nombre del ZIP, la descarga habría sido inútil.
+
+**Evidencia.** 84/84 series en 21.4 min, 0 fallidas. Cobertura verificada: **3,568 / 3,568 = 100.0 %**. Los DICOM nuevos leen con `pydicom` como MG de 16 bits en MONOCHROME2, consistentes con el resto.
+
+**Consecuencias.** El endpoint `v2/getImage` devuelve HTTP 500 y no sirve. El procedimiento queda como la forma reproducible de obtener el dataset y debe documentarse en §8.x, ya que el reporte no describe hoy cómo se obtuvieron los datos.
+
+---
+
 > Las decisiones **D-001 a D-006** se tomaron durante TT1 y ya están documentadas en el reporte (§7.2 · *Decisiones metodológicas aprendidas*). Se listan en el índice para tener la traza completa; si alguna se revisa en TT2, se le abre entrada propia aquí.
 
 ---
@@ -164,6 +189,8 @@ Usables (completa + máscara): 3482 / 3568 = 97.6 %
 Las 86 rutas rotas apuntan a **carpetas que existen pero están vacías**: descarga incompleta del NBIA Data Retriever, no un error del índice. Se corrige re-ejecutando el manifiesto.
 
 **Impacto.** Hay que corregir la cifra en §5.1 y re-validar antes de M2.
+
+**Resuelto el 2026-09-21.** Las 84 series se re-descargaron por la API de TCIA (ver D-012): 84/84 en 21.4 min, 0 fallidas. **Cobertura actual: 3,568 / 3,568 = 100.0 %**, verificada leyendo los DICOM nuevos con `pydicom` (MG, 16 bits, MONOCHROME2). La cifra del reporte de TT1 era falsa cuando se escribió, pero hoy sí es correcta.
 
 ---
 
@@ -273,6 +300,42 @@ Leer el DICOM completo cuesta 0.01 s: la E/S era irrelevante. El coste estaba en
 
 ---
 
+### H-010 · El manifiesto NBIA nunca se guardó y la vía oficial de descarga falla
+**Fecha:** 2026-09-21 · **→ Reporte:** §8.x
+
+No existe ningún archivo `.tcia` en el disco: la descarga original del dataset se hizo y el manifiesto no se conservó. Sin él, NBIA Data Retriever no arranca — la aplicación no tiene interfaz para elegir qué bajar, se lanza haciendo doble clic sobre el manifiesto.
+
+Reconstruir uno a partir de los `Series UID` de `metadata.csv` tampoco funcionó: el Data Retriever responde *"incorrect response from the server"*. El `downloadServerUrl` de un manifiesto apunta a un servlet cuyo protocolo no coincide con el de la API REST pública, aunque ese endpoint responda HTTP 200 por separado.
+
+**Impacto.** Justifica D-012. Es además un dato citable sobre reproducibilidad: la obtención del dataset no está documentada en ningún punto del reporte, y la ruta oficial de descarga no es reproducible hoy. Conviene añadir a §8.x el procedimiento real que sí funciona.
+
+---
+
+### H-011 · El entrenamiento conjunto VQC↔MLP no escala
+**Fecha:** 2026-09-21 · **→ Reporte:** §6.x, §8.x, OE-6
+
+Coste del *backward* por `parameter-shift`, medido con `StatevectorEstimator` exacto e `input_gradients=False`:
+
+| Configuración | backward | 50 épocas, ambos subconjuntos |
+|---|---|---|
+| k=8, reps=1 (16 pesos) | 548 ms/muestra | **22.4 h** |
+| k=16, reps=1 (32 pesos) | 66.6 s/muestra | **2,689 h** |
+| k=16, reps=3 (64 pesos) | 146.8 s/muestra | **5,883 h** |
+
+Son horas por *condición*; C4 y C5 duplican la cifra. El coste no lo domina el álgebra lineal sino la sobrecarga por evaluación de la primitiva: el *forward* a k=16 tarda 1.0 s, pero el gradiente exige 2 × n_pesos × k evaluaciones por muestra.
+
+Con θ **fijo**, el circuito pasa a ser una transformación determinista y los embeddings se calculan una sola vez:
+
+| k | forward | dataset completo, ambos *feature maps* |
+|---|---|---|
+| 8 | 15.6 ms | 1.8 min |
+| 12 | 84.7 ms | 10.1 min |
+| 16 | 1001 ms | 119 min |
+
+**Impacto.** RNF-07 declara k ∈ [8,16], pero la mitad superior de ese rango es inalcanzable con la arquitectura de M6 tal como está escrita. Obliga a resolver Q-007. Es también evidencia central para el OE-6: la restricción práctica del simulador no está en el número de qubits que puede simular, sino en el coste del gradiente.
+
+---
+
 ## Preguntas abiertas
 
 ### Q-001 · ¿C2 se declara control nulo o se añade C2′?
@@ -323,6 +386,21 @@ Depende del benchmark de la semana 1. El reporte declara k ∈ [8,16] y `reps` �
 
 ---
 
+---
+
+### Q-007 · ¿Entrenamiento conjunto o embedding precomputado?
+**Bloquea:** Fases 4 y 5 · **Límite:** 25 sep
+
+H-011 midió que la arquitectura descrita en §4.8 —integrar el VQC con el MLP vía `TorchConnector` y optimizar θ junto con los pesos— cuesta 22.4 h a k=8 y 2,689 h a k=16, por condición. No es viable.
+
+La alternativa es fijar θ y precomputar los embeddings: el mismo experimento baja a minutos y mantiene abierto todo el rango k ∈ [8,16] que declara RNF-07.
+
+Lo relevante es que **las dos razones apuntan al mismo lado**. Q-002 ya pedía medir la separabilidad con θ no entrenado para que la comparación contra C2 y C3 —que son no supervisados— fuera justa. El coste computacional lleva de forma independiente a la misma arquitectura.
+
+Si se opta por precomputar, hay que reescribir §4.8 y §4.9: `TorchConnector` deja de ser necesario y el MLP pasa a entrenarse sobre una matriz en caché. Decidir antes de escribir código de M5.
+
+---
+
 ## Plantillas
 
 ```markdown
@@ -353,3 +431,4 @@ Qué se descubrió, con el dato o la salida que lo respalda.
 Por qué está abierta y cuáles son las salidas posibles.
 Cuando se cierre: convertir en D-0XX y dejar aquí el enlace.
 ```
+
