@@ -240,12 +240,54 @@ Los datos provienen del archivo `Code/5_benchmark_shots.csv`.
 | 8192 | 0.013870435579419173 | 0.0489699691167058 | 0.0036275234360800823 |
 
 ### Análisis de convergencia estocástica
-- A 512 disparos, el error absoluto medio (MAE) es de $0.0369$ con un error máximo de $0.1399$.
-- A 8192 disparos, el MAE se reduce a $0.0139$ con un error máximo de $0.0490$.
 
-La pendiente log-log medida experimentalmente entre el número de disparos y el MAE es de $-0.357$. Esta cifra presenta una discrepancia frente a la pendiente teórica de $-0.500$ derivada del teorema del límite central y la cota $O(1/\sqrt{\text{shots}})$. 
+La pendiente log-log entre el número de disparos y el MAE resultó de $-0.357$, frente a la
+pendiente teórica de $-0.500$ que impone la cota $O(1/\sqrt{\text{shots}})$.
 
-La razón de esta desviación reside en que cada punto experimental del benchmark representa una única corrida estocástica individual. Para publicaciones o reportes académicos formalmente citables, se recomienda promediar un mínimo de 10 repeticiones independientes por cada valor de disparos.
+Se atribuyó inicialmente esta desviación a que cada punto provenía de una única corrida
+estocástica. **Esa explicación resultó incorrecta.** Al repetir la medición promediando diez
+corridas por punto, la pendiente se mantuvo en $-0.31$ con barras de error de $\pm 0.001$,
+de modo que la desviación no era ruido.
+
+Forzando el número de disparos muy por encima del rango de trabajo, el error **se estanca**:
+
+| shots | MAE frente a statevector | $1/\sqrt{n}$ esperado | razón |
+| :---: | :---: | :---: | :---: |
+| 8,192 | 0.014989 | 0.011049 | 1.36 |
+| 65,536 | 0.013128 | 0.003906 | 3.36 |
+| 262,144 | 0.013043 | 0.001953 | 6.68 |
+| 1,048,576 | 0.012826 | 0.000977 | 13.13 |
+
+Existe un suelo de aproximadamente $0.013$ que no depende del muestreo: se trata de una
+diferencia determinista entre `AerSimulator` y el cálculo exacto por *statevector*, no de
+varianza estadística. La comparación entre ambos backends, por tanto, **no mide la ley
+$1/\sqrt{n}$**: a partir de unos ocho mil disparos queda dominada por el sesgo entre
+backends.
+
+### Medición correcta del ruido de muestreo
+
+El ruido de muestreo se aísla midiendo la **dispersión del estimador entre repeticiones**
+con el mismo número de disparos, lo que separa la varianza estadística del sesgo de backend:
+
+| shots | dispersión entre repeticiones | $1/\sqrt{n}$ esperado | sesgo frente a statevector |
+| :---: | :---: | :---: | :---: |
+| 512 | 0.04140 | 0.04419 | 0.01699 |
+| 1,024 | 0.02838 | 0.03125 | 0.01507 |
+| 2,048 | 0.02108 | 0.02210 | 0.01407 |
+| 4,096 | 0.01438 | 0.01562 | 0.01322 |
+| 8,192 | 0.01006 | 0.01105 | 0.01264 |
+
+La pendiente log-log de la dispersión es de $-0.5065$, en acuerdo con la predicción teórica.
+La columna de sesgo, en cambio, apenas varía, lo que confirma que se trata de dos fenómenos
+independientes.
+
+Ambos resultados son material directo del objetivo específico 6: el ruido de muestreo sigue
+la estadística esperada, y de forma adicional el simulador introduce un sesgo constante
+respecto al cálculo exacto. **La causa del sesgo queda sin identificar** —transpilación
+interna de `AerSimulator`, redondeo del número de disparos derivado de `default_precision`,
+u otra— y debe investigarse o declararse explícitamente como limitación.
+
+Datos: `Code/results/7_shots_repetido.csv`; figura `Docs/Figures/E3_shots_sensitivity.png`.
 
 ---
 
@@ -275,3 +317,42 @@ por lo que las fuerzas de atracción hacia el mejor global $g^*$ y mejor individ
 
 ### Valor único y nicho de aplicación de PSO
 A pesar de su desventaja en velocidad frente a la fijación de parámetros, el valor único del algoritmo PSO reside en su capacidad para optimizar funciones de costo no diferenciables o no analíticas en el circuito cuántico, tales como la maximización directa del Área Bajo la Curva ROC (AUC-ROC), el alineamiento de kernel centrado (KTA) o la razón de discriminación de Fisher.
+
+---
+
+## 9. Comparación de métodos de gradiente
+
+Se evaluó el coste computacional del cálculo del gradiente en la etapa de retropropagación (*backward*) por muestra para distintas alternativas de derivación cuántica, utilizando estimaciones de expectativas exactas (`StatevectorEstimator`) con `input_gradients=False`.
+
+### Mediciones de coste del backward por muestra
+- **$k=4$ qubits:** *parameter-shift* $91.4\text{ ms}$, *lin-comb* $494.8\text{ ms}$, SPSA $12.8\text{ ms}$.
+- **$k=8$ qubits:** *parameter-shift* $970.0\text{ ms}$, *lin-comb* excede un presupuesto de $90\text{ s}$, SPSA $98.5\text{ ms}$.
+
+| Método de gradiente | $k=4$ (ms/muestra) | $k=8$ (ms/muestra) |
+| :--- | :---: | :---: |
+| `parameter-shift` | 91.4 | 970.0 |
+| `lin-comb` | 494.8 | Excede presupuesto ($> 90\text{ s}$) |
+| `SPSA` | 12.8 | 98.5 |
+
+### Análisis de convergencia y viabilidad
+- **Velocidad relativa:** SPSA es $\approx 10\times$ más rápido que *parameter-shift*, mientras que *lin-comb* es $\approx 5\times$ más lento a $k=4$ y a $k=8$ no termina (excede el presupuesto de $90\text{ s}$).
+- **Impacto a $k=8$:** A $k=8$, el algoritmo SPSA reduce el tiempo de entrenamiento de $38.6\text{ h}$ a $3.9\text{ h}$ por condición experimental.
+- **Conclusión de competitividad:** Aun así, ningún método vuelve competitivo el entrenamiento conjunto (Arquitectura A) frente al *embedding* precomputado de la Arquitectura B ($2.95\text{ h}$ totales a $k=12$). Además, SPSA solo **aproxima** el gradiente, por lo que necesita más iteraciones para converger y la ganancia efectiva es menor que ese factor nominal de $10\times$.
+
+> **Advertencia metodológica:** Las cifras absolutas de esta sección son $\approx 2\times$ más lentas que una medición previa de los mismos métodos, por carga de la máquina. Valen como comparación **relativa** entre métodos, no como tiempos absolutos.
+
+---
+
+## 10. Decisiones adoptadas
+
+Con base en los hallazgos empíricos documentados en este análisis y registrados en la bitácora metodológica al 22 de septiembre de 2026, se formalizan las decisiones técnicas cerradas para el proyecto:
+
+| Decisión adoptada | Justificación apoyada en los hallazgos |
+| :--- | :--- |
+| **Punto de operación:** $k = 12$ qubits, $reps = 1$ | $k=12$ representa el límite computacional alcanzable ($2.95\text{ h}$ de extracción total) incorporando características de textura junto a las de forma, mientras que $reps=1$ es el mínimo para un *embedding* no trivial sin añadir parámetros fijos redundantes (secciones 1, 3 y 6). |
+| **Arquitectura B:** *Embedding* precomputado con $\theta$ fijo (semilla 42) | Produce una aceleración de $1472\times$ a $2155\times$ frente a la Arquitectura A al evitar la sobrecarga del gradiente, garantizando la evaluación no supervisada de las condiciones sin sesgos por ajuste a las etiquetas (secciones 2, 3 y 9). |
+| **Diseño de C5:** `pauli_feature_map(paulis=['X','ZZ'])` | Presenta la menor fidelidad media ($0.0708$) respecto a `ZZFeatureMap` (`['Z','ZZ']`), asegurando una condición verdaderamente independiente que aísla el eje de codificación de primer orden en $X$ manteniendo $12$ puertas CX (sección 5). |
+| **Control nulo C2:** Conservación de cinco condiciones sin C2' | PCA de $k \to k$ sobre una entrada ya reducida representa una rotación ortogonal que preserva invariantes las distancias euclidianas y las métricas de separabilidad, actuando C2 como un control positivo del instrumento de medición frente a C1 (sección 5). |
+| **Cálculo de *geometric difference*:** `FidelityQuantumKernel` sobre el *feature map* | La métrica $g(K_C, K_Q)$ requiere evaluar la matriz de kernel $K(x, x') = |\langle \phi(x) | \phi(x') \rangle|^2$ sobre la codificación pura, superando la inobservabilidad de fases presente en las mediciones de observables $\langle Z_i \rangle$ (secciones 4 y 6). |
+| **Validación cruzada:** $5$-fold estratificada sobre el conjunto de entrenamiento | La velocidad de entrenamiento en la Arquitectura B permite ejecutar validación cruzada estratificada sobre el entrenamiento para obtener barras de error, conservando intacto el conjunto de prueba oficial del CBIS-DDSM (secciones 3 y 8). |
+
