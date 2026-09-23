@@ -22,7 +22,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | # | Fecha | Decisión | Módulo | Estado | → Reporte |
 |---|---|---|---|---|---|
 | D-001 | 2026-05 | SelectKBest + MinMaxScaler en lugar de PCA antes del circuito | M4 | Firme | §4.6, §7.2 |
-| D-002 | 2026-05 | ZZFeatureMap y PauliFeatureMap como condiciones separadas | M5 | Firme | §4.7, §7.2 |
+| D-002 | 2026-05 | ZZFeatureMap y PauliFeatureMap como condiciones separadas | M5 | **Revertida** (ver H-012, Q-008) | §4.7, §7.2 |
 | D-003 | 2026-05 | Geometric difference como métrica de ventaja cuántica potencial | M7 | Firme | §3.4.2, §7.2 |
 | D-004 | 2026-05 | Escalado angular a [0,π] y no a [0,2π] | M4 | Firme | §4.6 |
 | D-005 | 2026-05 | Masas y calcificaciones como subproblemas independientes | todos | Firme | §4.4 |
@@ -49,6 +49,10 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-009 | 2026-08-24 | Defectos verificables en el PDF de TT1 | Lista de correcciones para la Fase 7 |
 | H-010 | 2026-09-21 | El manifiesto NBIA original nunca se guardó y la vía oficial de descarga falla | Justifica D-012; reproducibilidad del dataset |
 | H-011 | 2026-09-21 | El entrenamiento conjunto VQC↔MLP no escala más allá de k=8 | Obliga a decidir Q-007; RNF-07 es inalcanzable tal como está |
+| H-012 | 2026-09-22 | C4 y C5 son el mismo circuito: fidelidad 1.000000000000 | Invalida D-002; bloquea M5 hasta resolver Q-008 |
+| H-013 | 2026-09-22 | Sin ansatz, ⟨Zᵢ⟩ = 0 para toda entrada | θ debe quedar fijo con semilla, no ausente; separa kernel de ⟨Z⟩ |
+| H-014 | 2026-09-22 | La precisión de shots se ignora si se fija en el estimador | Invalidó la primera corrida de shots; riesgo de reproducibilidad |
+| H-015 | 2026-09-22 | SPSA es ~10× más rápido que parameter-shift; lin-comb es 5× más lento | Ningún gradiente rescata la Arquitectura A |
 
 ### Preguntas abiertas
 
@@ -61,6 +65,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-005 | ¿Validación cruzada o justificación de su ausencia? | Fase 6 | 23 oct |
 | Q-006 | ¿Qué k y reps finales? | Fase 3 | 11 sep |
 | Q-007 | ¿Entrenamiento conjunto o embedding precomputado? | Fases 4 y 5 | 25 sep |
+| Q-008 | ¿Qué conjunto de Pauli usa C5? | M5, Fase 4 | 25 sep |
 
 ---
 
@@ -169,6 +174,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 ---
 
 > Las decisiones **D-001 a D-006** se tomaron durante TT1 y ya están documentadas en el reporte (§7.2 · *Decisiones metodológicas aprendidas*). Se listan en el índice para tener la traza completa; si alguna se revisa en TT2, se le abre entrada propia aquí.
+>
+> **D-002 quedó revertida el 2026-09-22.** Su premisa era falsa: ZZFeatureMap y PauliFeatureMap con `['Z','ZZ']` son el mismo circuito (H-012), de modo que no podían ser condiciones separadas. La decisión que la reemplaza saldrá de Q-008.
 
 ---
 
@@ -336,6 +343,111 @@ Con θ **fijo**, el circuito pasa a ser una transformación determinista y los e
 
 ---
 
+### H-012 · C4 y C5 son el mismo circuito
+**Fecha:** 2026-09-22 · **→ Reporte:** §4.7, §6.x
+
+En Qiskit, `zz_feature_map` **está definido** como un `pauli_feature_map` con `paulis=['Z','ZZ']`. Pedir ese conjunto devuelve literalmente el mismo circuito. Medido por fidelidad entre los estados que preparan:
+
+```
+k=4:  |<phi_zz | phi_pauli>|^2 = 1.000000000000
+k=8:  |<phi_zz | phi_pauli>|^2 = 1.000000000000
+```
+
+Evidencia concurrente: las 18 filas de `Code/results/5_benchmark_complejidad.csv` son idénticas entre ambos *feature maps* en profundidad, CX y número de puertas; y las diferencias de tiempo entre ellos en `5_benchmark_resultados.csv` (23.06 h contra 24.03 h a k=8) son ruido de medición, no señal.
+
+Conjuntos alternativos, promediando sobre **200 entradas aleatorias** porque la fidelidad depende del vector de entrada:
+
+| Conjunto | Media | Desv. est. | Máximo | CX |
+|---|---|---|---|---|
+| `['Z','ZZ']` | 1.000 | 0.000 | 1.000 | 12 |
+| `['Z','Y','ZZ']` | 0.332 | 0.332 | 0.962 | 12 |
+| `['X','ZZ']` | **0.071** | 0.134 | 0.727 | 12 |
+| `['Z','YY']` | 0.109 | 0.129 | 0.706 | 12 |
+| `['Y','ZZ']` | 0.315 | 0.151 | 0.992 | 12 |
+
+**Impacto.** **Invalida D-002**, que separaba C4 y C5 para aislar el efecto del diseño del *feature map*: tal como están especificadas son una sola condición y esa comparación no mide nada. Todos los candidatos mantienen 12 CX, así que una segunda condición genuina no cuesta nada extra. Abre Q-008 y bloquea la escritura de M5.
+
+**Nota metodológica.** La primera medición usó una sola entrada aleatoria y dio fidelidades de 0.000 para `['Z','Y','ZZ']` y `['X','ZZ']`. Era inestable: promediando, `['Z','Y','ZZ']` resulta ser de los **más parecidos** a ZZ, no de los más distintos. Un solo sorteo no caracteriza una codificación.
+
+---
+
+### H-013 · Sin ansatz, el embedding es idénticamente cero
+**Fecha:** 2026-09-22 · **→ Reporte:** §3.2, §4.7
+
+El ZZFeatureMap aplica únicamente Hadamards y puertas **diagonales**: los $R_Z$ y los bloques $CX\!-\!R_Z\!-\!CX$ son todos diagonales en la base computacional. Una puerta diagonal multiplica cada amplitud por una fase y no puede alterar su **magnitud**.
+
+Partiendo de $H^{\otimes k}|0\rangle$, toda amplitud tiene magnitud $2^{-k/2}$. Como las diagonales la preservan, $P(\text{qubit}_i = 0) = 1/2$ exactamente, y por tanto:
+
+$$\langle Z_i \rangle = 0 \quad \text{para todo } x$$
+
+Verificado numéricamente: ceros con cualquier entrada. Con el ansatz de θ fijo aleatorio, los valores se separan de cero con normalidad.
+
+**Impacto.** Tres consecuencias:
+
+1. Bajo Arquitectura B (Q-007) **no se puede prescindir del ansatz**: θ debe quedar *fijo con semilla declarada*, no ausente. Es un parámetro reportable del experimento, no un detalle.
+2. La información que inyecta el *feature map* vive en las **fases**, y una medición en Z es ciega a ellas. El ansatz es lo que rota esas fases hacia poblaciones medibles.
+3. El **kernel de fidelidad no comparte esta limitación**, porque compara estados completos, fases incluidas. Por tanto las métricas basadas en kernel (KTA, *geometric difference*) y las basadas en ⟨Zᵢ⟩ (Davies-Bouldin, Fisher, y el MLP) miden **objetos genuinamente distintos** y pueden discrepar. Eso merece explicación explícita en §6 si KTA sale alto y la clasificación mediocre.
+
+---
+
+### H-014 · La precisión de los shots se ignora si se fija en el estimador
+**Fecha:** 2026-09-22 · **→ Reporte:** §8.x
+
+La primera corrida del estudio de shots dio un error prácticamente plano entre 512 y 8192 shots, lo cual es imposible: el error de muestreo debe decaer como $1/\sqrt{n}$.
+
+Causa: `EstimatorQNN._forward` ejecuta
+
+```python
+job = self.estimator.run(circuit_observable_params, precision=self._default_precision)
+```
+
+y **pisa** cualquier `default_precision` con el que se haya construido el estimador. Configurarla en `AerEstimator(options=...)` no tiene efecto alguno.
+
+Dispersión medida entre corridas repetidas, según dónde se fije la precisión:
+
+| shots | en el estimador | en el QNN | esperada |
+|---|---|---|---|
+| 256 | 0.01644 | 0.06039 | 0.06250 |
+| 1024 | 0.01585 | 0.02667 | 0.03125 |
+| 8192 | 0.01347 | 0.01179 | 0.01105 |
+| 65536 | 0.01623 | 0.00350 | 0.00391 |
+
+La columna del estimador es plana; la del QNN sigue $1/\sqrt{n}$ como debe.
+
+**Impacto.** Hay que separar dos cosas al redactar: que la precisión mejore como $1/\sqrt{n}$ es una **propiedad de la estadística de la medición cuántica** y va en el marco teórico; que el parámetro deba ir en un constructor concreto y se ignore silenciosamente en el otro es un **detalle de implementación de la librería** y va en §8.x. Sin documentarlo, los resultados no son reproducibles por terceros.
+
+---
+
+### H-015 · Coste de las alternativas a parameter-shift
+**Fecha:** 2026-09-22 · **→ Reporte:** §8.x, OE-6
+
+Coste del *backward* por muestra, con expectativas exactas e `input_gradients=False`:
+
+| k | parameter-shift | lin-comb | SPSA |
+|---|---|---|---|
+| 4 | 91.4 ms | 494.8 ms | **12.8 ms** |
+| 8 | 970.0 ms | excede 90 s | **98.5 ms** |
+
+**SPSA es ~10× más rápido**; `lin-comb` es ~5× **más lento** que parameter-shift y a k=8 no termina en 90 segundos para dos muestras. A k=8, SPSA baja el entrenamiento de 38.6 h a 3.9 h por condición.
+
+Para optimización sin gradiente (PSO), el coste por iteración es *enjambre × un forward sobre los datos*. Con 30 partículas y 200 iteraciones, sobre masas:
+
+| k | PSO conjunto completo | PSO lote 128 | parameter-shift |
+|---|---|---|---|
+| 8 | 36.4 h | 3.5 h | 12.0 h |
+| 12 | 205.3 h | 19.9 h | 95.4 h |
+| 16 | 2,320.6 h | 225.4 h | 1,326.0 h |
+
+**Impacto.** Ningún método rescata la Arquitectura A. SPSA extrapolado a k=12 daría ~19 h contra las 2.95 h del embedding precomputado, y además solo *aproxima* el gradiente, así que necesita más iteraciones para converger y la ganancia efectiva es menor que el 10×. PSO con mini-lotes gana ~5× sobre parameter-shift pero sigue un orden de magnitud por encima de no entrenar θ.
+
+Sobre las mesetas áridas: los métodos sin gradiente **no las esquivan**, porque en una meseta las *diferencias de costo* entre puntos son ellas mismas exponencialmente pequeñas y un enjambre acaba moviéndose por ruido. **PENDIENTE DE VERIFICAR** antes de citar: Arrasmith, Cerezo, Czarnik, Cincio y Coles, *Effect of barren plateaus on gradient-free optimization*, Quantum 5, 558 (2021).
+
+El único valor propio de PSO es poder optimizar objetivos **no diferenciables** —AUC-ROC, KTA, razón de Fisher—, capacidad que ningún método basado en gradiente tiene. Ninguna de las métricas de separabilidad de este trabajo es naturalmente diferenciable.
+
+**Nota.** Las cifras absolutas de esta tabla son ~2× más lentas que una medición previa de los mismos métodos, por carga de la máquina. Valen como comparación **relativa** entre métodos, no como tiempos absolutos.
+
+---
+
 ## Preguntas abiertas
 
 ### Q-001 · ¿C2 se declara control nulo o se añade C2′?
@@ -400,6 +512,19 @@ Lo relevante es que **las dos razones apuntan al mismo lado**. Q-002 ya pedía m
 Si se opta por precomputar, hay que reescribir §4.8 y §4.9: `TorchConnector` deja de ser necesario y el MLP pasa a entrenarse sobre una matriz en caché. Decidir antes de escribir código de M5.
 
 ---
+
+---
+
+### Q-008 · ¿Qué conjunto de Pauli usa C5?
+**Bloquea:** M5, Fase 4 · **Límite:** 25 sep
+
+H-012 demostró que C4 y C5, tal como las define §4.7, son la misma condición. C5 necesita un conjunto de Pauli genuinamente distinto, y la elección cambia qué se afirma estar comparando.
+
+El candidato más alejado de ZZ en todo el rango de entrada es **`['X','ZZ']`** (media 0.071, máximo 0.727). `['Z','Y','ZZ']` queda descartado: promedia 0.332 con máximo 0.962, o sea que sobre buena parte del espacio de entrada codifica casi lo mismo que ZZ.
+
+Todos los candidatos mantienen 12 CX, así que la decisión no tiene coste computacional. Lo que sí cambia es el argumento: `['X','ZZ']` sustituye la codificación de primer orden en Z por una en X, mientras `['Z','YY']` mantiene Z y altera el término de entrelazamiento. Son afirmaciones distintas sobre qué aspecto del diseño del *feature map* se está aislando.
+
+Al resolverla: convertir en D-013, actualizar §4.7 y la Tabla de condiciones experimentales, y dejar constancia de que D-002 quedó invalidada por H-012.
 
 ## Plantillas
 
