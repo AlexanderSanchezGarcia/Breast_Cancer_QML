@@ -30,9 +30,15 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-007 | 2026-08-25 | Entorno `radiomics` separado, compilado desde GitHub | infra | Firme | §8.x |
 | D-008 | 2026-08-25 | `binCount=32` en lugar de `binWidth` | M3 | Firme | §8.x |
 | D-009 | 2026-08-25 | Sin resize a 224×224 en la ruta radiómica | M2 | Firme | §4.4, §8.x |
-| D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Provisional | §4.4 |
-| D-011 | 2026-08-25 | Unidad de análisis = lesión/ROI, no paciente | M4 | Provisional | §4.6 |
+| D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Firme (2026-09-22) | §4.4 |
+| D-011 | 2026-08-25 | Unidad de análisis = lesión/ROI, no paciente | M4 | Firme (2026-09-22) | §4.6 |
 | D-012 | 2026-09-21 | Descargar por la API REST de TCIA, no con NBIA Data Retriever | M1 | Firme | §8.x |
+| D-013 | 2026-09-22 | Punto de operación: k=12 qubits, reps=1 | M4, M5 | Firme | §4.6, §4.7 |
+| D-014 | 2026-09-22 | Arquitectura B: embedding precomputado con θ fijo (semilla 42) | M5, M6 | Firme | §4.7, §4.8 |
+| D-015 | 2026-09-22 | C5 usa `pauli_feature_map(paulis=['X','ZZ'])` | M5 | Firme | §4.7 |
+| D-016 | 2026-09-22 | C2 se declara control nulo; se mantienen cinco condiciones | M5, M7 | Firme | §4.7, §6.x |
+| D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme | §3.4.2, §4.9 |
+| D-018 | 2026-09-22 | Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento | M6 | Firme | §4.8, §4.9 |
 
 ### Hallazgos
 
@@ -53,19 +59,20 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-013 | 2026-09-22 | Sin ansatz, ⟨Zᵢ⟩ = 0 para toda entrada | θ debe quedar fijo con semilla, no ausente; separa kernel de ⟨Z⟩ |
 | H-014 | 2026-09-22 | La precisión de shots se ignora si se fija en el estimador | Invalidó la primera corrida de shots; riesgo de reproducibilidad |
 | H-015 | 2026-09-22 | SPSA es ~10× más rápido que parameter-shift; lin-comb es 5× más lento | Ningún gradiente rescata la Arquitectura A |
+| H-016 | 2026-09-23 | AerSimulator tiene un sesgo sistemático de ~0.013 frente a statevector | Invalidaba la figura del OE-6; obliga a medir el ruido de otra forma |
 
 ### Preguntas abiertas
 
 | # | Pregunta | Bloquea | Límite |
 |---|---|---|---|
-| Q-001 | ¿C2 se declara control nulo o se añade C2′? | Fase 4 | 2 oct |
-| Q-002 | ¿Con qué θ se mide la separabilidad? | Fase 4 | 25 sep |
-| Q-003 | ¿Sobre qué kernel se calcula la *geometric difference*? | Fase 3 | 11 sep |
+| Q-001 | ¿C2 se declara control nulo o se añade C2′? | Fase 4 | **RESUELTA** → D-016 |
+| Q-002 | ¿Con qué θ se mide la separabilidad? | Fase 4 | **RESUELTA** → D-014 |
+| Q-003 | ¿Sobre qué kernel se calcula la *geometric difference*? | Fase 3 | **RESUELTA** → D-017 |
 | Q-004 | ¿Azevedo et al. (2022) o Incudini et al. (2022)? | Fase 7 | 3 nov |
-| Q-005 | ¿Validación cruzada o justificación de su ausencia? | Fase 6 | 23 oct |
-| Q-006 | ¿Qué k y reps finales? | Fase 3 | 11 sep |
-| Q-007 | ¿Entrenamiento conjunto o embedding precomputado? | Fases 4 y 5 | 25 sep |
-| Q-008 | ¿Qué conjunto de Pauli usa C5? | M5, Fase 4 | 25 sep |
+| Q-005 | ¿Validación cruzada o justificación de su ausencia? | Fase 6 | **RESUELTA** → D-018 |
+| Q-006 | ¿Qué k y reps finales? | Fase 3 | **RESUELTA** → D-013 |
+| Q-007 | ¿Entrenamiento conjunto o embedding precomputado? | Fases 4 y 5 | **RESUELTA** → D-014 |
+| Q-008 | ¿Qué conjunto de Pauli usa C5? | M5, Fase 4 | **RESUELTA** → D-015 |
 
 ---
 
@@ -149,6 +156,119 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 **Evidencia.** H-008 — hay 2.28 ROIs por paciente (máx. 24) y 56 pacientes con lesiones benignas y malignas a la vez, así que la etiqueta a nivel paciente sería ambigua.
 
 **Consecuencias.** Hay que declararlo explícitamente; es una pregunta previsible del jurado.
+
+---
+
+### D-013 · Punto de operación: k=12 qubits, reps=1
+**Fecha:** 2026-09-22 · **Módulo:** M4, M5 · **Estado:** Firme · **→ Reporte:** §4.6, §4.7 · *cierra Q-006*
+
+**Contexto.** RNF-07 declara k ∈ [8,16] y reps ∈ [1,6]. El benchmark midió qué parte de ese rango es alcanzable.
+
+**Decisión.** k = 12 qubits, reps = 1.
+
+**Por qué k=12.** El coste total de la etapa cuántica bajo Arquitectura B es 0.29 h a k=8, **2.95 h a k=12** y 41.25 h a k=16. No crece linealmente: de 8 a 12 se multiplica por 10, de 12 a 16 por 14. k=12 es el último escalón pagable.
+
+Hay además un argumento de contenido. H-003 mostró que los features más discriminativos en masas son todos `shape2D`, y PyRadiomics entrega nueve de esa familia. Con k=8, `SelectKBest` elegiría ocho medidas de forma fuertemente correlacionadas entre sí, y los productos $x_i x_j$ que codifica el *feature map* serían en buena parte redundantes. Con k=12 entran también features de textura, y las interacciones forma×textura sí tienen contenido.
+
+**Por qué reps=1.** Bajo D-014 θ no se entrena, de modo que capas adicionales no aportan capacidad aprendible: solo una rotación fija más complicada. reps=1 es el mínimo que hace el embedding no trivial, y dado H-013 «no trivial» es exactamente el requisito.
+
+**Evidencia.** `Code/results/5_benchmark_resultados.csv`, `5_benchmark_arquitectura.csv`, `5_benchmark_kernel_proyeccion.csv`.
+
+**Consecuencias.** M4 fija k=12 en `SelectKBest`. **Verificar en M4 qué familias de features sobreviven a la selección y reportarlo**: si salen doce variables de tamaño casi idénticas, el argumento de contenido se debilita y habría que forzar diversidad de familias.
+
+---
+
+### D-014 · Arquitectura B: embedding precomputado con θ fijo
+**Fecha:** 2026-09-22 · **Módulo:** M5, M6 · **Estado:** Firme · **→ Reporte:** §4.7, §4.8 · *cierra Q-007 y Q-002*
+
+**Contexto.** §4.8 especifica integrar el VQC con el MLP vía `TorchConnector` y optimizar θ junto con los pesos.
+
+**Alternativas.**
+- *Arquitectura A, entrenamiento conjunto* — descartada.
+- *Arquitectura B, θ fijo y embeddings precomputados* — **elegida**.
+
+**Decisión.** θ se fija con **semilla 42** y no se entrena. Los embeddings ⟨Zᵢ⟩ se calculan una sola vez para todo el dataset, se guardan en disco, y el MLP se entrena sobre esa matriz como sobre cualquier conjunto tabular. `TorchConnector` deja de usarse.
+
+**Por qué.** Tres razones independientes, y esto importa porque ninguna depende de las otras:
+
+1. **Coste.** H-011: 48 h a k=8, 382 h a k=12 y 5,304 h a k=16 bajo A, contra 2 min, 12 min y 148 min bajo B. Entre 1,472× y 2,155× más barato. H-015 confirma que ningún método de gradiente alternativo cambia el veredicto.
+2. **Validez interna.** C2 y C3 son no supervisados. Si C4 y C5 ajustan θ contra las etiquetas, cualquier ventaja podría venir del ajuste supervisado y no de la codificación cuántica. Bajo B las cinco condiciones son transformaciones que no miran las etiquetas. **Esto cierra Q-002 por construcción.**
+3. **Correspondencia con la pregunta de investigación.** §1.2 pregunta si el mapeo φ produce mayor separabilidad intrínseca. Eso es sobre la *codificación*, no sobre un procedimiento de optimización. B aísla φ; A lo mezclaba.
+
+**Evidencia.** `Code/results/5_benchmark_arquitectura.csv`; H-011 y H-015.
+
+**Consecuencias.** Hay que reescribir §4.8 y §4.9. θ pasa a ser un **parámetro reportable del experimento**, no un detalle: por H-013 determina qué proyección de la información de fase resulta visible. Como beneficio colateral, entrenar toma segundos, lo que vuelve viable D-018.
+
+---
+
+### D-015 · C5 usa `pauli_feature_map(paulis=['X','ZZ'])`
+**Fecha:** 2026-09-22 · **Módulo:** M5 · **Estado:** Firme · **→ Reporte:** §4.7 · *cierra Q-008; reemplaza D-002*
+
+**Contexto.** H-012 demostró que C4 y C5, tal como las definía §4.7, son el mismo circuito: fidelidad 1.000000000000.
+
+**Alternativas**, promediadas sobre 200 entradas aleatorias:
+
+| Conjunto | Fidelidad media vs ZZ | Máximo |
+|---|---|---|
+| `['Z','Y','ZZ']` | 0.332 | 0.962 |
+| `['Y','ZZ']` | 0.315 | 0.992 |
+| `['Z','YY']` | 0.109 | 0.706 |
+| **`['X','ZZ']`** | **0.071** | 0.727 |
+
+**Decisión.** C5 = `pauli_feature_map(paulis=['X','ZZ'])`.
+
+**Por qué.** Es el más alejado de ZZ en todo el rango de entrada. `['Z','Y','ZZ']` queda descartado pese a la primera impresión: promedia 0.332 con máximo 0.962, es decir, sobre buena parte del espacio de entrada codifica casi lo mismo que ZZ y no constituiría una condición independiente. Todos los candidatos mantienen 12 CX, así que la elección no tiene coste computacional.
+
+**Qué afirma la comparación.** `['X','ZZ']` sustituye la codificación de primer orden en Z por una en X, manteniendo el término de entrelazamiento ZZ. C4 contra C5 mide por tanto el efecto del **eje de codificación de primer orden**, con el acoplamiento de segundo orden fijo. Eso es lo que hay que escribir en §4.7; no vale decir genéricamente «el efecto del diseño del feature map».
+
+**Consecuencias.** D-002 queda revertida. Hay que actualizar §4.7 y la tabla de condiciones experimentales.
+
+---
+
+### D-016 · C2 se declara control nulo; cinco condiciones
+**Fecha:** 2026-09-22 · **Módulo:** M5, M7 · **Estado:** Firme · **→ Reporte:** §4.7, §6.x · *cierra Q-001*
+
+**Contexto.** M4 entrega x ∈ [0,π]^k, y C2 aplica PCA de k → k. Eso no es una reducción sino una **rotación ortogonal**: preserva las distancias euclidianas, de modo que Davies-Bouldin, Fisher y KTA son invariantes, y el MLP absorbe la rotación en su primera capa. C2 dará los mismos números que C1 por álgebra, no por casualidad.
+
+**Alternativas.** Añadir C2′ con PCA desde el vector radiómico completo (n ≈ 100–300 → k); reemplazar C2 por C2′; o declarar C2 control nulo.
+
+**Decisión.** C2 se mantiene y se declara **control nulo**. Se conservan cinco condiciones. No se añade C2′.
+
+**Por qué.** El principio de diseño «todas las condiciones parten del mismo vector» es precisamente lo que causa la degeneración: si la entrada ya está en k dimensiones, no queda reducción que hacer. No se pueden tener ambas cosas. C2′ rompería la simetría al partir de un vector de dimensión distinta, y una condición que no se pueda defender ante esa pregunta es peor que no tenerla.
+
+El comparador clásico real es **C3**: Kernel PCA con RBF de k → k es genuinamente no lineal, no una rotación. Y es el comparador conceptualmente correcto, porque el marco de Schuld contrapone kernels cuánticos contra kernels clásicos, siendo el RBF el kernel clásico de referencia.
+
+C2 además aporta algo: si las métricas de separabilidad dieran valores distintos para C1 y C2, estarían mal implementadas. Es un **control positivo del instrumento de medición**.
+
+**Consecuencias.** §6 debe explicar por qué C1 y C2 coinciden, presentándolo como validación de las métricas y no como un resultado nulo. C2′ queda anotado como análisis de robustez opcional si hay holgura tras el congelamiento del 23 de octubre.
+
+---
+
+### D-017 · La *geometric difference* se calcula con `FidelityQuantumKernel`
+**Fecha:** 2026-09-22 · **Módulo:** M7 · **Estado:** Firme · **→ Reporte:** §3.4.2, §4.9 · *cierra Q-003*
+
+**Contexto.** $g(K_C, K_Q)$ de Huang et al. está definida **entre dos kernels**. M5 produce ⟨Zᵢ⟩ ∈ [-1,1]^k, que es un vector: construir un RBF sobre él no da $K_Q$ y el marco de Huang no aplica.
+
+**Decisión.** El kernel cuántico $K_Q(x,x') = |\langle\phi(x)|\phi(x')\rangle|^2$ se calcula aparte con `FidelityQuantumKernel`, usando **solo el feature map**, sin ansatz, sobre submuestras de 150–200 casos por subconjunto (RNF-06).
+
+**Por qué.** Es la única lectura técnicamente correcta. Y usar solo el feature map es coherente con D-014: el kernel es una propiedad de la codificación.
+
+**Nota que debe ir al reporte (de H-013).** El kernel de fidelidad compara estados completos, fases incluidas; los ⟨Zᵢ⟩ no ven fases. Las métricas basadas en kernel (KTA, *geometric difference*) y las basadas en ⟨Zᵢ⟩ (Davies-Bouldin, Fisher, y el MLP) miden por tanto **objetos distintos y pueden discrepar**. Si KTA sale alto y la clasificación mediocre, esa es la explicación y conviene anticiparla.
+
+**Coste.** A k=12, unos 41 min por matriz y 2.75 h las cuatro (dos feature maps × dos subconjuntos). Fuente: `Code/results/5_benchmark_kernel_proyeccion.csv`.
+
+---
+
+### D-018 · Validación cruzada 5-fold estratificada
+**Fecha:** 2026-09-22 · **Módulo:** M6 · **Estado:** Firme · **→ Reporte:** §4.8, §4.9 · *cierra Q-005*
+
+**Contexto.** La validación cruzada figura en el cronograma del reporte y en el acta de los directores, pero no existía en la metodología (§4.9). Bajo Arquitectura A no era costeable.
+
+**Decisión.** Validación cruzada **5-fold estratificada por clase** sobre el conjunto de entrenamiento. El conjunto de prueba oficial del CBIS-DDSM **no se toca**: sigue siendo la evaluación final, sin reordenar (RNF-03).
+
+**Por qué.** D-014 vuelve el entrenamiento un problema clásico de segundos sobre una matriz en caché, así que el único coste real es escribir el código. Cumple un compromiso explícito ante el jurado y aporta barras de error en las métricas, que hoy se reportarían como valores puntuales.
+
+**Consecuencias.** Estratificar por clase, no por paciente: la unidad de análisis es la lesión (D-011). **Verificar que ningún paciente quede repartido entre folds**, ya que hay 2.28 ROIs por paciente (H-008); si se detecta, pasar a `StratifiedGroupKFold` agrupando por `patient_id`. Hay que añadir la validación cruzada a §4.9, que hoy no la menciona.
 
 ---
 
@@ -445,6 +565,42 @@ Sobre las mesetas áridas: los métodos sin gradiente **no las esquivan**, porqu
 El único valor propio de PSO es poder optimizar objetivos **no diferenciables** —AUC-ROC, KTA, razón de Fisher—, capacidad que ningún método basado en gradiente tiene. Ninguna de las métricas de separabilidad de este trabajo es naturalmente diferenciable.
 
 **Nota.** Las cifras absolutas de esta tabla son ~2× más lentas que una medición previa de los mismos métodos, por carga de la máquina. Valen como comparación **relativa** entre métodos, no como tiempos absolutos.
+
+---
+
+### H-016 · Sesgo sistemático entre AerSimulator y statevector
+**Fecha:** 2026-09-23 · **→ Reporte:** §8.x, OE-6
+
+El estudio de shots comparaba el estimador con muestreo contra el valor exacto por *statevector*, y la pendiente log-log salía −0.31 en vez de −0.5, incluso promediando 10 repeticiones por punto con barras de error de ±0.001. No era ruido.
+
+Forzando el número de shots muy por encima del rango de trabajo, el error **se estanca y no converge a cero**:
+
+| shots | MAE vs statevector | 1/√n esperado | razón |
+|---|---|---|---|
+| 8,192 | 0.014989 | 0.011049 | 1.36 |
+| 65,536 | 0.013128 | 0.003906 | 3.36 |
+| 262,144 | 0.013043 | 0.001953 | 6.68 |
+| 1,048,576 | 0.012826 | 0.000977 | 13.13 |
+
+Hay un **suelo de ~0.013** que no depende del muestreo: es una diferencia determinista entre los dos backends, no varianza estadística.
+
+**Impacto.** La comparación «Aer con shots contra statevector exacto» **no mide la ley $1/\sqrt{n}$**: a partir de unos 8,000 shots queda dominada por la diferencia entre backends. La figura del OE-6 construida así habría sido engañosa.
+
+**Corrección.** El ruido de muestreo se mide correctamente como la **dispersión del estimador entre repeticiones** con el mismo número de shots, que aísla la varianza estadística del sesgo de backend:
+
+| shots | dispersión entre repeticiones | 1/√n esperado | sesgo vs statevector |
+|---|---|---|---|
+| 512 | 0.04140 | 0.04419 | 0.01699 |
+| 1,024 | 0.02838 | 0.03125 | 0.01507 |
+| 2,048 | 0.02108 | 0.02210 | 0.01407 |
+| 4,096 | 0.01438 | 0.01562 | 0.01322 |
+| 8,192 | 0.01006 | 0.01105 | 0.01264 |
+
+Pendiente log-log de la dispersión: **−0.5065**, contra la teórica −0.5. La columna de sesgo apenas se mueve, lo que confirma que son dos fenómenos distintos.
+
+**Para el reporte.** Conviene presentarlo como dos observaciones separadas, porque lo son: el ruido de muestreo sigue la estadística esperada, y además el simulador introduce un sesgo constante respecto al cálculo exacto. Lo segundo es una restricción práctica del simulador y por tanto material directo del OE-6. **Queda sin identificar la causa del sesgo** (transpilación interna de Aer, redondeo del número de shots derivado de `default_precision`, u otra); investigarla si hay holgura, o declararla como limitación si no.
+
+**Datos.** `Code/results/7_shots_repetido.csv`, figura `Docs/Figures/E3_shots_sensitivity.png`.
 
 ---
 
