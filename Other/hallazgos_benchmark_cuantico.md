@@ -170,9 +170,28 @@ Tal como están especificadas originalmente en el protocolo de pruebas, C4 y C5 
 
 ### Verificación de alternativas de Pauli con igual costo de CX
 Se evaluaron construcciones de mapas de características Pauli alternativas manteniendo la misma cantidad de puertas de control CX ($n_{cx}$), midiendo la fidelidad resultante frente a `ZZFeatureMap`:
-- `['Z', 'Y', 'ZZ']`: Fidelidad $= 0.000000000000$ contra ZZ.
-- `['X', 'ZZ']`: Fidelidad $= 0.000000000000$ contra ZZ.
-- `['Z', 'YY']`: Fidelidad $= 0.356000000000$ contra ZZ.
+La fidelidad depende del vector de entrada, de modo que una sola muestra no
+caracteriza un candidato. La tabla siguiente promedia sobre **200 entradas
+aleatorias** en $[0,\pi]^4$; se reportan media, desviación estándar y máximo,
+porque un candidato con media baja pero máximo alto coincide con ZZ en parte del
+espacio de entrada.
+
+| Conjunto de Pauli | Media | Desv. est. | Máximo | $n_{cx}$ |
+| :--- | :---: | :---: | :---: | :---: |
+| `['Z', 'ZZ']` | 1.000000 | 0.000000 | 1.000000 | 12 |
+| `['Z', 'Y', 'ZZ']` | 0.331794 | 0.331844 | 0.962074 | 12 |
+| `['X', 'ZZ']` | 0.070827 | 0.133643 | 0.727172 | 12 |
+| `['Z', 'YY']` | 0.109452 | 0.129158 | 0.706488 | 12 |
+| `['Y', 'ZZ']` | 0.314932 | 0.151062 | 0.991910 | 12 |
+
+El candidato más alejado de ZZ en todo el rango de entrada es `['X', 'ZZ']`
+(media $0.071$). En contraste, `['Z', 'Y', 'ZZ']` promedia $0.332$ con máximo
+$0.962$: sobre una porción apreciable del espacio de entrada codifica
+prácticamente lo mismo que ZZ, por lo que no constituye una segunda condición
+independiente.
+
+Todos los candidatos mantienen $n_{cx} = 12$, idéntico al de ZZ, de modo que la
+segunda condición no acarrea coste computacional adicional.
 
 ---
 
