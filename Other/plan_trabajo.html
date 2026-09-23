@@ -112,14 +112,18 @@ button:hover{color:var(--ink)}
 
 </div>
 <script>
-const KEY = "tt2026b039.plan.v1";
+const KEY = "tt2026b039.plan.v2";
 let state = {};
 try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { state = {}; }
+// La Fase 3 quedó cerrada el 2026-09-22; sus tareas arrancan marcadas.
+if (!Object.keys(state).some(k => k.startsWith("f3."))) {
+  for (let i = 0; i < 11; i++) state["f3." + i] = true;
+}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
- {id:"f3", n:"Fase 3 · Diseño de la transformación cuántica", due:"2026-09-11",
-  note:"Corre en paralelo con la Fase 2: los prototipos no necesitan features reales.",
+ {id:"f3", n:"Fase 3 · Diseño de la transformación cuántica ✓", due:"2026-09-11", done:true,
+  note:"COMPLETA. El benchmark y las verificaciones de diseño fueron su entregable; de ahí salieron D-013 a D-018.",
   groups:[
    ["Techo computacional · hasta 31 ago",[
      "Cronometrar forward y backward de zz_feature_map + real_amplitudes con EstimatorQNN(input_gradients=False), 100 muestras sintéticas, k = 8/12/16 y reps = 1/2/3",
@@ -131,8 +135,8 @@ const PHASES = [
      "FidelityQuantumKernel aparte para el kernel de fidelidad |⟨φ(x)|φ(x')⟩|²",
      "Resolver cómo se calcula la geometric difference (kernel contra kernel, no sobre ⟨Zᵢ⟩)"]]
   ]},
- {id:"f2", n:"Fase 2 · Ingeniería de datos (M2–M4)", due:"2026-09-18",
-  note:"Ruta crítica. Nada de la Fase 4 en adelante puede empezar sin esto.",
+ {id:"f2", n:"Fase 2 · Ingeniería de datos (M2–M4)", due:"2026-10-03",
+  note:"ÚNICA fase pendiente antes de la parte cuántica. Decisiones ya cerradas; k=12 para SelectKBest.",
   groups:[
    ["Desbloqueo · hasta 31 ago",[
      "Entorno radiomics con PyRadiomics funcionando",
@@ -155,8 +159,8 @@ const PHASES = [
      "Congelar los splits y declarar la unidad de análisis = lesión/ROI",
      "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones"]]
   ]},
- {id:"f4", n:"Fase 4 · Implementación cuántica", due:"2026-10-02",
-  note:"Núcleo de la tesis. Responde el OE-3, que es la pregunta de investigación.",
+ {id:"f4", n:"Fase 4 · Implementación cuántica", due:"2026-10-10",
+  note:"Núcleo de la tesis (OE-3). Arquitectura B: θ fijo semilla 42, embeddings precomputados.",
   groups:[
    ["Embeddings · hasta 25 sep",[
      "⟨Zᵢ⟩ ∈ [-1,1]^k para las 5 condiciones, masas y calcificaciones por separado",
@@ -169,8 +173,8 @@ const PHASES = [
      "Medir OE-3 con el feature map solo (sin ansatz entrenado) para que la comparación sea justa",
      "Añadir C2′ (PCA desde el vector radiómico completo) y declarar C2 como control nulo"]]
   ]},
- {id:"f5", n:"Fase 5 · Modelos de clasificación", due:"2026-10-16",
-  note:"Mismo MLP en las 5 (o 6) condiciones × 2 subconjuntos.",
+ {id:"f5", n:"Fase 5 · Modelos de clasificación", due:"2026-10-17",
+  note:"Cinco condiciones × 2 subconjuntos, con validación cruzada 5-fold. Sin TorchConnector.",
   groups:[
    ["Entrenamiento",[
      "TorchConnector con input_gradients=False (ahorra la mitad del gradiente)",
@@ -213,12 +217,14 @@ const PHASES = [
 ];
 
 const RISKS = [
- ["Validez interna","Separabilidad medida sobre un embedding entrenado","C4/C5 optimizan θ contra las etiquetas; C2/C3 son no supervisados. Medir post-entrenamiento haría salir la ventaja cuántica por construcción. Decidir antes de generar resultados."],
- ["Diseño experimental","C2 es degenerado","PCA de k → k es una rotación ortogonal. Davies-Bouldin, Fisher y KTA son invariantes bajo rotación, así que C2 dará métricas idénticas a C1. O se declara control nulo, o se añade C2′."],
- ["Marco teórico","Geometric difference sin kernel","g(K_C,K_Q) está definida kernel contra kernel, no sobre el vector ⟨Zᵢ⟩ que produce M5. Hay que calcular el kernel de fidelidad aparte."],
- ["Datos","Sin PixelSpacing","Ausente en el 100 % de los DICOM, junto con Manufacturer. Las shape features quedan en píxeles sin escala física recuperable, y el DDSM se digitalizó con escáneres de distinta resolución."],
- ["Metodología","Validación cruzada prometida y ausente","Aparece en el cronograma del reporte y en el acta de los directores, pero no existe en la metodología (§4.9)."],
- ["Citas","Azevedo vs Incudini","El reporte atribuye las líneas de trabajo futuro a Azevedo et al. (2022); el contexto del proyecto dice Incudini et al. (2022). Son papers distintos."]
+ ["Resuelto · D-014","Separabilidad medida sobre un embedding entrenado","Se adoptó Arquitectura B: θ nunca se entrena, así que el embedding es no supervisado por construcción y la comparación contra C2 y C3 es justa. Cierra también Q-002."],
+ ["Resuelto · D-016","C2 es degenerado","PCA de k→k es una rotación. Se declara control nulo: si las métricas dieran valores distintos para C1 y C2 estarían mal implementadas. C3 (Kernel PCA RBF) queda como comparador clásico real."],
+ ["Resuelto · D-017","Geometric difference sin kernel","Se calcula con FidelityQuantumKernel usando solo el feature map. Ojo: el kernel ve fases y los ⟨Zᵢ⟩ no, así que ambas familias de métricas miden objetos distintos y pueden discrepar."],
+ ["Resuelto · D-015","C4 y C5 eran el mismo circuito","Fidelidad 1.000000000000 entre ambos. C5 pasa a pauli_feature_map(['X','ZZ']), el más alejado de ZZ (media 0.071 sobre 200 entradas)."],
+ ["Resuelto · D-018","Validación cruzada prometida y ausente","5-fold estratificada sobre train; el test oficial del CBIS-DDSM no se toca. Bajo Arquitectura B el entrenamiento toma segundos."],
+ ["ABIERTO","Q-004 · Azevedo o Incudini","El reporte atribuye las líneas de trabajo futuro a Azevedo et al. (2022); el contexto del proyecto dice Incudini et al. (2022). Son papers distintos y hay que revisar las fuentes. Límite: 3 de noviembre."],
+ ["Vigilar","SelectKBest podría elegir 12 variables redundantes","Los features más discriminativos en masas son todos de tamaño y están muy correlacionados. Si con k=12 salen doce medidas casi idénticas, las interacciones que codifica el feature map serían redundantes y habría que forzar diversidad de familias."],
+ ["Vigilar","Pacientes repartidos entre folds","Hay 2.28 ROIs por paciente. Si la validación cruzada separa ROIs del mismo paciente entre folds, hay fuga; usar StratifiedGroupKFold por patient_id."]
 ];
 
 const MS=864e5, today=new Date(); today.setHours(0,0,0,0);
@@ -256,7 +262,7 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
   if(done===tot){cls="p-ok";txt="completa";}
   else if(n<0){cls="p-late";txt=(-n)+" d de retraso";}
   else if(n<=10){cls="p-warn";}
-  return `<div class="phase${done===tot?" done":""}">
+  return `<div class="phase${(done===tot||p.done)?" done":""}">
     <div class="ph"><div><h2>${p.n}</h2>
       <div class="meta">Entrega ${fmt(p.due)} · ${p.note}</div></div>
       <div style="text-align:right"><span class="pill ${cls}">${txt}</span>
