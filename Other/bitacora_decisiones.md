@@ -61,6 +61,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-015 | 2026-09-22 | SPSA es ~10× más rápido que parameter-shift; lin-comb es 5× más lento | Ningún gradiente rescata la Arquitectura A |
 | H-016 | 2026-09-23 | AerSimulator tiene un sesgo sistemático de ~0.013 frente a statevector | Invalidaba la figura del OE-6; obliga a medir el ruido de otra forma |
 | H-017 | 2026-09-23 | Un solo sorteo de θ no permite concluir nada sobre concentración del embedding | Obliga a promediar; advertencia metodológica general |
+| H-018 | 2026-09-23 | El embedding se concentra con el número de qubits, no con la profundidad | Respalda reps=1 por dispersión, no solo por coste; material del OE-6 |
 
 ### Preguntas abiertas
 
@@ -620,9 +621,36 @@ Bajo Arquitectura B, θ queda fijo y aleatorio, lo que abre una pregunta legíti
 
 **Impacto.** La variación observada está dominada por **el sorteo de θ**, no por la profundidad ni por el número de qubits. Con una sola realización por configuración el experimento no distingue señal de ruido, y una figura construida así invitaría a leer una tendencia que los datos no sostienen.
 
-**Corrección en curso.** Repetición promediando **10 sorteos de θ por configuración**, reportando media y desviación entre sorteos. Solo si la separación entre configuraciones supera la dispersión entre sorteos se podrá afirmar algo.
+**Corregido.** Se repitió promediando 10 sorteos de θ por configuración; el resultado está en H-018. El promediado confirma el diagnóstico: a k=8, `reps=1` y `reps=2` resultan indistinguibles (0.0854 contra 0.0849), cuando el sorteo único indicaba un aumento del 35 %.
 
 **Advertencia general que conviene retener.** Este es el segundo caso en el mismo día en que una medición de una sola realización produjo un número engañoso; el primero fueron las fidelidades de los conjuntos de Pauli en H-012, donde un único vector de entrada dio 0.000 para un candidato que promediando resulta ser de los más parecidos a ZZ. **Cualquier cantidad que dependa de un sorteo aleatorio —θ, el vector de entrada, la partición— debe reportarse como distribución, no como valor puntual.**
+
+---
+
+### H-018 · El embedding se concentra con el número de qubits, no con la profundidad
+**Fecha:** 2026-09-23 · **→ Reporte:** §6.x, OE-6
+
+Repetición de H-017 promediando **10 sorteos de θ** por configuración, sobre 100 entradas. Desviación estándar de ⟨Zᵢ⟩ entre muestras, media ± desviación entre sorteos:
+
+| k | reps=1 | reps=2 | reps=3 |
+|---|---|---|---|
+| 8 | 0.0854 ± 0.0128 | 0.0849 ± 0.0092 | 0.0735 ± 0.0049 |
+| 12 | 0.0456 ± 0.0064 | 0.0573 ± 0.0033 | 0.0349 ± 0.0041 |
+| 16 | 0.0412 ± 0.0082 | 0.0412 ± 0.0039 | 0.0240 ± 0.0015 |
+
+Tres lecturas, y conviene no mezclarlas:
+
+**1. La concentración con el número de qubits es clara.** A reps=1 la dispersión cae de 0.0854 (k=8) a 0.0456 (k=12) y 0.0412 (k=16). El salto de k=8 a k=12 excede holgadamente las barras de error; el de k=12 a k=16 queda dentro de ellas. Es el comportamiento que anticipa el fenómeno de mesetas áridas: al crecer el espacio de Hilbert, los valores de expectativa se concentran.
+
+**2. La concentración con la profundidad NO es monótona en el rango probado.** `reps=1` y `reps=2` son indistinguibles a k=8 y a k=16, y a k=12 la dispersión *aumenta* de 0.0456 a 0.0573, con barras que apenas se solapan. Solo `reps=3` queda consistentemente por debajo en los tres valores de k. No se puede afirmar que más capas concentren el embedding entre 1 y 3.
+
+**3. La variabilidad entre sorteos de θ sí colapsa con la profundidad.** A k=16 la desviación entre sorteos pasa de 0.0082 a 0.0039 y a 0.0015. Es decir, circuitos más profundos producen una dispersión más uniforme **con independencia de θ**. Esa pérdida de sensibilidad a los parámetros es la firma característica de la meseta árida, y es una observación más sólida que la del punto 2.
+
+**Impacto sobre D-013.** Refuerza `reps=1` con un argumento positivo y no solo de coste: `reps=1` entrega la **máxima dispersión del embedding** —empatada con `reps=2`— al mínimo coste computacional. Un embedding más disperso porta más información discriminable, de modo que la elección barata coincide aquí con la mejor.
+
+**Impacto sobre k.** Es un matiz relevante para D-013 que conviene declarar: el embedding a k=12 ya está notablemente más concentrado que a k=8. La elección de k=12 se justificó por coste y por diversidad de familias de features, no por dispersión; si en M4 la separabilidad a k=12 resultara pobre, este resultado sugiere que **k=8 merecería una comparación** antes de dar por buena la conclusión.
+
+**Datos.** `Code/results/7_concentracion_embedding.csv`; figura `Docs/Figures/E4_embedding_concentration.png`. Medición sobre datos sintéticos uniformes en [0,π]^k, apropiada para caracterizar el circuito pero **no sustituye** la medición sobre features radiómicas reales una vez exista M3.
 
 ---
 
