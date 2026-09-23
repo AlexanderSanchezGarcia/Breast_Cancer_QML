@@ -60,6 +60,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-014 | 2026-09-22 | La precisión de shots se ignora si se fija en el estimador | Invalidó la primera corrida de shots; riesgo de reproducibilidad |
 | H-015 | 2026-09-22 | SPSA es ~10× más rápido que parameter-shift; lin-comb es 5× más lento | Ningún gradiente rescata la Arquitectura A |
 | H-016 | 2026-09-23 | AerSimulator tiene un sesgo sistemático de ~0.013 frente a statevector | Invalidaba la figura del OE-6; obliga a medir el ruido de otra forma |
+| H-017 | 2026-09-23 | Un solo sorteo de θ no permite concluir nada sobre concentración del embedding | Obliga a promediar; advertencia metodológica general |
 
 ### Preguntas abiertas
 
@@ -601,6 +602,27 @@ Pendiente log-log de la dispersión: **−0.5065**, contra la teórica −0.5. L
 **Para el reporte.** Conviene presentarlo como dos observaciones separadas, porque lo son: el ruido de muestreo sigue la estadística esperada, y además el simulador introduce un sesgo constante respecto al cálculo exacto. Lo segundo es una restricción práctica del simulador y por tanto material directo del OE-6. **Queda sin identificar la causa del sesgo** (transpilación interna de Aer, redondeo del número de shots derivado de `default_precision`, u otra); investigarla si hay holgura, o declararla como limitación si no.
 
 **Datos.** `Code/results/7_shots_repetido.csv`, figura `Docs/Figures/E3_shots_sensitivity.png`.
+
+---
+
+### H-017 · Un solo sorteo de θ no sostiene ninguna conclusión sobre concentración
+**Fecha:** 2026-09-23 · **→ Reporte:** §8.x, OE-6
+
+Bajo Arquitectura B, θ queda fijo y aleatorio, lo que abre una pregunta legítima: ¿se concentra el embedding al aumentar la profundidad o el número de qubits, como haría esperar el fenómeno de mesetas áridas? Se midió la desviación estándar de ⟨Zᵢ⟩ entre 200 entradas, con **un** sorteo de θ por configuración:
+
+| k | reps=1 | reps=2 | reps=3 |
+|---|---|---|---|
+| 8 | 0.0544 | 0.0732 | 0.0908 |
+| 12 | 0.0337 | 0.0493 | 0.0301 |
+| 16 | 0.0373 | 0.0560 | 0.0248 |
+
+**No hay patrón.** A k=8 la dispersión *crece* con la profundidad; a k=12 y k=16 sube y luego baja. Tampoco es consistente entre valores de k.
+
+**Impacto.** La variación observada está dominada por **el sorteo de θ**, no por la profundidad ni por el número de qubits. Con una sola realización por configuración el experimento no distingue señal de ruido, y una figura construida así invitaría a leer una tendencia que los datos no sostienen.
+
+**Corrección en curso.** Repetición promediando **10 sorteos de θ por configuración**, reportando media y desviación entre sorteos. Solo si la separación entre configuraciones supera la dispersión entre sorteos se podrá afirmar algo.
+
+**Advertencia general que conviene retener.** Este es el segundo caso en el mismo día en que una medición de una sola realización produjo un número engañoso; el primero fueron las fidelidades de los conjuntos de Pauli en H-012, donde un único vector de entrada dio 0.000 para un candidato que promediando resulta ser de los más parecidos a ZZ. **Cualquier cantidad que dependa de un sorteo aleatorio —θ, el vector de entrada, la partición— debe reportarse como distribución, no como valor puntual.**
 
 ---
 
