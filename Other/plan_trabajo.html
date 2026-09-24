@@ -93,10 +93,10 @@ button:hover{color:var(--ink)}
 <h3 class="sec">Hitos</h3>
 <table>
 <tr><th>Fecha</th><th>Hito</th><th>Qué significa</th></tr>
-<tr><td><b>11 sep</b></td><td>Techo computacional</td><td>Sabes k, reps y shots viables. Dimensiona todo lo demás.</td></tr>
-<tr><td><b>18 sep</b></td><td>Features listas</td><td><code>x ∈ [0,π]^k</code> reproducible, masas y calcificaciones.</td></tr>
-<tr><td><b>2 oct</b></td><td>Separabilidad</td><td>OE-3 respondido. Es la pregunta de investigación.</td></tr>
-<tr><td><b>16 oct</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos.</td></tr>
+<tr><td><b>22 sep ✓</b></td><td>Techo computacional</td><td>k=12, reps=1, Arquitectura B (D-013, D-014). Hecho.</td></tr>
+<tr><td><b>23 sep ✓</b></td><td>Features listas</td><td><code>x ∈ [0,π]^12</code> reproducible, masas y calcificaciones (M2–M4). Hecho.</td></tr>
+<tr><td><b>10 oct</b></td><td>Separabilidad</td><td>OE-3 respondido. Es la pregunta de investigación.</td></tr>
+<tr><td><b>17 oct</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos.</td></tr>
 <tr><td><b>23 oct</b></td><td>Congelamiento</td><td>No se corren experimentos nuevos. Lo que haya, se reporta.</td></tr>
 <tr><td><b>3 nov</b></td><td>Entrega a sinodales</td><td>Fecha dura, externa.</td></tr>
 <tr><td><b>17 nov</b></td><td>Presentaciones</td><td>Abre la ventana. Día aún sin asignar.</td></tr>
@@ -166,28 +166,28 @@ const PHASES = [
      "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones · re-verificado en M4"]]
   ]},
  {id:"f4", n:"Fase 4 · Implementación cuántica", due:"2026-10-10",
-  note:"Núcleo de la tesis (OE-3). Arquitectura B: θ fijo semilla 42, embeddings precomputados.",
+  note:"Núcleo de la tesis (OE-3). Desbloqueada el 23 sep. Arquitectura B: θ fijo semilla 42, embeddings precomputados.",
   groups:[
-   ["Embeddings · hasta 25 sep",[
+   ["Embeddings · hasta 3 oct",[
      "⟨Zᵢ⟩ ∈ [-1,1]^k para las 5 condiciones, masas y calcificaciones por separado",
-     "Kernels de fidelidad sobre submuestra de 150–200 casos por subconjunto (RNF-06)"]],
-   ["Separabilidad · hasta 2 oct",[
+     "Kernels de fidelidad sobre 200 lesiones de train por subconjunto (D-028), tras diagnosticar su concentración (H-031)"]],
+   ["Separabilidad · hasta 10 oct",[
      "KTA respecto al kernel ideal",
-     "Geometric difference g(K_C, K_Q) contra el kernel RBF clásico",
+     "Geometric difference g(K_C, K_Q) contra el kernel RBF clásico, con γ por heurística de la mediana (D-027)",
      "Índice Davies-Bouldin y distancia Fisher",
      "Visualizaciones t-SNE 2D",
-     "Medir OE-3 con el feature map solo (sin ansatz entrenado) para que la comparación sea justa",
-     "Añadir C2′ (PCA desde el vector radiómico completo) y declarar C2 como control nulo"]]
+     "Kernels solo con el feature map (D-017); ⟨Zᵢ⟩ con θ fijo por semilla 42 y valores exactos (D-014, H-019)",
+     "C2 como control nulo: sus métricas deben coincidir con las de C1 (D-016, sin C2′)"]]
   ]},
  {id:"f5", n:"Fase 5 · Modelos de clasificación", due:"2026-10-17",
   note:"Cinco condiciones × 2 subconjuntos, con validación cruzada 5-fold. Sin TorchConnector.",
   groups:[
    ["Entrenamiento",[
-     "TorchConnector con input_gradients=False (ahorra la mitad del gradiente)",
+     "MLP sobre la matriz de embeddings en caché, sin TorchConnector ni qiskit en el bucle (D-014)",
      "BCE ponderada con class_weight=balanced",
      "Semilla fija en numpy, PyTorch y Qiskit (RNF-01)",
      "AUC-ROC, F1, Accuracy, Precision, Recall sobre test, separado por tipo de hallazgo",
-     "Si aprieta el calendario: k=8, reps=1, expectativas exactas, masas primero"]]
+     "Validación cruzada con los folds congelados en M4: StratifiedGroupKFold por paciente, semilla por balance (D-026)"]]
   ]},
  {id:"f6", n:"Fase 6 · Evaluación y validación", due:"2026-10-23",
   note:"Cierra con el congelamiento de resultados.",
@@ -195,9 +195,9 @@ const PHASES = [
    ["Análisis",[
      "Correlación de Spearman entre ranking de separabilidad y ranking de AUC-ROC",
      "OE-6 · restricciones del simulador cuantificadas",
-     "Validación cruzada, o justificación explícita de su ausencia",
+     "Validación cruzada 5-fold: media ± desviación por condición (D-018); declarar que es algo optimista (H-027)",
      "Tabla comparativa clásico vs cuántico",
-     "Análisis de beneficios y limitaciones"]]
+     "Análisis de beneficios y limitaciones · incluye H-030, la selección univariante frente a las interacciones"]]
   ]},
  {id:"f7", n:"Fase 7 · Documentación", due:"2026-11-03",
   note:"La redacción corre en paralelo desde principios de octubre.",

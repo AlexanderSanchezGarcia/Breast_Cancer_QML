@@ -47,6 +47,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-024 | 2026-09-23 | Selección por F-test con restricción de redundancia \|r\| ≤ 0.95 | M4 | Firme | §4.6 |
 | D-025 | 2026-09-23 | Escalado angular por cuantiles (uniforme × π) en lugar de min-max | M4 | Firme | §4.6 |
 | D-026 | 2026-09-23 | Semilla de los folds elegida por balance de clases | M4, M6 | Firme | §4.9 |
+| D-027 | 2026-09-24 | γ del RBF por heurística de la mediana (C3 y kernel clásico de la *geometric difference*) | M5, M7 | Firme | §4.7, §4.9 |
+| D-028 | 2026-09-24 | Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas | M5, M7 | Firme | §4.9 |
 
 ### Hallazgos
 
@@ -81,6 +83,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-027 | 2026-09-23 | Los folds deben agruparse por paciente, y la semilla 42 desbalancea los de calcificaciones | Aplica la regla de D-018; decisión pendiente sobre la semilla |
 | H-028 | 2026-09-23 | Min-max deja casi constantes los ángulos de las features de cola pesada | Puede sesgar la comparación contra C3–C5; decisión pendiente |
 | H-029 | 2026-09-23 | El procedimiento documentado para instalar PyRadiomics no funcionaba | Corrige `Code/env/README.md`; reproducibilidad del entorno |
+| H-030 | 2026-09-24 | La selección univariante no ve interacciones, que es justo lo que codifica el bloque ZZ | Limitación a declarar en §7; análisis de robustez opcional |
+| H-031 | 2026-09-24 | A 12 qubits, cambiar una sola feature deja el estado del feature map casi ortogonal | Riesgo de kernel de fidelidad concentrado; diagnóstico antes de M5 |
 
 ### Preguntas abiertas
 
@@ -455,6 +459,36 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 **Por qué.** El criterio no usa features ni rendimiento, así que no puede ajustar el resultado. Un fold con un 52 % de malignas inflaría la varianza entre folds, que es precisamente lo que la validación cruzada debe estimar.
 
 **Consecuencias.** Desviación máxima de 0.011 en masas y 0.019 en calcificaciones. Las semillas quedan en el JSON de M4 y en `Code/results/4_semilla_folds.csv`. §4.9 debe declarar el criterio.
+
+---
+
+### D-027 · γ del RBF por heurística de la mediana
+**Fecha:** 2026-09-24 · **Módulo:** M5, M7 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.7, §4.9
+
+**Contexto.** C3 (Kernel PCA con núcleo RBF) y el kernel clásico K_C de la *geometric difference* (D-017) necesitan un ancho de banda, K(x, x') = exp(−γ‖x − x'‖²).
+
+**Alternativas.** γ = 1/k, el valor por defecto de `KernelPCA` (≈ 0.083): simple, pero arbitrario respecto a la escala de los datos. O la **heurística de la mediana** (**elegida**).
+
+**Decisión.** γ = 1 / (2 · mediana de ‖x − x'‖² sobre los pares del train), calculado por subconjunto sobre el mismo x ∈ [0, π]¹² que recibe el circuito. Con x uniforme en [0, π]¹² sale del orden de 0.026, con valores de kernel típicos cercanos a 0.6.
+
+**Por qué.** Es un criterio estándar que no mira las etiquetas y se adapta a la escala de los datos. Usar el mismo γ en C3 y en K_C hace que la *geometric difference* compare el kernel cuántico con el mismo kernel clásico que define el comparador C3.
+
+**Consecuencias.** El γ de cada subconjunto se reporta junto a los resultados.
+
+---
+
+### D-028 · Separabilidad sobre 200 lesiones de train por subconjunto
+**Fecha:** 2026-09-24 · **Módulo:** M5, M7 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.9
+
+**Contexto.** RNF-06 limita los kernels de fidelidad a 150–200 casos por subconjunto por su coste O(N²): unos 41 min por matriz a k=12.
+
+**Alternativas.** 150 de train (más barato y más ruidoso), 200 de test (usa el test fuera de la evaluación final) o **200 de train** (**elegida**).
+
+**Decisión.** 200 lesiones por subconjunto, estratificadas por clase, tomadas del train con semilla 42. Las métricas basadas en kernel (KTA, *geometric difference*) y las basadas en el embedding (Davies-Bouldin, Fisher, t-SNE) se calculan sobre esa misma submuestra, para que las cinco condiciones y las dos familias de métricas sean comparables. Davies-Bouldin y Fisher son baratas y pueden repetirse sobre todo el train como análisis de robustez.
+
+**Por qué.** El test queda reservado para la clasificación de M6 (RNF-03).
+
+**Consecuencias.** Coste de los kernels: 4 matrices, unas 2.75 h en total. La lista de lesiones de la submuestra se guarda para que sea reproducible.
 
 ---
 
@@ -1139,6 +1173,44 @@ Al instalar PyRadiomics en `qml_cancer` siguiendo `Code/env/README.md`, el proce
 Había además un paso de riesgo: `pip install --upgrade "numpy>=2.0"` actualiza numpy a la última versión disponible, y en `qml_cancer` eso podía romper la compatibilidad con Qiskit.
 
 **Impacto.** El README queda corregido: hash completo, clon sin blobs, todas las dependencias fijadas con versión, `--no-deps` y ningún cambio de numpy. Con él, la compilación se reprodujo desde cero en un entorno distinto y dio features idénticas. Es el mismo tipo de hallazgo que H-006, y conviene citarlo junto a él en §8.x: la reproducibilidad de un pipeline radiómico depende de pasos de instalación que se rompen sin avisar.
+
+---
+
+### H-030 · La selección univariante no ve interacciones, que es justo lo que codifica el bloque ZZ
+**Fecha:** 2026-09-24 · **→ Reporte:** §4.6, §7
+
+`SelectKBest` y el filtro de redundancia (D-024) juzgan cada feature **por separado**: la F de ANOVA por su poder discriminativo individual, y la correlación de Pearson de dos en dos. Una feature cuyo valor está solo en combinación con otra se descarta antes de llegar al circuito.
+
+**Ejemplo, un patrón XOR.** Benignas con (bajo, bajo) y (alto, alto), malignas con (bajo, alto) y (alto, bajo). Cada feature tiene por separado d = 0 y F = 0, y `SelectKBest` descarta las dos. Juntas, en cambio, separan las clases perfectamente, a través del signo del producto (x₁ − media)(x₂ − media).
+
+**La tensión con el diseño.** El bloque ZZ del `zz_feature_map` codifica precisamente productos de pares, (π − xᵢ)(π − xⱼ): es donde está lo que la codificación cuántica podría aportar. La selección, en cambio, no mira interacciones.
+
+**Impacto.**
+
+- La comparación entre condiciones sigue siendo justa, porque las cinco reciben las mismas 12 features.
+- Casos puros como el XOR son raros en features radiómicas; lo habitual es que una feature útil en combinación también tenga algo de señal por sí sola.
+- Aun así hay que **declararlo en §7**, porque es la objeción natural: «si lo cuántico aporta interacciones, ¿por qué se seleccionó sin mirarlas?».
+- Como análisis de robustez opcional, se puede comparar con una selección multivariante. **Decisión del autor.**
+
+---
+
+### H-031 · A 12 qubits, cambiar una sola feature deja el estado del feature map casi ortogonal
+**Fecha:** 2026-09-24 · **→ Reporte:** §4.9, §6.x
+
+Se tomó el estado de `zz_feature_map(12)` para la lesión `Mass-Training_P_00001_LEFT_CC_1` y se cambió solo `x_01`. La fidelidad |⟨φ(x)|φ(x')⟩|² entre los estados es **0.0000** en los tres casos: de 0 a π/2, de 0 a π y de π/2 a π.
+
+**Por qué.**
+
+- De 0 a π/2, la fase del qubit 1 cambia en π y el qubit pasa de |+⟩ a |−⟩, que son estados ortogonales.
+- De 0 a π la fase individual da una vuelta completa, pero los 11 términos ZZ en los que participa ese qubit cambian, y eso basta para hacer el estado ortogonal.
+
+La codificación es extremadamente sensible a cada feature.
+
+**Impacto.** Dos lesiones distintas en las 12 features podrían tener fidelidad casi nula. En ese caso la matriz del kernel cuántico se acercaría a la identidad, y la KTA y la *geometric difference* dejarían de ser informativas. En la literatura esto se describe como concentración de los kernels cuánticos; **buscar y verificar la referencia antes de citarla**.
+
+**Diagnóstico antes de M5.** Calcular el kernel sobre una muestra pequeña y mirar la distribución fuera de la diagonal, antes de invertir ~2.75 h en las cuatro matrices. Si está concentrado, la salida habitual es escalar los ángulos por un factor de ancho de banda, x → c·x con c < 1. Eso cambiaría el diseño angular (D-004, D-025), así que sería una **decisión del autor**.
+
+**Datos.** Verificación puntual del 2026-09-24 con los ángulos de `Data/processed/m4/x_mass.parquet`.
 
 ---
 
