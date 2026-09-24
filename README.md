@@ -27,13 +27,15 @@ for Screening Mammography), publicly available at The Cancer Imaging Archive (TC
 ```
 TT/
 ├── Code/
-│   ├── 1_EDA.ipynb
-│   ├── 5_Quantum_Benchmark.ipynb
-│   ├── 6_Design_Verifications.ipynb
+│   ├── 1_EDA.ipynb                        # Module 1: data loading and exploratory analysis
+│   ├── 2_Preprocessing.ipynb              # Module 2: aligned (image, mask) pairs for PyRadiomics
+│   ├── 5_Quantum_Benchmark.ipynb          # Resource benchmark of the quantum circuit
+│   ├── 6_Design_Verifications.ipynb       # Checks behind the circuit design decisions
+│   ├── 7_Sampling_and_Concentration.ipynb # Shot-noise study and embedding concentration
 │   ├── Test.ipynb
 │   ├── env/                     # Reproducible environment definitions
-│   └── results/                 # Benchmark CSV results
-├── Data/                        # CBIS-DDSM CSV metadata and DICOM images (not versioned)
+│   └── results/                 # CSV results and audits of every notebook
+├── Data/                        # CBIS-DDSM CSV metadata, DICOM images and processed/ outputs (not versioned)
 ├── Docs/
 │   ├── Figures/
 │   ├── Logos/

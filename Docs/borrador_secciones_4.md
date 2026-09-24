@@ -9,31 +9,45 @@
 ## §4.4 · Módulo 2: Preprocesamiento de imagen
 
 **Qué cambia.** El texto actual aplica CLAHE y normaliza a 224×224. Ambas cosas se retiran de
-la ruta radiómica (D-009, D-010).
+la ruta radiómica (D-009, D-010). Se añade la alineación verificada de las máscaras y su limpieza
+(D-020, D-021, H-020, H-021) y el contrato de salida (D-022). *Actualizado el 2026-09-23 con los
+resultados de `Code/2_Preprocessing.ipynb`; D-020 a D-022 siguen provisionales.*
 
 ```latex
 El módulo de preprocesamiento transforma las imágenes DICOM crudas en pares
 (imagen, máscara) alineados y centrados en la región de interés, adecuados para la
 extracción de características del módulo siguiente.
 
-La primera etapa resuelve la correspondencia geométrica entre imagen y máscara. El
-\SI{2.3}{\percent} de los casos (80 de 3\,568) presenta máscaras cuyas dimensiones no
-coinciden con las de la mamografía asociada; en esos casos la máscara se remuestrea al
-espacio de la imagen mediante interpolación por vecino más cercano, que preserva el
-carácter binario de la anotación.
+La primera etapa resuelve la correspondencia geométrica entre imagen y máscara. En 80 de
+los 3\,568 registros las dimensiones de la máscara no coinciden con las de la mamografía, y
+el desajuste es de dos tipos. En 78 masas la máscara reproduce la imagen a una escala de
+0.870 en ambos ejes, y se remuestrea al tamaño de la imagen por vecino más cercano, que
+preserva su carácter binario. En 2 calcificaciones la diferencia es de pocas decenas de
+píxeles y no es proporcional, de modo que la máscara se ancla sin escalar. Ambas reglas se
+verificaron de forma independiente. Los recortes que acompañan al CBIS-DDSM coinciden, cuando
+imagen y máscara están alineadas, con la caja de la máscara ampliada en 20 píxeles por lado.
+Esa relación se cumple en el \SI{99.8}{\percent} de los casos verificables y confirma la regla
+de anclaje; para las máscaras escaladas se empleó una prueba de contraste entre la lesión y
+su entorno.
 
-La segunda etapa realiza el recorte de la región de interés: la máscara binaria identifica
-los píxeles de la lesión y se extrae el rectángulo mínimo que contiene la región activa,
-\textbf{conservando la resolución original de la imagen}.
+A continuación, cada máscara se reduce a su componente conexa mayor. El
+\SI{86.3}{\percent} de las máscaras de masas contiene pequeñas islas desconectadas, residuos
+de la rasterización del contorno, que alterarían el perímetro y el diámetro máximo calculados
+sobre la región.
 
-La decisión de no redimensionar el recorte a una malla común es deliberada. Los recortes
-del conjunto abarcan desde \(41\times65\) hasta \(1\,137\times1\,641\) píxeles, y un
-análisis preliminar de los tamaños de efecto muestra que las cinco características más
-discriminativas entre lesiones benignas y malignas en masas son medidas de tamaño
-(\(|d|\) de Cohen entre 1.41 y 1.43). Redimensionar a una malla común iguala artificialmente
-la escala de las lesiones y elimina precisamente la señal de mayor magnitud disponible. La
-normalización a \(224\times224\) correspondía a la Estrategia B basada en un codificador
-convolucional, descartada en favor de la extracción radiómica.
+La segunda etapa realiza el recorte de la región de interés: la máscara identifica los
+píxeles de la lesión y se extrae su rectángulo mínimo ampliado en 20 píxeles por lado,
+\textbf{conservando la resolución y las intensidades originales de la imagen}. Los recortes
+del CBIS-DDSM no se emplean para la extracción, porque su intensidad está reescalada por una
+ganancia distinta en cada caso.
+
+La decisión de no redimensionar el recorte a una malla común es deliberada. Las lesiones del
+conjunto abarcan desde \(33\times33\) hasta \(3\,801\times2\,873\) píxeles, y un análisis
+preliminar de los tamaños de efecto muestra que las cinco características más discriminativas
+entre lesiones benignas y malignas en masas son medidas de tamaño. Redimensionar a una malla
+común iguala artificialmente la escala de las lesiones y elimina precisamente la señal de
+mayor magnitud disponible. La normalización a \(224\times224\) correspondía a la Estrategia B
+basada en un codificador convolucional, descartada en favor de la extracción radiómica.
 
 Por la misma razón se excluye la ecualización adaptativa de histograma (CLAHE) de la ruta
 de extracción. CLAHE es una transformación local dependiente del contenido, y altera la
@@ -41,6 +55,10 @@ reproducibilidad de las características de primer orden y de la matriz de co-oc
 bajo el estándar IBSI. Se genera una variante con CLAHE únicamente para cuantificar su
 efecto sobre las características extraídas, que se reporta en la sección de resultados.
 ```
+
+> **Antes de integrarlo.** El \(|d|\) de Cohen de H-003 (1.41–1.43) sale de solo 20 masas;
+> conviene recalcularlo sobre el conjunto completo en M3 antes de citarlo. Y la hipótesis de que
+> 0.870 = 43.5/50 µm entre digitalizadores del DDSM está sin verificar: no incluirla sin fuente.
 
 ---
 
@@ -160,4 +178,6 @@ información sobre la naturaleza de la codificación antes que una inconsistenci
 - **§5.4** documenta que `Manufacturer` es UNKNOWN, pero no extrae la consecuencia: al faltar
   también `PixelSpacing`, las características de forma quedan en píxeles sin escala física.
 - **El cronograma** no contempla M2 ni M3 como actividades y hay que rehacerlo.
-- **Q-004**: la atribución a Azevedo o a Incudini sigue sin resolverse.
+- **Q-004** quedó cerrada (D-019): Azevedo et al. (2022). Falta añadir el `\cite` en §1.3 y §2.1.5.
+- **RF-04, RF-05 y RF-06** (tabla de requisitos del Módulo 2) siguen pidiendo normalizar a [0,1], aplicar
+  CLAHE y redimensionar a 224×224. Hay que reescribirlos en línea con D-009, D-010 y D-022.

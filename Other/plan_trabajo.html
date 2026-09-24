@@ -119,6 +119,8 @@ try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { state 
 if (!Object.keys(state).some(k => k.startsWith("f3."))) {
   for (let i = 0; i < 11; i++) state["f3." + i] = true;
 }
+// M2 quedó hecho el 2026-09-23; sus tres tareas (f2.6 a f2.8) arrancan marcadas si nunca se tocaron.
+for (const k of ["f2.6", "f2.7", "f2.8"]) if (!(k in state)) state[k] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -145,10 +147,10 @@ const PHASES = [
      "Corregir el conteo de cobertura: 3,482 / 3,568 usables (97.6 %), no 100 %",
      "Reestructurar repo: Code/moduloN/, config.yaml, requirements.txt",
      "Arreglar .gitignore: hoy Docs/Figures y Docs/Logos NO están versionados"]],
-   ["Módulo 2 · Preprocesamiento · hasta 7 sep",[
-     "Recorte ROI desde la máscara a resolución original, sin resize a 224×224",
-     "Resamplear la máscara al espacio de la imagen (vecino más cercano) en los 80 casos desalineados",
-     "CLAHE fuera de la ruta radiómica; generar variante con CLAHE solo para comparar"]],
+   ["Módulo 2 · Preprocesamiento · ✓ 23 sep (2_Preprocessing.ipynb)",[
+     "Recorte ROI a resolución original (caja + 20 px), sin resize a 224×224 · 3,568 lesiones exportadas a NRRD (D-022)",
+     "80 máscaras desalineadas: 78 remuestreadas (escala 0.870) y 2 ancladas sin escalar, verificadas contra los recortes oficiales (D-020, H-020) · máscaras de masas reducidas a su componente mayor (D-021)",
+     "CLAHE fuera de la ruta radiómica; variante con CLAHE exportada para compararla en M3"]],
    ["Módulo 3 · PyRadiomics · hasta 14 sep",[
      "Extracción firstorder + shape2D + GLCM + GLRLM con binCount=32, masas y calcificaciones por separado",
      "Documentar la ausencia de PixelSpacing en el 100 % de los DICOM",

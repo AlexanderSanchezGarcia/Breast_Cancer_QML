@@ -40,6 +40,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme | §3.4.2, §4.9 |
 | D-018 | 2026-09-22 | Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento | M6 | Firme | §4.8, §4.9 |
 | D-019 | 2026-09-23 | Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022) | reporte | Firme | §1.3, §2.1.5 |
+| D-020 | 2026-09-23 | Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 | M2 | Provisional | §4.4, §8.x |
+| D-021 | 2026-09-23 | Reducir cada máscara a su componente conexa mayor | M2 | Provisional | §4.4, §8.x |
+| D-022 | 2026-09-23 | Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD | M2, M3 | Provisional | §4.4, §8.x |
 
 ### Hallazgos
 
@@ -64,6 +67,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-017 | 2026-09-23 | Un solo sorteo de θ no permite concluir nada sobre concentración del embedding | Obliga a promediar; advertencia metodológica general |
 | H-018 | 2026-09-23 | El embedding se concentra con el número de qubits, no con la profundidad | Material del OE-6; a k=12 reps=2 dispersa un 30 % más que reps=1, así que reps=1 se sostiene por coste, no por dispersión · **cifras rehechas sin ruido (H-019)** |
 | H-019 | 2026-09-23 | El «sesgo» de H-016 era ruido en la referencia, y el estimador de Aer no muestrea | Invalida H-016 y la figura E3; obliga a repetir H-018; regla de precisión 0 para M5 |
+| H-020 | 2026-09-23 | Las 80 máscaras desalineadas son de dos tipos; los recortes oficiales verifican la alineación al píxel | Corrige el procedimiento de H-004; justifica D-020 |
+| H-021 | 2026-09-23 | El 86.3 % de las máscaras de masas trae islas desconectadas | Justifica D-021; acota su efecto sobre las *shape features* |
+| H-022 | 2026-09-23 | CLAHE de OpenCV sobre 16 bits con `clipLimit=2` es casi la identidad | La variante de D-010 se exporta en 8 bits; si no, la comparación de M3 sería un artefacto |
 
 ### Preguntas abiertas
 
@@ -132,6 +138,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 **Evidencia.** H-003 — los 5 features más discriminativos en masas son todos de tamaño, con |d| de Cohen ≈ 1.41–1.43. El resize destruye justo la señal más fuerte disponible.
 
 **Consecuencias.** Contradice el texto de TT1; hay que corregirlo en §4.4 y explicar el cambio en §8.x. El coste computacional no sube de forma apreciable (0.14 s/caso).
+
+**Cifras actualizadas el 2026-09-23 (M2, conjunto completo).** El rango 41×65 a 1137×1641 venía de una muestra. Sobre las 3,568 lesiones, la caja de la lesión mide entre 86×55 y 1329×1365 px en masas (mediana 302×304) y entre 33×33 y 3801×2873 px en calcificaciones (mediana 273×289). Son las cifras que deben ir en §4.4.
 
 ---
 
@@ -291,6 +299,67 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 
 ---
 
+### D-020 · Alinear cada máscara según su tipo de desajuste
+**Fecha:** 2026-09-23 · **Módulo:** M2 · **Estado:** Provisional (propuesta implementada en `2_Preprocessing.ipynb`, pendiente de validación del autor) · **→ Reporte:** §4.4, §8.x
+
+**Contexto.** H-004 encontró 80 máscaras con dimensiones distintas a las de su mamografía y proponía remuestrearlas todas por vecino más cercano. H-020 muestra que son dos problemas distintos.
+
+**Alternativas.**
+- *Remuestrear las 80* (lo que decía H-004) — descartada: desplaza hasta 37 px los bordes de las dos máscaras de `P_00353`, cuyo desajuste no es de escala.
+- *Descartar las 80* — descartada: pierde 78 masas, el 4.6 % del subconjunto.
+- *Regla por tipo* — **elegida**.
+
+**Decisión.**
+- `scaled` (78 masas; la máscara mide 0.870 veces la imagen en ambos ejes): remuestreo al tamaño de la imagen con `cv2.INTER_NEAREST_EXACT`. Es vecino más cercano sin el desfase de medio píxel que tiene `INTER_NEAREST` en OpenCV.
+- `offset` (2 calcificaciones de `P_00353`; diferencia de pocas decenas de píxeles y no proporcional): sin escalar, anclada en la esquina superior izquierda y recortada o rellenada al tamaño de la imagen.
+
+**Por qué.** Cada regla se verificó con un criterio independiente (H-020): la de `offset` reproduce al píxel el recorte oficial del CBIS-DDSM, y la de `scaled` gana la prueba de contraste frente a la alternativa en 77 de 78 casos.
+
+**Consecuencias.** Ningún caso se descarta. La columna `mismatch` del índice de M2 registra el tipo de cada caso. El borrador de §4.4 habla de «remuestrear las 80» y hay que corregirlo.
+
+---
+
+### D-021 · Reducir cada máscara a su componente conexa mayor
+**Fecha:** 2026-09-23 · **Módulo:** M2 · **Estado:** Provisional (propuesta implementada, pendiente de validación del autor) · **→ Reporte:** §4.4, §8.x
+
+**Contexto.** Cada registro anota **una** lesión, pero el 86.3 % de las máscaras de masas trae islas desconectadas de pocos píxeles (H-021). PyRadiomics calcula `Perimeter` sumando el borde de todas las componentes, y `MaximumDiameter` como la mayor distancia entre dos puntos cualesquiera de la máscara.
+
+**Alternativas.**
+- *Conservar todo* — descartada: contamina precisamente las *shape features*, que H-003 señala como las más discriminativas en masas.
+- *Apertura morfológica* — descartada: elimina las islas, pero también erosiona el borde real, que es donde vive la espiculación.
+- *Umbral de área* — descartada: exige un corte arbitrario, y los datos muestran que no hace falta.
+- *Componente conexa mayor, conectividad 8* — **elegida**.
+
+**Por qué.** La componente mayor contiene siempre más del 99.55 % del área, y ninguna máscara tiene dos componentes de 100 px o más: no hay ambigüedad sobre cuál es la lesión.
+
+**Evidencia.** H-021.
+
+**Consecuencias.** Se modifican 1,464 máscaras, todas de masas; en calcificaciones la regla no cambia nada. El índice registra, para cada caso, el área eliminada y la distancia de la isla más lejana. **El efecto esperado sobre las features es pequeño**: la isla más lejana está a 14 px de su lesión, lo que acota el cambio en `MaximumDiameter`. Saberlo de antemano descarta las islas como explicación si en M3 las *shape features* se comportan de forma inesperada.
+
+---
+
+### D-022 · Contrato de salida de M2
+**Fecha:** 2026-09-23 · **Módulo:** M2, M3 · **Estado:** Provisional (propuesta implementada, pendiente de validación del autor) · **→ Reporte:** §4.4, §8.x
+
+**Decisión y alternativas**, parámetro por parámetro:
+
+| Parámetro | Elegido | Alternativa descartada y motivo |
+|---|---|---|
+| Margen del recorte | caja de la lesión + **20 px** por lado, cortado en el borde de la imagen | Sin margen o con otro valor. 20 px es la convención de los recortes oficiales del CBIS-DDSM (H-020), y PyRadiomics solo usa los píxeles de la máscara, así que el margen no altera las features |
+| Intensidades | **16 bits crudos** de la mamografía | Normalizar a [0,1] (RF-04). Con `binCount=32` (D-008) las texturas ya son invariantes a un cambio lineal de intensidad, y un min–max por imagen ataría las features de primer orden al píxel más brillante y al más oscuro de toda la mamografía, que nada tienen que ver con la lesión |
+| Origen del recorte | la mamografía completa | Los recortes oficiales: están reescalados en intensidad con una ganancia de 1.00 a 5.31 por caso (H-020) |
+| Formato | NRRD comprimido, espaciado (1, 1), máscara 0/1 | DICOM o PNG. NRRD lo escribe SimpleITK y lo lee PyRadiomics directamente, y el espaciado unitario declara que todo está en píxeles (H-002) |
+| Variante CLAHE | `clipLimit=2.0`, `tileGridSize=(8,8)` sobre la **mamografía completa convertida a 8 bits** (min–max propio de la imagen), después recortada | CLAHE sobre el recorte: el diseño de TT1 lo aplicaba a la imagen completa, así que la variante mide el efecto de ese diseño. CLAHE sobre 16 bits: es casi la identidad (H-022). El reporte de TT1 no fijaba parámetros; se usan los valores por defecto de OpenCV |
+
+**Salida.**
+- Archivos: `Data/processed/m2/<finding_type>/<case_id>_{image,mask,clahe}.nrrd`, 2.17 GB, no versionados.
+- Índice: `Data/processed/m2_index.parquet`, que es la entrada de M3.
+- Auditoría versionada: `Code/results/2_preprocesamiento_qa.csv` y `2_preprocesamiento_resumen.csv`.
+
+**Consecuencias.** Además de §4.4, quedan desactualizados en el reporte **RF-04** (normalizar a [0,1]) y **RF-06** (redimensionar a 224×224). El borrador de §4.4 no los menciona.
+
+---
+
 ### D-012 · Descargar por la API REST de TCIA, no con NBIA Data Retriever
 **Fecha:** 2026-09-21 · **Módulo:** M1 · **Estado:** Firme · **→ Reporte:** §8.x
 
@@ -380,6 +449,8 @@ TOTAL           80 / 3482  (2.3 %)
 ```
 
 **Impacto.** PyRadiomics exige geometría idéntica entre imagen y máscara. M2 tiene que resamplear la máscara al espacio de la imagen con vecino más cercano; descartarlos perdería 78 masas.
+
+**Actualizado el 2026-09-23 (H-020).** La re-auditoría sobre los 3,568 casos, incluidas las 86 mamografías recuperadas, confirma exactamente 80. Pero son **dos tipos**: 78 masas escaladas por 0.870 y 2 calcificaciones desplazadas. Remuestrear estas dos las habría desplazado; el procedimiento correcto está en D-020.
 
 ---
 
@@ -724,6 +795,92 @@ Pendientes log-log: dispersión **−0.4986**, MAE **−0.4983**, sesgo de la me
 **Advertencia que se suma a la de H-017.** Es el tercer número engañoso en dos días, y en los tres la causa fue un supuesto no verificado: una sola realización (H-012, H-017) y ahora una referencia «exacta» que no lo era. Antes de comparar contra una referencia, hay que comprobar que la referencia se compara bien consigo misma: dos llamadas idénticas deberían dar exactamente el mismo resultado.
 
 **Datos.** `Code/7_Sampling_and_Concentration.ipynb` §2–4; `Code/results/7_origen_suelo_h016.csv`, `Code/results/7_shots_muestreo_real.csv`; figura `Docs/Figures/E3_shots_sensitivity.png`.
+
+---
+
+### H-020 · Dos tipos de máscara desalineada, y los recortes oficiales como verificación al píxel
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.4, §8.x
+
+**Re-auditoría.** Sobre los 3,568 registros, incluidas las 86 mamografías recuperadas en D-012, hay exactamente **80** máscaras con dimensiones distintas a las de su imagen: las mismas de H-004. Pero son de dos tipos:
+
+| Tipo | Casos | Máscara / imagen, filas | Máscara / imagen, columnas |
+|---|---|---|---|
+| `scaled` | 78 masas | 0.8700 – 0.8702 | 0.8700 – 0.8704 |
+| `offset` | 2 calcificaciones (`P_00353`, CC y MLO) | 0.997 – 1.014 | 1.003 – 1.011 |
+
+Un factor uniforme en ambos ejes significa el mismo campo de visión muestreado en una malla más gruesa. **Hipótesis, PENDIENTE DE VERIFICAR contra la documentación del DDSM:** 0.870 coincide con 43.5/50, la razón entre dos pasos de muestreo (µm por píxel) de los digitalizadores del DDSM.
+
+**Los recortes oficiales como referencia independiente.** El CBIS-DDSM incluye, para 3,453 lesiones, un recorte hecho por los autores del dataset. Localizado por correlación cruzada normalizada, aparece en la mamografía en el 100 % de los casos (NCC mínima 0.989). Dos propiedades:
+
+- **Su intensidad está reescalada**: recorte = ganancia × mamografía, con una ganancia de mediana 1.305 y rango de 1.000 a 5.306. Por eso no sirven para extraer features de primer orden (D-022).
+- **Cuando imagen y máscara coinciden, el recorte es exactamente la caja de la máscara más 20 px por lado.**
+
+Esa segunda propiedad es un test de alineación al píxel:
+
+| Categoría | Casos | Lectura |
+|---|---|---|
+| Cumple la regla | 3,206 | alineación verificada al píxel |
+| Lesión a menos de 20 px del borde | 162 | no verificable: el recorte oficial queda cortado por el borde |
+| Discordante | 7 | el recorte oficial y la máscara describen extensiones distintas de la lesión |
+| `scaled` | 78 | la regla no se cumple con ninguna hipótesis (ver abajo) |
+| Sin recorte oficial | 115 | — |
+
+Donde se puede comprobar, **la regla se cumple en 3,206 de 3,213 casos (99.8 %)**. Los 7 discordantes son masas y cuatro son asimetrías o distorsiones de la arquitectura, con máscaras amplias e irregulares. Se conservan y quedan marcados (`crop_check = "discordant"`). **Excluirlos es una decisión del autor.**
+
+**`offset`.** Anclando la máscara sin escalar, la regla se cumple **exactamente** en los 2 casos. Remuestreándola, no se cumple, y los bordes de la máscara quedan desplazados hasta 37 px.
+
+**`scaled`.** Sus recortes oficiales no siguen la regla con ninguna de las dos hipótesis: se cortaron con otra geometría, con cajas más grandes y descentradas. Hace falta otro test. Se desplazó la máscara ±40 px y se midió, en cada posición, el contraste entre su interior y un anillo de 15 px a su alrededor. Si la máscara está bien colocada, el máximo debe caer en desplazamiento cero. El contraste es un indicador indirecto, así que se calibró sobre 80 masas alineadas:
+
+| Grupo | Contraste en la posición | Relativo al máximo | Distancia al óptimo (mediana) | Óptimo a ≤ 10 px |
+|---|---|---|---|---|
+| 80 masas alineadas (control) | 0.950 | 0.993 | 4.3 px | 59 % |
+| 78 `scaled`, remuestreadas | 0.963 | 0.998 | **1.4 px** | 76 % |
+| 78 `scaled`, sin escalar | 0.052 | 0.388 | 47.7 px | 0 % |
+
+Las máscaras remuestreadas se comportan igual que las alineadas, o mejor, y superan a la alternativa sin escalar en 77 de 78 casos.
+
+**Impacto.** Corrige el procedimiento de H-004 y justifica D-020. Es además un dato de reproducibilidad para §8.x: ni las dimensiones de las máscaras ni los recortes oficiales son homogéneos dentro del CBIS-DDSM.
+
+**Datos.** `Code/2_Preprocessing.ipynb` §2–3; `Code/results/2_preprocesamiento_qa.csv` (columnas `mismatch`, `ncc`, `gain`, `crop_check`); figura `Docs/Figures/M2_mask_alignment.png`.
+
+---
+
+### H-021 · El 86.3 % de las máscaras de masas trae islas desconectadas
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.4, §8.x
+
+| | Masas | Calcificaciones |
+|---|---|---|
+| Máscaras con más de una componente | **1,464 / 1,696 (86.3 %)** | 0 / 1,872 |
+| Área en la componente mayor | ≥ 99.55 % | 100 % |
+| Segunda componente | mediana 2 px, máximo 64 px | — |
+| Máscaras con dos componentes de ≥ 100 px | 0 | 0 |
+
+Tras la alineación, eliminar las islas quita una mediana de 5 px por máscara, con un máximo de 110 px (0.45 % del área). **Las islas están pegadas a la lesión**: el píxel descartado más lejano está a una mediana de 3.6 px, con percentil 99 de 9.2 px y máximo de 14 px.
+
+**Impacto.** Justifica D-021 y acota su efecto. Un punto a distancia d de la lesión puede alargar `MaximumDiameter` como mucho en d, así que el cambio es de pocos píxeles: ~1 % en una masa típica de 300 px. La feature más expuesta es `Perimeter`, que suma el borde de todas las componentes. Las islas son casi seguramente residuos de rasterizar el contorno de la anotación.
+
+**Datos.** `Code/2_Preprocessing.ipynb` §4; columnas `n_components`, `area_removed` y `speck_reach_px` de `Code/results/2_preprocesamiento_qa.csv`.
+
+---
+
+### H-022 · CLAHE de OpenCV sobre 16 bits con `clipLimit=2` es casi la identidad
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.4, §8.x
+
+La primera exportación de la variante CLAHE (D-010) se hizo directamente sobre los 16 bits de la mamografía. Dentro de la lesión, el resultado era casi idéntico a la imagen cruda. En 30 lesiones al azar (semilla 42):
+
+| Versión | Correlación con la cruda (mediana, mín.) | Ganancia de contraste de la lesión (mediana, máx.) |
+|---|---|---|
+| CLAHE sobre 16 bits, `clip=2` | 1.000 (0.987) | 1.02 (1.45) |
+| CLAHE sobre 8 bits, `clip=2` | 0.972 (0.617) | **1.61** (2.64) |
+| 8 bits sin CLAHE (solo cuantización) | 1.000 (0.988) | 1.00 (1.03) |
+
+*Ganancia de contraste* = desviación de la lesión relativa a la de toda la mamografía, después contra antes.
+
+**Causa.** Es un detalle de implementación de OpenCV. El `clipLimit` se expresa relativo a la altura de un histograma plano, que depende del número de bins. Con 65,536 bins, una ventana de la mamografía ocupa solo una fracción de ellos. El recorte elimina entonces la mayor parte del histograma y la reparte uniformemente sobre todo el rango, y una ecualización construida a partir de un histograma casi uniforme es casi la identidad.
+
+**Impacto.** Con la configuración de 16 bits, M3 habría concluido que CLAHE no altera las features, y esa conclusión habría sido un artefacto de la configuración. La variante se exporta en 8 bits (D-022). La cuantización a 8 bits por sí sola no cambia nada medible, de modo que la comparación aísla el efecto de CLAHE. Para M3, la variante CLAHE está en 0–255 y la cruda en 16 bits: las features de primer orden **no son comparables en escala** entre ambas, mientras que las de textura con `binCount=32` y las de forma sí lo son.
+
+**Datos.** `Code/2_Preprocessing.ipynb` §5b; `Code/results/2_clahe_configuracion.csv`.
 
 ---
 
