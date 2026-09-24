@@ -39,6 +39,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-016 | 2026-09-22 | C2 se declara control nulo; se mantienen cinco condiciones | M5, M7 | Firme | §4.7, §6.x |
 | D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme | §3.4.2, §4.9 |
 | D-018 | 2026-09-22 | Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento | M6 | Firme | §4.8, §4.9 |
+| D-019 | 2026-09-23 | Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022) | reporte | Firme | §1.3, §2.1.5 |
 
 ### Hallazgos
 
@@ -70,7 +71,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-001 | ¿C2 se declara control nulo o se añade C2′? | Fase 4 | **RESUELTA** → D-016 |
 | Q-002 | ¿Con qué θ se mide la separabilidad? | Fase 4 | **RESUELTA** → D-014 |
 | Q-003 | ¿Sobre qué kernel se calcula la *geometric difference*? | Fase 3 | **RESUELTA** → D-017 |
-| Q-004 | ¿Azevedo et al. (2022) o Incudini et al. (2022)? | Fase 7 | 3 nov |
+| Q-004 | ¿Azevedo et al. (2022) o Incudini et al. (2022)? | Fase 7 | **RESUELTA** → D-019 |
 | Q-005 | ¿Validación cruzada o justificación de su ausencia? | Fase 6 | **RESUELTA** → D-018 |
 | Q-006 | ¿Qué k y reps finales? | Fase 3 | **RESUELTA** → D-013 |
 | Q-007 | ¿Entrenamiento conjunto o embedding precomputado? | Fases 4 y 5 | **RESUELTA** → D-014 |
@@ -271,6 +272,21 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 **Por qué.** D-014 vuelve el entrenamiento un problema clásico de segundos sobre una matriz en caché, así que el único coste real es escribir el código. Cumple un compromiso explícito ante el jurado y aporta barras de error en las métricas, que hoy se reportarían como valores puntuales.
 
 **Consecuencias.** Estratificar por clase, no por paciente: la unidad de análisis es la lesión (D-011). **Verificar que ningún paciente quede repartido entre folds**, ya que hay 2.28 ROIs por paciente (H-008); si se detecta, pasar a `StratifiedGroupKFold` agrupando por `patient_id`. Hay que añadir la validación cruzada a §4.9, que hoy no la menciona.
+
+---
+
+### D-019 · Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022)
+**Fecha:** 2026-09-23 · **Módulo:** reporte · **Estado:** Firme · **→ Reporte:** §1.3, §2.1.5 · *cierra Q-004*
+
+**Contexto.** El reporte atribuye a Azevedo et al. (2022) las dos líneas de trabajo futuro sobre las que se construye el proyecto (§1.3 y §2.1.5). El contexto del proyecto decía Incudini et al. (2022), que es otro paper.
+
+**Alternativas.** Azevedo et al. (2022), que es lo que dice el reporte, o Incudini et al. (2022), que era lo que decía el contexto del proyecto.
+
+**Decisión.** La atribución correcta es **Azevedo et al. (2022)**. El texto de §1.3 y §2.1.5 se mantiene.
+
+**Por qué.** Lo resolvió el autor. El reporte ya era internamente consistente con esta atribución, de modo que no hay que cambiar el texto.
+
+**Consecuencias.** La mención a Incudini et al. se retira del contexto del proyecto. Sigue pendiente un defecto de H-009: `Azevedo2022QuantumTransfer` se discute por nombre sin `\cite`, así que al corregir el reporte hay que añadir la cita en ambos puntos.
 
 ---
 
@@ -687,6 +703,8 @@ Propuesta: calcular el kernel de fidelidad K_Q(x,x') = |⟨φ(x)|φ(x')⟩|² ap
 **Bloquea:** Fase 7 · **Límite:** 3 nov
 
 El reporte atribuye a **Azevedo et al. (2022)** las dos líneas de trabajo futuro sobre las que se construye el proyecto (§1.3 y §2.1.5), y es internamente consistente. El contexto persistente del proyecto dice **Incudini et al. (2022)**. Son papers distintos. Hay que verificar contra la fuente cuál afirma qué y unificar.
+
+**Resuelta el 2026-09-23 → D-019:** la atribución correcta es Azevedo et al. (2022).
 
 ---
 
