@@ -1,0 +1,7 @@
+evaluation,compared_with,mae,predicted
+"QNN + Statevector, default precision",truth,0.01309793583027539,0.012466946262544772
+"QNN + Statevector, default precision","itself, second call",0.016842999601602942,0.017630924485867387
+"QNN + Statevector, precision = 0",truth,0.0,0.0
+"QNN + Aer, precision = 0",truth,1.6934440311531582e-16,0.0
+"QNN + Aer, 2^20 shots",truth,0.0008863408974509596,0.0007791841414090482
+"QNN + Aer, 2^20 shots",overnight reference,0.01314718873117599,0.012491272034480813

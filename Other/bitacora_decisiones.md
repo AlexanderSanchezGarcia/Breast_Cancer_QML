@@ -60,9 +60,10 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-013 | 2026-09-22 | Sin ansatz, ⟨Zᵢ⟩ = 0 para toda entrada | θ debe quedar fijo con semilla, no ausente; separa kernel de ⟨Z⟩ |
 | H-014 | 2026-09-22 | La precisión de shots se ignora si se fija en el estimador | Invalidó la primera corrida de shots; riesgo de reproducibilidad |
 | H-015 | 2026-09-22 | SPSA es ~10× más rápido que parameter-shift; lin-comb es 5× más lento | Ningún gradiente rescata la Arquitectura A |
-| H-016 | 2026-09-23 | AerSimulator tiene un sesgo sistemático de ~0.013 frente a statevector | Invalidaba la figura del OE-6; obliga a medir el ruido de otra forma |
+| H-016 | 2026-09-23 | ~~AerSimulator tiene un sesgo sistemático de ~0.013 frente a statevector~~ | **Invalidado por H-019**: el sesgo no existe, la referencia llevaba ruido |
 | H-017 | 2026-09-23 | Un solo sorteo de θ no permite concluir nada sobre concentración del embedding | Obliga a promediar; advertencia metodológica general |
-| H-018 | 2026-09-23 | El embedding se concentra con el número de qubits, no con la profundidad | Respalda reps=1 por dispersión, no solo por coste; material del OE-6 |
+| H-018 | 2026-09-23 | El embedding se concentra con el número de qubits, no con la profundidad | Material del OE-6; a k=12 reps=2 dispersa un 30 % más que reps=1, así que reps=1 se sostiene por coste, no por dispersión · **cifras rehechas sin ruido (H-019)** |
+| H-019 | 2026-09-23 | El «sesgo» de H-016 era ruido en la referencia, y el estimador de Aer no muestrea | Invalida H-016 y la figura E3; obliga a repetir H-018; regla de precisión 0 para M5 |
 
 ### Preguntas abiertas
 
@@ -552,6 +553,8 @@ Dispersión medida entre corridas repetidas, según dónde se fije la precisión
 
 La columna del estimador es plana; la del QNN sigue $1/\sqrt{n}$ como debe.
 
+**Precisión añadida el 2026-09-23 (H-019).** El valor en que se estanca la columna del estimador, ~0.016, es exactamente el `default_precision` con que se construye `EstimatorQNN`, 0.015625 = 1/√4096: cuando la precisión se fija en el estimador, el QNN la sustituye por la suya. Y ese mismo valor por defecto es el que contaminó la referencia de H-016.
+
 **Impacto.** Hay que separar dos cosas al redactar: que la precisión mejore como $1/\sqrt{n}$ es una **propiedad de la estadística de la medición cuántica** y va en el marco teórico; que el parámetro deba ir en un constructor concreto y se ignore silenciosamente en el otro es un **detalle de implementación de la librería** y va en §8.x. Sin documentarlo, los resultados no son reproducibles por terceros.
 
 ---
@@ -587,7 +590,9 @@ El único valor propio de PSO es poder optimizar objetivos **no diferenciables**
 ---
 
 ### H-016 · Sesgo sistemático entre AerSimulator y statevector
-**Fecha:** 2026-09-23 · **→ Reporte:** §8.x, OE-6
+**Fecha:** 2026-09-23 · **→ Reporte:** §8.x, OE-6 · **Estado: INVALIDADO por H-019**
+
+> **Corrección del 2026-09-23.** El sesgo descrito aquí **no existe**. La referencia «exacta» se calculó con `EstimatorQNN` sin `default_precision=0`, de modo que llevaba ruido gaussiano de σ = 0.015625; el suelo de ~0.013 es exactamente σ·√(2/π) = 0.01247. Además, el `EstimatorV2` de Aer no muestrea, así que la pendiente de −0.5065 era circular. La explicación y la medición correcta están en H-019. El texto original se conserva como registro.
 
 El estudio de shots comparaba el estimador con muestreo contra el valor exacto por *statevector*, y la pendiente log-log salía −0.31 en vez de −0.5, incluso promediando 10 repeticiones por punto con barras de error de ±0.001. No era ruido.
 
@@ -637,36 +642,88 @@ Bajo Arquitectura B, θ queda fijo y aleatorio, lo que abre una pregunta legíti
 
 **Impacto.** La variación observada está dominada por **el sorteo de θ**, no por la profundidad ni por el número de qubits. Con una sola realización por configuración el experimento no distingue señal de ruido, y una figura construida así invitaría a leer una tendencia que los datos no sostienen.
 
-**Corregido.** Se repitió promediando 10 sorteos de θ por configuración; el resultado está en H-018. El promediado confirma el diagnóstico: a k=8, `reps=1` y `reps=2` resultan indistinguibles (0.0854 contra 0.0849), cuando el sorteo único indicaba un aumento del 35 %.
+**Corregido.** Se repitió promediando 10 sorteos de θ por configuración; el resultado está en H-018. El promediado confirma el diagnóstico: a k=8, `reps=1` y `reps=2` resultan indistinguibles (0.0854 contra 0.0849; con valores exactos, 0.0837 contra 0.0833, H-019), cuando el sorteo único indicaba un aumento del 35 %.
 
 **Advertencia general que conviene retener.** Este es el segundo caso en el mismo día en que una medición de una sola realización produjo un número engañoso; el primero fueron las fidelidades de los conjuntos de Pauli en H-012, donde un único vector de entrada dio 0.000 para un candidato que promediando resulta ser de los más parecidos a ZZ. **Cualquier cantidad que dependa de un sorteo aleatorio —θ, el vector de entrada, la partición— debe reportarse como distribución, no como valor puntual.**
 
 ---
 
 ### H-018 · El embedding se concentra con el número de qubits, no con la profundidad
-**Fecha:** 2026-09-23 · **→ Reporte:** §6.x, OE-6
+**Fecha:** 2026-09-23 · **→ Reporte:** §6.x, OE-6 · **Cifras rehechas el 2026-09-23 con valores exactos (H-019)**
 
-Repetición de H-017 promediando **10 sorteos de θ** por configuración, sobre 100 entradas. Desviación estándar de ⟨Zᵢ⟩ entre muestras, media ± desviación entre sorteos:
+> **Corrección.** La primera versión de esta entrada se midió con `EstimatorQNN` sin precisión 0, de modo que cada ⟨Zᵢ⟩ llevaba ruido gaussiano de σ = 0.015625 (H-019), y ese ruido infla la dispersión en cuadratura. La tabla de abajo es la repetición con valores exactos: mismas entradas, mismos sorteos de θ y precisión 0 como único cambio. Para comprobar el diagnóstico, se sumó a los valores exactos el ruido por defecto simulado: eso reproduce las cifras originales hasta la tercera cifra decimal. Las cifras originales se conservan en `Code/results/7_concentracion_embedding_ruido_qnn.csv`.
+
+Desviación estándar de ⟨Zᵢ⟩ entre 100 entradas, media ± desviación entre 10 sorteos de θ, con valores exactos:
 
 | k | reps=1 | reps=2 | reps=3 |
 |---|---|---|---|
-| 8 | 0.0854 ± 0.0128 | 0.0849 ± 0.0092 | 0.0735 ± 0.0049 |
-| 12 | 0.0456 ± 0.0064 | 0.0573 ± 0.0033 | 0.0349 ± 0.0041 |
-| 16 | 0.0412 ± 0.0082 | 0.0412 ± 0.0039 | 0.0240 ± 0.0015 |
+| 8 | 0.0837 ± 0.0131 | 0.0833 ± 0.0091 | 0.0718 ± 0.0052 |
+| 12 | 0.0417 ± 0.0068 | 0.0544 ± 0.0036 | 0.0305 ± 0.0044 |
+| 16 | 0.0363 ± 0.0090 | 0.0367 ± 0.0043 | 0.0161 ± 0.0023 |
 
-Tres lecturas, y conviene no mezclarlas:
+El ruido había inflado todas las dispersiones: un ~2 % a k=8, un 9 % a k=12 con reps=1 y un **49 % a k=16 con reps=3**, donde era el 43 % de la varianza medida. Cuanto menor la dispersión real, mayor la distorsión.
 
-**1. La concentración con el número de qubits es clara.** A reps=1 la dispersión cae de 0.0854 (k=8) a 0.0456 (k=12) y 0.0412 (k=16). El salto de k=8 a k=12 excede holgadamente las barras de error; el de k=12 a k=16 queda dentro de ellas. Es el comportamiento que anticipa el fenómeno de mesetas áridas: al crecer el espacio de Hilbert, los valores de expectativa se concentran.
+Tres lecturas, y conviene no mezclarlas. **Las tres sobreviven a la corrección:**
 
-**2. La concentración con la profundidad NO es monótona en el rango probado.** `reps=1` y `reps=2` son indistinguibles a k=8 y a k=16, y a k=12 la dispersión *aumenta* de 0.0456 a 0.0573, con barras que apenas se solapan. Solo `reps=3` queda consistentemente por debajo en los tres valores de k. No se puede afirmar que más capas concentren el embedding entre 1 y 3.
+**1. La concentración con el número de qubits es clara.** A reps=1 la dispersión cae de 0.0837 (k=8) a 0.0417 (k=12) y 0.0363 (k=16). De 8 a 12 se reduce a la mitad, muy por encima de las barras de error; de 12 a 16 el cambio queda dentro de ellas. Es el comportamiento que anticipa el fenómeno de mesetas áridas: al crecer el espacio de Hilbert, los valores de expectativa se concentran.
 
-**3. La variabilidad entre sorteos de θ sí colapsa con la profundidad.** A k=16 la desviación entre sorteos pasa de 0.0082 a 0.0039 y a 0.0015. Es decir, circuitos más profundos producen una dispersión más uniforme **con independencia de θ**. Esa pérdida de sensibilidad a los parámetros es la firma característica de la meseta árida, y es una observación más sólida que la del punto 2.
+**2. La concentración con la profundidad NO es monótona en el rango probado.** reps=1 y reps=2 son indistinguibles a k=8 y a k=16, y a k=12 la dispersión **aumenta un 30 %** de reps=1 a reps=2 (0.0417 ± 0.0068 contra 0.0544 ± 0.0036), con barras que no se solapan. Solo reps=3 queda consistentemente por debajo, y a k=16 reduce la dispersión a menos de la mitad.
 
-**Impacto sobre D-013.** Refuerza `reps=1` con un argumento positivo y no solo de coste: `reps=1` entrega la **máxima dispersión del embedding** —empatada con `reps=2`— al mínimo coste computacional. Un embedding más disperso porta más información discriminable, de modo que la elección barata coincide aquí con la mejor.
+**3. La variabilidad entre sorteos de θ sí colapsa con la profundidad.** A k=16 la desviación entre sorteos pasa de 0.0090 a 0.0043 y a 0.0023. Es decir, los circuitos más profundos producen una dispersión más uniforme **con independencia de θ**. Esa pérdida de sensibilidad a los parámetros es la firma característica de la meseta árida, y es una observación más sólida que la del punto 2. Sin el ruido se ve con más claridad que antes.
 
-**Impacto sobre k.** Es un matiz relevante para D-013 que conviene declarar: el embedding a k=12 ya está notablemente más concentrado que a k=8. La elección de k=12 se justificó por coste y por diversidad de familias de features, no por dispersión; si en M4 la separabilidad a k=12 resultara pobre, este resultado sugiere que **k=8 merecería una comparación** antes de dar por buena la conclusión.
+**Impacto sobre D-013. Corregido:** la primera versión afirmaba que reps=1 entrega la máxima dispersión, empatada con reps=2. **En el punto de operación, k=12, eso es falso**, y ya lo era con los datos originales (0.0456 contra 0.0573): reps=2 dispersa un 30 % más. reps=1 se sostiene por las razones propias de D-013, es decir, coste y que bajo D-014 θ no se entrena, así que capas adicionales no añaden capacidad aprendible. **No se sostiene por dispersión.** La dispersión además es solo un indicador indirecto: si se traduce en separabilidad lo mide M7. Bajo la Arquitectura B, un embedding con reps=2 a k=12 cuesta minutos, así que compararlo en M7 sería un análisis de robustez barato. **Decisión del autor.**
 
-**Datos.** `Code/results/7_concentracion_embedding.csv`; figura `Docs/Figures/E4_embedding_concentration.png`. Medición sobre datos sintéticos uniformes en [0,π]^k, apropiada para caracterizar el circuito pero **no sustituye** la medición sobre features radiómicas reales una vez exista M3.
+**Impacto sobre k.** El embedding a k=12 está notablemente más concentrado que a k=8: la mitad de dispersión, 0.042 contra 0.084. La elección de k=12 se justificó por coste y por diversidad de familias de features, no por dispersión. Si en M7 la separabilidad a k=12 resultara pobre, **k=8 merecería una comparación** antes de dar por buena la conclusión.
+
+**Datos.** `Code/7_Sampling_and_Concentration.ipynb` §5; `Code/results/7_concentracion_embedding.csv`, con la columna `std_media_con_ruido_simulado` como comprobación; figura `Docs/Figures/E4_embedding_concentration.png`, con la curva original punteada. Medición sobre datos sintéticos uniformes en [0,π]^k: sirve para caracterizar el circuito, pero **no sustituye** la medición sobre features radiómicas reales una vez exista M3.
+
+---
+
+### H-019 · El «sesgo» de H-016 era ruido en la referencia, y el estimador de Aer no muestrea
+**Fecha:** 2026-09-23 · **→ Reporte:** §3.x (medición), §8.x, OE-6 · *invalida H-016; obliga a repetir H-018*
+
+H-016 registró que el error entre Aer y el cálculo exacto se estancaba en ~0.013 hasta un millón de shots. La causa no es el simulador sino la referencia, por **dos valores por defecto de las librerías** que actúan juntos:
+
+1. `EstimatorQNN` se construye con `default_precision=0.015625` (= 1/√4096) y lo pasa a `estimator.run()` en cada *forward*. Es la misma línea de código que explicó H-014.
+2. `StatevectorEstimator`, si recibe una precisión distinta de cero, **no devuelve el valor exacto**: le suma ruido gaussiano 𝒩(0, precisión) para imitar un número finito de shots.
+
+La referencia «exacta» de H-016, y la de la sección 5 de `5_Quantum_Benchmark.ipynb`, llevaba por tanto ruido de σ = 0.015625. Para un error gaussiano 𝔼|e| = σ√(2/π) = **0.01247**, que es el suelo observado.
+
+**Evidencia.** k=12, reps=1, mismas 16 entradas y mismo θ que la corrida nocturna. «Verdad» es la evolución directa con `qiskit.quantum_info.Statevector`, sin primitivas:
+
+| Evaluación | Comparada con | MAE | Predicción |
+|---|---|---|---|
+| QNN + `StatevectorEstimator`, precisión por defecto | verdad | 0.01310 | 0.01247 |
+| la misma, dos llamadas idénticas | entre sí | 0.01684 | 0.01763 |
+| QNN + `StatevectorEstimator`, precisión 0 | verdad | 0 | 0 |
+| QNN + Aer, precisión 0 | verdad | 1.7×10⁻¹⁶ | 0 |
+| QNN + Aer, 2²⁰ shots | referencia nocturna | 0.01315 | 0.01249 ← el suelo de H-016 |
+| QNN + Aer, 2²⁰ shots | verdad | 0.00089 | 0.00078 |
+
+**Segundo hallazgo: el `EstimatorV2` de Aer no simula shots.** Calcula el valor exacto con `save_expectation_value` y después ejecuta `evs = rng.normal(evs, precision)` (`qiskit_aer/primitives/estimator_v2.py`). Una medición real con n shots solo puede dar ⟨Z⟩ ∈ {−1, −1+2/n, …, 1}. Con 16 shots (precisión 0.25), los 192 valores que devuelve el estimador de Aer son todos distintos y **ninguno** cae en la malla de múltiplos de 1/8. Con el sampler, el 100 % cae en la malla y solo aparecen 11 valores distintos. Por eso la pendiente de −0.5065 de H-016 era circular: el ruido inyectado tiene σ = precisión = 1/√shots por definición, y la medición confirmaba el modelo, no la estadística.
+
+**Medición correcta**, con muestreo real: `SamplerV2` de Aer y ⟨Zᵢ⟩ = P(bitᵢ=0) − P(bitᵢ=1) sobre las cadenas de bits, 10 repeticiones por punto. La teoría sale del postulado de medida, con Var(Ẑᵢ) = (1 − ⟨Zᵢ⟩²)/n:
+
+| shots | dispersión entre repeticiones | teoría | MAE vs exacto | teoría |
+|---|---|---|---|---|
+| 512 | 0.04261 | 0.04416 | 0.03489 | 0.03524 |
+| 8,192 | 0.01085 | 0.01104 | 0.00890 | 0.00881 |
+| 65,536 | 0.00379 | 0.00390 | 0.00312 | 0.00311 |
+| 1,048,576 | 0.00095 | 0.00098 | 0.00077 | 0.00078 |
+
+Pendientes log-log: dispersión **−0.4986**, MAE **−0.4983**, sesgo de la media de las 10 repeticiones −0.5015. **No hay suelo** en todo el rango, y la media converge al valor exacto.
+
+**Impacto.**
+
+1. **H-016 queda invalidado** y la figura E3 se rehízo. La observación correcta para el OE-6 es la contraria: con muestreo real, el simulador reproduce la estadística de la medición cuántica sin sesgo hasta 2²⁰ shots.
+2. **H-018 estaba contaminado** por el mismo ruido, porque la medición de dispersión también usaba `EstimatorQNN` sin precisión 0. Se repitió; ver la corrección en H-018.
+3. **Regla para M5:** «exacto» significa `Statevector` directo o una primitiva llamada con precisión 0 explícita. La Arquitectura B no necesita gradientes, así que no necesita `EstimatorQNN`. Si se usa en algún punto, siempre con `default_precision=0.0`. Sin esto, cada ⟨Zᵢ⟩ del embedding llevaría ruido de σ = 0.0156 frente a una dispersión real de ~0.04–0.06 a k=12, y C4/C5 quedarían penalizadas artificialmente.
+4. **Formalismo contra implementación.** La ley 1/√n, con varianza (1 − ⟨Z⟩²)/n, es una propiedad de la medición cuántica y va en el marco teórico. Que Aer la modele como ruido gaussiano aditivo y que `EstimatorQNN` inyecte 0.015625 por defecto, incluso sobre un estimador que se llama *statevector*, son detalles de implementación y van en §8.x.
+5. `5_benchmark_shots.csv` (pendiente −0.357) queda invalidado por el mismo motivo. Se conserva como registro, con una nota en el notebook 5.
+
+**Advertencia que se suma a la de H-017.** Es el tercer número engañoso en dos días, y en los tres la causa fue un supuesto no verificado: una sola realización (H-012, H-017) y ahora una referencia «exacta» que no lo era. Antes de comparar contra una referencia, hay que comprobar que la referencia se compara bien consigo misma: dos llamadas idénticas deberían dar exactamente el mismo resultado.
+
+**Datos.** `Code/7_Sampling_and_Concentration.ipynb` §2–4; `Code/results/7_origen_suelo_h016.csv`, `Code/results/7_shots_muestreo_real.csv`; figura `Docs/Figures/E3_shots_sensitivity.png`.
 
 ---
 

@@ -226,68 +226,84 @@ En la Arquitectura B, para extraer un *embedding* vectorial útil $\langle Z_i \
 
 ## 7. Sensibilidad al número de shots
 
-Para evaluar el impacto del ruido de muestreo numérico (*shot noise*) en la aproximación de los valores esperados de los observables, se evaluó la discrepancia del estimador estocástico frente al cálculo analítico exacto mediante *statevector*.
+> **Sección corregida el 2026-09-23 (H-019).** Las versiones anteriores atribuían a
+> `AerSimulator` un sesgo de ~0.013 respecto al cálculo exacto. Ese sesgo **no existe**: la
+> referencia «exacta» llevaba ruido. Código y datos en `Code/7_Sampling_and_Concentration.ipynb`.
 
-### Datos de precisión según disparos (shots)
-Los datos provienen del archivo `Code/5_benchmark_shots.csv`.
+### Qué falló en las mediciones anteriores
 
-| shots | mae | max_err | fwd_per_sample_s |
-| :---: | :---: | :---: | :---: |
-| 512 | 0.036927172305733884 | 0.1399256166365689 | 0.00367616150106187 |
-| 1024 | 0.029234175402886586 | 0.10111231557339835 | 0.003635312499682186 |
-| 2048 | 0.022456292071820618 | 0.09565759256062438 | 0.0035644583749672165 |
-| 4096 | 0.0173911961782176 | 0.07109411078715952 | 0.0035777161247096956 |
-| 8192 | 0.013870435579419173 | 0.0489699691167058 | 0.0036275234360800823 |
+Tres mediciones sucesivas dieron resultados que no cuadraban con la ley $1/\sqrt{n}$: una
+pendiente de $-0.357$ en `5_benchmark_shots.csv`, de $-0.31$ al repetir con diez corridas por
+punto, y un error que se estancaba en $\approx 0.013$ hasta un millón de disparos.
 
-### Análisis de convergencia estocástica
+Las tres comparaban contra una referencia calculada con `EstimatorQNN` sobre
+`StatevectorEstimator`, y esa referencia no era exacta por dos valores por defecto que actúan
+juntos:
 
-La pendiente log-log entre el número de disparos y el MAE resultó de $-0.357$, frente a la
-pendiente teórica de $-0.500$ que impone la cota $O(1/\sqrt{\text{shots}})$.
+1. `EstimatorQNN` se construye con `default_precision=0.015625` $= 1/\sqrt{4096}$ y lo pasa a
+   `estimator.run()` en cada evaluación.
+2. `StatevectorEstimator`, con una precisión distinta de cero, suma ruido gaussiano
+   $\mathcal{N}(0, \text{precisión})$ al valor exacto.
 
-Se atribuyó inicialmente esta desviación a que cada punto provenía de una única corrida
-estocástica. **Esa explicación resultó incorrecta.** Al repetir la medición promediando diez
-corridas por punto, la pendiente se mantuvo en $-0.31$ con barras de error de $\pm 0.001$,
-de modo que la desviación no era ruido.
+Para un error gaussiano $\mathbb{E}|e| = \sigma\sqrt{2/\pi}$, de modo que el suelo debía estar en
+$0.015625\sqrt{2/\pi} = 0.01247$:
 
-Forzando el número de disparos muy por encima del rango de trabajo, el error **se estanca**:
+| Evaluación | Comparada con | MAE | Predicción |
+| :--- | :--- | :---: | :---: |
+| QNN + `StatevectorEstimator`, precisión por defecto | verdad | 0.01310 | 0.01247 |
+| la misma, dos llamadas idénticas | entre sí | 0.01684 | 0.01763 |
+| QNN + `StatevectorEstimator`, precisión 0 | verdad | 0 | 0 |
+| QNN + Aer, precisión 0 | verdad | $1.7\times10^{-16}$ | 0 |
+| QNN + Aer, $2^{20}$ disparos | referencia anterior | 0.01315 | 0.01249 |
+| QNN + Aer, $2^{20}$ disparos | verdad | 0.00089 | 0.00078 |
 
-| shots | MAE frente a statevector | $1/\sqrt{n}$ esperado | razón |
-| :---: | :---: | :---: | :---: |
-| 8,192 | 0.014989 | 0.011049 | 1.36 |
-| 65,536 | 0.013128 | 0.003906 | 3.36 |
-| 262,144 | 0.013043 | 0.001953 | 6.68 |
-| 1,048,576 | 0.012826 | 0.000977 | 13.13 |
+«Verdad» es la evolución directa del estado con `qiskit.quantum_info.Statevector`.
 
-Existe un suelo de aproximadamente $0.013$ que no depende del muestreo: se trata de una
-diferencia determinista entre `AerSimulator` y el cálculo exacto por *statevector*, no de
-varianza estadística. La comparación entre ambos backends, por tanto, **no mide la ley
-$1/\sqrt{n}$**: a partir de unos ocho mil disparos queda dominada por el sesgo entre
-backends.
+### Qué hace el estimador de Aer con una precisión
 
-### Medición correcta del ruido de muestreo
+El `EstimatorV2` de Aer **no muestrea**: calcula el valor exacto y le suma
+$\mathcal{N}(0, \text{precisión})$. Una medición real con $n$ disparos solo puede devolver
+$\hat{Z} \in \{-1, -1 + 2/n, \dots, 1\}$. Con 16 disparos (precisión $0.25$), los 192 valores del
+estimador de Aer son todos distintos y ninguno cae en la malla de múltiplos de $1/8$; con el
+*sampler*, el 100 % cae en ella y solo aparecen 11 valores distintos.
 
-El ruido de muestreo se aísla midiendo la **dispersión del estimador entre repeticiones**
-con el mismo número de disparos, lo que separa la varianza estadística del sesgo de backend:
+La pendiente de $-0.5065$ que se reportó como «medición correcta» era por tanto circular: el
+ruido inyectado tiene $\sigma = 1/\sqrt{\text{shots}}$ por definición.
 
-| shots | dispersión entre repeticiones | $1/\sqrt{n}$ esperado | sesgo frente a statevector |
-| :---: | :---: | :---: | :---: |
-| 512 | 0.04140 | 0.04419 | 0.01699 |
-| 1,024 | 0.02838 | 0.03125 | 0.01507 |
-| 2,048 | 0.02108 | 0.02210 | 0.01407 |
-| 4,096 | 0.01438 | 0.01562 | 0.01322 |
-| 8,192 | 0.01006 | 0.01105 | 0.01264 |
+### Medición con muestreo real
 
-La pendiente log-log de la dispersión es de $-0.5065$, en acuerdo con la predicción teórica.
-La columna de sesgo, en cambio, apenas varía, lo que confirma que se trata de dos fenómenos
-independientes.
+Se usa el `SamplerV2` de Aer y se estima cada $\langle Z_i\rangle = P(b_i = 0) - P(b_i = 1)$ a
+partir de las cadenas de bits, con diez repeticiones por punto ($k = 12$, 16 entradas). Por el
+postulado de medida, cada disparo es un ensayo de Bernoulli y
+$\operatorname{Var}(\hat{Z}_i) = (1 - \langle Z_i\rangle^2)/n$:
 
-Ambos resultados son material directo del objetivo específico 6: el ruido de muestreo sigue
-la estadística esperada, y de forma adicional el simulador introduce un sesgo constante
-respecto al cálculo exacto. **La causa del sesgo queda sin identificar** —transpilación
-interna de `AerSimulator`, redondeo del número de disparos derivado de `default_precision`,
-u otra— y debe investigarse o declararse explícitamente como limitación.
+| shots | dispersión | teoría | MAE frente al exacto | teoría |
+| :---: | :---: | :---: | :---: | :---: |
+| 512 | 0.04261 | 0.04416 | 0.03489 | 0.03524 |
+| 2,048 | 0.02134 | 0.02208 | 0.01735 | 0.01762 |
+| 8,192 | 0.01085 | 0.01104 | 0.00890 | 0.00881 |
+| 65,536 | 0.00379 | 0.00390 | 0.00312 | 0.00311 |
+| 1,048,576 | 0.00095 | 0.00098 | 0.00077 | 0.00078 |
 
-Datos: `Code/results/7_shots_repetido.csv`; figura `Docs/Figures/E3_shots_sensitivity.png`.
+Pendientes log-log: dispersión $-0.4986$, MAE $-0.4983$. **No hay suelo** en todo el rango. La
+dispersión queda sistemáticamente en ~0.97 de su valor teórico. Eso lo explica la estadística y no el
+simulador: la desviación estándar muestral de 10 repeticiones subestima $\sigma$ por el factor
+$c_4(10) = 0.973$.
+
+### Conclusión para el OE-6
+
+- Con muestreo real, el simulador reproduce la estadística de la medición cuántica sin sesgo
+  hasta $2^{20}$ disparos. Esa es la observación que corresponde al OE-6.
+- Hay dos detalles de implementación que se documentan en §8.x porque, sin ellos, los
+  resultados no son reproducibles. `EstimatorQNN` inyecta ruido por defecto incluso sobre un
+  estimador de *statevector*. Y el estimador de Aer modela los disparos como ruido gaussiano,
+  así que medir el efecto real de los disparos requiere un *sampler*.
+- Para el Módulo 5, los *embeddings* se calculan con valores exactos, con `Statevector`
+  directo o con una primitiva llamada con precisión 0.
+
+Datos: `Code/results/7_origen_suelo_h016.csv`, `Code/results/7_shots_muestreo_real.csv`;
+figura `Docs/Figures/E3_shots_sensitivity.png`. Las mediciones anteriores se conservan como
+registro en `5_benchmark_shots.csv` y `7_shots_repetido.csv`.
 
 ---
 
