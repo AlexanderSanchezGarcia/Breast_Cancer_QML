@@ -30,7 +30,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-007 | 2026-08-25 | Entorno `radiomics` separado, compilado desde GitHub | infra | Firme | §8.x |
 | D-008 | 2026-08-25 | `binCount=32` en lugar de `binWidth` | M3 | Firme | §8.x |
 | D-009 | 2026-08-25 | Sin resize a 224×224 en la ruta radiómica | M2 | Firme | §4.4, §8.x |
-| D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Firme (2026-09-22) | §4.4 |
+| D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Firme (evidencia en H-025) | §4.4 |
 | D-011 | 2026-08-25 | Unidad de análisis = lesión/ROI, no paciente | M4 | Firme (2026-09-22) | §4.6 |
 | D-012 | 2026-09-21 | Descargar por la API REST de TCIA, no con NBIA Data Retriever | M1 | Firme | §8.x |
 | D-013 | 2026-09-22 | Punto de operación: k=12 qubits, reps=1 | M4, M5 | Firme | §4.6, §4.7 |
@@ -43,6 +43,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-020 | 2026-09-23 | Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 | M2 | Provisional | §4.4, §8.x |
 | D-021 | 2026-09-23 | Reducir cada máscara a su componente conexa mayor | M2 | Provisional | §4.4, §8.x |
 | D-022 | 2026-09-23 | Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD | M2, M3 | Provisional | §4.4, §8.x |
+| D-023 | 2026-09-23 | M3 extrae 67 features: cuatro familias sobre la imagen original, sin filtros | M3 | Firme | §4.5 |
 
 ### Hallazgos
 
@@ -70,6 +71,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-020 | 2026-09-23 | Las 80 máscaras desalineadas son de dos tipos; los recortes oficiales verifican la alineación al píxel | Corrige el procedimiento de H-004; justifica D-020 |
 | H-021 | 2026-09-23 | El 86.3 % de las máscaras de masas trae islas desconectadas | Justifica D-021; acota su efecto sobre las *shape features* |
 | H-022 | 2026-09-23 | CLAHE de OpenCV sobre 16 bits con `clipLimit=2` es casi la identidad | La variante de D-010 se exporta en 8 bits; si no, la comparación de M3 sería un artefacto |
+| H-023 | 2026-09-23 | Con el conjunto completo, el mayor \|d\| en masas es 0.50, no 1.42 | Corrige H-003; cambia la justificación numérica de D-009 |
+| H-024 | 2026-09-23 | El top 12 de masas no tiene textura y contiene duplicados exactos | Debilita el argumento de contenido de D-013; M4 debe deduplicar antes de seleccionar |
+| H-025 | 2026-09-23 | CLAHE cambia las features pero no su poder discriminativo | Cierra D-010 con evidencia |
 
 ### Preguntas abiertas
 
@@ -141,10 +145,12 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 
 **Cifras actualizadas el 2026-09-23 (M2, conjunto completo).** El rango 41×65 a 1137×1641 venía de una muestra. Sobre las 3,568 lesiones, la caja de la lesión mide entre 86×55 y 1329×1365 px en masas (mediana 302×304) y entre 33×33 y 3801×2873 px en calcificaciones (mediana 273×289). Son las cifras que deben ir en §4.4.
 
+**Evidencia revisada el 2026-09-23 (H-023).** El |d| ≈ 1.42 de H-003 no se sostiene con el conjunto completo: en masas las medidas de tamaño tienen |d| de 0.40 a 0.45, y cinco de ellas entran en el top 12. La decisión se mantiene, porque redimensionar igualaría esa señal a cero sea cual sea su magnitud, pero §4.4 no debe citar 1.42.
+
 ---
 
 ### D-010 · CLAHE fuera de la ruta radiómica
-**Fecha:** 2026-08-25 · **Módulo:** M2 · **Estado:** Provisional · **→ Reporte:** §4.4
+**Fecha:** 2026-08-25 · **Módulo:** M2 · **Estado:** Firme (cerrada con evidencia el 2026-09-23, H-025) · **→ Reporte:** §4.4
 
 **Contexto.** El diseño de TT1 aplica CLAHE antes de extraer características.
 
@@ -153,6 +159,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 **Por qué.** CLAHE es correcto para entrada a CNN o para visualización, pero es una ecualización local dependiente del contenido: rompe la reproducibilidad de *first-order* y GLCM bajo IBSI.
 
 **Por qué sigue provisional.** Correr ambas variantes cuesta poco y convierte una objeción potencial en media sección de resultados. Se cierra cuando existan los dos conjuntos de features.
+
+**Cerrada el 2026-09-23 (H-025).** Ya existen los dos conjuntos de features. CLAHE reordena las lesiones (Spearman mediana ≈ 0.84 frente a la variante cruda), pero no cambia su poder discriminativo: la mediana del cambio en |d| es −0.002 en masas y −0.010 en calcificaciones. Dejarlo fuera no cuesta señal y preserva la reproducibilidad.
 
 ---
 
@@ -187,6 +195,8 @@ Hay además un argumento de contenido. H-003 mostró que los features más discr
 **Evidencia.** `Code/results/5_benchmark_resultados.csv`, `5_benchmark_arquitectura.csv`, `5_benchmark_kernel_proyeccion.csv`.
 
 **Consecuencias.** M4 fija k=12 en `SelectKBest`. **Verificar en M4 qué familias de features sobreviven a la selección y reportarlo**: si salen doce variables de tamaño casi idénticas, el argumento de contenido se debilita y habría que forzar diversidad de familias.
+
+**Verificado en M3 (H-024).** En masas el argumento de contenido **no se cumple**: el top 12 tiene 7 features de primer orden, 5 de forma y ninguna de textura, e incluye duplicados exactos. En calcificaciones sí se cumple: 5 GLRLM, 4 GLCM, 2 de forma y 1 de primer orden. La respuesta, deduplicar o forzar diversidad, es una decisión de M4.
 
 ---
 
@@ -360,6 +370,22 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 
 ---
 
+### D-023 · M3 extrae 67 features: cuatro familias sobre la imagen original
+**Fecha:** 2026-09-23 · **Módulo:** M3 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.5
+
+**Contexto.** §4.5 declara cuatro familias (first-order, shape, GLCM, GLRLM) y promete «entre 100 y 300 características». En 2D y sobre la imagen original, esas cuatro familias dan 67: 18 + 9 + 24 + 16.
+
+**Alternativas.**
+- *Añadir GLSZM, GLDM y NGTDM* (~102 features) — descartada: cumple el número, pero con tres familias que §4.5 no describe.
+- *Añadir filtros LoG y wavelet* (cientos de features) — descartada: las features derivadas pierden la interpretación morfológica directa, que es el motivo por el que se eligió PyRadiomics (D-006).
+- *Cuatro familias, imagen original* — **elegida**.
+
+**Configuración.** `binCount=32` (D-008), `force2D=True`, distancia 1 con las cuatro direcciones 2D promediadas, sin normalización y sin remuestreo. Se extraen las dos variantes de M2.
+
+**Consecuencias.** En §4.5 hay que cambiar «entre 100 y 300» por **67**. Salida: `Data/processed/m3/features_<finding_type>_<raw|clahe>.parquet`. Extracción de 3,568 × 2 en 6 minutos, sin fallos, sin NaN y sin columnas constantes.
+
+---
+
 ### D-012 · Descargar por la API REST de TCIA, no con NBIA Data Retriever
 **Fecha:** 2026-09-21 · **Módulo:** M1 · **Estado:** Firme · **→ Reporte:** §8.x
 
@@ -434,6 +460,8 @@ original_shape2D_PixelSurface       1.412
 Los cinco primeros son medidas de tamaño, con efectos muy fuertes.
 
 **Impacto.** Confirma D-009 con datos. Advertencia para M4: `SelectKBest` va a elegir casi puro `shape2D`, lo que puede dejar al circuito cuántico sin información textural. Vale la pena reportar qué familias sobreviven a la selección.
+
+**Corregido el 2026-09-23 (H-023).** Sobre las 1,318 masas de entrenamiento, el mayor |d| es **0.50** y las shape features quedan entre 0.40 y 0.45. El 1.42 de esta entrada era un artefacto de la muestra de 20. Tampoco se cumple que la selección vaya a ser «casi puro `shape2D`»: el top 12 tiene 7 features de primer orden y 5 de forma (H-024).
 
 ---
 
@@ -881,6 +909,82 @@ La primera exportación de la variante CLAHE (D-010) se hizo directamente sobre 
 **Impacto.** Con la configuración de 16 bits, M3 habría concluido que CLAHE no altera las features, y esa conclusión habría sido un artefacto de la configuración. La variante se exporta en 8 bits (D-022). La cuantización a 8 bits por sí sola no cambia nada medible, de modo que la comparación aísla el efecto de CLAHE. Para M3, la variante CLAHE está en 0–255 y la cruda en 16 bits: las features de primer orden **no son comparables en escala** entre ambas, mientras que las de textura con `binCount=32` y las de forma sí lo son.
 
 **Datos.** `Code/2_Preprocessing.ipynb` §5b; `Code/results/2_clahe_configuracion.csv`.
+
+---
+
+### H-023 · Con el conjunto completo, el mayor |d| en masas es 0.50, no 1.42
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.4, §6.x · *corrige H-003*
+
+Cohen's d entre malignas y benignas con la desviación estándar combinada, sobre el conjunto de **entrenamiento**:
+
+| | Masas (637 M / 681 B) | Calcificaciones (544 M / 1,002 B) |
+|---|---|---|
+| Feature más discriminativa | `firstorder_Maximum`, \|d\| = 0.50 | `shape2D_MinorAxisLength`, \|d\| = 0.82 |
+| Rango de \|d\| en el top 12 | 0.40 – 0.50 | 0.64 – 0.82 |
+| Mejores shape features | MinorAxisLength 0.45, MaximumDiameter 0.44, MajorAxisLength 0.43 | MinorAxisLength 0.82, Perimeter 0.71 |
+
+H-003 reportaba |d| ≈ 1.42 para cinco shape features de masas, medido sobre **20** masas. Con 1,318 el efecto es aproximadamente un tercio de eso. Es el tercer resultado engañoso por muestra pequeña o realización única, tras H-012 y H-017.
+
+Dos lecturas más:
+
+- **Calcificaciones sale como el subconjunto más separable**, al revés de lo que anticipaba el EDA a partir de los descriptores categóricos. Es una comparación univariante; lo que cuenta es la separabilidad multivariante que mide M7.
+- **En masas lideran features de primer orden sobre intensidades crudas**: Maximum, 90Percentile, Energy, Median y Mean. Que las masas malignas sean más densas es clínicamente plausible. Pero las intensidades no están calibradas (D-008, H-002) y el DDSM mezcla digitalizadores, de modo que parte de la señal podría venir de la adquisición. Con los datos disponibles no se puede separar, porque `Manufacturer` falta en todos los DICOM. **Conviene declararlo como limitación**, o medirlo con un análisis de sensibilidad si el autor lo considera.
+
+La relación con M4 es directa. Para dos clases, el F de `f_classif` es t², con t = d·√(n₀n₁/(n₀+n₁)), así que dentro de un subconjunto **ordenar por F es ordenar por |d|**. El notebook lo comprueba calculando F aparte: el top 12 coincide en los cuatro casos (2 variantes × 2 subconjuntos).
+
+**Impacto.** H-003 queda corregido. D-009 se mantiene, pero §4.4 no debe citar 1.42. El borrador ya está actualizado.
+
+**Datos.** `Code/3_Feature_Extraction.ipynb` §5; `Code/results/3_tamano_efecto.csv`; figura `Docs/Figures/M3_effect_sizes.png`.
+
+---
+
+### H-024 · El top 12 de masas no tiene textura y contiene duplicados exactos
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.6, §6.x
+
+Composición del top 12 por |d| en entrenamiento, que es lo que `SelectKBest(k=12)` elegiría tal cual (H-023):
+
+| | Primer orden | Forma | GLCM | GLRLM | \|r\| medio entre las 12 | Pares con \|r\| > 0.95 |
+|---|---|---|---|---|---|---|
+| Masas | 7 | 5 | **0** | **0** | 0.61 | 8 de 66 |
+| Calcificaciones | 1 | 2 | 4 | 5 | 0.58 | 5 de 66 |
+
+Entre las 67 features hay **tres duplicados exactos por definición**, en 2D con espaciado unitario:
+
+- `Energy` = `TotalEnergy`: la razón es exactamente 1, porque el área del píxel es 1.
+- `SumAverage` = 2 × `JointAverage`, para una GLCM simétrica.
+- `MeshSurface` y `PixelSurface`, con r = 1.0000.
+
+Además, hay 20 pares con |r| > 0.99 en masas y 11 en calcificaciones; por ejemplo Mean, Median y RootMeanSquared, o MajorAxisLength y MaximumDiameter. En el top 12 de masas entran a la vez `Energy` y `TotalEnergy` (rangos 3 y 4), y también Mean, Median y RootMeanSquared. En calcificaciones entran `JointAverage` y `SumAverage` (rangos 8 y 9). **Tal cual, varios qubits codificarían el mismo valor.**
+
+**Impacto.**
+
+1. **El argumento de contenido de D-013 no se cumple en masas**: con k=12 no entra ninguna feature de textura. Sí se cumple en calcificaciones.
+2. **M4 debe deduplicar antes de seleccionar.** Quitar los tres duplicados por definición no requiere justificación adicional. Aplicar además un filtro por correlación, que quite una feature cuando tenga |r| > umbral con otra mejor clasificada ajustándolo solo en train, o forzar diversidad de familias, son decisiones metodológicas. **Decisión del autor.**
+3. Afecta también a la geometric difference y a la KTA: dos entradas idénticas cambian el kernel sin aportar información.
+
+**Datos.** `Code/3_Feature_Extraction.ipynb` §5b; `Code/results/3_tamano_efecto.csv`.
+
+---
+
+### H-025 · CLAHE cambia las features pero no su poder discriminativo
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.4, §6.x · *cierra D-010*
+
+Comparación de la variante cruda contra la variante CLAHE (8 bits, H-022), en entrenamiento. Se excluyen las shape features, que son idénticas por construcción (diferencia máxima 0):
+
+| Subconjunto | Familia | Spearman cruda–CLAHE (mediana) | Cambio en \|d\| (mediana) | Features que mejoran |
+|---|---|---|---|---|
+| Masas | primer orden | 0.836 | −0.031 | 1 / 18 |
+| Masas | GLCM | 0.856 | +0.002 | 15 / 24 |
+| Masas | GLRLM | 0.879 | +0.011 | 13 / 16 |
+| Calcificaciones | primer orden | 0.834 | −0.054 | 6 / 18 |
+| Calcificaciones | GLCM | 0.860 | +0.014 | 14 / 24 |
+| Calcificaciones | GLRLM | 0.881 | −0.035 | 6 / 16 |
+
+CLAHE **reordena** las lesiones (Spearman ~0.84), pero el cambio mediano en |d| es prácticamente nulo: −0.002 en masas y −0.010 en calcificaciones. Traslada poder discriminativo entre familias sin añadirlo. Las features de primer orden pierden, como cabe esperar de una ecualización que reescribe las intensidades, y algunas de textura ganan. Las features más discriminativas de cada subconjunto no mejoran.
+
+**Impacto.** Cierra D-010 con evidencia: dejar CLAHE fuera de la ruta radiómica no cuesta señal y preserva la reproducibilidad bajo IBSI. Es material para §6: responde de antemano a la pregunta previsible de por qué se retiró CLAHE del diseño de TT1.
+
+**Datos.** `Code/3_Feature_Extraction.ipynb` §6; `Code/results/3_efecto_clahe.csv`; figura `Docs/Figures/M3_clahe_effect.png`.
 
 ---
 

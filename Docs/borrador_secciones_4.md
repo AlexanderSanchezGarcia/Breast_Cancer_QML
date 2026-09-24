@@ -42,11 +42,12 @@ del CBIS-DDSM no se emplean para la extracción, porque su intensidad está rees
 ganancia distinta en cada caso.
 
 La decisión de no redimensionar el recorte a una malla común es deliberada. Las lesiones del
-conjunto abarcan desde \(33\times33\) hasta \(3\,801\times2\,873\) píxeles, y un análisis
-preliminar de los tamaños de efecto muestra que las cinco características más discriminativas
-entre lesiones benignas y malignas en masas son medidas de tamaño. Redimensionar a una malla
-común iguala artificialmente la escala de las lesiones y elimina precisamente la señal de
-mayor magnitud disponible. La normalización a \(224\times224\) correspondía a la Estrategia B
+conjunto abarcan desde \(33\times33\) hasta \(3\,801\times2\,873\) píxeles, y las medidas de
+tamaño figuran entre las características más discriminativas entre lesiones benignas y
+malignas: en masas, cinco de las doce con mayor tamaño de efecto sobre el conjunto de
+entrenamiento son descriptores de forma y tamaño (\(|d|\) de Cohen entre 0.40 y 0.45).
+Redimensionar a una malla común iguala artificialmente la escala de las lesiones y elimina
+esa señal. La normalización a \(224\times224\) correspondía a la Estrategia B
 basada en un codificador convolucional, descartada en favor de la extracción radiómica.
 
 Por la misma razón se excluye la ecualización adaptativa de histograma (CLAHE) de la ruta
@@ -56,9 +57,9 @@ bajo el estándar IBSI. Se genera una variante con CLAHE únicamente para cuanti
 efecto sobre las características extraídas, que se reporta en la sección de resultados.
 ```
 
-> **Antes de integrarlo.** El \(|d|\) de Cohen de H-003 (1.41–1.43) sale de solo 20 masas;
-> conviene recalcularlo sobre el conjunto completo en M3 antes de citarlo. Y la hipótesis de que
-> 0.870 = 43.5/50 µm entre digitalizadores del DDSM está sin verificar: no incluirla sin fuente.
+> **Antes de integrarlo.** El \(|d|\) de 1.41–1.43 de H-003 venía de solo 20 masas y ya no se
+> cita: las cifras de arriba son del conjunto de entrenamiento completo (H-023). La hipótesis de
+> que 0.870 = 43.5/50 µm entre digitalizadores del DDSM está sin verificar: no incluirla sin fuente.
 
 ---
 
@@ -179,5 +180,7 @@ información sobre la naturaleza de la codificación antes que una inconsistenci
   también `PixelSpacing`, las características de forma quedan en píxeles sin escala física.
 - **El cronograma** no contempla M2 ni M3 como actividades y hay que rehacerlo.
 - **Q-004** quedó cerrada (D-019): Azevedo et al. (2022). Falta añadir el `\cite` en §1.3 y §2.1.5.
+- **§4.5** promete «entre 100 y 300 características»: con las cuatro familias sobre la imagen
+  original son **67** (D-023).
 - **RF-04, RF-05 y RF-06** (tabla de requisitos del Módulo 2) siguen pidiendo normalizar a [0,1], aplicar
   CLAHE y redimensionar a 224×224. Hay que reescribirlos en línea con D-009, D-010 y D-022.
