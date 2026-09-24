@@ -27,7 +27,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-004 | 2026-05 | Escalado angular a [0,π] y no a [0,2π] | M4 | Firme | §4.6 |
 | D-005 | 2026-05 | Masas y calcificaciones como subproblemas independientes | todos | Firme | §4.4 |
 | D-006 | 2026-05 | PyRadiomics (Estrategia A) en lugar de encoder CNN | M3 | Firme | §4.5 |
-| D-007 | 2026-08-25 | Entorno `radiomics` separado, compilado desde GitHub | infra | Firme | §8.x |
+| D-007 | 2026-08-25 | Entorno `radiomics` separado, compilado desde GitHub | infra | Firme; PyRadiomics también en `qml_cancer` desde el 2026-09-23 | §8.x |
 | D-008 | 2026-08-25 | `binCount=32` en lugar de `binWidth` | M3 | Firme | §8.x |
 | D-009 | 2026-08-25 | Sin resize a 224×224 en la ruta radiómica | M2 | Firme | §4.4, §8.x |
 | D-010 | 2026-08-25 | CLAHE fuera de la ruta radiómica | M2 | Firme (evidencia en H-025) | §4.4 |
@@ -80,6 +80,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-026 | 2026-09-23 | Con la restricción de redundancia entra textura en masas, de forma estable | Resuelve la objeción de H-024 a D-013 |
 | H-027 | 2026-09-23 | Los folds deben agruparse por paciente, y la semilla 42 desbalancea los de calcificaciones | Aplica la regla de D-018; decisión pendiente sobre la semilla |
 | H-028 | 2026-09-23 | Min-max deja casi constantes los ángulos de las features de cola pesada | Puede sesgar la comparación contra C3–C5; decisión pendiente |
+| H-029 | 2026-09-23 | El procedimiento documentado para instalar PyRadiomics no funcionaba | Corrige `Code/env/README.md`; reproducibilidad del entorno |
 
 ### Preguntas abiertas
 
@@ -118,6 +119,14 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 **Evidencia.** Extracción validada sobre casos reales del CBIS-DDSM: 67 features (firstorder 18, shape2D 9, GLCM 24, GLRLM 16), 0 NaN, escritura a parquet correcta.
 
 **Consecuencias.** Hay que cambiar de kernel entre M3 y M4. La versión reporta `0.1.dev1+g8ed579383` porque el clon es *shallow* y `setuptools_scm` no ve los tags: **lo que ancla la reproducibilidad es el commit, no ese número**, y debe quedar escrito en el reporte.
+
+**Ampliado el 2026-09-23, a petición del autor.** PyRadiomics se instala también en `qml_cancer`, compilado desde el mismo commit (`8ed579383b44806651c463d5e691f3b2b57522ab`), para que los notebooks lo resuelvan en cualquiera de los dos entornos. El riesgo que motivó la alternativa descartada, contaminar el stack cuántico, se controló así:
+
+- Una prueba en seco confirmó que la instalación solo añadía paquetes. El único paquete existente que cambia es `packaging`, de 25.0 a 26.3, porque lo exige `setuptools_scm`; numpy sigue en 2.2.6.
+- `pip check` no reporta conflictos, y Aer y Statevector siguen coincidiendo en 7×10⁻¹⁶.
+- Las features extraídas en `qml_cancer` son **idénticas** a las de M3 extraídas en `radiomics`: diferencia relativa máxima 0 en 100 extracciones, aunque SimpleITK es 2.5.3 en un entorno y 2.5.6 en el otro.
+
+`radiomics` sigue siendo el entorno de referencia de M2 y M3.
 
 ---
 
@@ -1116,6 +1125,20 @@ Como referencia, la mediana del IQR es de 0.34 rad en masas y de 0.40 en calcifi
 **Resuelto el 2026-09-23 (D-025):** con la transformación por cuantiles, las 12 features de ambos subconjuntos tienen un IQR de π/2 (1.569–1.572 rad).
 
 **Datos.** `Code/4_Selection_and_Scaling.ipynb` §4; columnas `angle_median` y `angle_iqr` de `Code/results/4_seleccion.csv`; figura `Docs/Figures/M4_selection_and_angles.png`.
+
+---
+
+### H-029 · El procedimiento documentado para instalar PyRadiomics no funcionaba
+**Fecha:** 2026-09-23 · **→ Reporte:** §8.x
+
+Al instalar PyRadiomics en `qml_cancer` siguiendo `Code/env/README.md`, el procedimiento falló en dos puntos:
+
+1. `git fetch --depth 1 origin 8ed5793` → *couldn't find remote ref*. GitHub solo permite pedir un commit por su **hash completo**, `8ed579383b44806651c463d5e691f3b2b57522ab`.
+2. Con `--no-build-isolation`, la compilación se detiene en la preparación de metadatos por falta de **`setuptools_scm`**, que calcula el número de versión. No estaba en la lista de dependencias de compilación del README.
+
+Había además un paso de riesgo: `pip install --upgrade "numpy>=2.0"` actualiza numpy a la última versión disponible, y en `qml_cancer` eso podía romper la compatibilidad con Qiskit.
+
+**Impacto.** El README queda corregido: hash completo, clon sin blobs, todas las dependencias fijadas con versión, `--no-deps` y ningún cambio de numpy. Con él, la compilación se reprodujo desde cero en un entorno distinto y dio features idénticas. Es el mismo tipo de hallazgo que H-006, y conviene citarlo junto a él en §8.x: la reproducibilidad de un pipeline radiómico depende de pasos de instalación que se rompen sin avisar.
 
 ---
 
