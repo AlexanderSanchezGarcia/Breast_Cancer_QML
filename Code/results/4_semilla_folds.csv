@@ -1,0 +1,3 @@
+finding_type,patients_split_by_StratifiedKFold,patients,max_dev_seed_42,max_dev_median,chosen_seed,max_dev_chosen
+mass,410,691,0.03824368164931191,0.059596510359869126,125,0.010855381635894501
+calcification,445,602,0.16765544146183697,0.0649467738614889,168,0.01854247520482971

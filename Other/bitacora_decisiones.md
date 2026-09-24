@@ -21,7 +21,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 
 | # | Fecha | Decisión | Módulo | Estado | → Reporte |
 |---|---|---|---|---|---|
-| D-001 | 2026-05 | SelectKBest + MinMaxScaler en lugar de PCA antes del circuito | M4 | Firme | §4.6, §7.2 |
+| D-001 | 2026-05 | SelectKBest + MinMaxScaler en lugar de PCA antes del circuito | M4 | Firme; el escalador pasa a cuantiles (D-025) | §4.6, §7.2 |
 | D-002 | 2026-05 | ZZFeatureMap y PauliFeatureMap como condiciones separadas | M5 | **Revertida** (ver H-012, Q-008) | §4.7, §7.2 |
 | D-003 | 2026-05 | Geometric difference como métrica de ventaja cuántica potencial | M7 | Firme | §3.4.2, §7.2 |
 | D-004 | 2026-05 | Escalado angular a [0,π] y no a [0,2π] | M4 | Firme | §4.6 |
@@ -44,6 +44,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-021 | 2026-09-23 | Reducir cada máscara a su componente conexa mayor | M2 | Provisional | §4.4, §8.x |
 | D-022 | 2026-09-23 | Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD | M2, M3 | Provisional | §4.4, §8.x |
 | D-023 | 2026-09-23 | M3 extrae 67 features: cuatro familias sobre la imagen original, sin filtros | M3 | Firme | §4.5 |
+| D-024 | 2026-09-23 | Selección por F-test con restricción de redundancia \|r\| ≤ 0.95 | M4 | Firme | §4.6 |
+| D-025 | 2026-09-23 | Escalado angular por cuantiles (uniforme × π) en lugar de min-max | M4 | Firme | §4.6 |
+| D-026 | 2026-09-23 | Semilla de los folds elegida por balance de clases | M4, M6 | Firme | §4.9 |
 
 ### Hallazgos
 
@@ -74,6 +77,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-023 | 2026-09-23 | Con el conjunto completo, el mayor \|d\| en masas es 0.50, no 1.42 | Corrige H-003; cambia la justificación numérica de D-009 |
 | H-024 | 2026-09-23 | El top 12 de masas no tiene textura y contiene duplicados exactos | Debilita el argumento de contenido de D-013; M4 debe deduplicar antes de seleccionar |
 | H-025 | 2026-09-23 | CLAHE cambia las features pero no su poder discriminativo | Cierra D-010 con evidencia |
+| H-026 | 2026-09-23 | Con la restricción de redundancia entra textura en masas, de forma estable | Resuelve la objeción de H-024 a D-013 |
+| H-027 | 2026-09-23 | Los folds deben agruparse por paciente, y la semilla 42 desbalancea los de calcificaciones | Aplica la regla de D-018; decisión pendiente sobre la semilla |
+| H-028 | 2026-09-23 | Min-max deja casi constantes los ángulos de las features de cola pesada | Puede sesgar la comparación contra C3–C5; decisión pendiente |
 
 ### Preguntas abiertas
 
@@ -87,6 +93,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-006 | ¿Qué k y reps finales? | Fase 3 | **RESUELTA** → D-013 |
 | Q-007 | ¿Entrenamiento conjunto o embedding precomputado? | Fases 4 y 5 | **RESUELTA** → D-014 |
 | Q-008 | ¿Qué conjunto de Pauli usa C5? | M5, Fase 4 | **RESUELTA** → D-015 |
+| Q-009 | ¿Min-max, logaritmo o cuantiles para las features de cola pesada? | M5, Fase 4 | **RESUELTA** → D-025 |
+| Q-010 | ¿Semilla 42 para los folds, o una elegida por balance de clases? | M6, Fase 5 | **RESUELTA** → D-026 |
 
 ---
 
@@ -292,6 +300,8 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 
 **Consecuencias.** Estratificar por clase, no por paciente: la unidad de análisis es la lesión (D-011). **Verificar que ningún paciente quede repartido entre folds**, ya que hay 2.28 ROIs por paciente (H-008); si se detecta, pasar a `StratifiedGroupKFold` agrupando por `patient_id`. Hay que añadir la validación cruzada a §4.9, que hoy no la menciona.
 
+**Regla aplicada el 2026-09-23 (H-027).** `StratifiedKFold` repartía entre folds el 59 % de los pacientes de masas y el 74 % de los de calcificaciones, así que M4 usa `StratifiedGroupKFold` por `patient_id`. Los folds quedan congelados en `Data/processed/m4/x_<finding_type>.parquet`, columna `fold`.
+
 ---
 
 ### D-019 · Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022)
@@ -383,6 +393,59 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 **Configuración.** `binCount=32` (D-008), `force2D=True`, distancia 1 con las cuatro direcciones 2D promediadas, sin normalización y sin remuestreo. Se extraen las dos variantes de M2.
 
 **Consecuencias.** En §4.5 hay que cambiar «entre 100 y 300» por **67**. Salida: `Data/processed/m3/features_<finding_type>_<raw|clahe>.parquet`. Extracción de 3,568 × 2 en 6 minutos, sin fallos, sin NaN y sin columnas constantes.
+
+---
+
+### D-024 · Selección por F-test con restricción de redundancia |r| ≤ 0.95
+**Fecha:** 2026-09-23 · **Módulo:** M4 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.6 · *responde a H-024*
+
+**Contexto.** Tomado tal cual, el top 12 por F contiene duplicados exactos por definición y casi-copias (H-024). Con ellos, varios qubits codificarían el mismo valor.
+
+**Alternativas.**
+- *Quitar solo los duplicados por definición* — descartada: deja casi-copias con r > 0.99 (Mean, Median y RootMeanSquared) y masas seguiría sin textura.
+- *Forzar diversidad de familias con una cuota* — descartada: la cuota es arbitraria y más difícil de defender que un umbral de correlación.
+- *Recorrer el ranking por F y aceptar una feature solo si su |r| de Pearson con todas las ya aceptadas es ≤ 0.95, hasta tener 12* — **elegida**.
+
+**Decisión.** Correlaciones y ranking calculados **solo en train**. Sin la restricción, el procedimiento es exactamente `SelectKBest(k=12)`, de modo que D-001 se mantiene: la selección sigue siendo por F-test, ahora con una restricción de redundancia.
+
+**Evidencia.** H-026.
+
+**Consecuencias.** §4.6 debe describir el filtro. El notebook recoge la sensibilidad al umbral, de 0.80 a 0.99, para defender el 0.95.
+
+---
+
+### D-025 · Escalado angular por cuantiles en lugar de min-max
+**Fecha:** 2026-09-23 · **Módulo:** M4 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.6 · *cierra Q-009; modifica el escalador de D-001*
+
+**Contexto.** H-028: el min-max deja casi constantes los ángulos de las features de cola pesada (IQR de 0.05 rad para `Energy` y `PixelSurface` en calcificaciones), lo que penaliza a C3–C5 por el escalado y no por la codificación.
+
+**Alternativas.**
+- *Mantener min-max y declararlo* — descartada: deja qubits casi inútiles.
+- *Logaritmo sobre las features de cola pesada y después min-max* — descartada: conserva las distancias en escala logarítmica, pero exige un criterio adicional para decidir qué features son de cola pesada.
+- *Transformación por cuantiles a una distribución uniforme × π* — **elegida**.
+
+**Decisión.** `QuantileTransformer(output_distribution="uniform")` ajustado en train sobre las 12 features seleccionadas; θ = π·F̂(x), donde F̂ es la función de distribución empírica de train.
+
+**Por qué.** Es la transformación integral de probabilidad: cada feature ocupa [0, π] de manera uniforme, por sesgada que sea. Conserva el orden de las lesiones y descarta las distancias dentro de cada feature, que es el precio de ser robusta a las colas. Se aplica igual a todas las features, sin criterio adicional, y las cinco condiciones siguen recibiendo el mismo x (D-001). D-004 se mantiene, porque el rango sigue siendo [0, π].
+
+**Evidencia.** El IQR de los ángulos en train pasa de un mínimo de 0.14 rad (masas) y 0.05 rad (calcificaciones) a π/2 en las 24 features. Test fuera del rango de train: como mucho un 0.6 % en una feature.
+
+**Consecuencias.** El escalador de D-001 cambia. §4.6 debe describir la transformación por cuantiles en lugar del `MinMaxScaler`. El JSON de M4 guarda los cuantiles para reaplicar o invertir la transformación.
+
+---
+
+### D-026 · Semilla de los folds elegida por balance de clases
+**Fecha:** 2026-09-23 · **Módulo:** M4, M6 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.9 · *cierra Q-010*
+
+**Contexto.** H-027: agrupar por paciente es obligatorio (D-018), pero con la semilla 42 el fold 2 de calcificaciones quedaba con un 52 % de malignas frente al 35 % global. Era la peor de 200 semillas.
+
+**Alternativas.** Mantener la semilla 42 y declararlo, o elegir la semilla de los folds con un criterio que solo mire las etiquetas (**elegida**).
+
+**Decisión.** Entre las semillas 0 a 199 de `StratifiedGroupKFold` se elige, para cada subconjunto, la que minimiza la desviación máxima de la proporción de malignas entre folds; los empates van a la menor. Resultan 125 para masas y 168 para calcificaciones. La semilla 42 del proyecto se mantiene para todo lo demás (RNF-01).
+
+**Por qué.** El criterio no usa features ni rendimiento, así que no puede ajustar el resultado. Un fold con un 52 % de malignas inflaría la varianza entre folds, que es precisamente lo que la validación cruzada debe estimar.
+
+**Consecuencias.** Desviación máxima de 0.011 en masas y 0.019 en calcificaciones. Las semillas quedan en el JSON de M4 y en `Code/results/4_semilla_folds.csv`. §4.9 debe declarar el criterio.
 
 ---
 
@@ -988,6 +1051,74 @@ CLAHE **reordena** las lesiones (Spearman ~0.84), pero el cambio mediano en |d| 
 
 ---
 
+### H-026 · Con la restricción de redundancia entra textura en masas, de forma estable
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.6
+
+| | Selección | Primer orden | Forma | GLCM | GLRLM | \|r\| medio | \|r\| máx. | Rango F más profundo |
+|---|---|---|---|---|---|---|---|---|
+| Masas | `SelectKBest` tal cual | 7 | 5 | 0 | 0 | 0.61 | 1.00 | 12 |
+| Masas | con \|r\| ≤ 0.95 | 4 | 5 | **1** | **2** | 0.50 | 0.94 | 19 |
+| Calcificaciones | `SelectKBest` tal cual | 1 | 2 | 4 | 5 | 0.58 | 1.00 | 12 |
+| Calcificaciones | con \|r\| ≤ 0.95 | 2 | 3 | 4 | 3 | 0.50 | 0.94 | 20 |
+
+Se descartan 7 features en masas y 8 en calcificaciones, entre ellas los tres duplicados por definición. Las 12 elegidas en masas son Maximum, 90Percentile, Energy, MinorAxisLength, MaximumDiameter, Perimeter, MeshSurface, PerimeterSurfaceRatio, GLRLM GrayLevelNonUniformity, 10Percentile, GLCM Correlation y GLRLM RunLengthNonUniformity.
+
+**Sensibilidad al umbral.** En masas entra textura con cualquier umbral entre 0.99 y 0.80: 2 features a 0.99, 3 a 0.95, 5 a 0.90 y 5 a 0.80. La conclusión no depende de haber elegido exactamente 0.95.
+
+**Impacto.** Resuelve la objeción de H-024 al argumento de contenido de D-013: con la restricción, también en masas se combinan forma, intensidad y textura.
+
+**Datos.** `Code/4_Selection_and_Scaling.ipynb` §3; `Code/results/4_seleccion.csv`, `4_descartadas_redundancia.csv`, `4_sensibilidad_umbral.csv`; figura `Docs/Figures/M4_selection_and_angles.png`.
+
+---
+
+### H-027 · Los folds deben agruparse por paciente, y la semilla 42 desbalancea los de calcificaciones
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.9
+
+Con `StratifiedKFold` (5 folds, semilla 42), **410 de 691 pacientes de masas (59 %) y 445 de 602 de calcificaciones (74 %)** quedan repartidos entre folds. La regla de D-018 se aplica, y con `StratifiedGroupKFold` agrupado por `patient_id` ninguno queda repartido.
+
+El precio aparece en calcificaciones. Hay pacientes con hasta 24 lesiones, todas benignas, y un paciente no se puede dividir. Con la semilla 42, el fold 2 queda con un 52 % de malignas frente al 35 % global. Comparada con otras 200 semillas:
+
+| | Desviación máx. de la proporción de malignas, semilla 42 | Mediana en 200 semillas | Mejor semilla |
+|---|---|---|---|
+| Masas | 0.038 | 0.060 | 0.011 (125) |
+| Calcificaciones | **0.168** | 0.065 | 0.019 (168) |
+
+En calcificaciones, la semilla 42 es la **peor** de las 200.
+
+**Impacto.** **Decisión del autor.** Se puede conservar la semilla 42 del proyecto (RNF-01) y declarar el desbalance, o fijar la semilla de los folds por un criterio que solo mira las etiquetas, como la mínima desviación de la proporción de clases. Este segundo criterio no usa features ni rendimiento, así que no es ajustar el resultado, pero hay que declararlo.
+
+**Resuelto el 2026-09-23 (D-026):** semilla 125 en masas y 168 en calcificaciones. La proporción de malignas de cada fold se aleja como mucho 0.011 y 0.019 de la global; en calcificaciones queda entre 0.33 y 0.37 por fold.
+
+**Limitación a declarar en §4.9.** Bajo la Arquitectura B los embeddings se calculan una sola vez (D-014), así que el selector y el escalador se ajustan una vez sobre todo el train y no dentro de cada fold. Las estimaciones de la validación cruzada son por tanto algo optimistas. El test oficial no se toca y sigue siendo la estimación insesgada.
+
+**Datos.** `Code/4_Selection_and_Scaling.ipynb` §5; `Code/results/4_folds.csv`.
+
+---
+
+### H-028 · Min-max deja casi constantes los ángulos de las features de cola pesada
+**Fecha:** 2026-09-23 · **→ Reporte:** §4.6, §6.x
+
+`MinMaxScaler` a [0, π] ajustado en train. Test recortado: 0.0 % de los valores en masas y 0.1 % en calcificaciones, así que el recorte no es problema. El problema es la **distribución** dentro del rango. Rango intercuartílico de los ángulos en train:
+
+| Subconjunto | Feature | Mediana del ángulo | IQR (rad) |
+|---|---|---|---|
+| Calcificaciones | `firstorder_Energy` | 0.015 | **0.046** |
+| Calcificaciones | `shape2D_PixelSurface` | 0.020 | **0.057** |
+| Calcificaciones | `glcm_ClusterShade` | 1.089 | 0.155 |
+| Masas | `shape2D_MeshSurface` | 0.135 | 0.144 |
+| Masas | `firstorder_Energy` | 0.143 | 0.197 |
+| Masas | `glcm_Correlation` | 2.969 | 0.227 |
+
+Como referencia, la mediana del IQR es de 0.34 rad en masas y de 0.40 en calcificaciones. Las features que crecen con el área de la lesión tienen colas largas, y unos pocos valores extremos fijan el rango. En calcificaciones, la mitad de las lesiones tiene `Energy` a menos de 0.05 rad de cero, así que ese qubit recibe casi la misma rotación para todas las lesiones.
+
+**Impacto.** El MLP de C1 apenas se ve afectado por el sesgo de una feature, pero la codificación angular (C4, C5) y el kernel RBF (C3) sí. La comparación podría quedar inclinada **en su contra por el escalado**, no por la codificación. **Decisión del autor.** Las opciones son conservar min-max y declararlo; aplicar un logaritmo a las features positivas de cola pesada antes de escalar; o aplicar una transformación por cuantiles a una distribución uniforme en [0, π], que reparte todas las features de manera homogénea. Las tres son compatibles con D-004, porque el rango sigue siendo [0, π]. Conviene decidirlo antes de calcular los embeddings.
+
+**Resuelto el 2026-09-23 (D-025):** con la transformación por cuantiles, las 12 features de ambos subconjuntos tienen un IQR de π/2 (1.569–1.572 rad).
+
+**Datos.** `Code/4_Selection_and_Scaling.ipynb` §4; columnas `angle_median` y `angle_iqr` de `Code/results/4_seleccion.csv`; figura `Docs/Figures/M4_selection_and_angles.png`.
+
+---
+
 ## Preguntas abiertas
 
 ### Q-001 · ¿C2 se declara control nulo o se añade C2′?
@@ -1067,6 +1198,35 @@ El candidato más alejado de ZZ en todo el rango de entrada es **`['X','ZZ']`** 
 Todos los candidatos mantienen 12 CX, así que la decisión no tiene coste computacional. Lo que sí cambia es el argumento: `['X','ZZ']` sustituye la codificación de primer orden en Z por una en X, mientras `['Z','YY']` mantiene Z y altera el término de entrelazamiento. Son afirmaciones distintas sobre qué aspecto del diseño del *feature map* se está aislando.
 
 Al resolverla: convertir en D-013, actualizar §4.7 y la Tabla de condiciones experimentales, y dejar constancia de que D-002 quedó invalidada por H-012.
+
+---
+
+### Q-009 · ¿Min-max, logaritmo o cuantiles para las features de cola pesada?
+**Bloquea:** M5, Fase 4 · **Límite:** antes de calcular los embeddings
+
+H-028 muestra que el min-max deja casi constantes los ángulos de las features que crecen con el área: en calcificaciones, `Energy` y `PixelSurface` tienen un IQR de 0.05 rad. Eso puede penalizar a C3, C4 y C5 frente a C1 por el escalado y no por la codificación. Hay tres salidas, todas dentro de [0, π] (D-004):
+
+- *(a)* conservar min-max y declararlo como limitación;
+- *(b)* aplicar log a las features positivas de cola pesada antes del min-max;
+- *(c)* aplicar una transformación por cuantiles a una distribución uniforme en [0, π], ajustada en train.
+
+La *(c)* es la más homogénea, pero descarta la información de distancias dentro de cada feature. La *(b)* la conserva en escala logarítmica. Cambiar después de calcular los embeddings obligaría a repetir M5.
+
+**Resuelta el 2026-09-23 → D-025:** transformación por cuantiles.
+
+---
+
+### Q-010 · ¿Semilla 42 para los folds, o una elegida por balance de clases?
+**Bloquea:** M6, Fase 5 · **Límite:** antes de entrenar el MLP
+
+H-027: con `StratifiedGroupKFold` y la semilla 42, el fold 2 de calcificaciones tiene un 52 % de malignas frente al 35 % global. Es la peor de 200 semillas. Hay dos salidas:
+
+- *(a)* conservar la semilla 42 (RNF-01) y declarar el desbalance;
+- *(b)* elegir la semilla de los folds por mínima desviación de la proporción de clases entre 200 candidatas, un criterio que solo mira las etiquetas.
+
+La *(b)* no usa features ni rendimiento y es defendible, pero hay que declararla.
+
+**Resuelta el 2026-09-23 → D-026:** semilla elegida por balance.
 
 ## Plantillas
 

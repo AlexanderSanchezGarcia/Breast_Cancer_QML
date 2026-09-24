@@ -123,6 +123,8 @@ if (!Object.keys(state).some(k => k.startsWith("f3."))) {
 for (const k of ["f2.6", "f2.7", "f2.8"]) if (!(k in state)) state[k] = true;
 // M3 quedó hecho el mismo día (f2.9 a f2.11).
 for (const k of ["f2.9", "f2.10", "f2.11"]) if (!(k in state)) state[k] = true;
+// M4 también (f2.12 a f2.15).
+for (const k of ["f2.12", "f2.13", "f2.14", "f2.15"]) if (!(k in state)) state[k] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -140,7 +142,7 @@ const PHASES = [
      "Resolver cómo se calcula la geometric difference (kernel contra kernel, no sobre ⟨Zᵢ⟩)"]]
   ]},
  {id:"f2", n:"Fase 2 · Ingeniería de datos (M2–M4)", due:"2026-10-03",
-  note:"ÚNICA fase pendiente antes de la parte cuántica. Decisiones ya cerradas; k=12 para SelectKBest.",
+  note:"M2, M3 y M4 hechos el 23 sep. Solo quedan tareas de desbloqueo; Q-009 y Q-010 cerradas (D-025, D-026).",
   groups:[
    ["Desbloqueo · hasta 31 ago",[
      "Entorno radiomics con PyRadiomics funcionando",
@@ -157,11 +159,11 @@ const PHASES = [
      "Extracción first-order + shape2D + GLCM + GLRLM con binCount=32: 67 features × 3,568 lesiones × 2 variantes, sin fallos (D-023)",
      "Documentar la ausencia de PixelSpacing en el 100 % de los DICOM · shape features en píxeles (espaciado 1,1)",
      "Guardar a .parquet con patient_id, split, label, finding_type · Data/processed/m3/"]],
-   ["Módulo 4 · Selección y escalado · hasta 18 sep",[
-     "SelectKBest (F-test) ajustado solo en train, k = n_qubits",
-     "MinMaxScaler a [0,π] con clip",
-     "Congelar los splits y declarar la unidad de análisis = lesión/ROI",
-     "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones"]]
+   ["Módulo 4 · Selección y escalado · ✓ 23 sep (4_Selection_and_Scaling.ipynb)",[
+     "SelectKBest (F-test) ajustado solo en train, k = 12, con restricción de redundancia |r| ≤ 0.95 (D-024): en masas entra textura (H-026)",
+     "Escalado angular a [0,π] por cuantiles en lugar de min-max (D-025): todas las features con IQR = π/2",
+     "Congelar los splits y declarar la unidad de análisis = lesión/ROI · folds StratifiedGroupKFold por paciente, semilla por balance (D-026)",
+     "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones · re-verificado en M4"]]
   ]},
  {id:"f4", n:"Fase 4 · Implementación cuántica", due:"2026-10-10",
   note:"Núcleo de la tesis (OE-3). Arquitectura B: θ fijo semilla 42, embeddings precomputados.",
@@ -227,7 +229,9 @@ const RISKS = [
  ["Resuelto · D-015","C4 y C5 eran el mismo circuito","Fidelidad 1.000000000000 entre ambos. C5 pasa a pauli_feature_map(['X','ZZ']), el más alejado de ZZ (media 0.071 sobre 200 entradas)."],
  ["Resuelto · D-018","Validación cruzada prometida y ausente","5-fold estratificada sobre train; el test oficial del CBIS-DDSM no se toca. Bajo Arquitectura B el entrenamiento toma segundos."],
  ["Resuelto · D-019","Q-004 · Azevedo o Incudini","La atribución correcta es Azevedo et al. (2022), como ya decía el reporte en §1.3 y §2.1.5. Queda añadir el \\cite que falta (H-009)."],
- ["CONFIRMADO · H-024","SelectKBest elegiría variables redundantes en masas","El top 12 de masas es 7 de primer orden + 5 de forma, sin textura, e incluye duplicados exactos (Energy = TotalEnergy). Decidir en M4 cómo deduplicar y si forzar diversidad de familias."],
+ ["Resuelto · D-024","SelectKBest elegía variables redundantes en masas","Con la restricción |r| ≤ 0.95 salen los duplicados exactos y entra textura en masas (H-026), de forma estable entre 0.80 y 0.99."],
+ ["Resuelto · D-025","Ángulos casi constantes en features de cola pesada","El min-max dejaba Energy y PixelSurface de calcificaciones con IQR de 0.05 rad (H-028). Con la transformación por cuantiles, todas las features tienen IQR = π/2."],
+ ["Resuelto · D-026","Semilla de los folds","Con la semilla 42, el fold 2 de calcificaciones tenía 52 % de malignas. La semilla se elige por balance de clases: desviación máxima de 0.011 y 0.019."],
  ["Vigilar","Pacientes repartidos entre folds","Hay 2.28 ROIs por paciente. Si la validación cruzada separa ROIs del mismo paciente entre folds, hay fuga; usar StratifiedGroupKFold por patient_id."]
 ];
 
