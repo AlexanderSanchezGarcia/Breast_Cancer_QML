@@ -1,0 +1,19 @@
+finding_type,acceptance,check,value,passed
+mass,1,"row count, case_id order, and missing values",rows=1696; expected=1696; same_order=True; nan=0,True
+mass,2,maximum C1/C2 train pairwise-distance difference,8.271161533457416e-14,True
+mass,3,C4 SparsePauliOp validation on 20 seeded lesions,1.1553258350005535e-15,True
+mass,4,C4 bounds and positive standard deviation in all dimensions,in_bounds=True; min_std=0.020676349028419465,True
+mass,5,C4 exact recomputation on 5 seeded lesions,0.0,True
+mass,3,C5 SparsePauliOp validation on 20 seeded lesions,1.6375789613221059e-15,True
+mass,4,C5 bounds and positive standard deviation in all dimensions,in_bounds=True; min_std=0.017867628503247461,True
+mass,5,C5 exact recomputation on 5 seeded lesions,0.0,True
+mass,6,reported C3 median-heuristic gamma,0.0322201557018349,True
+calcification,1,"row count, case_id order, and missing values",rows=1872; expected=1872; same_order=True; nan=0,True
+calcification,2,maximum C1/C2 train pairwise-distance difference,8.91786644530157e-14,True
+calcification,3,C4 SparsePauliOp validation on 20 seeded lesions,1.0269562977782698e-15,True
+calcification,4,C4 bounds and positive standard deviation in all dimensions,in_bounds=True; min_std=0.017018664728427658,True
+calcification,5,C4 exact recomputation on 5 seeded lesions,0.0,True
+calcification,3,C5 SparsePauliOp validation on 20 seeded lesions,9.992007221626409e-16,True
+calcification,4,C5 bounds and positive standard deviation in all dimensions,in_bounds=True; min_std=0.013696739654734509,True
+calcification,5,C5 exact recomputation on 5 seeded lesions,0.0,True
+calcification,6,reported C3 median-heuristic gamma,0.032088878305987625,True

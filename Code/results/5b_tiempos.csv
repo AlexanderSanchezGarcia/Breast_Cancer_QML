@@ -1,0 +1,9 @@
+finding_type,kernel,shape,seconds
+mass,FidelityStatevectorKernel_C4,200x200,1.5461258329742122
+mass,FidelityStatevectorKernel_C5,200x200,1.626301375014009
+calcification,FidelityStatevectorKernel_C4,200x200,1.5985362499777693
+calcification,FidelityStatevectorKernel_C5,200x200,1.7089820000110194
+mass,FidelityQuantumKernel_C4,10x10,5.01115595799638
+mass,FidelityQuantumKernel_C5,10x10,3.3199326249887235
+calcification,FidelityQuantumKernel_C4,10x10,5.016644167015329
+calcification,FidelityQuantumKernel_C5,10x10,3.3636798330117017

@@ -31,6 +31,8 @@ TT/
 │   ├── 2_Preprocessing.ipynb              # Module 2: aligned (image, mask) pairs for PyRadiomics
 │   ├── 3_Feature_Extraction.ipynb         # Module 3: radiomic features (PyRadiomics)
 │   ├── 4_Selection_and_Scaling.ipynb      # Module 4: feature selection, angular scaling, CV folds
+│   ├── 5a_Embeddings.ipynb                # Module 5: the five conditions C1–C5
+│   ├── 5b_Quantum_Kernels.ipynb           # Module 5: fidelity kernels and bandwidth sweep
 │   ├── Test.ipynb
 │   ├── benchmark/                             # Simulator studies behind the design decisions
 │   │   ├── B1_Quantum_Benchmark.ipynb         # Resource benchmark of the quantum circuit
