@@ -9,7 +9,7 @@ Este documento presenta los hallazgos técnicos y el análisis empírico derivad
 La complejidad del circuito cuántico se evaluó en función del número de qubits ($k \in \{8, 12, 16\}$) y las repeticiones del ansatz ($reps \in \{1, 2, 3\}$) para las configuraciones de mapa de características `ZZFeatureMap` (`zz`) y `PauliFeatureMap` (`pauli_z_zz`).
 
 ### Resultados de complejidad computacional
-Los datos provienen del archivo `Code/5_benchmark_complejidad.csv`.
+Los datos provienen del archivo `Code/results/B1_benchmark_complejidad.csv`.
 
 | feature_map | k | reps | n_weights | depth_raw | depth_transpiled | n_cx | n_gates |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -52,7 +52,7 @@ $$\frac{\partial f(\theta)}{\partial \theta_i} = \frac{f(\theta + \frac{\pi}{2} 
 A diferencia del algoritmo de retropropagación (*backpropagation*) clásico —cuyo coste computacional es independiente del número de parámetros—, el gradiente por *parameter-shift* escala linealmente con la dimensión del vector $\theta$ ($2 \cdot n_{weights}$ evaluaciones de circuito por muestra).
 
 ### Tiempos de entrenamiento medidos y proyectados (50 épocas)
-Los tiempos presentados a continuación se obtuvieron del archivo `Code/5_benchmark_resultados.csv`. El dataset de entrenamiento comprende el subconjunto de masas ($n = 1318$ muestras) y el subconjunto de calcificaciones ($n = 1546$ muestras), sumando 50 épocas completas.
+Los tiempos presentados a continuación se obtuvieron del archivo `Code/results/B1_benchmark_resultados.csv`. El dataset de entrenamiento comprende el subconjunto de masas ($n = 1318$ muestras) y el subconjunto de calcificaciones ($n = 1546$ muestras), sumando 50 épocas completas.
 
 | feature_map | k | reps | n_weights | fwd_per_sample_s | bwd_per_sample_s | step_per_sample_s | train_mass_h | train_calcification_h | total_both_h |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -85,7 +85,7 @@ A partir de los datos observados, ninguna configuración para $k \ge 12$ cabe de
 La Arquitectura B propone fijar los parámetros del ansatz $\theta$ mediante una semilla estocástica determinada, transformando la componente cuántica en una proyección de características determinista y fija. Bajo este enfoque, el *embedding* cuántico se evalúa una única vez por muestra durante la fase de extracción de datos, almacenando los vectores resultantes en caché para alimentar posteriormente el clasificador clásico mediante retropropagación convencional.
 
 ### Comparativa entre Arquitectura A y Arquitectura B
-Los datos provienen del archivo `Code/5_benchmark_arquitectura.csv`.
+Los datos provienen del archivo `Code/results/B1_benchmark_arquitectura.csv`.
 
 | k | fwd_ms | arch_A_hours | arch_B_hours | speedup |
 | :---: | :---: | :---: | :---: | :---: |
@@ -109,7 +109,7 @@ $$K(x, x') = |\langle \phi(x) | \phi(x') \rangle|^2$$
 Para evaluar la separabilidad cuántica y la ventaja geométrica, se requiere la construcción de 4 matrices complejas de kernel (correspondientes a 2 mapas de características $\times$ 2 subconjuntos: masas y calcificaciones), considerando una muestra estandarizada de $N=200$ elementos. La complejidad temporal para evaluar una matriz de pares escala cuadráticamente como $O(N^2)$, con un total de $\frac{N(N-1)}{2}$ pares únicos.
 
 ### Mediciones de cómputo empírico para kernels
-Los datos provienen del archivo `Code/5_benchmark_kernel.csv`.
+Los datos provienen del archivo `Code/results/B1_benchmark_kernel.csv`.
 
 | feature_map | k | n_samples | seconds | n_pairs | s_per_pair | diag_ok |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -127,7 +127,7 @@ Los datos provienen del archivo `Code/5_benchmark_kernel.csv`.
 | `pauli_z_zz` | 16 | 60 | 3011.634112208005 | 1770 | 1.7014881989875734 | True |
 
 ### Proyección de tiempo para tamaños de muestra extendidos ($N=150$ y $N=200$)
-Los datos provienen del archivo `Code/5_benchmark_kernel_proyeccion.csv`.
+Los datos provienen del archivo `Code/results/B1_benchmark_kernel_proyeccion.csv`.
 
 | feature_map | k | n_samples | projected_s |
 | :--- | :---: | :---: | :---: |
@@ -163,7 +163,7 @@ $$\mathcal{F} = |\langle \phi_{zz}(x) | \phi_{pauli\_z\_zz}(x) \rangle|^2 = 1.00
 fue verificada numéricamente de manera puntual para $k=4$ y $k=8$, obteniéndose una identidad perfecta en la amplitud de probabilidad de cada vector de estado.
 
 ### Evidencia concurrente en el benchmark de complejidad
-Como evidencia concurrente derivada de los datos medidos en el proyecto, las 18 filas del archivo `Code/5_benchmark_complejidad.csv` son absolutamente idénticas punto a punto entre `zz` y `pauli_z_zz` en sus métricas de `depth_raw` (50–112), `depth_transpiled` (58–126), `n_cx` (63–285) y `n_gates` (187–725).
+Como evidencia concurrente derivada de los datos medidos en el proyecto, las 18 filas del archivo `Code/results/B1_benchmark_complejidad.csv` son absolutamente idénticas punto a punto entre `zz` y `pauli_z_zz` en sus métricas de `depth_raw` (50–112), `depth_transpiled` (58–126), `n_cx` (63–285) y `n_gates` (187–725).
 
 ### Implicación metodológica
 Tal como están especificadas originalmente en el protocolo de pruebas, C4 y C5 constituyen una única y misma condición experimental. 
@@ -228,12 +228,12 @@ En la Arquitectura B, para extraer un *embedding* vectorial útil $\langle Z_i \
 
 > **Sección corregida el 2026-09-23 (H-019).** Las versiones anteriores atribuían a
 > `AerSimulator` un sesgo de ~0.013 respecto al cálculo exacto. Ese sesgo **no existe**: la
-> referencia «exacta» llevaba ruido. Código y datos en `Code/7_Sampling_and_Concentration.ipynb`.
+> referencia «exacta» llevaba ruido. Código y datos en `Code/benchmark/B3_Sampling_and_Concentration.ipynb`.
 
 ### Qué falló en las mediciones anteriores
 
 Tres mediciones sucesivas dieron resultados que no cuadraban con la ley $1/\sqrt{n}$: una
-pendiente de $-0.357$ en `5_benchmark_shots.csv`, de $-0.31$ al repetir con diez corridas por
+pendiente de $-0.357$ en `B1_benchmark_shots.csv`, de $-0.31$ al repetir con diez corridas por
 punto, y un error que se estancaba en $\approx 0.013$ hasta un millón de disparos.
 
 Las tres comparaban contra una referencia calculada con `EstimatorQNN` sobre
@@ -301,9 +301,9 @@ $c_4(10) = 0.973$.
 - Para el Módulo 5, los *embeddings* se calculan con valores exactos, con `Statevector`
   directo o con una primitiva llamada con precisión 0.
 
-Datos: `Code/results/7_origen_suelo_h016.csv`, `Code/results/7_shots_muestreo_real.csv`;
+Datos: `Code/results/B3_origen_suelo_h016.csv`, `Code/results/B3_shots_muestreo_real.csv`;
 figura `Docs/Figures/E3_shots_sensitivity.png`. Las mediciones anteriores se conservan como
-registro en `5_benchmark_shots.csv` y `7_shots_repetido.csv`.
+registro en `B1_benchmark_shots.csv` y `B3_shots_repetido.csv`.
 
 ---
 

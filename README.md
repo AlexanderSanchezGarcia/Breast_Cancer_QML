@@ -31,10 +31,11 @@ TT/
 │   ├── 2_Preprocessing.ipynb              # Module 2: aligned (image, mask) pairs for PyRadiomics
 │   ├── 3_Feature_Extraction.ipynb         # Module 3: radiomic features (PyRadiomics)
 │   ├── 4_Selection_and_Scaling.ipynb      # Module 4: feature selection, angular scaling, CV folds
-│   ├── 5_Quantum_Benchmark.ipynb          # Resource benchmark of the quantum circuit
-│   ├── 6_Design_Verifications.ipynb       # Checks behind the circuit design decisions
-│   ├── 7_Sampling_and_Concentration.ipynb # Shot-noise study and embedding concentration
 │   ├── Test.ipynb
+│   ├── benchmark/                             # Simulator studies behind the design decisions
+│   │   ├── B1_Quantum_Benchmark.ipynb         # Resource benchmark of the quantum circuit
+│   │   ├── B2_Design_Verifications.ipynb      # Checks behind the circuit design decisions
+│   │   └── B3_Sampling_and_Concentration.ipynb # Shot-noise study and embedding concentration
 │   ├── env/                     # Reproducible environment definitions
 │   └── results/                 # CSV results and audits of every notebook
 ├── Data/                        # CBIS-DDSM CSV metadata, DICOM images and processed/ outputs (not versioned)

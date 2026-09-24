@@ -11,6 +11,8 @@
 | **H** · Hallazgo | Descubriste algo que no sabías | La evidencia numérica y la consecuencia |
 | **Q** · Pregunta abierta | Aún no está resuelto | La fecha límite para resolverla |
 
+**Rutas actualizadas el 2026-09-24:** los notebooks de benchmarking pasaron a `Code/benchmark/` como B1, B2 y B3, antes 5, 6 y 7, y sus resultados a `B1_*` y `B3_*`. Las entradas anteriores ya citan las rutas nuevas.
+
 Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no se borra**: se marca `Revertida` y se enlaza la que la reemplaza — el jurado valora más un cambio de rumbo justificado que un historial impecable. Las plantillas están al final.
 
 ---
@@ -213,7 +215,7 @@ Hay además un argumento de contenido. H-003 mostró que los features más discr
 
 **Por qué reps=1.** Bajo D-014 θ no se entrena, de modo que capas adicionales no aportan capacidad aprendible: solo una rotación fija más complicada. reps=1 es el mínimo que hace el embedding no trivial, y dado H-013 «no trivial» es exactamente el requisito.
 
-**Evidencia.** `Code/results/5_benchmark_resultados.csv`, `5_benchmark_arquitectura.csv`, `5_benchmark_kernel_proyeccion.csv`.
+**Evidencia.** `Code/results/B1_benchmark_resultados.csv`, `B1_benchmark_arquitectura.csv`, `B1_benchmark_kernel_proyeccion.csv`.
 
 **Consecuencias.** M4 fija k=12 en `SelectKBest`. **Verificar en M4 qué familias de features sobreviven a la selección y reportarlo**: si salen doce variables de tamaño casi idénticas, el argumento de contenido se debilita y habría que forzar diversidad de familias.
 
@@ -238,7 +240,7 @@ Hay además un argumento de contenido. H-003 mostró que los features más discr
 2. **Validez interna.** C2 y C3 son no supervisados. Si C4 y C5 ajustan θ contra las etiquetas, cualquier ventaja podría venir del ajuste supervisado y no de la codificación cuántica. Bajo B las cinco condiciones son transformaciones que no miran las etiquetas. **Esto cierra Q-002 por construcción.**
 3. **Correspondencia con la pregunta de investigación.** §1.2 pregunta si el mapeo φ produce mayor separabilidad intrínseca. Eso es sobre la *codificación*, no sobre un procedimiento de optimización. B aísla φ; A lo mezclaba.
 
-**Evidencia.** `Code/results/5_benchmark_arquitectura.csv`; H-011 y H-015.
+**Evidencia.** `Code/results/B1_benchmark_arquitectura.csv`; H-011 y H-015.
 
 **Consecuencias.** Hay que reescribir §4.8 y §4.9. θ pasa a ser un **parámetro reportable del experimento**, no un detalle: por H-013 determina qué proyección de la información de fase resulta visible. Como beneficio colateral, entrenar toma segundos, lo que vuelve viable D-018.
 
@@ -298,7 +300,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 
 **Nota que debe ir al reporte (de H-013).** El kernel de fidelidad compara estados completos, fases incluidas; los ⟨Zᵢ⟩ no ven fases. Las métricas basadas en kernel (KTA, *geometric difference*) y las basadas en ⟨Zᵢ⟩ (Davies-Bouldin, Fisher, y el MLP) miden por tanto **objetos distintos y pueden discrepar**. Si KTA sale alto y la clasificación mediocre, esa es la explicación y conviene anticiparla.
 
-**Coste.** A k=12, unos 41 min por matriz y 2.75 h las cuatro (dos feature maps × dos subconjuntos). Fuente: `Code/results/5_benchmark_kernel_proyeccion.csv`.
+**Coste.** A k=12, unos 41 min por matriz y 2.75 h las cuatro (dos feature maps × dos subconjuntos). Fuente: `Code/results/B1_benchmark_kernel_proyeccion.csv`.
 
 ---
 
@@ -697,7 +699,7 @@ k=4:  |<phi_zz | phi_pauli>|^2 = 1.000000000000
 k=8:  |<phi_zz | phi_pauli>|^2 = 1.000000000000
 ```
 
-Evidencia concurrente: las 18 filas de `Code/results/5_benchmark_complejidad.csv` son idénticas entre ambos *feature maps* en profundidad, CX y número de puertas; y las diferencias de tiempo entre ellos en `5_benchmark_resultados.csv` (23.06 h contra 24.03 h a k=8) son ruido de medición, no señal.
+Evidencia concurrente: las 18 filas de `Code/results/B1_benchmark_complejidad.csv` son idénticas entre ambos *feature maps* en profundidad, CX y número de puertas; y las diferencias de tiempo entre ellos en `B1_benchmark_resultados.csv` (23.06 h contra 24.03 h a k=8) son ruido de medición, no señal.
 
 Conjuntos alternativos, promediando sobre **200 entradas aleatorias** porque la fidelidad depende del vector de entrada:
 
@@ -828,7 +830,7 @@ Pendiente log-log de la dispersión: **−0.5065**, contra la teórica −0.5. L
 
 **Para el reporte.** Conviene presentarlo como dos observaciones separadas, porque lo son: el ruido de muestreo sigue la estadística esperada, y además el simulador introduce un sesgo constante respecto al cálculo exacto. Lo segundo es una restricción práctica del simulador y por tanto material directo del OE-6. **Queda sin identificar la causa del sesgo** (transpilación interna de Aer, redondeo del número de shots derivado de `default_precision`, u otra); investigarla si hay holgura, o declararla como limitación si no.
 
-**Datos.** `Code/results/7_shots_repetido.csv`, figura `Docs/Figures/E3_shots_sensitivity.png`.
+**Datos.** `Code/results/B3_shots_repetido.csv`, figura `Docs/Figures/E3_shots_sensitivity.png`.
 
 ---
 
@@ -856,7 +858,7 @@ Bajo Arquitectura B, θ queda fijo y aleatorio, lo que abre una pregunta legíti
 ### H-018 · El embedding se concentra con el número de qubits, no con la profundidad
 **Fecha:** 2026-09-23 · **→ Reporte:** §6.x, OE-6 · **Cifras rehechas el 2026-09-23 con valores exactos (H-019)**
 
-> **Corrección.** La primera versión de esta entrada se midió con `EstimatorQNN` sin precisión 0, de modo que cada ⟨Zᵢ⟩ llevaba ruido gaussiano de σ = 0.015625 (H-019), y ese ruido infla la dispersión en cuadratura. La tabla de abajo es la repetición con valores exactos: mismas entradas, mismos sorteos de θ y precisión 0 como único cambio. Para comprobar el diagnóstico, se sumó a los valores exactos el ruido por defecto simulado: eso reproduce las cifras originales hasta la tercera cifra decimal. Las cifras originales se conservan en `Code/results/7_concentracion_embedding_ruido_qnn.csv`.
+> **Corrección.** La primera versión de esta entrada se midió con `EstimatorQNN` sin precisión 0, de modo que cada ⟨Zᵢ⟩ llevaba ruido gaussiano de σ = 0.015625 (H-019), y ese ruido infla la dispersión en cuadratura. La tabla de abajo es la repetición con valores exactos: mismas entradas, mismos sorteos de θ y precisión 0 como único cambio. Para comprobar el diagnóstico, se sumó a los valores exactos el ruido por defecto simulado: eso reproduce las cifras originales hasta la tercera cifra decimal. Las cifras originales se conservan en `Code/results/B3_concentracion_embedding_ruido_qnn.csv`.
 
 Desviación estándar de ⟨Zᵢ⟩ entre 100 entradas, media ± desviación entre 10 sorteos de θ, con valores exactos:
 
@@ -880,7 +882,7 @@ Tres lecturas, y conviene no mezclarlas. **Las tres sobreviven a la corrección:
 
 **Impacto sobre k.** El embedding a k=12 está notablemente más concentrado que a k=8: la mitad de dispersión, 0.042 contra 0.084. La elección de k=12 se justificó por coste y por diversidad de familias de features, no por dispersión. Si en M7 la separabilidad a k=12 resultara pobre, **k=8 merecería una comparación** antes de dar por buena la conclusión.
 
-**Datos.** `Code/7_Sampling_and_Concentration.ipynb` §5; `Code/results/7_concentracion_embedding.csv`, con la columna `std_media_con_ruido_simulado` como comprobación; figura `Docs/Figures/E4_embedding_concentration.png`, con la curva original punteada. Medición sobre datos sintéticos uniformes en [0,π]^k: sirve para caracterizar el circuito, pero **no sustituye** la medición sobre features radiómicas reales una vez exista M3.
+**Datos.** `Code/benchmark/B3_Sampling_and_Concentration.ipynb` §5; `Code/results/B3_concentracion_embedding.csv`, con la columna `std_media_con_ruido_simulado` como comprobación; figura `Docs/Figures/E4_embedding_concentration.png`, con la curva original punteada. Medición sobre datos sintéticos uniformes en [0,π]^k: sirve para caracterizar el circuito, pero **no sustituye** la medición sobre features radiómicas reales una vez exista M3.
 
 ---
 
@@ -892,7 +894,7 @@ H-016 registró que el error entre Aer y el cálculo exacto se estancaba en ~0.0
 1. `EstimatorQNN` se construye con `default_precision=0.015625` (= 1/√4096) y lo pasa a `estimator.run()` en cada *forward*. Es la misma línea de código que explicó H-014.
 2. `StatevectorEstimator`, si recibe una precisión distinta de cero, **no devuelve el valor exacto**: le suma ruido gaussiano 𝒩(0, precisión) para imitar un número finito de shots.
 
-La referencia «exacta» de H-016, y la de la sección 5 de `5_Quantum_Benchmark.ipynb`, llevaba por tanto ruido de σ = 0.015625. Para un error gaussiano 𝔼|e| = σ√(2/π) = **0.01247**, que es el suelo observado.
+La referencia «exacta» de H-016, y la de la sección 5 de `benchmark/B1_Quantum_Benchmark.ipynb`, llevaba por tanto ruido de σ = 0.015625. Para un error gaussiano 𝔼|e| = σ√(2/π) = **0.01247**, que es el suelo observado.
 
 **Evidencia.** k=12, reps=1, mismas 16 entradas y mismo θ que la corrida nocturna. «Verdad» es la evolución directa con `qiskit.quantum_info.Statevector`, sin primitivas:
 
@@ -924,11 +926,11 @@ Pendientes log-log: dispersión **−0.4986**, MAE **−0.4983**, sesgo de la me
 2. **H-018 estaba contaminado** por el mismo ruido, porque la medición de dispersión también usaba `EstimatorQNN` sin precisión 0. Se repitió; ver la corrección en H-018.
 3. **Regla para M5:** «exacto» significa `Statevector` directo o una primitiva llamada con precisión 0 explícita. La Arquitectura B no necesita gradientes, así que no necesita `EstimatorQNN`. Si se usa en algún punto, siempre con `default_precision=0.0`. Sin esto, cada ⟨Zᵢ⟩ del embedding llevaría ruido de σ = 0.0156 frente a una dispersión real de ~0.04–0.06 a k=12, y C4/C5 quedarían penalizadas artificialmente.
 4. **Formalismo contra implementación.** La ley 1/√n, con varianza (1 − ⟨Z⟩²)/n, es una propiedad de la medición cuántica y va en el marco teórico. Que Aer la modele como ruido gaussiano aditivo y que `EstimatorQNN` inyecte 0.015625 por defecto, incluso sobre un estimador que se llama *statevector*, son detalles de implementación y van en §8.x.
-5. `5_benchmark_shots.csv` (pendiente −0.357) queda invalidado por el mismo motivo. Se conserva como registro, con una nota en el notebook 5.
+5. `B1_benchmark_shots.csv` (pendiente −0.357) queda invalidado por el mismo motivo. Se conserva como registro, con una nota en el notebook B1.
 
 **Advertencia que se suma a la de H-017.** Es el tercer número engañoso en dos días, y en los tres la causa fue un supuesto no verificado: una sola realización (H-012, H-017) y ahora una referencia «exacta» que no lo era. Antes de comparar contra una referencia, hay que comprobar que la referencia se compara bien consigo misma: dos llamadas idénticas deberían dar exactamente el mismo resultado.
 
-**Datos.** `Code/7_Sampling_and_Concentration.ipynb` §2–4; `Code/results/7_origen_suelo_h016.csv`, `Code/results/7_shots_muestreo_real.csv`; figura `Docs/Figures/E3_shots_sensitivity.png`.
+**Datos.** `Code/benchmark/B3_Sampling_and_Concentration.ipynb` §2–4; `Code/results/B3_origen_suelo_h016.csv`, `Code/results/B3_shots_muestreo_real.csv`; figura `Docs/Figures/E3_shots_sensitivity.png`.
 
 ---
 
