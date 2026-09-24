@@ -125,6 +125,8 @@ for (const k of ["f2.6", "f2.7", "f2.8"]) if (!(k in state)) state[k] = true;
 for (const k of ["f2.9", "f2.10", "f2.11"]) if (!(k in state)) state[k] = true;
 // M4 también (f2.12 a f2.15).
 for (const k of ["f2.12", "f2.13", "f2.14", "f2.15"]) if (!(k in state)) state[k] = true;
+// M5 hecho el 2026-09-24 (f4.0 y f4.1).
+for (const k of ["f4.0", "f4.1"]) if (!(k in state)) state[k] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -165,21 +167,21 @@ const PHASES = [
      "Congelar los splits y declarar la unidad de análisis = lesión/ROI · folds StratifiedGroupKFold por paciente, semilla por balance (D-026)",
      "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones · re-verificado en M4"]]
   ]},
- {id:"f4", n:"Fase 4 · Implementación cuántica", due:"2026-10-10",
-  note:"Núcleo de la tesis (OE-3). Desbloqueada el 23 sep. Arquitectura B: θ fijo semilla 42, embeddings precomputados.",
+ {id:"f4", n:"Fase 4 · Implementación cuántica (M5 + M6)", due:"2026-10-10",
+  note:"Núcleo de la tesis (OE-3). M5 hecho el 24 sep (5a_Embeddings, 5b_Quantum_Kernels). Sigue M6 · separabilidad (D-030).",
   groups:[
    ["Embeddings · hasta 3 oct",[
-     "⟨Zᵢ⟩ ∈ [-1,1]^k para las 5 condiciones, masas y calcificaciones por separado",
-     "Kernels de fidelidad sobre 200 lesiones de train por subconjunto (D-028), tras diagnosticar su concentración (H-031)"]],
-   ["Separabilidad · hasta 10 oct",[
+     "✓ C1–C5 para ambos subconjuntos, con ⟨Zᵢ⟩ exactos y γ = 0.032 (5a_Embeddings)",
+     "✓ Kernels de fidelidad exactos sobre 200 de train (5b_Quantum_Kernels): concentrados, mediana ~0.003 (H-031); barrido de c (D-029)"]],
+   ["M6 · Separabilidad (6_Separability) · hasta 10 oct",[
      "KTA respecto al kernel ideal",
-     "Geometric difference g(K_C, K_Q) contra el kernel RBF clásico, con γ por heurística de la mediana (D-027)",
+     "Geometric difference g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞ contra el RBF con γ por mediana (D-027); fórmula verificada (H-033)",
      "Índice Davies-Bouldin y distancia Fisher",
      "Visualizaciones t-SNE 2D",
      "Kernels solo con el feature map (D-017); ⟨Zᵢ⟩ con θ fijo por semilla 42 y valores exactos (D-014, H-019)",
      "C2 como control nulo: sus métricas deben coincidir con las de C1 (D-016, sin C2′)"]]
   ]},
- {id:"f5", n:"Fase 5 · Modelos de clasificación", due:"2026-10-17",
+ {id:"f5", n:"Fase 5 · Modelos de clasificación (M7)", due:"2026-10-17",
   note:"Cinco condiciones × 2 subconjuntos, con validación cruzada 5-fold. Sin TorchConnector.",
   groups:[
    ["Entrenamiento",[
@@ -189,7 +191,7 @@ const PHASES = [
      "AUC-ROC, F1, Accuracy, Precision, Recall sobre test, separado por tipo de hallazgo",
      "Validación cruzada con los folds congelados en M4: StratifiedGroupKFold por paciente, semilla por balance (D-026)"]]
   ]},
- {id:"f6", n:"Fase 6 · Evaluación y validación", due:"2026-10-23",
+ {id:"f6", n:"Fase 6 · Evaluación comparativa (M8)", due:"2026-10-23",
   note:"Cierra con el congelamiento de resultados.",
   groups:[
    ["Análisis",[
@@ -231,6 +233,9 @@ const RISKS = [
  ["Resuelto · D-019","Q-004 · Azevedo o Incudini","La atribución correcta es Azevedo et al. (2022), como ya decía el reporte en §1.3 y §2.1.5. Queda añadir el \\cite que falta (H-009)."],
  ["Resuelto · D-024","SelectKBest elegía variables redundantes en masas","Con la restricción |r| ≤ 0.95 salen los duplicados exactos y entra textura en masas (H-026), de forma estable entre 0.80 y 0.99."],
  ["Resuelto · D-025","Ángulos casi constantes en features de cola pesada","El min-max dejaba Energy y PixelSurface de calcificaciones con IQR de 0.05 rad (H-028). Con la transformación por cuantiles, todas las features tienen IQR = π/2."],
+ ["Resuelto · D-029","Kernel cuántico concentrado","Mediana fuera de la diagonal ~0.003 frente a 0.61 del RBF (H-031). Se mantiene el diseño y se añade un barrido de c: el kernel solo informa cuando el término de producto xᵢxⱼ ya no influye."],
+ ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6."],
+ ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM."],
  ["Resuelto · D-026","Semilla de los folds","Con la semilla 42, el fold 2 de calcificaciones tenía 52 % de malignas. La semilla se elige por balance de clases: desviación máxima de 0.011 y 0.019."],
  ["Vigilar","Pacientes repartidos entre folds","Hay 2.28 ROIs por paciente. Si la validación cruzada separa ROIs del mismo paciente entre folds, hay fuga; usar StratifiedGroupKFold por patient_id."]
 ];

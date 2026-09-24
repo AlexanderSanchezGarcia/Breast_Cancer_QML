@@ -1,8 +1,162 @@
-# Borrador de reemplazo · Secciones 4.4, 4.7, 4.8 y 4.9
+# Borrador de reemplazo · Secciones 4.1, 4.4, 4.7, 4.8 y 4.9
 
 > Texto propuesto para sustituir las partes del reporte que quedaron desactualizadas por las
 > decisiones D-008 a D-018. **No está aplicado al `.tex`**: reescríbelo con tus palabras antes
 > de integrarlo. Cada bloque indica qué decisión lo origina.
+
+---
+
+## §4.1 · Descripción general del proceso (diagrama y pie)
+
+**Qué cambia.** El diagrama actual contradice el texto y varias decisiones (revisión del 2026-09-24):
+
+- La separabilidad aparece como una caja sin número entre M5 y M6, con una flecha que sugiere que la clasificación depende de ella. Con **D-030**, la separabilidad pasa a ser el **M6**, la clasificación el **M7** y la evaluación comparativa el **M8**. El flujo es M5 → {M6, M7} → M8.
+- M2 dice «Normalización · 224×224» (D-009, D-022). M4 dice «MinMaxScaler» (D-024, D-025). Las cajas cuánticas dicen «VQC» sin aclarar que θ está fijo (D-014) y no muestran K_Q (D-017). C2 aparece como «Baseline lineal» (D-016). M6 menciona «TorchConnector» (D-014). Falta indicar que masas y calcificaciones son subproblemas independientes (D-005).
+
+Usa los mismos estilos del preámbulo (`blkGray`, `blkTeal`, `cond`, `condQ`, `blkAmber`, `blkCoral`, `arr`, `colGray`) y las librerías `positioning` y `calc`.
+
+```latex
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[every node/.style={scale=0.7}, node distance=0.5cm and 0.3cm]
+
+\node[blkGray] (ds) {%
+  \textbf{CBIS-DDSM Dataset}\\[2pt]
+  {\normalfont\scriptsize
+  1{,}566 pacientes $\cdot$ 3{,}568 lesiones $\cdot$
+  DICOM $+$ CSV $\cdot$ masas y calcificaciones como subproblemas independientes}%
+};
+
+\node[blkTeal, below=of ds] (m1) {%
+  \textbf{M1 $\cdot$ Lectura de datos}\\[2pt]
+  {\normalfont\scriptsize
+  \texttt{pydicom} $\cdot$ \texttt{pandas} $\cdot$ DICOM + CSV unificados}%
+};
+
+\node[blkTeal, below=of m1] (m2) {%
+  \textbf{M2 $\cdot$ Preprocesamiento}\\[2pt]
+  {\normalfont\scriptsize
+  Alineación y limpieza de máscaras $\cdot$
+  Recorte ROI a resolución original $\cdot$ intensidades de 16 bits}%
+};
+
+\node[blkTeal, below=of m2] (m3) {%
+  \textbf{M3 $\cdot$ Extracción de características}\\[2pt]
+  {\normalfont\scriptsize
+  PyRadiomics: primer orden, forma, GLCM, GLRLM
+  $\rightarrow \mathbf{x} \in \mathbb{R}^{67}$}%
+};
+
+\node[blkTeal, below=of m3] (m4) {%
+  \textbf{M4 $\cdot$ Selección y escalado}\\[2pt]
+  {\normalfont\scriptsize
+  F-test con restricción $|r| \le 0.95$ ($k = 12$)
+  $+$ cuantiles $\rightarrow \mathbf{x} \in [0,\pi]^{12}$}%
+};
+
+\node[font=\tiny\color{colGray}, below=0.25cm of m4] (lm5) {%
+  M5 $\cdot$ Transformación (5 condiciones experimentales)%
+};
+\coordinate (fork) at ($(lm5.south) + (0,-0.2cm)$);
+
+\node[cond, anchor=north] at ($(fork) + (-6.2cm, -0.1cm)$) (c1){%
+  \textbf{C1 $\cdot$ Sin}\\ \textbf{transf.}\\[4pt]
+  {\normalfont\tiny Baseline}\\ {\normalfont\tiny crudo}%
+};
+\node[cond, anchor=north] at ($(fork) + (-3.1cm, -0.1cm)$) (c2){%
+  \textbf{C2 $\cdot$ PCA}\\ \textbf{lineal}\\[4pt]
+  {\normalfont\tiny Control}\\ {\normalfont\tiny nulo}%
+};
+\node[cond, anchor=north] at ($(fork) + (0cm, -0.1cm)$) (c3){%
+  \textbf{C3 $\cdot$ Kernel}\\ \textbf{PCA (RBF)}\\[4pt]
+  {\normalfont\tiny Baseline}\\ {\normalfont\tiny no lineal}%
+};
+\node[condQ, anchor=north] at ($(fork) + (3.2cm, -0.1cm)$) (c4){%
+  \textbf{C4 $\cdot$ Qiskit}\\ \textit{ZZ feature map}\\[4pt]
+  {\normalfont\tiny ansatz con $\theta$ fijo}\\
+  {\normalfont\tiny$\langle Z_i\rangle \in [-1,1]^{12}$ $\cdot$ $K_Q$}%
+};
+\node[condQ, anchor=north] at ($(fork) + (6.3cm, -0.1cm)$) (c5){%
+  \textbf{C5 $\cdot$ Qiskit}\\ \textit{Pauli feature map} $(X, ZZ)$\\[4pt]
+  {\normalfont\tiny ansatz con $\theta$ fijo}\\
+  {\normalfont\tiny$\langle Z_i\rangle \in [-1,1]^{12}$ $\cdot$ $K_Q$}%
+};
+
+%% Convergencia centrada bajo C3 y a la altura de las cajas cuánticas, que son las más altas
+\coordinate (merge) at ($(c3.south |- c5.south) + (0,-0.5cm)$);
+\coordinate (mergeL) at (merge -| c1);
+\coordinate (mergeR) at (merge -| c5);
+
+%% M6 y M7 en paralelo: ambos consumen la salida de M5
+\node[blkAmber, anchor=north, text width=5.6cm, minimum height=1.9cm]
+  at ($(merge) + (-2.9cm, -0.6cm)$) (m6){%
+  \textbf{M6 $\cdot$ Análisis de separabilidad}\\[2pt]
+  {\normalfont\scriptsize
+  KTA $\cdot$ \textit{geometric difference} $g_{CQ}$ $\cdot$
+  Davies-Bouldin $\cdot$ Fisher $\cdot$ t-SNE}%
+};
+\node[blkCoral, anchor=north, text width=5.6cm, minimum height=1.9cm]
+  at ($(merge) + (2.9cm, -0.6cm)$) (m7){%
+  \textbf{M7 $\cdot$ Clasificación (MLP)}\\[2pt]
+  {\normalfont\scriptsize
+  Mismo MLP en las 5 condiciones $\cdot$
+  validación cruzada 5-fold $\cdot$ test oficial}%
+};
+
+\node[blkCoral, anchor=north, text width=12cm]
+  at ($(m6.south -| merge) + (0,-0.6cm)$) (m8){%
+  \textbf{M8 $\cdot$ Evaluación comparativa}\\[2pt]
+  {\normalfont\scriptsize
+  AUC-ROC $\cdot$ F1 $\cdot$ Accuracy $\cdot$
+  correlación separabilidad--clasificación $\cdot$
+  masas vs.\ calcificaciones $\cdot$ restricciones del simulador}%
+};
+
+\node[blkGray, below=of m8, text width=12cm] (res) {%
+  \textbf{Informe de resultados}\\[2pt]
+  {\normalfont\scriptsize
+  Separabilidad $\cdot$ Clasificación $\cdot$
+  Viabilidad práctica del simulador Qiskit Aer}%
+};
+
+%% ── Flechas
+\foreach \a/\b in {ds/m1, m1/m2, m2/m3, m3/m4, m8/res}
+  \draw[arr] (\a.south) -- (\b.north);
+\draw[color=colGray, line width=0.4pt] (m4.south) -- (lm5.north);
+\draw[color=colGray, line width=0.4pt] (lm5.south) -- (fork);
+\draw[color=colGray, line width=0.4pt] (fork -| c1.north) -- (fork -| c5.north);
+\foreach \c in {c1, c2, c3, c4, c5}
+  \draw[arr] (fork -| \c.north) -- (\c.north);
+\foreach \c in {c1, c2, c3, c4, c5}
+  \draw[color=colGray, line width=0.4pt] (\c.south) -- (\c.south |- merge);
+\draw[color=colGray, line width=0.4pt] (mergeL) -- (mergeR);
+\draw[arr] (merge -| m6.north) -- (m6.north);
+\draw[arr] (merge -| m7.north) -- (m7.north);
+\draw[arr] (m6.south) -- (m6.south |- m8.north);
+\draw[arr] (m7.south) -- (m7.south |- m8.north);
+
+\end{tikzpicture}
+
+\caption{%
+  Pipeline del sistema híbrido cuántico-clásico para prediagnóstico de cáncer de mama.
+  Masas y calcificaciones recorren el pipeline como subproblemas independientes.
+  El módulo M4 selecciona 12 características por F-test con una restricción de
+  redundancia y las transforma en ángulos en $[0,\pi]$ mediante una transformación por
+  cuantiles, ajustada solo sobre el conjunto de entrenamiento; el mismo vector alimenta las
+  cinco condiciones. En C4 y C5 los parámetros del \textit{ansatz} se fijan con una semilla
+  y no se entrenan, y el kernel de fidelidad $K_Q$ se calcula con el \textit{feature map}
+  solo. C4 combina una codificación de primer orden en $Z$ con el acoplamiento $ZZ$; en C5,
+  con una repetición, el término en $X$ actúa sobre un autoestado y solo añade una fase global,
+  de modo que C5 codifica únicamente el acoplamiento $ZZ$ [PENDIENTE Q-012]. La salida de M5 alimenta en paralelo el análisis de
+  separabilidad (M6) y la clasificación (M7), que el módulo M8 compara.%
+}
+\label{fig:pipeline_sistema}
+\end{figure}
+```
+
+> **Sin compilar.** El código reutiliza las posiciones y estilos del original. Revisa al compilar
+> que las cajas de M6 y M7 no se solapen; si hace falta, ajusta los desplazamientos ±2.9 cm o
+> `text width`.
 
 ---
 
@@ -97,8 +251,10 @@ preparan el mismo estado, con fidelidad \(|\langle\phi_{ZZ}|\phi_{\text{Pauli}}\
 Especificadas así, C4 y C5 no constituirían condiciones independientes. Se adopta por tanto
 el conjunto \((X, ZZ)\), cuya fidelidad media respecto a la codificación \(ZZ\) es de 0.071
 sobre 200 entradas aleatorias, manteniendo un número idéntico de compuertas de
-entrelazamiento. La comparación entre C4 y C5 mide en consecuencia el efecto del
-\textbf{eje de codificación de primer orden}, con el acoplamiento de segundo orden fijo.
+entrelazamiento. \textbf{[Corregir según Q-012, ver H-034]} Con una repetición, el término en $X$ actúa
+sobre el estado $|+\rangle$, que es autoestado de $X$, y solo añade una fase global: C5 equivale
+a un \textit{feature map} con únicamente el acoplamiento $ZZ$. La comparación entre C4 y C5 mide
+por tanto el efecto de incluir o no una codificación de primer orden.
 ```
 
 ---
@@ -182,5 +338,12 @@ información sobre la naturaleza de la codificación antes que una inconsistenci
 - **Q-004** quedó cerrada (D-019): Azevedo et al. (2022). Falta añadir el `\cite` en §1.3 y §2.1.5.
 - **§4.5** promete «entre 100 y 300 características»: con las cuatro familias sobre la imagen
   original son **67** (D-023).
+- **D-030, renumeración de módulos:** el M6 pasa a ser la separabilidad, el M7 la clasificación y el M8 la
+  evaluación comparativa. Hay que renumerar las secciones de módulos (con una nueva sección para M6),
+  reagrupar la tabla de requisitos (RF-15 a RF-17 en M6 y los de clasificación en M7), rehacer la tabla CRISP-DM
+  y revisar cualquier mención de «M6» o «M7» en el texto.
+- **H-033, fórmula de la *geometric difference* (§3.4.2 y RF-16):** K_C y K_Q están invertidos respecto a Huang et al.
+  (2021), ec. 5. La forma correcta es g_CQ = √‖√K_Q · K_C⁻¹ · √K_Q‖∞, con Tr(K) = N.
+- **RF-14** dice «PauliFeatureMap (operadores X, Y, Z)»; C5 usa (X, ZZ) (D-015).
 - **RF-04, RF-05 y RF-06** (tabla de requisitos del Módulo 2) siguen pidiendo normalizar a [0,1], aplicar
   CLAHE y redimensionar a 224×224. Hay que reescribirlos en línea con D-009, D-010 y D-022.
