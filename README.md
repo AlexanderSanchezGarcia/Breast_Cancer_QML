@@ -38,6 +38,8 @@ TT/
 │   │   ├── B1_Quantum_Benchmark.ipynb         # Resource benchmark of the quantum circuit
 │   │   ├── B2_Design_Verifications.ipynb      # Checks behind the circuit design decisions
 │   │   └── B3_Sampling_and_Concentration.ipynb # Shot-noise study and embedding concentration
+│   ├── experiments/                           # Exploratory analyses that do not change the design
+│   │   └── X1_Selection_Information_Loss.ipynb # Information lost when keeping 12 of 67 features
 │   ├── env/                     # Reproducible environment definitions
 │   └── results/                 # CSV results and audits of every notebook
 ├── Data/                        # CBIS-DDSM CSV metadata, DICOM images and processed/ outputs (not versioned)

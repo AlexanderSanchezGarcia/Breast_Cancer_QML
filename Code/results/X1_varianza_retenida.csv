@@ -1,0 +1,3 @@
+finding_type,variance_retained_by_12,variance_pca_12,n_dropped,median_r2_dropped,dropped_r2_above_0_9,dropped_r2_below_0_5
+mass,0.8675665791590336,0.9803556775461139,55,0.8815554315647177,26,2
+calcification,0.9016803294455434,0.9779428503341001,55,0.911084004679743,28,0

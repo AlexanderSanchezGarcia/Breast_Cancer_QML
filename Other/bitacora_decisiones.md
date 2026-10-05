@@ -92,6 +92,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-032 | 2026-09-24 | `FidelityStatevectorKernel` da el mismo kernel exacto ~1000× más rápido que `FidelityQuantumKernel` | El cuello de botella del kernel medido en B1 era de la implementación, no del cálculo |
 | H-033 | 2026-09-24 | La ecuación de la *geometric difference* del reporte invierte K_C y K_Q respecto a Huang et al. | Corrección obligatoria en §3.4.2 y RF-16 antes de implementar M6 |
 | H-034 | 2026-09-24 | Con reps=1, el término X de C5 no codifica nada: C5 es un mapa solo ZZ | C4 contra C5 no compara el eje Z frente a X; decisión pendiente (Q-012) |
+| H-035 | 2026-10-04 | Pasar de 67 a 12 features cuesta de 2 a 4 puntos de AUC, y las 12 elegidas por F no superan a 12 al azar | Limitación a declarar en §7 y material del OE-6; no cambia el diseño; refuerza H-030 |
 
 ### Preguntas abiertas
 
@@ -1365,6 +1366,55 @@ La fidelidad media de 0.071 que H-012 midió entre `['X','ZZ']` y ZZ a k=4 queda
 - El texto del borrador de §4.7 y el pie del diagrama del §4.1 deben corregirse en consecuencia.
 
 **Cómo se coló.** La afirmación sobre el eje se escribió en la noche del 22 a partir de los nombres de los operadores, sin comprobar cómo actúan sobre el estado que encuentran. Es el mismo tipo de error de H-013: una propiedad del formalismo, en este caso los autoestados, que ningún nombre de función revela.
+
+---
+
+### H-035 · Pasar de 67 a 12 features cuesta de 2 a 4 puntos de AUC, y las 12 elegidas por F no superan a 12 al azar
+**Fecha:** 2026-10-04 · **→ Reporte:** §4.6, §7, OE-6 · *complementa H-030*
+
+**Pregunta.** ¿Cuánta información se pierde al quedarse con 12 de las 67 features de M3? Aclaración previa: la figura `M3_effect_sizes.png` del notebook 3 dibuja las 25 features más discriminativas solo como contexto visual. Ningún paso conserva 25: la selección va de 67 a 12 directamente, en M4 (D-013, D-024).
+
+**Método.** Se midieron dos sentidos de «información» distintos. Todo se calculó solo sobre train, con los folds congelados de M4, agrupados por paciente (D-026); el test no se tocó. La réplica de la regla de selección reproduce exactamente las 12 features de M4, en el mismo orden.
+
+- **Información general.** Cuánta varianza de las 67 explican linealmente las 12, tras normalizarlas por cuantiles. Como cota se usa una PCA con 12 componentes. La R² lineal es una cota inferior: no cuenta la dependencia no lineal.
+- **Información para la etiqueta.** AUC en validación cruzada de dos clasificadores clásicos sobre las features crudas: una regresión logística (LR), que solo ve efectos lineales, y un *random forest* (RF), que ve interacciones. Toda selección y todo preprocesamiento se ajustan dentro de cada fold.
+
+**Información general: se pierde poco.**
+
+| | Masas | Calcificaciones |
+|---|---|---|
+| Varianza de las 67 retenida por las 12 | 86.8 % | 90.2 % |
+| Cota con 12 componentes de PCA | 98.0 % | 97.8 % |
+| Descartadas que las 12 reconstruyen en más del 90 % | 26 de 55 | 28 de 55 |
+| Lo peor reconstruido | ClusterShade (R² 0.44), Skewness (0.45) | Kurtosis (0.56), Maximum (0.66) |
+
+Las features radiómicas describen muchas veces unas pocas propiedades de fondo: tamaño, intensidad y textura. Lo que las 12 recuperan peor es la *forma de la distribución de intensidades*.
+
+**Información para la etiqueta: una pérdida modesta.** AUC media ± desviación entre folds. En «12 al azar», el ± es la dispersión entre 20 sorteos.
+
+| Conjunto | Masas, LR | Masas, RF | Calcif., LR | Calcif., RF |
+|---|---|---|---|---|
+| Las 67 | 0.693 ± 0.039 | 0.695 ± 0.043 | 0.800 ± 0.028 | 0.796 ± 0.018 |
+| Las 12 de M4 | 0.650 ± 0.056 | 0.680 ± 0.046 | 0.758 ± 0.025 | 0.773 ± 0.024 |
+| 12 reseleccionadas dentro de cada fold | 0.653 | 0.675 | 0.757 | 0.774 |
+| Top 12 por F sin filtro de redundancia | 0.645 | 0.649 | 0.744 | 0.763 |
+| 12 al azar | 0.656 ± 0.019 | 0.659 ± 0.023 | 0.765 ± 0.015 | 0.775 ± 0.016 |
+
+**Lecturas.**
+
+1. **La pérdida es de 2 a 4 puntos de AUC.** Con LR es de 0.042 en ambos subconjuntos; con RF, de 0.015 en masas y 0.023 en calcificaciones. Eso es más o menos una desviación estándar entre folds. La curva del AUC contra k no se estanca en 12, así que la señal restante está repartida en muchas features, cada una con poco aporte. Con todas las que sobreviven al filtro de redundancia (39 en masas y 43 en calcificaciones), el AUC queda a 0.016 o menos del de las 67.
+2. **Las 12 elegidas por F no superan a 12 al azar.** Las diferencias van de −0.007 a −0.002 y caen dentro del ruido, salvo con RF en masas (+0.021). Las mejores features individuales no forman el mejor conjunto. El ranking por F favorece las que separan las clases por sí solas, y esas tienden a medir la misma propiedad (lesión grande, lesión brillante). Un sorteo al azar es más diverso y sus features se complementan. Es la contraparte multivariante de H-030. La referencia clásica es Guyon y Elisseeff (2003), *An introduction to variable and feature selection*, JMLR 3; **verificar contra la fuente antes de citarla.**
+3. **El filtro de redundancia ayuda.** El top 12 sin filtro es el peor conjunto en las cuatro columnas, lo que respalda D-024.
+4. **Seleccionar una sola vez con todo el train no filtra nada medible.** Las 12 fijas y las 12 reseleccionadas dentro de cada fold difieren como mucho en 0.006 de AUC. La advertencia de H-027, que la validación cruzada es algo optimista, pesa muy poco en este punto.
+
+**Impacto.**
+
+- **La comparación entre condiciones sigue siendo justa.** C1–C5 reciben las mismas 12 features, así que la pérdida las afecta a todas por igual.
+- **Material del OE-6.** El presupuesto de qubits obliga a descartar información que cuesta de 2 a 4 puntos de AUC con clasificadores clásicos. Hay que declararlo como limitación en §7.
+- **No se cambia el diseño.** Cambiar la selección después de ver estos resultados añadiría un grado de libertad elegido con los datos a la vista, y obligaría a rehacer M4 y M5. Una selección multivariante (mRMR, L1) queda como análisis de robustez opcional después del congelamiento del 23 oct. **Decisión del autor.**
+- **Alcance.** Son clasificadores clásicos sobre las features crudas: acotan la información disponible para todas las condiciones, pero no predicen el AUC del MLP de M7 sobre C1–C5.
+
+**Datos.** `Code/experiments/X1_Selection_Information_Loss.ipynb`; `Code/results/X1_varianza_retenida.csv`, `X1_auc_por_condicion.csv`, `X1_auc_vs_k.csv`; figura `Docs/Figures/X1_selection_auc_vs_k.png`.
 
 ---
 
