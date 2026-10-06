@@ -95,6 +95,7 @@ button:hover{color:var(--ink)}
 <tr><th>Fecha</th><th>Hito</th><th>Qué significa</th></tr>
 <tr><td><b>22 sep ✓</b></td><td>Techo computacional</td><td>k=12, reps=1, Arquitectura B (D-013, D-014). Hecho.</td></tr>
 <tr><td><b>23 sep ✓</b></td><td>Features listas</td><td><code>x ∈ [0,π]^12</code> reproducible, masas y calcificaciones (M2–M4). Hecho.</td></tr>
+<tr><td><b>24 sep ✓</b></td><td>Embeddings y kernels</td><td>C1–C5 y kernels de fidelidad exactos (M5). C5 = (Y, ZZ) desde el 5 oct (D-031).</td></tr>
 <tr><td><b>10 oct</b></td><td>Separabilidad</td><td>OE-3 respondido. Es la pregunta de investigación.</td></tr>
 <tr><td><b>17 oct</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos.</td></tr>
 <tr><td><b>23 oct</b></td><td>Congelamiento</td><td>No se corren experimentos nuevos. Lo que haya, se reporta.</td></tr>
@@ -127,6 +128,10 @@ for (const k of ["f2.9", "f2.10", "f2.11"]) if (!(k in state)) state[k] = true;
 for (const k of ["f2.12", "f2.13", "f2.14", "f2.15"]) if (!(k in state)) state[k] = true;
 // M5 hecho el 2026-09-24 (f4.0 y f4.1).
 for (const k of ["f4.0", "f4.1"]) if (!(k in state)) state[k] = true;
+// Las tareas de desbloqueo de la Fase 2 (f2.0 a f2.5) se resolvieron entre el 25 ago y el 23 sep.
+for (let i = 0; i < 6; i++) if (!(("f2." + i) in state)) state["f2." + i] = true;
+// X1, X2, D-031 y las figuras del circuito, hechos el 4 y 5 oct (f4.11 a f4.14).
+for (const k of ["f4.11", "f4.12", "f4.13", "f4.14"]) if (!(k in state)) state[k] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -144,15 +149,15 @@ const PHASES = [
      "Resolver cómo se calcula la geometric difference (kernel contra kernel, no sobre ⟨Zᵢ⟩)"]]
   ]},
  {id:"f2", n:"Fase 2 · Ingeniería de datos (M2–M4)", due:"2026-10-03",
-  note:"M2, M3 y M4 hechos el 23 sep. Solo quedan tareas de desbloqueo; Q-009 y Q-010 cerradas (D-025, D-026).",
+  note:"COMPLETA. M2, M3 y M4 hechos el 23 sep; Q-009 y Q-010 cerradas (D-025, D-026). Quedan provisionales D-020 a D-022 (ver riesgos).",
   groups:[
-   ["Desbloqueo · hasta 31 ago",[
-     "Entorno radiomics con PyRadiomics funcionando",
+   ["Desbloqueo · ✓ resuelto entre el 25 ago y el 23 sep",[
+     "Entorno radiomics con PyRadiomics compilado desde GitHub (D-007, H-006); también en qml_cancer desde el 23 sep (H-029)",
      "Instalar opencv-python",
-     "Re-descargar los 86 DICOM faltantes con NBIA Data Retriever y re-validar rutas",
-     "Corregir el conteo de cobertura: 3,482 / 3,568 usables (97.6 %), no 100 %",
-     "Reestructurar repo: Code/moduloN/, config.yaml, requirements.txt",
-     "Arreglar .gitignore: hoy Docs/Figures y Docs/Logos NO están versionados"]],
+     "Recuperar las series DICOM faltantes por la API REST de TCIA, no con NBIA Data Retriever (D-012, H-010)",
+     "Cobertura del dataset: 3,568 / 3,568 (100 %) tras la recuperación; antes era 97.6 % (H-001)",
+     "Estructura del repo: un notebook por módulo en Code/, benchmark/ y experiments/; entornos congelados en Code/env/",
+     "Versionar Docs/Figures y Docs/Logos (desde el 25 ago)"]],
    ["Módulo 2 · Preprocesamiento · ✓ 23 sep (2_Preprocessing.ipynb)",[
      "Recorte ROI a resolución original (caja + 20 px), sin resize a 224×224 · 3,568 lesiones exportadas a NRRD (D-022)",
      "80 máscaras desalineadas: 78 remuestreadas (escala 0.870) y 2 ancladas sin escalar, verificadas contra los recortes oficiales (D-020, H-020) · máscaras de masas reducidas a su componente mayor (D-021)",
@@ -168,18 +173,26 @@ const PHASES = [
      "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones · re-verificado en M4"]]
   ]},
  {id:"f4", n:"Fase 4 · Implementación cuántica (M5 + M6)", due:"2026-10-10",
-  note:"Núcleo de la tesis (OE-3). M5 hecho el 24 sep (5a_Embeddings, 5b_Quantum_Kernels). Sigue M6 · separabilidad (D-030).",
+  note:"Núcleo de la tesis (OE-3). M5 hecho el 24 sep. El 5 oct C5 pasó a ['Y','ZZ'] (D-031, cierra Q-012) y se recalcularon 5a, 5b y X2. X1 y X2 anticipan que ningún kernel cuántico supera al RBF (H-035, H-036). Sigue M6 · separabilidad (D-030).",
   groups:[
    ["Embeddings · hasta 3 oct",[
-     "✓ C1–C5 para ambos subconjuntos, con ⟨Zᵢ⟩ exactos y γ = 0.032 (5a_Embeddings)",
-     "✓ Kernels de fidelidad exactos sobre 200 de train (5b_Quantum_Kernels): concentrados, mediana ~0.003 (H-031); barrido de c (D-029)"]],
+     "✓ C1–C5 para ambos subconjuntos, con ⟨Zᵢ⟩ exactos y γ = 0.032 (5a_Embeddings) · C5 = ['Y','ZZ'] desde el 5 oct (D-031)",
+     "✓ Kernels de fidelidad exactos sobre 200 de train (5b_Quantum_Kernels): concentrados, mediana 0.002 en C4 y 0.00003 en C5 (H-031, H-037); barrido de c (D-029)"]],
    ["M6 · Separabilidad (6_Separability) · hasta 10 oct",[
      "KTA respecto al kernel ideal",
      "Geometric difference g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞ contra el RBF con γ por mediana (D-027); fórmula verificada (H-033)",
      "Índice Davies-Bouldin y distancia Fisher",
      "Visualizaciones t-SNE 2D",
      "Kernels solo con el feature map (D-017); ⟨Zᵢ⟩ con θ fijo por semilla 42 y valores exactos (D-014, H-019)",
-     "C2 como control nulo: sus métricas deben coincidir con las de C1 (D-016, sin C2′)"]]
+     "C2 como control nulo: sus métricas deben coincidir con las de C1 (D-016, sin C2′)",
+     "Extraer del Apéndice F de Huang et al. la versión regularizada de g: K_C es casi singular (λ_min ≈ 6×10⁻⁶) y el kernel de C5 está aún más concentrado (H-033, H-037)",
+     "Reportar por separado las métricas de kernel y las de ⟨Zᵢ⟩: con C5 van en direcciones opuestas (H-013, H-037)",
+     "Si la separabilidad a k=12 sale pobre, comparar contra k=8 antes de concluir (H-018)"]],
+   ["Exploratorios y decisiones previas al M6 · ✓ 4–5 oct",[
+     "X1 · pasar de 67 a 12 features cuesta 2–4 puntos de AUC; las 12 por F no superan a 12 al azar (H-035)",
+     "X2 · AUC de pares: a c = 1 los kernels cuánticos conservan menos información de clase que el RBF (H-036)",
+     "Q-012 cerrada: C5 = pauli_feature_map(['Y','ZZ']) (D-031); C5 recalculado en 5a, 5b y X2",
+     "Circuitos de C4 y C5 dibujados en 5a: M5_circuit_k4.png y M5_circuit_12q.png"]]
   ]},
  {id:"f5", n:"Fase 5 · Modelos de clasificación (M7)", due:"2026-10-17",
   note:"Cinco condiciones × 2 subconjuntos, con validación cruzada 5-fold. Sin TorchConnector.",
@@ -220,7 +233,13 @@ const PHASES = [
    ["Cierre",[
      "Registro INDAUTOR (RNF-09)",
      "Bitácora de decisiones al día",
-     "Preparar la presentación del acto académico"]]
+     "Preparar la presentación del acto académico"]],
+   ["Correcciones que vienen de TT2",[
+     "§3.4.2 y RF-16 · la fórmula de g tiene K_C y K_Q invertidos (H-033)",
+     "§4.1–§4.9 · renumerar módulos (D-030) y pasar el borrador de Docs/borrador_secciones_4.md",
+     "§4.7 · C5 = (Y, ZZ) (D-031) y corregir RF-14; incluir las figuras de los circuitos",
+     "§4.5 · son 67 features, no «100–300» (D-023)",
+     "§7 · limitaciones: pérdida por la selección (H-035), concentración del kernel (H-031, H-037), selección univariante (H-030)"]]
   ]}
 ];
 
@@ -228,13 +247,15 @@ const RISKS = [
  ["Resuelto · D-014","Separabilidad medida sobre un embedding entrenado","Se adoptó Arquitectura B: θ nunca se entrena, así que el embedding es no supervisado por construcción y la comparación contra C2 y C3 es justa. Cierra también Q-002."],
  ["Resuelto · D-016","C2 es degenerado","PCA de k→k es una rotación. Se declara control nulo: si las métricas dieran valores distintos para C1 y C2 estarían mal implementadas. C3 (Kernel PCA RBF) queda como comparador clásico real."],
  ["Resuelto · D-017","Geometric difference sin kernel","Se calcula con FidelityQuantumKernel usando solo el feature map. Ojo: el kernel ve fases y los ⟨Zᵢ⟩ no, así que ambas familias de métricas miden objetos distintos y pueden discrepar."],
- ["Resuelto · D-015","C4 y C5 eran el mismo circuito","Fidelidad 1.000000000000 entre ambos. C5 pasa a pauli_feature_map(['X','ZZ']), el más alejado de ZZ (media 0.071 sobre 200 entradas)."],
+ ["Resuelto · D-031","C4 y C5 eran el mismo circuito","Fidelidad 1.000000000000 entre ambos (H-012). C5 pasó primero a ['X','ZZ'] (D-015), pero con reps=1 el término X actúa sobre |+⟩, autoestado de X, y no codifica nada (H-034). Desde el 5 oct C5 = ['Y','ZZ']: el giro en Y saca cada qubit del ecuador de la esfera de Bloch."],
  ["Resuelto · D-018","Validación cruzada prometida y ausente","5-fold estratificada sobre train; el test oficial del CBIS-DDSM no se toca. Bajo Arquitectura B el entrenamiento toma segundos."],
  ["Resuelto · D-019","Q-004 · Azevedo o Incudini","La atribución correcta es Azevedo et al. (2022), como ya decía el reporte en §1.3 y §2.1.5. Queda añadir el \\cite que falta (H-009)."],
  ["Resuelto · D-024","SelectKBest elegía variables redundantes en masas","Con la restricción |r| ≤ 0.95 salen los duplicados exactos y entra textura en masas (H-026), de forma estable entre 0.80 y 0.99."],
  ["Resuelto · D-025","Ángulos casi constantes en features de cola pesada","El min-max dejaba Energy y PixelSurface de calcificaciones con IQR de 0.05 rad (H-028). Con la transformación por cuantiles, todas las features tienen IQR = π/2."],
  ["Resuelto · D-029","Kernel cuántico concentrado","Mediana fuera de la diagonal ~0.003 frente a 0.61 del RBF (H-031). Se mantiene el diseño y se añade un barrido de c: el kernel solo informa cuando el término de producto xᵢxⱼ ya no influye."],
- ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6."],
+ ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6. Falta extraer la versión regularizada del Apéndice F, que el M6 necesita."],
+ ["Vigilar · H-037","Kernel de C5 extremadamente concentrado","Mediana 0.00003 frente a 0.002 de C4; entre el 26 y el 28 % de los pares queda por debajo de 10⁻⁶, un valor que en hardware exigiría unos 10⁶ disparos solo para observarlo una vez. Su embedding ⟨Zᵢ⟩, en cambio, se dispersa tres veces más que el de C4."],
+ ["Pendiente del autor · D-020 a D-022","Decisiones de M2 provisionales","Validar la alineación por tipo de desajuste, la componente conexa mayor y el contrato de salida de M2. Decidir si se excluyen los 7 casos discordantes."],
  ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM."],
  ["Resuelto · D-026","Semilla de los folds","Con la semilla 42, el fold 2 de calcificaciones tenía 52 % de malignas. La semilla se elige por balance de clases: desviación máxima de 0.011 y 0.019."],
  ["Vigilar","Pacientes repartidos entre folds","Hay 2.28 ROIs por paciente. Si la validación cruzada separa ROIs del mismo paciente entre folds, hay fuga; usar StratifiedGroupKFold por patient_id."]
