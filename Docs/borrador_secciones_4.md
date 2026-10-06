@@ -77,7 +77,7 @@ Usa los mismos estilos del preámbulo (`blkGray`, `blkTeal`, `cond`, `condQ`, `b
   {\normalfont\tiny$\langle Z_i\rangle \in [-1,1]^{12}$ $\cdot$ $K_Q$}%
 };
 \node[condQ, anchor=north] at ($(fork) + (6.3cm, -0.1cm)$) (c5){%
-  \textbf{C5 $\cdot$ Qiskit}\\ \textit{Pauli feature map} $(X, ZZ)$\\[4pt]
+  \textbf{C5 $\cdot$ Qiskit}\\ \textit{Pauli feature map} $(Y, ZZ)$\\[4pt]
   {\normalfont\tiny ansatz con $\theta$ fijo}\\
   {\normalfont\tiny$\langle Z_i\rangle \in [-1,1]^{12}$ $\cdot$ $K_Q$}%
 };
@@ -145,9 +145,8 @@ Usa los mismos estilos del preámbulo (`blkGray`, `blkTeal`, `cond`, `condQ`, `b
   cuantiles, ajustada solo sobre el conjunto de entrenamiento; el mismo vector alimenta las
   cinco condiciones. En C4 y C5 los parámetros del \textit{ansatz} se fijan con una semilla
   y no se entrenan, y el kernel de fidelidad $K_Q$ se calcula con el \textit{feature map}
-  solo. C4 combina una codificación de primer orden en $Z$ con el acoplamiento $ZZ$; en C5,
-  con una repetición, el término en $X$ actúa sobre un autoestado y solo añade una fase global,
-  de modo que C5 codifica únicamente el acoplamiento $ZZ$ [PENDIENTE Q-012]. La salida de M5 alimenta en paralelo el análisis de
+  solo. C4 combina una codificación de primer orden en $Z$ con el acoplamiento $ZZ$, y C5
+  una codificación de primer orden en $Y$ con el mismo acoplamiento. La salida de M5 alimenta en paralelo el análisis de
   separabilidad (M6) y la clasificación (M7), que el módulo M8 compara.%
 }
 \label{fig:pipeline_sistema}
@@ -220,7 +219,8 @@ efecto sobre las características extraídas, que se reporta en la sección de r
 ## §4.7 · Módulo 5: Transformación
 
 **Qué cambia.** C5 deja de ser `PauliFeatureMap(Z, ZZ)` porque era idéntico a C4 (H-012,
-D-015). C2 se declara control nulo (D-016). Se fija k=12 y reps=1 (D-013).
+D-015), y pasa a `(Y, ZZ)` porque con `(X, ZZ)` el término de primer orden no codificaba nada
+(H-034, D-031). C2 se declara control nulo (D-016). Se fija k=12 y reps=1 (D-013).
 
 ```latex
 El módulo de transformación implementa las cinco condiciones experimentales. Todas parten
@@ -232,8 +232,8 @@ del mismo vector \(\mathbf{x} \in [0,\pi]^{12}\) producido por M4.
   \item \textbf{C3 · Kernel PCA con núcleo RBF.} Baseline clásico no lineal.
   \item \textbf{C4 · ZZFeatureMap.} Codificación de primer orden en \(Z\) con acoplamiento
         de segundo orden \(ZZ\).
-  \item \textbf{C5 · PauliFeatureMap con operadores \((X, ZZ)\).} Codificación de primer
-        orden en \(X\), manteniendo el mismo acoplamiento de segundo orden.
+  \item \textbf{C5 · PauliFeatureMap con operadores \((Y, ZZ)\).} Codificación de primer
+        orden en \(Y\), manteniendo el mismo acoplamiento de segundo orden.
 \end{itemize}
 
 \textbf{Sobre la condición C2.} Dado que M4 entrega un vector ya de dimensión \(k\), una
@@ -248,13 +248,16 @@ comparador clásico sustantivo es C3.
 \textbf{Sobre la elección de C5.} La biblioteca Qiskit define \texttt{ZZFeatureMap} como un
 caso particular de \texttt{PauliFeatureMap} con operadores \((Z, ZZ)\); ambas construcciones
 preparan el mismo estado, con fidelidad \(|\langle\phi_{ZZ}|\phi_{\text{Pauli}}\rangle|^2 = 1\).
-Especificadas así, C4 y C5 no constituirían condiciones independientes. Se adopta por tanto
-el conjunto \((X, ZZ)\), cuya fidelidad media respecto a la codificación \(ZZ\) es de 0.071
-sobre 200 entradas aleatorias, manteniendo un número idéntico de compuertas de
-entrelazamiento. \textbf{[Corregir según Q-012, ver H-034]} Con una repetición, el término en $X$ actúa
-sobre el estado $|+\rangle$, que es autoestado de $X$, y solo añade una fase global: C5 equivale
-a un \textit{feature map} con únicamente el acoplamiento $ZZ$. La comparación entre C4 y C5 mide
-por tanto el efecto de incluir o no una codificación de primer orden.
+Especificadas así, C4 y C5 no constituirían condiciones independientes. Se consideró
+primero el conjunto \((X, ZZ)\), pero con una repetición el término en \(X\) actúa sobre el
+estado \(|+\rangle\) que deja la capa de Hadamard, que es autoestado de \(X\), y solo añade
+una fase global: C5 equivaldría a un \textit{feature map} con únicamente el acoplamiento
+\(ZZ\). Se adopta por tanto el conjunto \((Y, ZZ)\). Sobre la esfera de Bloch, el giro en
+\(Z\) de C4 desplaza cada qubit a lo largo del ecuador y solo cambia una fase relativa,
+mientras que el giro en \(Y\) de C5 lo saca del ecuador y cambia las probabilidades de medir
+0 y 1. Ambas condiciones comparten el acoplamiento \(ZZ\) y el número de compuertas de
+entrelazamiento, de modo que la comparación entre C4 y C5 mide el efecto del eje de la
+codificación de primer orden.
 ```
 
 ---
@@ -344,6 +347,6 @@ información sobre la naturaleza de la codificación antes que una inconsistenci
   y revisar cualquier mención de «M6» o «M7» en el texto.
 - **H-033, fórmula de la *geometric difference* (§3.4.2 y RF-16):** K_C y K_Q están invertidos respecto a Huang et al.
   (2021), ec. 5. La forma correcta es g_CQ = √‖√K_Q · K_C⁻¹ · √K_Q‖∞, con Tr(K) = N.
-- **RF-14** dice «PauliFeatureMap (operadores X, Y, Z)»; C5 usa (X, ZZ) (D-015).
+- **RF-14** dice «PauliFeatureMap (operadores X, Y, Z)»; C5 usa (Y, ZZ) (D-031).
 - **RF-04, RF-05 y RF-06** (tabla de requisitos del Módulo 2) siguen pidiendo normalizar a [0,1], aplicar
   CLAHE y redimensionar a 224×224. Hay que reescribirlos en línea con D-009, D-010 y D-022.

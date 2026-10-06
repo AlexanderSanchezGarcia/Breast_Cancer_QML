@@ -37,7 +37,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-012 | 2026-09-21 | Descargar por la API REST de TCIA, no con NBIA Data Retriever | M1 | Firme | §8.x |
 | D-013 | 2026-09-22 | Punto de operación: k=12 qubits, reps=1 | M4, M5 | Firme | §4.6, §4.7 |
 | D-014 | 2026-09-22 | Arquitectura B: embedding precomputado con θ fijo (semilla 42) | M5, M6 | Firme | §4.7, §4.8 |
-| D-015 | 2026-09-22 | C5 usa `pauli_feature_map(paulis=['X','ZZ'])` | M5 | Firme en el cálculo; **interpretación corregida por H-034** (Q-012) | §4.7 |
+| D-015 | 2026-09-22 | C5 usa `pauli_feature_map(paulis=['X','ZZ'])` | M5 | **Revertida** por D-031 (H-034) | §4.7 |
 | D-016 | 2026-09-22 | C2 se declara control nulo; se mantienen cinco condiciones | M5, M7 | Firme | §4.7, §6.x |
 | D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme | §3.4.2, §4.9 |
 | D-018 | 2026-09-22 | Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento | M6 | Firme | §4.8, §4.9 |
@@ -53,6 +53,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-028 | 2026-09-24 | Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas | M5, M7 | Firme | §4.9 |
 | D-029 | 2026-09-24 | Kernel concentrado: se mantiene el diseño preregistrado y se añade un barrido del factor de escala | M5, M7 | Firme | §4.9, §6.x, OE-6 |
 | D-030 | 2026-09-24 | La separabilidad pasa a ser el Módulo 6; la clasificación, el M7, y la evaluación comparativa, el M8 | todos | Firme | §4.1–§4.9, RF, CRISP-DM |
+| D-031 | 2026-10-05 | C5 pasa a `pauli_feature_map(paulis=['Y','ZZ'])` | M5 | Firme | §4.7, §6.x |
 
 ### Hallazgos
 
@@ -91,9 +92,10 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-031 | 2026-09-24 | A 12 qubits, cambiar una sola feature deja el estado del feature map casi ortogonal | **Confirmado**: el kernel cuántico real está concentrado (mediana ~0.003); decisión pendiente (Q-011) |
 | H-032 | 2026-09-24 | `FidelityStatevectorKernel` da el mismo kernel exacto ~1000× más rápido que `FidelityQuantumKernel` | El cuello de botella del kernel medido en B1 era de la implementación, no del cálculo |
 | H-033 | 2026-09-24 | La ecuación de la *geometric difference* del reporte invierte K_C y K_Q respecto a Huang et al. | Corrección obligatoria en §3.4.2 y RF-16 antes de implementar M6 |
-| H-034 | 2026-09-24 | Con reps=1, el término X de C5 no codifica nada: C5 es un mapa solo ZZ | C4 contra C5 no compara el eje Z frente a X; decisión pendiente (Q-012) |
+| H-034 | 2026-09-24 | Con reps=1, el término X de C5 no codifica nada: C5 es un mapa solo ZZ | C4 contra C5 no compara el eje Z frente a X; resuelto por D-031 |
 | H-035 | 2026-10-04 | Pasar de 67 a 12 features cuesta de 2 a 4 puntos de AUC, y las 12 elegidas por F no superan a 12 al azar | Limitación a declarar en §7 y material del OE-6; no cambia el diseño; refuerza H-030 |
-| H-036 | 2026-10-04 | Con c = 1, el kernel cuántico conserva poca de la información de clase que ve el RBF; achicar los ángulos la recupera solo hasta el nivel clásico | Anticipa el M6; material de §6 y OE-6; C4 y C5 indistinguibles a c = 1 (Q-012) |
+| H-036 | 2026-10-04 | Con c = 1, el kernel cuántico conserva poca de la información de clase que ve el RBF; achicar los ángulos la recupera solo hasta el nivel clásico | Anticipa el M6; material de §6 y OE-6; cifras de C5 rehechas con D-031 |
+| H-037 | 2026-10-05 | Con `['Y','ZZ']`, C5 se dispersa tres veces más que C4 en ⟨Zᵢ⟩, pero su kernel se concentra unas setenta veces más | Caso concreto de H-013: el M6 debe reportar ambas familias de métricas; material del OE-6 |
 
 ### Preguntas abiertas
 
@@ -110,7 +112,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-009 | ¿Min-max, logaritmo o cuantiles para las features de cola pesada? | M5, Fase 4 | **RESUELTA** → D-025 |
 | Q-010 | ¿Semilla 42 para los folds, o una elegida por balance de clases? | M6, Fase 5 | **RESUELTA** → D-026 |
 | Q-011 | ¿Qué se hace con el kernel cuántico concentrado? | M5, Fase 4 | **RESUELTA** → D-029 |
-| Q-012 | ¿C5 se mantiene como mapa solo ZZ o se cambia por un conjunto con primer orden efectivo? | M5, M6 | antes de 6_Separability |
+| Q-012 | ¿C5 se mantiene como mapa solo ZZ o se cambia por un conjunto con primer orden efectivo? | M5, M6 | **RESUELTA** → D-031 |
 
 ---
 
@@ -256,7 +258,7 @@ Hay además un argumento de contenido. H-003 mostró que los features más discr
 ---
 
 ### D-015 · C5 usa `pauli_feature_map(paulis=['X','ZZ'])`
-**Fecha:** 2026-09-22 · **Módulo:** M5 · **Estado:** Firme · **→ Reporte:** §4.7 · *cierra Q-008; reemplaza D-002*
+**Fecha:** 2026-09-22 · **Módulo:** M5 · **Estado:** **Revertida** por D-031 (2026-10-05) · **→ Reporte:** §4.7 · *cierra Q-008; reemplaza D-002*
 
 **Contexto.** H-012 demostró que C4 y C5, tal como las definía §4.7, son el mismo circuito: fidelidad 1.000000000000.
 
@@ -278,6 +280,8 @@ Hay además un argumento de contenido. H-003 mostró que los features más discr
 **Consecuencias.** D-002 queda revertida. Hay que actualizar §4.7 y la tabla de condiciones experimentales.
 
 **Interpretación corregida el 2026-09-24 (H-034).** El párrafo «Qué afirma la comparación» era incorrecto. Con reps=1, el término X actúa sobre |+⟩, que es un autoestado de X, y solo añade una fase global, así que C5 prepara exactamente el estado de un mapa solo ZZ. C4 contra C5 compara **tener o no un término de primer orden** con el mismo acoplamiento ZZ, no el eje Z frente al eje X. La fidelidad media de 0.071 frente a ZZ se explica por eso: es exactamente Π cos²(xᵢ), con esperanza (1/2)^k. Los cálculos de C5 hechos con este conjunto siguen siendo válidos; lo que cambia es qué afirman. Q-012 decide si se mantiene.
+
+**Revertida el 2026-10-05 (D-031):** C5 pasa a `['Y','ZZ']`, cuyo término de primer orden sí actúa sobre |+⟩.
 
 ---
 
@@ -551,6 +555,34 @@ El flujo es un grafo con ramas paralelas: M5 → {M6, M7} → M8. Los notebooks 
   - reagrupar la tabla de requisitos: RF-15 a RF-17 van a M6 y los de clasificación a M7;
   - rehacer la tabla CRISP-DM y cualquier mención de «M6» o «M7» en el texto.
 - **En las entradas de esta bitácora anteriores al 2026-09-24, «M6» significa clasificación y «M7» evaluación**; desde D-030 rige la numeración nueva. Por ejemplo, la *geometric difference* de D-017 pertenece ahora al M6.
+
+---
+
+### D-031 · C5 pasa a `pauli_feature_map(paulis=['Y','ZZ'])`
+**Fecha:** 2026-10-05 · **Módulo:** M5 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.7, §6.x · *cierra Q-012; revierte D-015*
+
+**Contexto.** H-034: con reps=1, el término X de `['X','ZZ']` actúa sobre |+⟩, autoestado de X, y solo añade una fase global. C5 era un mapa solo ZZ, y C4 frente a C5 no comparaba el eje de la codificación de primer orden, como afirmaba D-015.
+
+**Alternativas.**
+- *(a) Mantener C5 como ablación del término de primer orden* — descartada por el autor. No obligaba a recalcular nada, pero la condición dejaba de medir lo que D-015 prometía.
+- *(b) Cambiar a un conjunto cuyo término de primer orden actúe sobre |+⟩* — **elegida**, con `['Y','ZZ']`.
+
+**Decisión.** C5 = `pauli_feature_map(12, reps=1, paulis=['Y','ZZ'])`. El resto del diseño no cambia: reps=1, el mismo ansatz con el mismo θ (semilla 42), el mismo barrido de c (D-029) y la misma submuestra (D-028).
+
+**Por qué.**
+- Tras la capa de Hadamard, cada qubit está en |+⟩, sobre el ecuador de la esfera de Bloch. Un giro en Z lo mueve a lo largo del ecuador, un giro en Y lo saca del ecuador hacia los polos y un giro en X no lo mueve. Con Y, C4 frente a C5 vuelve a comparar el eje de la codificación de primer orden con el mismo acoplamiento ZZ, que era la intención de D-015.
+- Qiskit lo implementa como √X · P(2xᵢ) · √X†, que equivale a RY(2xᵢ) salvo una fase global. Se verificó en 5a: fidelidad 1 en 20 lesiones reales.
+- Coste: 12 √X y 12 √X† más, sin CX adicionales; profundidad 67 contra 65.
+- La motivación es estructural, no un resultado. H-034 la planteó el 24 sep, antes de medir la separabilidad, y el M6 todavía no se ha calculado.
+
+**Evidencia.** Celda de inspección de `Code/5a_Embeddings.ipynb`, sobre 5 masas reales. La fidelidad con el estado de un mapa solo ZZ es 1.000 con `['X','ZZ']` y como mucho 3×10⁻⁵ con `['Y','ZZ']`. Sin el ansatz, ⟨Zᵢ⟩ de C5 vale exactamente −sin(2xᵢ), con diferencia de 5×10⁻¹⁵.
+
+**Consecuencias.**
+- Se recalcularon C5 en 5a y 5b y el experimento X2. C1–C4, K_C y todas las matrices de C4 salieron idénticos bit a bit.
+- El C5 nuevo cambia mucho la concentración, y en direcciones opuestas según el objeto (H-037).
+- H-036 se actualizó con las cifras nuevas.
+- El borrador de §4.7 y el pie del diagrama del §4.1 deben describir C5 como «codificación de primer orden en Y con acoplamiento ZZ». RF-14 sigue desactualizado.
+- 5a dibuja ahora los dos circuitos completos: `Docs/Figures/M5_circuit_k4.png` (k = 4, legible) y `M5_circuit_12q.png` (C4 a tamaño real).
 
 ---
 
@@ -1284,6 +1316,8 @@ La codificación es extremadamente sensible a cada feature.
 | Calcificaciones | C5 | 0.0041 | 0.018 | 10 % |
 | Ambos | RBF clásico, γ por mediana (D-027) | 0.607 | — | — |
 
+*Las filas de C5 corresponden al C5 original, `['X','ZZ']`, que era un mapa solo ZZ (H-034). Con el C5 actual, `['Y','ZZ']` (D-031), la mediana es 0.00003 en ambos subconjuntos (H-037).*
+
 La matriz del kernel cuántico es casi la identidad. Con K ≈ I, la KTA tiende a 1/√n ≈ 0.07 para n = 200, independientemente de las etiquetas.
 
 **Corregido el 2026-09-24 tras verificar la fuente.** La primera versión decía que la *geometric difference* crecería; Huang et al. (2021) dicen lo contrario. En el texto principal: *"a variety of common quantum models in the literature perform similarly or worse than classical ML […] due to a small geometric difference. The small geometric difference is a consequence of the exponentially large Hilbert space employed by existing quantum models, where all inputs are too far apart."* En el Apéndice I: *"the quantum kernel function […] will be exponentially close to zero for xᵢ ≠ xⱼ. In this case K_Q will be close to the identity matrix"*, y distinguir valores tan pequeños exigiría un número exponencial de mediciones en hardware. **Nuestro caso es exactamente el escenario que el paper describe como típico de los modelos cuánticos que no superan a los clásicos.**
@@ -1434,28 +1468,63 @@ Los pares comparten lesiones y no son independientes, así que la referencia es 
 |---|---|---|---|---|
 | K_C (RBF) | 0.523 | 0.002 | 0.575 | 0.001 |
 | C4, c = 1 | 0.510 | 0.012 | 0.520 | 0.021 |
-| C5, c = 1 | 0.505 | 0.088 | 0.515 | 0.042 |
+| C5, c = 1 | 0.508 | 0.047 | 0.547 | 0.001 |
 | C4, c = 0.02 | 0.522 | 0.002 | 0.577 | 0.001 |
-| C5, c = 0.02 | 0.522 | 0.002 | 0.577 | 0.001 |
+| C5, c = 0.02 | 0.522 | 0.002 | 0.578 | 0.001 |
 
 Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.004 en masas y 0.008 en calcificaciones.
+
+**Actualizado el 2026-10-05 (D-031).** Las filas de C5 son del C5 actual, `['Y','ZZ']`. Con el C5 original, un mapa solo ZZ, eran 0.505 (p = 0.088) en masas y 0.515 (p = 0.042) en calcificaciones a c = 1.
 
 **Lecturas.**
 
 1. **El kernel clásico sí ve las clases, aunque de forma modesta.** En calcificaciones el efecto viene sobre todo de que los pares B–M se parecen menos: mediana de 0.583, contra 0.652 en B–B y 0.663 en M–M. Las masas son difíciles para todos los kernels, de acuerdo con los tamaños de efecto moderados del M3 (H-023).
-2. **Con el diseño preregistrado, el kernel cuántico conserva poca de esa información.** Queda como mucho 0.02 por encima del azar, y C5 en masas no se distingue del azar. En calcificaciones conserva más o menos una cuarta parte del margen del RBF sobre el azar: 0.020 contra 0.075. En los histogramas, a c = 1 los tres tipos de par se superponen casi por completo.
+2. **Con el diseño preregistrado, el kernel cuántico conserva solo parte de esa información.** En masas, C4 y C5 quedan como mucho 0.01 por encima del azar. En calcificaciones, C4 conserva más o menos una cuarta parte del margen del RBF sobre el azar (0.020 contra 0.075) y C5 cerca del 60 % (0.047). En los histogramas de C4 los tres tipos de par se superponen casi por completo; en los de C5 en calcificaciones, los pares B–M quedan visiblemente a la izquierda.
 3. **Achicar los ángulos la recupera, pero solo hasta el nivel clásico.** El AUC de pares sube al bajar c, y a c = 0.02 iguala al del RBF. A esa escala el kernel cuántico es prácticamente el de un mapa sin el término de producto xᵢxⱼ (H-031). La información de clase recuperada es la que un kernel clásico ya ve, no información nueva aportada por las interacciones.
-4. **C4 contra C5.** A c = 1 la diferencia cae dentro del ruido de la permutación. A escalas intermedias C4 tiende a quedar por encima de C5, lo que es coherente con que C5 no tenga término de primer orden (H-034), pero las curvas no son monótonas y la evidencia es débil.
+4. **C4 contra C5 (D-031).** En masas son indistinguibles a c = 1. En calcificaciones C5 supera a C4 en 0.027, unas tres o cuatro desviaciones estándar de la permutación; como se prueban muchos kernels, es un indicio y no una prueba formal. Aun así, C5 queda por debajo del RBF. Con el C5 original, solo ZZ, los dos mapas eran indistinguibles.
+5. **Valores irresolubles.** El 26–28 % de los pares de C5 tiene fidelidad menor que 10⁻⁶ (H-037). La señal no viene de ahí: restringido a los pares con fidelidad de 10⁻⁶ o más, el AUC de pares de C5 es 0.510 en masas y 0.570 en calcificaciones.
 
 **Impacto.**
 
 - **Con esta medida por pares no hay indicio** de que la codificación cuántica capture estructura de clase que el kernel clásico no vea; con el diseño preregistrado captura menos. Anticipa el resultado del KTA y de la *geometric difference* del M6, que siguen siendo las métricas formales.
 - **Alcance.** El AUC de pares es una medida global sobre todos los pares. Valores de 0.52 a 0.58 son normales cuando las clases son heterogéneas, y no acotan el AUC de un clasificador, que puede aprovechar la estructura local.
-- **Para Q-012.** A c = 1, C4 y C5 son indistinguibles con esta medida. Es un argumento a favor de mantener C5 como ablación, porque cambiarlo no alteraría la conclusión principal. **Decisión del autor.**
+- **Q-012 quedó cerrada por D-031** (C5 = `['Y','ZZ']`). Con el C5 original, C4 y C5 eran indistinguibles con esta medida; con el término Y difieren en calcificaciones. La conclusión principal no cambia: ningún kernel cuántico supera al RBF.
 - Se corrige de paso un detalle de la figura de 5b: su eje y cuenta cada par dos veces, porque toma los dos triángulos de la matriz simétrica. En X2 cada par se cuenta una vez. La forma de la distribución no cambia.
 - Los valores de p son indicativos, porque se prueban muchos kernels.
 
 **Datos.** `Code/experiments/X2_Kernel_Class_Structure.ipynb`; `Code/results/X2_auc_pares.csv`; figuras `Docs/Figures/X2_kernel_pairs_by_class.png` y `X2_pair_auc_sweep.png`.
+
+---
+
+### H-037 · Con `['Y','ZZ']`, C5 se dispersa tres veces más que C4 en ⟨Zᵢ⟩, pero su kernel se concentra unas setenta veces más
+**Fecha:** 2026-10-05 · **→ Reporte:** §4.7, §6.x, OE-6 · *consecuencia de D-031; caso concreto de H-013*
+
+| | Masas | Calcificaciones |
+|---|---|---|
+| Desviación estándar media por dimensión de ⟨Zᵢ⟩, C4 | 0.057 | 0.048 |
+| Lo mismo, C5 original (`['X','ZZ']`) | 0.055 | 0.046 |
+| Lo mismo, C5 actual (`['Y','ZZ']`) | **0.180** | **0.178** |
+| Mediana del kernel fuera de la diagonal, C4 | 0.0022 | 0.0029 |
+| Lo mismo, C5 original | 0.0028 | 0.0041 |
+| Lo mismo, C5 actual | **0.000032** | **0.000031** |
+| Pares del C5 actual con fidelidad < 10⁻³ | 80 % | 76 % |
+| Pares del C5 actual con fidelidad < 10⁻⁶ | 26 % | 28 % |
+
+**Por qué el embedding se dispersa.** Sin el ansatz, ⟨Zᵢ⟩ de C4 es 0 para toda entrada (H-013), mientras que el de C5 vale −sin(2xᵢ): el giro en Y cambia directamente las probabilidades de 0 y 1. Esa contribución directa de cada feature, que el ansatz después mezcla entre qubits, es lo que dispersa el embedding.
+
+**Por qué el kernel se concentra.** Los términos de primer orden solos dan el mismo kernel, sea en Z o en Y: diferencia máxima de 3×10⁻¹⁵ y mediana de ~2×10⁻⁷. Cada uno aporta un factor cos²(xᵢ − x′ᵢ) por qubit. La diferencia aparece al combinarlos con ZZ.
+- En C4 todas las puertas tras los Hadamard son diagonales, así que el término Z solo añade una fase pequeña al patrón de fases ZZ (tasa 2 contra ~36, H-031) y C4 queda cerca de un mapa solo ZZ.
+- En C5 el giro en Y no es diagonal: cambia las amplitudes antes de que actúen las fases ZZ, y dos lesiones pierden solapamiento tanto por las amplitudes como por las fases.
+
+**El barrido de c** sigue llevando C5 al nivel del RBF a c = 0.02, con medianas de 0.54 y 0.58, pero no es monótono: entre c = 0.5 y c = 0.2 la mediana baja, de 0.0084 a 0.0049 en masas. El mecanismo de esa no monotonía no está establecido.
+
+**Impacto.**
+- **Es el caso que anticipaba H-013.** El kernel y los ⟨Zᵢ⟩ miden objetos distintos, y aquí van en direcciones opuestas. El M6 debe reportar ambas familias de métricas sin esperar que coincidan.
+- **OE-6.** En hardware, un valor del kernel es la probabilidad del resultado «todo ceros», y verlo una sola vez exige del orden de 1/K disparos: 10⁶ para K = 10⁻⁶. Una cuarta parte de los pares de C5 solo se distingue en simulación exacta.
+- **Para el M6.** La *geometric difference* de C5 se calculará sobre una matriz todavía más cercana a la identidad que la de C4, así que la versión regularizada del Apéndice F (H-033) es aún más necesaria.
+- Pese a la concentración, el AUC de pares de C5 en calcificaciones es el mayor de los dos mapas cuánticos y no depende de los valores irresolubles (H-036).
+
+**Datos.** `Code/5a_Embeddings.ipynb` (2°a, celda de inspección y 4°a); `Code/5b_Quantum_Kernels.ipynb` (6c y 7°); `Code/results/5a_resumen.csv` y `5b_concentracion_kernel.csv`.
 
 ---
 
@@ -1592,6 +1661,8 @@ H-034: con reps=1, `['X','ZZ']` equivale a un mapa solo ZZ. Hay dos salidas:
 
 - *(a)* Mantener C5 tal como está y describirlo como una ablación del término de primer orden: C4 tiene Z más ZZ y C5 solo ZZ. No hay que recalcular nada.
 - *(b)* Cambiar C5 a un conjunto cuyo primer orden actúe sobre |+⟩, por ejemplo `['Y','ZZ']` (fidelidad media 0.315 frente a ZZ en H-012). Eso recupera la comparación del eje de primer orden, pero obliga a recalcular C5 en 5a y 5b; son unos segundos de cómputo.
+
+**Cerrada el 2026-10-05 → D-031:** opción *(b)*, con `['Y','ZZ']`.
 
 ## Plantillas
 
