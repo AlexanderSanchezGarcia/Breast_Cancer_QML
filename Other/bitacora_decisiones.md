@@ -57,6 +57,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-032 | 2026-10-06 | La *geometric difference* sigue el protocolo de Huang et al. (Apéndice L.3) | M6 | Firme | §3.4.2, §4.9, RF-16 |
 | D-033 | 2026-10-06 | Definiciones de las demás métricas del M6 | M6 | Firme | §4.9 |
 | D-034 | 2026-10-06 | Se reproduce la Fig. 2 de Huang et al. (2021) en el reporte | reporte | Firme | §3.4.2 |
+| D-035 | 2026-10-06 | Se compara contra k = 8 antes de concluir el OE-3, como experimento X3 | M4–M6 | Firme | §6.x, §7, OE-6 |
 
 ### Hallazgos
 
@@ -102,6 +103,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-038 | 2026-10-06 | La *g* que reportan Huang et al. es regularizada y es el mínimo sobre una batería de kernels clásicos | Cierra el pendiente de H-033; justifica D-032 y D-033 |
 | H-039 | 2026-10-06 | A c = 1 los kernels cuánticos apenas ven las clases, ocupan casi todo el espacio y quedan a g ≈ 1.4–1.7 del modelo clásico más cercano | Respuesta del OE-3 en la familia de kernels; material de §6 y OE-6 |
 | H-040 | 2026-10-06 | Los embeddings cuánticos son menos separables que los clásicos, y C4 frente a C5 no tiene ganador | Respuesta del OE-3 en la familia de embeddings; anticipa el M7 |
+| H-041 | 2026-10-06 | Con 8 qubits la concentración baja y los kernels cuánticos ven algo más las clases, pero la conclusión del M6 se mantiene | Cierra Q-013; la conclusión del OE-3 no depende de k = 12; material del OE-6 |
 
 ### Preguntas abiertas
 
@@ -119,7 +121,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-010 | ¿Semilla 42 para los folds, o una elegida por balance de clases? | M6, Fase 5 | **RESUELTA** → D-026 |
 | Q-011 | ¿Qué se hace con el kernel cuántico concentrado? | M5, Fase 4 | **RESUELTA** → D-029 |
 | Q-012 | ¿C5 se mantiene como mapa solo ZZ o se cambia por un conjunto con primer orden efectivo? | M5, M6 | **RESUELTA** → D-031 |
-| Q-013 | ¿Se compara contra k = 8 antes de concluir, como pide H-018? | Conclusión del OE-3 | 23 oct |
+| Q-013 | ¿Se compara contra k = 8 antes de concluir, como pide H-018? | Conclusión del OE-3 | **RESUELTA** → D-035 |
 
 ---
 
@@ -646,6 +648,27 @@ El flujo es un grafo con ramas paralelas: M5 → {M6, M7} → M8. Los notebooks 
 - Se deja en inglés para no convertirla en una adaptación. Si se traduce, el pie debe decir «Adaptada de».
 
 **Consecuencias.** Hay que añadir la referencia publicada a la bibliografía. Ubicación propuesta: §3.4.2, junto a la ecuación corregida de *g* (H-033).
+
+---
+
+### D-035 · Se compara contra k = 8 antes de concluir el OE-3, como experimento X3
+**Fecha:** 2026-10-06 · **Módulo:** M4–M6 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §6.x, §7, OE-6 · *cierra Q-013*
+
+**Contexto.** H-018 dejó la regla de comparar contra k = 8 si la separabilidad a k = 12 salía pobre, y salió pobre (H-039, H-040).
+
+**Alternativas.** *(b)* No hacerlo y declararlo como limitación — descartada por el autor. *(a)* Hacer la comparación — **elegida**.
+
+**Decisión.** Se repiten M4, M5 y M6 con k = 8 en `Code/experiments/X3_Fewer_Qubits_k8.ipynb`, cambiando solo el número de qubits.
+- M4 con la regla de D-024 y D-025.
+- M5 con las cinco condiciones, reps = 1, el mismo ansatz y θ de la semilla 42.
+- M6 sobre las mismas 200 lesiones, con el mismo barrido de c y las mismas funciones, copiadas sin cambios de `6_Separability`.
+- Los valores de k = 12 se recalculan con el mismo código como prueba de regresión.
+
+Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
+
+**Por qué.** Era un compromiso previo. Sin la comparación, el resultado del M6 podía atribuirse al tamaño del registro y no a la codificación.
+
+**Consecuencias.** Los datos de k = 8 quedan en `Data/processed/x3/` para todas las lesiones, por si el autor quiere repetir el M7 con k = 8. El resultado está en H-041.
 
 ---
 
@@ -1669,9 +1692,48 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 **Impacto.**
 - **Las dos familias coinciden en la dirección, no en el detalle** (H-013, H-037). Ambas ponen delante a las representaciones clásicas. Pero C5 tiene solapamientos típicos menores que C4 y, aun así, una dimensión efectiva menor (171 contra 184 en masas), compatible con la distribución más ancha de sus valores de kernel en 5b.
 - **Anticipa el M7, pero no lo predice:** el MLP puede aprovechar estructura local que estas métricas globales no ven.
-- **La conclusión del OE-3 queda pendiente de Q-013.**
+- **La conclusión del OE-3 queda pendiente de Q-013.** *Actualizado el 2026-10-06: con k = 8 se mantiene (H-041).*
 
 **Datos.** `Code/6_Separability.ipynb` (4°); `Code/results/6_metricas_embedding.csv`; figuras `Docs/Figures/M6_embedding_metrics.png` y `M6_tsne.png`.
+
+---
+
+### H-041 · Con 8 qubits la concentración baja y los kernels cuánticos ven algo más las clases, pero la conclusión del M6 se mantiene
+**Fecha:** 2026-10-06 · **→ Reporte:** §6.x, §7, OE-3, OE-6 · *cierra Q-013; confirma H-018 sobre datos reales*
+
+**Qué cambia con k = 8.**
+- **Las features.** Son las 8 primeras de las 12 de M4, porque la selección es voraz, y sus ángulos son idénticos, porque el escalado por cuantiles actúa feature por feature; ambas cosas se verificaron. En masas salen tres de textura y una de primer orden (`GrayLevelNonUniformity`, `10Percentile`, `Correlation`, `RunLengthNonUniformity`), y quedan 3 de primer orden y 5 de forma. En calcificaciones salen `DifferenceEntropy`, `Energy`, `ClusterShade` y `PixelSurface`.
+- **Los circuitos.** Tienen 28 bloques ZZ en lugar de 66, y el ansatz tiene 16 parámetros, que son los primeros 16 del mismo flujo de la semilla 42.
+
+| c = 1, 200 lesiones | Masas, k = 12 | Masas, k = 8 | Calcif., k = 12 | Calcif., k = 8 |
+|---|---|---|---|---|
+| Mediana del kernel, C4 / C5 | 0.002 / 0.00003 | 0.010 / 0.0015 | 0.003 / 0.00003 | 0.008 / 0.0008 |
+| Dimensión efectiva, C4 / C5 (de 200) | 184 / 171 | 140 / 103 | 188 / 168 | 170 / 131 |
+| Exceso de KTA, C4 / C5 | 0.003 / 0.005 | 0.012 / 0.023 | 0.006 / 0.007 | 0.011 / 0.024 |
+| Exceso de KTA del RBF | 0.049 | 0.049 | 0.151 | 0.150 |
+| *g* mínima, C4 / C5 (√N = 14.1) | 1.43 / 1.51 | 2.40 / 3.23 | 1.40 / 1.70 | 1.71 / 2.16 |
+| Dispersión del embedding, C4 / C5 | 0.057 / 0.180 | 0.099 / 0.276 | 0.048 / 0.178 | 0.076 / 0.267 |
+| Fisher J sobre todo el train, C1 / C4 / C5 | 0.45 / 0.13 / 0.21 | 0.37 / 0.09 / 0.17 | 1.06 / 0.42 / 0.31 | 0.98 / 0.29 / 0.37 |
+
+**Lecturas.**
+1. **H-018 se confirma sobre datos reales.** Con menos qubits el kernel y el embedding se concentran menos; la dispersión de C4 casi se duplica.
+2. **Los kernels cuánticos ven algo más las clases, sin alcanzar al clásico a c = 1.** El exceso de KTA crece entre 1.7 y 4.6 veces. Lo más alto es C5 en masas, con la mitad del exceso del RBF; en calcificaciones C5 llega al 16 %.
+   - Solo a escalas pequeñas igualan al RBF: a c = 0.05 en masas y a c = 0.02 en calcificaciones, la diferencia es de 0.009 o menos, como mucho 1.3 desviaciones de la permutación.
+   - A esas escalas el término de producto ya no influye (H-031).
+3. ***g* sube un poco y sigue pequeña.** Va de 1.7 a 3.2 a c = 1 y llega como máximo a 4.6 en todo el barrido, siempre muy por debajo de √N.
+4. **Los embeddings conservan el orden.** C1–C3 siguen muy por delante en todas las métricas y en ambos subconjuntos. Menos features también le cuestan a lo clásico: el Fisher de C1 baja de 0.45 a 0.37 en masas. La razón entre cuántico y clásico no mejora de forma sistemática:
+   - C5/C1 pasa de 0.47 a 0.45 en masas y de 0.29 a 0.38 en calcificaciones;
+   - C4/C1 baja en ambos subconjuntos.
+
+   C5 mejora en Davies-Bouldin y en KTA lineal y C4 empeora, en línea con la dispersión que aporta el término Y (H-037).
+5. **La prueba de regresión reproduce exactamente el M6** para k = 12, con una diferencia máxima de 3×10⁻¹⁴. Pasan 29 de 29 verificaciones.
+
+**Impacto.**
+- **La conclusión del OE-3 no depende de k = 12.** Con el diseño preregistrado, las transformaciones cuánticas no dan mayor separabilidad que las clásicas, ni con 12 ni con 8 qubits.
+- **Material del OE-6.** La concentración tiene un coste medible: con 4 qubits menos, el alineamiento cuántico explicado por las etiquetas se multiplica por 1.7 a 4.6, aunque el punto de partida es muy bajo.
+- **Alcance.** El cambio de k también cambia las features. El contraste mide el efecto conjunto del tamaño del registro y de las 4 features que k = 12 añade. En masas, esas 4 incluyen las tres de textura, así que con k = 8 no queda ninguna (cf. H-026).
+
+**Datos.** `Code/experiments/X3_Fewer_Qubits_k8.ipynb`; `Code/results/X3_comparacion_k8_k12.csv`, `X3_alineamiento_kernel.csv`, `X3_dimension_efectiva.csv`, `X3_diferencia_geometrica_resumen.csv`, `X3_metricas_embedding.csv` y `X3_verificaciones.csv`; figuras `Docs/Figures/X3_kernel_metrics_k8_k12.png` y `X3_embedding_metrics_k8_k12.png`.
 
 ---
 
@@ -1820,6 +1882,8 @@ H-018 dejó una regla: si la separabilidad a k = 12 sale pobre, hay que comparar
 - *(b)* No hacerla y declararla como limitación, con el argumento de que D-013 fijó k = 12 antes de ver los datos.
 
 **Decisión del autor.**
+
+**Cerrada el 2026-10-06 → D-035:** opción *(a)*. Resultado en H-041.
 
 ## Plantillas
 
