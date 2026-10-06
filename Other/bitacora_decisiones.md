@@ -93,6 +93,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-033 | 2026-09-24 | La ecuación de la *geometric difference* del reporte invierte K_C y K_Q respecto a Huang et al. | Corrección obligatoria en §3.4.2 y RF-16 antes de implementar M6 |
 | H-034 | 2026-09-24 | Con reps=1, el término X de C5 no codifica nada: C5 es un mapa solo ZZ | C4 contra C5 no compara el eje Z frente a X; decisión pendiente (Q-012) |
 | H-035 | 2026-10-04 | Pasar de 67 a 12 features cuesta de 2 a 4 puntos de AUC, y las 12 elegidas por F no superan a 12 al azar | Limitación a declarar en §7 y material del OE-6; no cambia el diseño; refuerza H-030 |
+| H-036 | 2026-10-04 | Con c = 1, el kernel cuántico conserva poca de la información de clase que ve el RBF; achicar los ángulos la recupera solo hasta el nivel clásico | Anticipa el M6; material de §6 y OE-6; C4 y C5 indistinguibles a c = 1 (Q-012) |
 
 ### Preguntas abiertas
 
@@ -1415,6 +1416,46 @@ Las features radiómicas describen muchas veces unas pocas propiedades de fondo:
 - **Alcance.** Son clasificadores clásicos sobre las features crudas: acotan la información disponible para todas las condiciones, pero no predicen el AUC del MLP de M7 sobre C1–C5.
 
 **Datos.** `Code/experiments/X1_Selection_Information_Loss.ipynb`; `Code/results/X1_varianza_retenida.csv`, `X1_auc_por_condicion.csv`, `X1_auc_vs_k.csv`; figura `Docs/Figures/X1_selection_auc_vs_k.png`.
+
+---
+
+### H-036 · Con c = 1, el kernel cuántico conserva poca de la información de clase que ve el RBF; achicar los ángulos la recupera solo hasta el nivel clásico
+**Fecha:** 2026-10-04 · **→ Reporte:** §6.x, OE-3, OE-6 · *complementa H-031*
+
+**Pregunta.** La figura `M5_kernel_concentration.png` de 5b dice cuánto se parecen dos lesiones *cualesquiera*, sin usar las etiquetas. Lo que falta es saber si dos lesiones de la **misma clase** se parecen más que dos de **clases distintas**.
+
+**Método.** Se usan los kernels del M5 tal como están, sobre las mismas 200 lesiones de train por subconjunto (D-028); las etiquetas entran aquí por primera vez. Cada par de lesiones distintas se cuenta una sola vez y se clasifica en benigna–benigna (B–B), maligna–maligna (M–M) o benigna–maligna (B–M).
+
+El resumen es el **AUC de pares**: la probabilidad de que un par de la misma clase sea más parecido que un par de clases distintas. Vale 0.5 si el kernel ignora la clase. Como se basa en rangos, no le afecta que los valores cuánticos sean cien veces menores que los clásicos.
+
+Los pares comparten lesiones y no son independientes, así que la referencia es una **prueba de permutación**: las etiquetas se barajan 1,000 veces, conservando el número de lesiones de cada clase. Es la misma idea del KTA del M6, que también contrasta similitudes de la misma clase y de clases distintas, ⟨K, yyᵀ⟩ = Σ_misma K − Σ_distinta K.
+
+| Kernel | Masas: AUC de pares | p | Calcificaciones: AUC de pares | p |
+|---|---|---|---|---|
+| K_C (RBF) | 0.523 | 0.002 | 0.575 | 0.001 |
+| C4, c = 1 | 0.510 | 0.012 | 0.520 | 0.021 |
+| C5, c = 1 | 0.505 | 0.088 | 0.515 | 0.042 |
+| C4, c = 0.02 | 0.522 | 0.002 | 0.577 | 0.001 |
+| C5, c = 0.02 | 0.522 | 0.002 | 0.577 | 0.001 |
+
+Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.004 en masas y 0.008 en calcificaciones.
+
+**Lecturas.**
+
+1. **El kernel clásico sí ve las clases, aunque de forma modesta.** En calcificaciones el efecto viene sobre todo de que los pares B–M se parecen menos: mediana de 0.583, contra 0.652 en B–B y 0.663 en M–M. Las masas son difíciles para todos los kernels, de acuerdo con los tamaños de efecto moderados del M3 (H-023).
+2. **Con el diseño preregistrado, el kernel cuántico conserva poca de esa información.** Queda como mucho 0.02 por encima del azar, y C5 en masas no se distingue del azar. En calcificaciones conserva más o menos una cuarta parte del margen del RBF sobre el azar: 0.020 contra 0.075. En los histogramas, a c = 1 los tres tipos de par se superponen casi por completo.
+3. **Achicar los ángulos la recupera, pero solo hasta el nivel clásico.** El AUC de pares sube al bajar c, y a c = 0.02 iguala al del RBF. A esa escala el kernel cuántico es prácticamente el de un mapa sin el término de producto xᵢxⱼ (H-031). La información de clase recuperada es la que un kernel clásico ya ve, no información nueva aportada por las interacciones.
+4. **C4 contra C5.** A c = 1 la diferencia cae dentro del ruido de la permutación. A escalas intermedias C4 tiende a quedar por encima de C5, lo que es coherente con que C5 no tenga término de primer orden (H-034), pero las curvas no son monótonas y la evidencia es débil.
+
+**Impacto.**
+
+- **Con esta medida por pares no hay indicio** de que la codificación cuántica capture estructura de clase que el kernel clásico no vea; con el diseño preregistrado captura menos. Anticipa el resultado del KTA y de la *geometric difference* del M6, que siguen siendo las métricas formales.
+- **Alcance.** El AUC de pares es una medida global sobre todos los pares. Valores de 0.52 a 0.58 son normales cuando las clases son heterogéneas, y no acotan el AUC de un clasificador, que puede aprovechar la estructura local.
+- **Para Q-012.** A c = 1, C4 y C5 son indistinguibles con esta medida. Es un argumento a favor de mantener C5 como ablación, porque cambiarlo no alteraría la conclusión principal. **Decisión del autor.**
+- Se corrige de paso un detalle de la figura de 5b: su eje y cuenta cada par dos veces, porque toma los dos triángulos de la matriz simétrica. En X2 cada par se cuenta una vez. La forma de la distribución no cambia.
+- Los valores de p son indicativos, porque se prueban muchos kernels.
+
+**Datos.** `Code/experiments/X2_Kernel_Class_Structure.ipynb`; `Code/results/X2_auc_pares.csv`; figuras `Docs/Figures/X2_kernel_pairs_by_class.png` y `X2_pair_auc_sweep.png`.
 
 ---
 
