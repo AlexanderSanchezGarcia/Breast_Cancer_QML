@@ -96,7 +96,7 @@ button:hover{color:var(--ink)}
 <tr><td><b>22 sep ✓</b></td><td>Techo computacional</td><td>k=12, reps=1, Arquitectura B (D-013, D-014). Hecho.</td></tr>
 <tr><td><b>23 sep ✓</b></td><td>Features listas</td><td><code>x ∈ [0,π]^12</code> reproducible, masas y calcificaciones (M2–M4). Hecho.</td></tr>
 <tr><td><b>24 sep ✓</b></td><td>Embeddings y kernels</td><td>C1–C5 y kernels de fidelidad exactos (M5). C5 = (Y, ZZ) desde el 5 oct (D-031).</td></tr>
-<tr><td><b>6 oct ✓</b></td><td>Separabilidad</td><td>OE-3 respondido con el diseño preregistrado: sin mayor separabilidad cuántica (H-039, H-040). Pendiente Q-013 (k=8).</td></tr>
+<tr><td><b>6 oct ✓</b></td><td>Separabilidad</td><td>OE-3 respondido: sin mayor separabilidad cuántica con el diseño preregistrado (H-039, H-040), ni con k=8 (H-041).</td></tr>
 <tr><td><b>17 oct</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos.</td></tr>
 <tr><td><b>23 oct</b></td><td>Congelamiento</td><td>No se corren experimentos nuevos. Lo que haya, se reporta.</td></tr>
 <tr><td><b>3 nov</b></td><td>Entrega a sinodales</td><td>Fecha dura, externa.</td></tr>
@@ -132,8 +132,8 @@ for (const k of ["f4.0", "f4.1"]) if (!(k in state)) state[k] = true;
 for (let i = 0; i < 6; i++) if (!(("f2." + i) in state)) state["f2." + i] = true;
 // X1, X2, D-031 y las figuras del circuito, hechos el 4 y 5 oct (f4.11 a f4.14).
 for (const k of ["f4.11", "f4.12", "f4.13", "f4.14"]) if (!(k in state)) state[k] = true;
-// M6 hecho el 6 oct (f4.2 a f4.9); f4.10 es Q-013, abierta.
-for (let i = 2; i <= 9; i++) if (!(("f4." + i) in state)) state["f4." + i] = true;
+// M6 hecho el 6 oct (f4.2 a f4.9) y Q-013 cerrada el mismo día con X3 (f4.10).
+for (let i = 2; i <= 10; i++) if (!(("f4." + i) in state)) state["f4." + i] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -175,7 +175,7 @@ const PHASES = [
      "Documentar: 0 fuga intra-subproblema, 31 pacientes cruzan si se juntan masas y calcificaciones · re-verificado en M4"]]
   ]},
  {id:"f4", n:"Fase 4 · Implementación cuántica (M5 + M6)", due:"2026-10-10",
-  note:"Núcleo de la tesis (OE-3). M5 hecho el 24 sep. El 5 oct C5 pasó a ['Y','ZZ'] (D-031, cierra Q-012) y se recalcularon 5a, 5b y X2. X1 y X2 anticipan que ningún kernel cuántico supera al RBF (H-035, H-036). M6 hecho el 6 oct (6_Separability): con el diseño preregistrado no hay mayor separabilidad cuántica en ninguna familia de métricas (H-039, H-040). Falta decidir Q-013 (comparar con k=8).",
+  note:"Núcleo de la tesis (OE-3). M5 hecho el 24 sep. El 5 oct C5 pasó a ['Y','ZZ'] (D-031, cierra Q-012) y se recalcularon 5a, 5b y X2. X1 y X2 anticipan que ningún kernel cuántico supera al RBF (H-035, H-036). M6 hecho el 6 oct (6_Separability): con el diseño preregistrado no hay mayor separabilidad cuántica en ninguna familia de métricas (H-039, H-040). Con k=8 la conclusión se mantiene (X3, H-041; cierra Q-013). Sigue M7.",
   groups:[
    ["Embeddings · hasta 3 oct",[
      "✓ C1–C5 para ambos subconjuntos, con ⟨Zᵢ⟩ exactos y γ = 0.032 (5a_Embeddings) · C5 = ['Y','ZZ'] desde el 5 oct (D-031)",
@@ -189,7 +189,7 @@ const PHASES = [
      "C2 como control nulo: sus métricas deben coincidir con las de C1 (D-016, sin C2′)",
      "Versión regularizada de g extraída de los Apéndices F.3 y L.3 de Huang et al. (H-038); la g sin regularizar daba 306–388, un artefacto",
      "Reportar por separado las métricas de kernel y las de ⟨Zᵢ⟩: con C5 van en direcciones opuestas (H-013, H-037)",
-     "Q-013 · decidir si se compara contra k=8 antes de concluir el OE-3, como pide H-018 (límite 23 oct)"]],
+     "Q-013 · comparación con k=8 hecha en X3 (D-035): la conclusión se mantiene (H-041)"]],
    ["Exploratorios y decisiones previas al M6 · ✓ 4–5 oct",[
      "X1 · pasar de 67 a 12 features cuesta 2–4 puntos de AUC; las 12 por F no superan a 12 al azar (H-035)",
      "X2 · AUC de pares: a c = 1 los kernels cuánticos conservan menos información de clase que el RBF (H-036)",
@@ -257,7 +257,7 @@ const RISKS = [
  ["Resuelto · D-025","Ángulos casi constantes en features de cola pesada","El min-max dejaba Energy y PixelSurface de calcificaciones con IQR de 0.05 rad (H-028). Con la transformación por cuantiles, todas las features tienen IQR = π/2."],
  ["Resuelto · D-029","Kernel cuántico concentrado","Mediana fuera de la diagonal ~0.003 frente a 0.61 del RBF (H-031). Se mantiene el diseño y se añade un barrido de c: el kernel solo informa cuando el término de producto xᵢxⱼ ya no influye."],
  ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6. La versión regularizada ya se extrajo y se usó en el M6 (H-038, D-032); queda la corrección del reporte."],
- ["ABIERTO · Q-013","Comparar contra k=8 antes de concluir","H-018 pide comparar con k=8 si la separabilidad a k=12 sale pobre, y el M6 la dio pobre. Hacerlo cuesta unas horas (M4, M5 y M6 con k=8); no hacerlo obliga a declararlo como limitación. Límite: congelamiento del 23 oct."],
+ ["Resuelto · D-035","Comparar contra k=8 antes de concluir","Hecho en X3: con 8 qubits la concentración baja y el alineamiento cuántico crece de 1.7 a 4.6 veces, pero ninguna métrica pone a C4 o C5 por delante de las condiciones clásicas (H-041). La conclusión del OE-3 no depende de k=12."],
  ["Vigilar · H-037","Kernel de C5 extremadamente concentrado","Mediana 0.00003 frente a 0.002 de C4; entre el 26 y el 28 % de los pares queda por debajo de 10⁻⁶, un valor que en hardware exigiría unos 10⁶ disparos solo para observarlo una vez. Su embedding ⟨Zᵢ⟩, en cambio, se dispersa tres veces más que el de C4."],
  ["Pendiente del autor · D-020 a D-022","Decisiones de M2 provisionales","Validar la alineación por tipo de desajuste, la componente conexa mayor y el contrato de salida de M2. Decidir si se excluyen los 7 casos discordantes."],
  ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM."],
