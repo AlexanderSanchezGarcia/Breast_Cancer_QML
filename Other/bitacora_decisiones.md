@@ -39,7 +39,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-014 | 2026-09-22 | Arquitectura B: embedding precomputado con θ fijo (semilla 42) | M5, M6 | Firme | §4.7, §4.8 |
 | D-015 | 2026-09-22 | C5 usa `pauli_feature_map(paulis=['X','ZZ'])` | M5 | **Revertida** por D-031 (H-034) | §4.7 |
 | D-016 | 2026-09-22 | C2 se declara control nulo; se mantienen cinco condiciones | M5, M7 | Firme | §4.7, §6.x |
-| D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme | §3.4.2, §4.9 |
+| D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme; protocolo de cálculo en D-032 | §3.4.2, §4.9 |
 | D-018 | 2026-09-22 | Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento | M6 | Firme | §4.8, §4.9 |
 | D-019 | 2026-09-23 | Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022) | reporte | Firme | §1.3, §2.1.5 |
 | D-020 | 2026-09-23 | Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 | M2 | Provisional | §4.4, §8.x |
@@ -49,11 +49,14 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-024 | 2026-09-23 | Selección por F-test con restricción de redundancia \|r\| ≤ 0.95 | M4 | Firme | §4.6 |
 | D-025 | 2026-09-23 | Escalado angular por cuantiles (uniforme × π) en lugar de min-max | M4 | Firme | §4.6 |
 | D-026 | 2026-09-23 | Semilla de los folds elegida por balance de clases | M4, M6 | Firme | §4.9 |
-| D-027 | 2026-09-24 | γ del RBF por heurística de la mediana (C3 y kernel clásico de la *geometric difference*) | M5, M7 | Firme | §4.7, §4.9 |
+| D-027 | 2026-09-24 | γ del RBF por heurística de la mediana (C3 y kernel clásico de la *geometric difference*) | M5, M7 | Firme para C3; para *g*, enmendada por D-032 | §4.7, §4.9 |
 | D-028 | 2026-09-24 | Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas | M5, M7 | Firme | §4.9 |
 | D-029 | 2026-09-24 | Kernel concentrado: se mantiene el diseño preregistrado y se añade un barrido del factor de escala | M5, M7 | Firme | §4.9, §6.x, OE-6 |
 | D-030 | 2026-09-24 | La separabilidad pasa a ser el Módulo 6; la clasificación, el M7, y la evaluación comparativa, el M8 | todos | Firme | §4.1–§4.9, RF, CRISP-DM |
 | D-031 | 2026-10-05 | C5 pasa a `pauli_feature_map(paulis=['Y','ZZ'])` | M5 | Firme | §4.7, §6.x |
+| D-032 | 2026-10-06 | La *geometric difference* sigue el protocolo de Huang et al. (Apéndice L.3) | M6 | Firme | §3.4.2, §4.9, RF-16 |
+| D-033 | 2026-10-06 | Definiciones de las demás métricas del M6 | M6 | Firme | §4.9 |
+| D-034 | 2026-10-06 | Se reproduce la Fig. 2 de Huang et al. (2021) en el reporte | reporte | Firme | §3.4.2 |
 
 ### Hallazgos
 
@@ -91,11 +94,14 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-030 | 2026-09-24 | La selección univariante no ve interacciones, que es justo lo que codifica el bloque ZZ | Limitación a declarar en §7; análisis de robustez opcional |
 | H-031 | 2026-09-24 | A 12 qubits, cambiar una sola feature deja el estado del feature map casi ortogonal | **Confirmado**: el kernel cuántico real está concentrado (mediana ~0.003); decisión pendiente (Q-011) |
 | H-032 | 2026-09-24 | `FidelityStatevectorKernel` da el mismo kernel exacto ~1000× más rápido que `FidelityQuantumKernel` | El cuello de botella del kernel medido en B1 era de la implementación, no del cálculo |
-| H-033 | 2026-09-24 | La ecuación de la *geometric difference* del reporte invierte K_C y K_Q respecto a Huang et al. | Corrección obligatoria en §3.4.2 y RF-16 antes de implementar M6 |
+| H-033 | 2026-09-24 | La ecuación de la *geometric difference* del reporte invierte K_C y K_Q respecto a Huang et al. | Corrección obligatoria en §3.4.2 y RF-16; la versión regularizada se extrajo en H-038 |
 | H-034 | 2026-09-24 | Con reps=1, el término X de C5 no codifica nada: C5 es un mapa solo ZZ | C4 contra C5 no compara el eje Z frente a X; resuelto por D-031 |
 | H-035 | 2026-10-04 | Pasar de 67 a 12 features cuesta de 2 a 4 puntos de AUC, y las 12 elegidas por F no superan a 12 al azar | Limitación a declarar en §7 y material del OE-6; no cambia el diseño; refuerza H-030 |
 | H-036 | 2026-10-04 | Con c = 1, el kernel cuántico conserva poca de la información de clase que ve el RBF; achicar los ángulos la recupera solo hasta el nivel clásico | Anticipa el M6; material de §6 y OE-6; cifras de C5 rehechas con D-031 |
 | H-037 | 2026-10-05 | Con `['Y','ZZ']`, C5 se dispersa tres veces más que C4 en ⟨Zᵢ⟩, pero su kernel se concentra unas setenta veces más | Caso concreto de H-013: el M6 debe reportar ambas familias de métricas; material del OE-6 |
+| H-038 | 2026-10-06 | La *g* que reportan Huang et al. es regularizada y es el mínimo sobre una batería de kernels clásicos | Cierra el pendiente de H-033; justifica D-032 y D-033 |
+| H-039 | 2026-10-06 | A c = 1 los kernels cuánticos apenas ven las clases, ocupan casi todo el espacio y quedan a g ≈ 1.4–1.7 del modelo clásico más cercano | Respuesta del OE-3 en la familia de kernels; material de §6 y OE-6 |
+| H-040 | 2026-10-06 | Los embeddings cuánticos son menos separables que los clásicos, y C4 frente a C5 no tiene ganador | Respuesta del OE-3 en la familia de embeddings; anticipa el M7 |
 
 ### Preguntas abiertas
 
@@ -113,6 +119,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | Q-010 | ¿Semilla 42 para los folds, o una elegida por balance de clases? | M6, Fase 5 | **RESUELTA** → D-026 |
 | Q-011 | ¿Qué se hace con el kernel cuántico concentrado? | M5, Fase 4 | **RESUELTA** → D-029 |
 | Q-012 | ¿C5 se mantiene como mapa solo ZZ o se cambia por un conjunto con primer orden efectivo? | M5, M6 | **RESUELTA** → D-031 |
+| Q-013 | ¿Se compara contra k = 8 antes de concluir, como pide H-018? | Conclusión del OE-3 | 23 oct |
 
 ---
 
@@ -583,6 +590,62 @@ El flujo es un grafo con ramas paralelas: M5 → {M6, M7} → M8. Los notebooks 
 - H-036 se actualizó con las cifras nuevas.
 - El borrador de §4.7 y el pie del diagrama del §4.1 deben describir C5 como «codificación de primer orden en Y con acoplamiento ZZ». RF-14 sigue desactualizado.
 - 5a dibuja ahora los dos circuitos completos: `Docs/Figures/M5_circuit_k4.png` (k = 4, legible) y `M5_circuit_12q.png` (C4 a tamaño real).
+
+---
+
+### D-032 · La *geometric difference* sigue el protocolo de Huang et al. (Apéndice L.3)
+**Fecha:** 2026-10-06 · **Módulo:** M6 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §3.4.2, §4.9, RF-16 · *precisa D-017; enmienda D-027 en lo que toca a g*
+
+**Contexto.** D-017 y D-027 suponían un solo kernel clásico, el RBF con γ por la mediana. H-038 muestra que la *g* de Huang et al. es regularizada y que es el mínimo sobre una batería de kernels clásicos.
+
+**Alternativas.**
+- *Un solo K_C (D-027), sin regularizar* — descartada: da entre 306 y 388 a c = 1, un artefacto del condicionamiento de K_C.
+- *Un solo K_C (D-027), regularizado* — descartada: ningún λ de la malla cumple g_tra < 0.045 para c ≥ 0.05, así que con el criterio del paper no hay valor que reportar.
+- *El protocolo del Apéndice L.3* — **elegida**.
+
+**Decisión.**
+- g_gen (F19) con la condición g_tra < 0.045 (L9) y las mallas de λ (L10) y de kernels clásicos (L11) sin cambios. Para cada kernel se toma el mayor λ admisible, y se reporta el mínimo sobre la batería.
+- Var[x] es la varianza de todas las coordenadas de las 200 lesiones. El kernel lineal se calcula sobre ángulos centrados, porque Huang et al. centraron sus datos.
+- Como sensibilidad, gaussianos más estrechos (m = 128, 256 y 512), porque el mínimo cae en el borde de la malla.
+- Se reportan además la fila del RBF de D-027, con su valor sin regularizar, y la referencia K_Q = I, que es el valor de un kernel que solo memoriza.
+- Se calcula a c = 1, el análisis principal, y en todo el barrido de D-029.
+
+**Por qué.** Es la definición operativa de la fuente; cualquier otra elección sería una métrica distinta con el mismo nombre. Las mallas del paper se usan sin cambios para no añadir grados de libertad elegidos con los datos a la vista.
+
+**Consecuencias.** La *g* deja de depender de un solo γ. El γ de D-027 sigue definiendo C3.
+
+---
+
+### D-033 · Definiciones de las demás métricas del M6
+**Fecha:** 2026-10-06 · **Módulo:** M6 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.9
+
+**Decisión.**
+- **KTA centrada** (Cortes, Mohri y Rostamizadeh, 2012, *JMLR* 13:795–828) como principal, y **sin centrar** (Cristianini, Shawe-Taylor, Elisseeff y Kandola, *NIPS 14*, 2001) como complemento. Las dos referencias se verificaron. Entre kernels se compara el **exceso sobre la media de la permutación** (H-038).
+- **Dimensión efectiva** de la ecuación (F12) con 1/(N−k+1), declarando la errata (H-038).
+- **Fisher:** J = Δμᵀ S_W⁻¹ Δμ, la distancia de Mahalanobis al cuadrado entre las medias de clase, con la covarianza intraclase combinada.
+- **Davies-Bouldin** con las clases como clusters (`sklearn`), y **KTA lineal** centrada de cada embedding.
+- **Pruebas de permutación** unilaterales con 1,000 barajadas que conservan el número de lesiones por clase, las mismas para todas las métricas de un subconjunto.
+- **t-SNE** (perplejidad 30, inicialización PCA, semilla 42), solo como visualización.
+
+**Por qué.**
+- La KTA sin centrar premia el desbalance: con etiquetas barajadas, su media para el RBF de calcificaciones es 0.087.
+- La versión de Fisher por feature no es invariante ante rotaciones, y D-016 exige que C1 y C2 coincidan. La multivariante es invariante ante cualquier transformación afín invertible.
+- Las permutaciones dan la referencia de azar sin suponer independencia entre pares.
+
+**Evidencia.** Pasan las 20 verificaciones de `6_Separability` (2°c y 5°). Entre ellas, C1 y C2 coinciden con una diferencia de 3×10⁻¹⁴ o menos en todas las métricas.
+
+---
+
+### D-034 · Se reproduce la Fig. 2 de Huang et al. (2021) en el reporte
+**Fecha:** 2026-10-06 · **Módulo:** reporte · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §3.4.2
+
+**Decisión.** La figura se toma de la versión publicada y sin cambios: `Docs/Figures/Huang2021_Fig2.png`, de 1359 × 1076 px, descargada de Springer Nature. Pie sugerido: «Reproducida de Huang et al. (2021), *Nat. Commun.* 12, 2631, bajo licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)».
+
+**Por qué.**
+- La licencia CC BY 4.0 de la versión publicada, verificada en Europe PMC (PMC8113501), permite reproducirla dando crédito, enlazando la licencia e indicando los cambios. La licencia de la copia de arXiv no se verificó.
+- Se deja en inglés para no convertirla en una adaptación. Si se traduce, el pie debe decir «Adaptada de».
+
+**Consecuencias.** Hay que añadir la referencia publicada a la bibliografía. Ubicación propuesta: §3.4.2, junto a la ecuación corregida de *g* (H-033).
 
 ---
 
@@ -1528,6 +1591,90 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 
 ---
 
+### H-038 · La *g* que reportan Huang et al. es regularizada y es el mínimo sobre una batería de kernels clásicos
+**Fecha:** 2026-10-06 · **→ Reporte:** §3.4.2, §4.9, RF-16 · *completa H-033*
+
+**Fuente.** Huang et al. (2021), arXiv:2011.01938, en el PDF descargado por el autor: Apéndice F.3, ecuaciones (F19)–(F20), y Apéndice L.3, ecuaciones (L8)–(L11). La versión publicada es *Nat. Commun.* 12, 2631 (2021), DOI 10.1038/s41467-021-22539-9, con licencia CC BY 4.0, verificada en Europe PMC (PMC8113501). Su texto principal solo trae la ecuación (5) sin regularizar; los apéndices están en la Información Suplementaria, con una numeración que no se verificó.
+
+**Lo que dice, en nuestra notación.**
+- (F19): g_gen = √‖√K_Q √K_C (K_C + λI)⁻² √K_C √K_Q‖∞.
+- (F20): g_tra = λ·√‖√K_Q (K_C + λI)⁻² √K_Q‖∞, la cota del error de entrenamiento que se le permite al modelo clásico.
+- Con λ = 0 se recupera la ecuación (5). Cita textual: *"When λ is non-zero, the geometric difference can become much smaller."*
+- Protocolo numérico (L.3): λ ∈ {10⁻⁵, 10⁻⁴, 10⁻³, 10⁻², 0.025, 0.05, 0.1}; K_C lineal o gaussiano con γ ∈ {0.25, …, 64}/(n·Var[x]); se exige g_tra < 0.045 y se reporta el mínimo de *g*. El texto principal (p. 5) pide considerar *g* *"with respect to a suite of optimized classical ML models"*.
+- La primera prueba del diagrama de flujo de su Fig. 1 compara g_CQ con √N: si g_CQ ≪ √N, el aprendizaje clásico predice igual o mejor, sea cual sea el etiquetado.
+
+**Tres trampas.**
+1. **Notación.** En el Apéndice F.3, K₁ es el kernel de la función de origen y va fuera, mientras que K₂ se regulariza; en la ecuación (5) es al revés, porque K₁ es el que se invierte. En ambos casos, para g_CQ el kernel clásico es el que se invierte y el cuántico va en las raíces. Es el mismo tipo de confusión de H-033.
+2. **Errata en (F12).** La dimensión efectiva impresa, Σₖ (1/(N−k)) Σ_{l≥k} t_l, divide entre cero en k = N. Solo con 1/(N−k+1) se cumplen las cotas 1 ≤ d ≤ N que enuncia el mismo párrafo.
+3. **La *g* sin regularizar engaña.** Con nuestros kernels da entre 306 y 388 a c = 1, casi el valor de K_Q = I, que es 1/√λ_min(K_C) ≈ 410. Mide el condicionamiento del RBF, no la codificación, y sugeriría una ventaja que el criterio del paper descarta.
+
+**Otra trampa, encontrada al calcular la KTA.** Para K = I, la KTA centrada vale exactamente 1/√(n−1) ≈ 0.071 con cualquier etiquetado; la sin centrar, 1/√n. Centrar no elimina el piso de los kernels casi identidad. Las KTA crudas de kernels con espectros tan distintos no son comparables entre sí: lo que se compara es el exceso sobre la media de la permutación. La primera versión del texto de `6_Separability` afirmaba lo contrario y se corrigió antes de concluir.
+
+**Impacto.** Cierra el pendiente de H-033. D-032 adopta el protocolo y D-033 fija las demás definiciones.
+
+**Datos.** `Code/6_Separability.ipynb`, sección 2°a; el PDF está en la carpeta de descargas del autor y no se versiona.
+
+---
+
+### H-039 · A c = 1 los kernels cuánticos apenas ven las clases, ocupan casi todo el espacio y quedan a g ≈ 1.4–1.7 del modelo clásico más cercano
+**Fecha:** 2026-10-06 · **→ Reporte:** §6.x, OE-3, OE-6
+
+| 200 lesiones de train por subconjunto, c = 1 | Masas | Calcificaciones |
+|---|---|---|
+| Exceso de KTA centrada sobre la permutación, RBF (D-027) | 0.049 | 0.152 |
+| Lo mismo, C4 / C5 | 0.003 / 0.005 | 0.006 / 0.007 |
+| Dimensión efectiva, RBF | 2.8 | 2.6 |
+| Lo mismo, C4 / C5 (de 200) | 184 / 171 | 188 / 168 |
+| *g* al modelo clásico más cercano, C4 / C5 | 1.43 / 1.51 | 1.40 / 1.70 |
+| Lo mismo con la malla extendida | 1.31 / 1.48 | 1.38 / 1.70 |
+| *g* sin regularizar contra el RBF de D-027, C4 / C5 | 306 / 309 | 376 / 388 |
+| √N | 14.1 | 14.1 |
+
+**Lecturas.**
+
+1. **Alineamiento.** El exceso de los kernels cuánticos es significativo (p ≤ 0.003) pero pequeño: entre el 4 % y el 10 % del exceso del RBF. Leída en crudo, la KTA diría lo contrario en masas (0.073 de C4 contra 0.059 del RBF), pero 0.071 es el piso de cualquier kernel casi identidad (H-038).
+2. **Dimensión.** Con d ≈ N, cada lesión parece no relacionada con las demás: es el régimen *"all inputs are too far apart"*. Por la ecuación (8) del paper, la cota de error del método de kernel cuántico crece con √(min(d, Tr O²)/N), así que no da garantía de generalización.
+3. ***g* ≪ √N.** Es el caso de la primera prueba del diagrama de flujo (Fig. 1) en que el aprendizaje clásico predice igual o mejor, sea cual sea el etiquetado.
+   - El modelo clásico más cercano es el gaussiano más estrecho de la malla (γ ≈ 6.3–6.8, λ = 0.01), un kernel clásico que también trata a las lesiones como casi aisladas.
+   - El mínimo cae en el borde de la malla, y la malla extendida lo baja: la conclusión se refuerza.
+4. **Barrido de c.** A c = 0.02, el exceso de KTA sube a 0.043 en masas y a 0.143 en calcificaciones (contra 0.049 y 0.152 del RBF), d baja a ~4 y *g* queda entre 2.1 y 2.5. El máximo de *g* en todo el barrido es 3.1 (C5, c = 0.5). Lo que se recupera es lo que ya ve el kernel clásico (H-031). En C5, d y *g* no son monótonos en c, como sus medianas (H-037).
+5. **El RBF de D-027** no tiene ningún λ admisible para c ≥ 0.05: un kernel clásico suave no puede imitar a los cuánticos sin un error de entrenamiento grande.
+
+**Impacto.** Es la respuesta del OE-3 en la familia de kernels: con el diseño preregistrado no hay indicio de ventaja cuántica potencial. Coincide con el AUC de pares de X2 (H-036). Bajo la regla 1 del proyecto es un resultado de viabilidad.
+
+**Datos.** `Code/6_Separability.ipynb` (3°); `Code/results/6_alineamiento_kernel.csv`, `6_dimension_efectiva.csv`, `6_diferencia_geometrica.csv` y `6_diferencia_geometrica_resumen.csv`; figuras `Docs/Figures/M6_kernel_metrics.png` y `M6_geometric_difference.png`.
+
+---
+
+### H-040 · Los embeddings cuánticos son menos separables que los clásicos, y C4 frente a C5 no tiene ganador
+**Fecha:** 2026-10-06 · **→ Reporte:** §6.x, OE-3
+
+| Submuestra de 200 | C1 = C2 | C3 | C4 | C5 |
+|---|---|---|---|---|
+| Fisher J, masas | 0.67 | 0.78 | 0.45 (p = 0.05) | 0.67 |
+| Fisher J, calcificaciones | 1.28 | 1.39 | 0.40 (p = 0.15) | 0.75 |
+| Davies-Bouldin, masas (menor es mejor) | 4.30 | 5.56 | 5.90 | 13.35 (p = 0.41) |
+| Davies-Bouldin, calcificaciones | 2.39 | 2.99 | 6.89 | 6.25 |
+| KTA lineal, masas | 0.070 | 0.059 | 0.041 | 0.012 (p = 0.41) |
+| KTA lineal, calcificaciones | 0.181 | 0.161 | 0.031 | 0.041 |
+| Fisher J sobre todo el train, masas | 0.45 | 0.44 | 0.13 | 0.21 |
+| Fisher J sobre todo el train, calcificaciones | 1.06 | 1.00 | 0.42 | 0.31 |
+
+**Lecturas.**
+1. **Las representaciones clásicas van delante en las tres métricas y en ambos subconjuntos.** Sobre todo el train (1,318 masas y 1,546 calcificaciones) todas las métricas son significativas y el orden se mantiene.
+2. **En la submuestra, dos métricas de C5 en masas no se distinguen del azar:** Davies-Bouldin y la KTA lineal, ambas con p = 0.41. Su embedding está más disperso que el de C4 (H-037), pero esa dispersión no sigue a las clases.
+3. **C4 frente a C5 no tiene un ganador consistente.** C5 va delante en el Fisher de la submuestra y en el de masas sobre todo el train, y detrás en el de calcificaciones sobre todo el train y en el Davies-Bouldin de masas.
+4. **El control nulo funciona:** C1 y C2 coinciden con una diferencia de 10⁻¹⁴ en todas las métricas (D-016).
+
+**Impacto.**
+- **Las dos familias coinciden en la dirección, no en el detalle** (H-013, H-037). Ambas ponen delante a las representaciones clásicas. Pero C5 tiene solapamientos típicos menores que C4 y, aun así, una dimensión efectiva menor (171 contra 184 en masas), compatible con la distribución más ancha de sus valores de kernel en 5b.
+- **Anticipa el M7, pero no lo predice:** el MLP puede aprovechar estructura local que estas métricas globales no ven.
+- **La conclusión del OE-3 queda pendiente de Q-013.**
+
+**Datos.** `Code/6_Separability.ipynb` (4°); `Code/results/6_metricas_embedding.csv`; figuras `Docs/Figures/M6_embedding_metrics.png` y `M6_tsne.png`.
+
+---
+
 ## Preguntas abiertas
 
 ### Q-001 · ¿C2 se declara control nulo o se añade C2′?
@@ -1663,6 +1810,16 @@ H-034: con reps=1, `['X','ZZ']` equivale a un mapa solo ZZ. Hay dos salidas:
 - *(b)* Cambiar C5 a un conjunto cuyo primer orden actúe sobre |+⟩, por ejemplo `['Y','ZZ']` (fidelidad media 0.315 frente a ZZ en H-012). Eso recupera la comparación del eje de primer orden, pero obliga a recalcular C5 en 5a y 5b; son unos segundos de cómputo.
 
 **Cerrada el 2026-10-05 → D-031:** opción *(b)*, con `['Y','ZZ']`.
+
+### Q-013 · ¿Se compara contra k = 8 antes de concluir, como pide H-018?
+**Bloquea:** la conclusión del OE-3 en §6 y §7 · **Límite:** 23 oct (congelamiento)
+
+H-018 dejó una regla: si la separabilidad a k = 12 sale pobre, hay que comparar contra k = 8 antes de concluir que la codificación cuántica no aporta. El embedding está más concentrado a k = 12 (dispersión 0.042) que a k = 8 (0.084). El M6 dio separabilidad pobre (H-039, H-040). Hay dos salidas:
+
+- *(a)* Hacer la comparación. Habría que repetir M4 con k = 8, con la misma regla de D-024 y D-025, recalcular en M5 los embeddings y los kernels de C1–C5 y repetir las métricas del M6. El cómputo tarda segundos; el trabajo, unas horas.
+- *(b)* No hacerla y declararla como limitación, con el argumento de que D-013 fijó k = 12 antes de ver los datos.
+
+**Decisión del autor.**
 
 ## Plantillas
 

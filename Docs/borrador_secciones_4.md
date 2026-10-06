@@ -301,32 +301,68 @@ preservando intacta la partición de prueba oficial del CBIS-DDSM como evaluaci�
 
 ---
 
-## §4.9 · Módulo 7: Evaluación comparativa
+## §4.9 · Análisis de separabilidad (M6 desde D-030)
 
-**Qué cambia.** Se precisa sobre qué objeto se calcula la *geometric difference* (D-017) y se
-anticipa la discrepancia entre familias de métricas (H-013).
+**Qué cambia.** Tras D-030, la separabilidad es un módulo propio (M6). La *geometric difference* se calcula
+con la versión regularizada y el protocolo de Huang et al. (D-032, H-038); las demás métricas quedan
+definidas en D-033. La sección debe renumerarse junto con las demás al aplicar D-030.
 
 ```latex
 El análisis de separabilidad opera sobre dos objetos distintos, y la distinción es
-consecuente para la interpretación de los resultados.
+consecuente para la interpretación de los resultados. Todas las métricas se calculan sobre
+200 lesiones del conjunto de entrenamiento por subconjunto, estratificadas por clase; el
+conjunto de prueba no interviene.
 
-El \textit{kernel-target alignment} y la \textit{geometric difference} se calculan sobre el
-núcleo cuántico de fidelidad \(K_Q(\mathbf{x},\mathbf{x}') =
-|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2\), evaluado mediante
-\texttt{FidelityQuantumKernel} sobre el \textit{feature map} exclusivamente, sin
-\textit{ansatz}. La \textit{geometric difference} está definida entre dos núcleos, por lo
-que no admite ser calculada sobre los vectores \(\langle Z_i\rangle\). Dado su coste
-cuadrático en el número de muestras, se evalúa sobre submuestras de 150 a 200 casos por
-subconjunto.
+\textbf{Métricas sobre núcleos.} El núcleo cuántico de fidelidad
+\(K_Q(\mathbf{x},\mathbf{x}') = |\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2\) se
+evalúa de forma exacta sobre el \textit{feature map} exclusivamente, sin \textit{ansatz}.
+Se calculan tres cantidades:
+\begin{itemize}
+  \item el \textit{kernel-target alignment} centrado \cite{Cortes2012}, con la versión sin
+        centrar \cite{Cristianini2001} como complemento. Dado que para un núcleo cercano a la
+        identidad ambas valen aproximadamente \(1/\sqrt{n}\) con independencia de las
+        etiquetas, se compara el exceso sobre la media de una prueba de permutación;
+  \item la dimensión efectiva del espacio que generan las lesiones \cite{Huang2021};
+  \item la \textit{geometric difference} regularizada \cite{Huang2021},
+\end{itemize}
+\begin{equation}
+  g_{\mathrm{gen}} = \sqrt{\left\| \sqrt{K_Q}\,\sqrt{K_C}\,(K_C+\lambda I)^{-2}\,
+  \sqrt{K_C}\,\sqrt{K_Q} \right\|_\infty},
+\end{equation}
+sujeta a que el error de entrenamiento
+\(g_{\mathrm{tra}} = \lambda\sqrt{\| \sqrt{K_Q}\,(K_C+\lambda I)^{-2}\sqrt{K_Q} \|_\infty}\)
+sea menor que 0.045. Siguiendo a \cite{Huang2021}, se reporta el mínimo sobre una batería de
+núcleos clásicos (el núcleo lineal y nueve núcleos gaussianos de distinto ancho de banda) y
+de valores de \(\lambda\), con \(\operatorname{Tr}K = N\). Sin regularización, la cantidad
+mide sobre todo el condicionamiento de \(K_C\) y no la codificación.
 
-Los índices de Davies-Bouldin y Fisher, la visualización \textit{t-SNE} y el clasificador
-operan en cambio sobre los vectores \(\langle Z_i\rangle\).
+\textbf{Métricas sobre los \textit{embeddings}.} El índice de Davies-Bouldin, la razón de
+Fisher \(J=\Delta\mu^\top S_W^{-1}\Delta\mu\) y el alineamiento del núcleo lineal se
+calculan sobre los vectores de las cinco condiciones, que son los que recibe el
+clasificador; la proyección \textit{t-SNE} se usa solo como apoyo visual. Las tres métricas
+son invariantes ante la rotación de C2, que actúa así como control nulo.
 
 Ambas familias de métricas no son equivalentes: el núcleo de fidelidad compara estados
 completos, incluida su información de fase, mientras que los valores de expectativa en la
-base \(Z\) son insensibles a ella. Es por tanto posible observar un alineamiento elevado
-del núcleo junto a un desempeño clasificatorio moderado, y tal discrepancia constituye
-información sobre la naturaleza de la codificación antes que una inconsistencia.
+base \(Z\) son insensibles a ella. Todas las cantidades se acompañan de una prueba de
+permutación de 1000 barajadas de las etiquetas.
+```
+
+**Figura propuesta para §3.4.2 (D-034).** `Docs/Figures/Huang2021_Fig2.png`, sin cambios, junto a la ecuación
+corregida de *g* (H-033):
+
+```latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Figures/Huang2021_Fig2.png}
+  \caption{Geometría (función núcleo) definida por modelos clásicos y cuánticos. Las letras
+  representan datos y las flechas, la similitud entre ellos; la \textit{geometric difference}
+  \(g\) mide cuánto difieren esas similitudes entre modelos, y \(d\) es la dimensión efectiva
+  del conjunto de entrenamiento en el espacio de Hilbert. Reproducida de Huang et al. (2021),
+  \textit{Nat. Commun.} 12, 2631, bajo licencia CC BY 4.0
+  (\url{https://creativecommons.org/licenses/by/4.0/}).}
+  \label{fig:huang_geometria}
+\end{figure}
 ```
 
 ---

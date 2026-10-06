@@ -1,0 +1,21 @@
+check,value,passed
+psd_sqrt reconstructs K,7.482903185973555e-14,True
+g(K || K) = 1 without regularization,1.0325074129013956e-13,True
+g against the identity = 1 / sqrt(lambda_min(K_C)),3.552713678800501e-15,True
+g_gen does not increase with lambda,-0.006740306514328331,True
+alignment of yy^T with itself = 1,3.3306690738754696e-16,True
+uncentered alignment of the identity = 1/sqrt(n),2.7755575615628914e-17,True
+"centered alignment of the identity = 1/sqrt(n-1), whatever the labels",1.6653345369377348e-16,True
+effective dimension of the identity = N,0.0,True
+effective dimension of a rank-one kernel = 1,2.353672812205332e-14,True
+Fisher ratio invariant under an invertible affine map,1.7763568394002505e-15,True
+fast linear alignment = dense centered alignment,6.938893903907228e-18,True
+mass: every Module 5 kernel has trace N,0.0,True
+mass: g(K_C || K_C) = 1 on the real RBF matrix (condition number 2e7),1.3738787885131387e-11,True
+calcification: every Module 5 kernel has trace N,0.0,True
+calcification: g(K_C || K_C) = 1 on the real RBF matrix (condition number 2e7),2.07520667316885e-11,True
+"mass, subsample: C1 and C2 give the same embedding metrics (D-016)",1.7763568394002505e-15,True
+"mass, full train: C1 and C2 give the same embedding metrics (D-016)",2.5757174171303632e-14,True
+"calcification, subsample: C1 and C2 give the same embedding metrics (D-016)",4.440892098500626e-15,True
+"calcification, full train: C1 and C2 give the same embedding metrics (D-016)",7.993605777301127e-15,True
+real kernels: g_gen does not increase with lambda,-9.298318980821563e-05,True
