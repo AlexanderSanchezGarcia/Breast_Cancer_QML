@@ -97,7 +97,7 @@ button:hover{color:var(--ink)}
 <tr><td><b>23 sep ✓</b></td><td>Features listas</td><td><code>x ∈ [0,π]^12</code> reproducible, masas y calcificaciones (M2–M4). Hecho.</td></tr>
 <tr><td><b>24 sep ✓</b></td><td>Embeddings y kernels</td><td>C1–C5 y kernels de fidelidad exactos (M5). C5 = (Y, ZZ) desde el 5 oct (D-031).</td></tr>
 <tr><td><b>6 oct ✓</b></td><td>Separabilidad</td><td>OE-3 respondido: sin mayor separabilidad cuántica con el diseño preregistrado (H-039, H-040), ni con k=8 (H-041).</td></tr>
-<tr><td><b>17 oct</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos.</td></tr>
+<tr><td><b>6 oct ✓</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos: las cuánticas quedan por debajo (H-042, H-043).</td></tr>
 <tr><td><b>23 oct</b></td><td>Congelamiento</td><td>No se corren experimentos nuevos. Lo que haya, se reporta.</td></tr>
 <tr><td><b>3 nov</b></td><td>Entrega a sinodales</td><td>Fecha dura, externa.</td></tr>
 <tr><td><b>17 nov</b></td><td>Presentaciones</td><td>Abre la ventana. Día aún sin asignar.</td></tr>
@@ -134,6 +134,8 @@ for (let i = 0; i < 6; i++) if (!(("f2." + i) in state)) state["f2." + i] = true
 for (const k of ["f4.11", "f4.12", "f4.13", "f4.14"]) if (!(k in state)) state[k] = true;
 // M6 hecho el 6 oct (f4.2 a f4.9) y Q-013 cerrada el mismo día con X3 (f4.10).
 for (let i = 2; i <= 10; i++) if (!(("f4." + i) in state)) state["f4." + i] = true;
+// M7 hecho el 6 oct (f5.0 a f5.6).
+for (let i = 0; i <= 6; i++) if (!(("f5." + i) in state)) state["f5." + i] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -197,14 +199,16 @@ const PHASES = [
      "Circuitos de C4 y C5 dibujados en 5a: M5_circuit_k4.png y M5_circuit_12q.png"]]
   ]},
  {id:"f5", n:"Fase 5 · Modelos de clasificación (M7)", due:"2026-10-17",
-  note:"Cinco condiciones × 2 subconjuntos, con validación cruzada 5-fold. Sin TorchConnector.",
+  note:"COMPLETA el 6 oct (7_Classification). El mismo MLP clasifica peor sobre C4/C5: de 0.07 a 0.14 menos de AUC en el test (H-042); resiste semillas, red, escalado, parada temprana, reps=2 y k=8 (H-043). Protocolo provisional D-036, a validar.",
   groups:[
    ["Entrenamiento",[
      "MLP sobre la matriz de embeddings en caché, sin TorchConnector ni qiskit en el bucle (D-014)",
      "BCE ponderada con class_weight=balanced",
      "Semilla fija en numpy, PyTorch y Qiskit (RNF-01)",
      "AUC-ROC, F1, Accuracy, Precision, Recall sobre test, separado por tipo de hallazgo",
-     "Validación cruzada con los folds congelados en M4: StratifiedGroupKFold por paciente, semilla por balance (D-026)"]]
+     "Validación cruzada con los folds congelados en M4: StratifiedGroupKFold por paciente, semilla por balance (D-026)",
+     "Sensibilidad: reps=2 en el ansatz, k=8, cinco semillas y cuatro configuraciones, una sin parada temprana (D-037)",
+     "Test con bootstrap por paciente y diferencias pareadas entre condiciones (D-036)"]]
   ]},
  {id:"f6", n:"Fase 6 · Evaluación comparativa (M8)", due:"2026-10-23",
   note:"Cierra con el congelamiento de resultados.",
