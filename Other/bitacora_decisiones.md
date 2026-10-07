@@ -60,6 +60,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-035 | 2026-10-06 | Se compara contra k = 8 antes de concluir el OE-3, como experimento X3 | M4–M6 | Firme | §6.x, §7, OE-6 |
 | D-036 | 2026-10-06 | Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente | M7 | Provisional | §4.8, §6.x |
 | D-037 | 2026-10-06 | Análisis de sensibilidad del M7: reps = 2 en el ansatz, k = 8, semillas y configuraciones | M7 | Firme | §6.x, §7 |
+| D-038 | 2026-10-07 | Análisis exploratorios X4 a X6: QSVM, auditoría y búsqueda de ventaja, con protocolo simétrico | X4–X6 | Firme | §6.x, §7 |
 
 ### Hallazgos
 
@@ -108,6 +109,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-041 | 2026-10-06 | Con 8 qubits la concentración baja y los kernels cuánticos ven algo más las clases, pero la conclusión del M6 se mantiene | Cierra Q-013; la conclusión del OE-3 no depende de k = 12; material del OE-6 |
 | H-042 | 2026-10-06 | El mismo MLP clasifica peor sobre las representaciones cuánticas: de 0.07 a 0.14 menos de AUC en el test | Respuesta del OE-4 y OE-5; coherente con el M6 |
 | H-043 | 2026-10-06 | El resultado del M7 resiste semillas, red, escalado, parada temprana, reps = 2 y k = 8 | Descarta el subentrenamiento como explicación; corrige la lectura de H-018 sobre datos reales |
+| H-044 | 2026-10-07 | Un QSVM sobre el kernel de C4 iguala al SVM clásico y supera al MLP sobre los ⟨Zᵢ⟩: la información se pierde en la lectura, no en la codificación | Matiza H-039 y H-042; material de §6 y §7 |
+| H-045 | 2026-10-07 | Con las 67 features tampoco hay ventaja: los kernels cuánticos simulables son clásicos o se concentran | Responde la pregunta de las 67 features; material del OE-6 |
+| H-046 | 2026-10-07 | La auditoría independiente del pipeline no encuentra errores (25 de 25) | Descarta que un error esconda una ventaja |
 
 ### Preguntas abiertas
 
@@ -717,6 +721,22 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 - Las configuraciones responden a la objeción de que la conclusión depende de la red, del escalado o de que algunos ajustes cuánticos paran en pocas épocas.
 
 **Consecuencias.** Los embeddings de reps = 2 quedan en `Data/processed/m7/`, y las predicciones de todos los modelos en `Data/processed/m7/predicciones.parquet`, para el M8.
+
+---
+
+### D-038 · Análisis exploratorios X4 a X6, con un protocolo simétrico
+**Fecha:** 2026-10-07 · **Módulo:** X4–X6 · **Estado:** Firme (pedidos por el autor) · **→ Reporte:** §6.x, §7
+
+**Contexto.** El diseño preregistrado no mostró ventaja (H-039 a H-043). El autor pidió tres cosas: probar un modelo de QML sobre la codificación (X4), revisar si algún error podía esconder una ventaja (X5) y buscar activamente una ventaja con las herramientas de la literatura (X6).
+
+**Decisión.** Los tres son exploratorios y *post hoc*, y no cambian el diseño. Para que la búsqueda no fabrique una ventaja por azar:
+- **El mismo clasificador para todo kernel:** un SVM con pesos balanceados y C = 1. Se comprobó que C apenas influye.
+- **La misma búsqueda de hiperparámetros para lo clásico y lo cuántico**, por validación cruzada anidada con los folds de M4.
+- **Dos contendientes globales** (todo lo clásico frente a todo lo cuántico), elegidos con la misma regla.
+- **El test se usa una vez por contendiente**, con bootstrap por paciente.
+- **Todo se reporta**, incluidos los intentos que no funcionan.
+
+**Por qué.** Probar muchas variantes cuánticas contra una sola clásica produciría una «ventaja» por selección. La simetría del protocolo es lo que permite interpretar el resultado en cualquier dirección.
 
 ---
 
@@ -1832,6 +1852,78 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 - Matiza H-018: la dispersión del embedding no se traduce en clasificación, y con el θ del diseño reps = 2 ni siquiera dispersa más a C4.
 
 **Datos.** `Code/7_Classification.ipynb` (4° a 7°); `Code/results/7_cv_por_fold.csv` y `7_test_diferencias.csv`; figura `Docs/Figures/M7_sensitivity.png`.
+
+---
+
+### H-044 · Un QSVM sobre el kernel de C4 iguala al SVM clásico y supera al MLP sobre los ⟨Zᵢ⟩: la información se pierde en la lectura, no en la codificación
+**Fecha:** 2026-10-07 · **→ Reporte:** §6.x, §7 · *matiza H-039 y H-042*
+
+| AUC en el test [IC 95 % por paciente] | Masas | Calcificaciones |
+|---|---|---|
+| SVM RBF (D-027) | 0.649 [0.57, 0.73] | 0.769 [0.70, 0.83] |
+| QSVM C4, c = 1 | 0.628 [0.55, 0.70] | 0.759 [0.69, 0.83] |
+| QSVM C5, c = 1 | 0.599 [0.52, 0.68] | 0.701 [0.62, 0.78] |
+| MLP sobre los ⟨Zᵢ⟩ de C4 (M7) | 0.530 [0.47, 0.59] | 0.633 [0.56, 0.70] |
+
+**Lecturas.**
+1. **La codificación conserva casi toda la información de clase.**
+   - QSVM C4 − SVM RBF: −0.02 [−0.05, 0.01] en masas y −0.01 [−0.04, 0.02] en calcificaciones; no se distinguen.
+   - QSVM C4 − MLP sobre ⟨Zᵢ⟩: +0.10 [0.03, 0.17] y +0.13 [0.05, 0.20].
+
+   La pérdida del M7 viene sobre todo de la lectura de la Arquitectura B: 12 valores ⟨Zᵢ⟩ tras un *ansatz* fijo, extraídos de un estado de 4,096 amplitudes. Es el caso más concreto de H-013.
+2. **Las métricas globales del M6 no veían esa estructura.** El QSVM conserva prácticamente todas las lesiones de entrenamiento como vectores de soporte (fracción 1.00 y 0.998), como corresponde a un kernel casi identidad. Decide con los pocos pares que sí se solapan, una estructura local demasiado escasa para la KTA y el AUC de pares, que promedian sobre todos los pares. Ya estaba anotado como límite en H-036.
+3. **No hay ventaja.** Eligiendo c por validación cruzada, C4 iguala al mejor kernel clásico en el test: −0.002 en masas (c = 0.05) y −0.005 en calcificaciones (c = 0.2). C5 queda significativamente por debajo a c = 1 (−0.05 y −0.07). C no cambia nada. Es lo que predice *g* ≈ 1.4 ≪ √N, porque el resultado de Huang et al. habla justamente de métodos de kernel.
+
+**Impacto.**
+- La conclusión del OE-3 se mantiene: no hay ventaja.
+- Su explicación se precisa: la codificación ZZ equivale a un kernel clásico, y la Arquitectura B pierde información al leerla.
+- Ante los sinodales, esto responde a «¿por qué no un QSVM?».
+- La Arquitectura B se eligió por justicia y por coste (D-014), así que esta pérdida es un precio de esa elección que hay que declarar en §7.
+
+**Datos.** `Code/experiments/X4_QSVM_and_67_Features.ipynb`; `Code/results/X4_*.csv`; figuras `Docs/Figures/X4_qsvm_vs_readout.png` y `X4_qsvm_scale.png`.
+
+---
+
+### H-045 · Con las 67 features tampoco hay ventaja: los kernels cuánticos simulables son clásicos o se concentran
+**Fecha:** 2026-10-07 · **→ Reporte:** §7, OE-6
+
+**Lecturas.**
+1. **El techo clásico apenas sube.** Un SVM RBF sobre las 67 features rinde 0.649 en masas (−0.001 frente a las 12) y 0.787 en calcificaciones (+0.02 [−0.02, 0.06]). Coincide con X1.
+2. **Codificación en amplitudes (7 qubits).**
+   - Su kernel es exactamente el cuadrado de la similitud coseno, un kernel polinomial clásico de grado 2; se verificó con una diferencia de 2×10⁻¹⁶.
+   - En calcificaciones da el AUC más alto del experimento, 0.795 [0.73, 0.85], pero no es cuántico en ningún sentido útil y no supera significativamente al RBF (+0.008).
+   - En masas queda por debajo: −0.05 [−0.10, 0.00].
+3. **Codificación angular producto (67 qubits).** A c = 1 se concentra por completo: la mediana fuera de la diagonal es 0.0000 y todas las lesiones quedan como vectores de soporte. Al reducir los ángulos, Π cos²(cΔᵢ) ≈ exp(−c²‖Δ‖²) se convierte en un kernel gaussiano y rinde lo mismo que el RBF.
+4. **Lo que no se puede simular.** Un mapa ZZ sobre 67 qubits, que sí sería difícil de calcular clásicamente, necesitaría 2⁶⁷ ≈ 1.5×10²⁰ amplitudes.
+
+**Impacto.** Más features no abren una ventaja. Los kernels cuánticos que admiten 67 features y se pueden simular son clásicos de hecho. Los que no lo son no se pueden evaluar en un simulador, y sus valores serían irresolubles en hardware por la concentración. Material directo del OE-6.
+
+**Datos.** `Code/experiments/X4_QSVM_and_67_Features.ipynb` (4°); `Code/results/X4_67_features.csv`; figura `Docs/Figures/X4_67_features.png`.
+
+---
+
+### H-046 · La auditoría independiente del pipeline no encuentra errores
+**Fecha:** 2026-10-07 · **→ Reporte:** §8.x, §7
+
+**Qué se revisó, con implementaciones independientes de las de los módulos.** Pasan las 25 verificaciones.
+- **Etiquetas y particiones:** reconstruidas desde los cuatro CSV originales sin pasar por M1. Coinciden en las 3,568 lesiones.
+- **Fuga de información:** al reajustar M4 solo con el train, los ángulos del test salen idénticos (10⁻¹²), y ningún paciente queda repartido.
+- **Kernel cuántico:** `FidelityQuantumKernel`, por circuitos *compute-uncompute*, coincide con el kernel de vectores de estado (6×10⁻¹¹).
+- **QSVM:** la clase `QSVC` de `qiskit-machine-learning` da decisiones idénticas al SVM del X4.
+- **Codificación:** cada ángulo actúa sobre su qubit, y reordenar las features deja invariante el kernel con entrelazamiento completo.
+- **Referencias clásicas:** el MLP, el SVM y la regresión logística coinciden dentro del ruido de los folds.
+
+**Impacto.** Descarta que un error de implementación esconda una ventaja. Lo que la auditoría no puede descartar son decisiones de diseño (la codificación, la lectura, la selección), y esas son las que varían el X4 y el X6.
+
+**Además.** El notebook deja cuatro preguntas para leer los trabajos que reportan ventaja:
+1. ¿El clasificador clásico recibió el mismo ajuste y las mismas features?
+2. ¿La diferencia supera su incertidumbre?
+3. ¿El test se usó una sola vez?
+4. ¿El kernel cuántico es realmente difícil de calcular clásicamente?
+
+Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
+
+**Datos.** `Code/experiments/X5_Pipeline_Audit.ipynb`; `Code/results/X5_auditoria.csv`.
 
 ---
 

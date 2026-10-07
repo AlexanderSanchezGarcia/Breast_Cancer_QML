@@ -1,0 +1,13 @@
+check,value,passed
+mass: C4 fidelity kernel equals Module 5 (60 x 60 block),8.659739592076221e-15,True
+mass: C5 fidelity kernel equals Module 5 (60 x 60 block),1.021405182655144e-14,True
+mass: RBF bandwidth equals D-027,6.938893903907228e-18,True
+calcification: C4 fidelity kernel equals Module 5 (60 x 60 block),1.2878587085651816e-14,True
+calcification: C5 fidelity kernel equals Module 5 (60 x 60 block),1.1546319456101628e-14,True
+calcification: RBF bandwidth equals D-027,6.938893903907228e-18,True
+mass: C4 train kernel is positive semidefinite,0.1644540735637522,True
+mass: C5 train kernel is positive semidefinite,0.1345548983838162,True
+calcification: C4 train kernel is positive semidefinite,0.17004358973879072,True
+calcification: C5 train kernel is positive semidefinite,0.1701474242484753,True
+amplitude encoding: fidelity = squared cosine similarity (7 qubits),2.220446049250313e-16,True
+product angle encoding: fidelity = product of cos^2 (6 qubits),4.440892098500626e-16,True

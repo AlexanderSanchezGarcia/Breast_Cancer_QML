@@ -1,0 +1,26 @@
+area,check,value,passed
+labels,mass: every lesion of Module 4 exists in the original CSV files,0.0,True
+labels,mass: labels equal MALIGNANT = 1 from the CSV files,0.0,True
+labels,mass: train/test split equals the file of origin,0.0,True
+labels,calcification: every lesion of Module 4 exists in the original CSV files,0.0,True
+labels,calcification: labels equal MALIGNANT = 1 from the CSV files,0.0,True
+labels,calcification: train/test split equals the file of origin,0.0,True
+labels,"mass: class counts equal the EDA (912 benign, 784 malignant)",0.0,True
+labels,"calcification: class counts equal the EDA (1199 benign, 673 malignant)",0.0,True
+leakage,"mass: angles refitted on train only equal Module 4, test included",0.0,True
+leakage,"mass: every angle lies in [0, pi], test included",0.0,True
+leakage,mass: no patient split across folds nor across train and test,0.0,True
+leakage,"calcification: angles refitted on train only equal Module 4, test included",0.0,True
+leakage,"calcification: every angle lies in [0, pi], test included",0.0,True
+leakage,calcification: no patient split across folds nor across train and test,0.0,True
+quantum kernel,mass: C4 compute-uncompute kernel equals statevector kernel (12 x 12),4.232537974616091e-11,True
+quantum kernel,mass: C5 compute-uncompute kernel equals statevector kernel (12 x 12),9.396154559575048e-13,True
+quantum kernel,calcification: C4 compute-uncompute kernel equals statevector kernel (12 x 12),5.742107830886134e-11,True
+quantum kernel,calcification: C5 compute-uncompute kernel equals statevector kernel (12 x 12),3.215533395106718e-11,True
+QSVM,mass: QSVC of qiskit-machine-learning equals the precomputed-kernel SVM of X4,0.0,True
+QSVM,calcification: QSVC of qiskit-machine-learning equals the precomputed-kernel SVM of X4,0.0,True
+encoding,"changing x_i changes only <Z_i> of C5, to -sin(2 x_i)",6.106226635438361e-15,True
+encoding,C4: the kernel is invariant under a reordering of the features,1.1102230246251565e-16,True
+encoding,C5: the kernel is invariant under a reordering of the features,4.718447854656915e-16,True
+classical references,mass: three classical models agree within one fold standard deviation,0.023850193684612275,True
+classical references,calcification: three classical models agree within one fold standard deviation,0.016327864835875006,True
