@@ -34,6 +34,7 @@ TT/
 │   ├── 5a_Embeddings.ipynb                # Module 5: the five conditions C1–C5
 │   ├── 5b_Quantum_Kernels.ipynb           # Module 5: fidelity kernels and bandwidth sweep
 │   ├── 6_Separability.ipynb               # Module 6: kernel and embedding separability (OE-3)
+│   ├── 7_Classification.ipynb             # Module 7: same MLP on C1–C5, CV + test, sensitivity analyses
 │   ├── Test.ipynb
 │   ├── benchmark/                             # Simulator studies behind the design decisions
 │   │   ├── B1_Quantum_Benchmark.ipynb         # Resource benchmark of the quantum circuit

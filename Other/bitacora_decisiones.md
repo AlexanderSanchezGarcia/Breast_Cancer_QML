@@ -58,6 +58,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-033 | 2026-10-06 | Definiciones de las demás métricas del M6 | M6 | Firme | §4.9 |
 | D-034 | 2026-10-06 | Se reproduce la Fig. 2 de Huang et al. (2021) en el reporte | reporte | Firme | §3.4.2 |
 | D-035 | 2026-10-06 | Se compara contra k = 8 antes de concluir el OE-3, como experimento X3 | M4–M6 | Firme | §6.x, §7, OE-6 |
+| D-036 | 2026-10-06 | Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente | M7 | Provisional | §4.8, §6.x |
+| D-037 | 2026-10-06 | Análisis de sensibilidad del M7: reps = 2 en el ansatz, k = 8, semillas y configuraciones | M7 | Firme | §6.x, §7 |
 
 ### Hallazgos
 
@@ -104,6 +106,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-039 | 2026-10-06 | A c = 1 los kernels cuánticos apenas ven las clases, ocupan casi todo el espacio y quedan a g ≈ 1.4–1.7 del modelo clásico más cercano | Respuesta del OE-3 en la familia de kernels; material de §6 y OE-6 |
 | H-040 | 2026-10-06 | Los embeddings cuánticos son menos separables que los clásicos, y C4 frente a C5 no tiene ganador | Respuesta del OE-3 en la familia de embeddings; anticipa el M7 |
 | H-041 | 2026-10-06 | Con 8 qubits la concentración baja y los kernels cuánticos ven algo más las clases, pero la conclusión del M6 se mantiene | Cierra Q-013; la conclusión del OE-3 no depende de k = 12; material del OE-6 |
+| H-042 | 2026-10-06 | El mismo MLP clasifica peor sobre las representaciones cuánticas: de 0.07 a 0.14 menos de AUC en el test | Respuesta del OE-4 y OE-5; coherente con el M6 |
+| H-043 | 2026-10-06 | El resultado del M7 resiste semillas, red, escalado, parada temprana, reps = 2 y k = 8 | Descarta el subentrenamiento como explicación; corrige la lectura de H-018 sobre datos reales |
 
 ### Preguntas abiertas
 
@@ -672,6 +676,50 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 
 ---
 
+### D-036 · Protocolo de clasificación del M7
+**Fecha:** 2026-10-06 · **Módulo:** M7 · **Estado:** **Provisional**: fijada al implementar; la valida el autor · **→ Reporte:** §4.8, §6.x · *precisa RF-18, RF-19, D-018 y D-014*
+
+**Contexto.** El reporte fija un MLP con al menos dos capas ocultas, BCE ponderada con w_c = N/(C·N_c), Adam, la misma semilla en todas las condiciones y las métricas sobre el test oficial. No fija los hiperparámetros.
+
+**Decisión.**
+- **Red:** k → 32 → 16 → 1, con ReLU y salida sigmoide. La sigmoide se integra en `BCEWithLogitsLoss`: es la misma función, calculada de forma numéricamente estable.
+- **Entrenamiento:** BCE ponderada con los pesos calculados sobre los datos que se ajustan; Adam con lr 10⁻³, *weight decay* 10⁻⁴ y lotes de 128.
+- **Estandarización** ajustada sobre la parte de entrenamiento de cada ajuste.
+- **Parada temprana** con paciencia 40 sobre la pérdida ponderada del 15 % de los pacientes del entrenamiento, con un máximo de 400 épocas y restaurando los mejores pesos.
+- **Umbral 0.5** para F1, *accuracy*, *precision* y *recall*. El AUC-ROC es la métrica principal.
+- **Semilla 42** para los pesos, el orden de los lotes y la partición de parada.
+- **Evaluación:** validación cruzada con los folds congelados de M4 y un único ajuste sobre todo el train, evaluado una vez en el test.
+- **Incertidumbre:** bootstrap de 2,000 remuestreos **por paciente**, pareado entre condiciones.
+
+**Por qué.**
+- **La estandarización es necesaria para una comparación justa.** Las representaciones difieren en escala dos órdenes de magnitud: ángulos en [0, π] frente a ⟨Zᵢ⟩ con dispersión de 0.05. Sin ella, el optimizador favorecería las de escala grande por una razón ajena a su información. Es una transformación afín invertible, aplicada igual a todas las condiciones.
+- **La parada temprana usa una partición por paciente** que no toca el fold de validación ni el test.
+- **Los hiperparámetros se fijaron de antemano**, sin ajustarlos a ninguna condición. Ajustarlos por condición rompería el principio de «mismo clasificador»; ajustarlos sobre una condición sesgaría a favor de ella.
+
+**Evidencia.** El MLP sobre C1 reproduce la regresión logística de X1 con las mismas 12 features (H-035): 0.652 contra 0.650 en masas y 0.742 contra 0.758 en calcificaciones. Pasan las 16 verificaciones de `7_Classification`, entre ellas que reentrenar con la misma semilla reproduce las predicciones bit a bit.
+
+**Consecuencias.** D-037 comprueba que la conclusión no depende de estas elecciones.
+
+---
+
+### D-037 · Análisis de sensibilidad del M7
+**Fecha:** 2026-10-06 · **Módulo:** M7 · **Estado:** Firme (reps = 2 y k = 8 elegidos por el autor) · **→ Reporte:** §6.x, §7
+
+**Decisión.** Además del análisis principal (k = 12, reps = 1), se corren seis análisis de sensibilidad.
+- **reps = 2 en el *ansatz*** para C4 y C5, con `real_amplitudes(12, reps=2)` y 36 parámetros de la semilla 42, cuyos primeros 24 son los de reps = 1. El *feature map* sigue con una repetición, como en H-018, así que el kernel del M6 no cambia (D-017). Validación cruzada y test.
+- **k = 8** con los embeddings de X3 (D-035). Validación cruzada y test.
+- **Cuatro semillas más** (43 a 46), solo en validación cruzada.
+- **Cuatro configuraciones alternativas**, solo en validación cruzada: red 16-8, red 64-32, entradas sin estandarizar, y 200 épocas sin parada temprana.
+
+**Por qué.**
+- reps = 2 y k = 8 eran compromisos de H-018.
+- Las semillas dan el tamaño del ruido del procedimiento de entrenamiento.
+- Las configuraciones responden a la objeción de que la conclusión depende de la red, del escalado o de que algunos ajustes cuánticos paran en pocas épocas.
+
+**Consecuencias.** Los embeddings de reps = 2 quedan en `Data/processed/m7/`, y las predicciones de todos los modelos en `Data/processed/m7/predicciones.parquet`, para el M8.
+
+---
+
 ### D-012 · Descargar por la API REST de TCIA, no con NBIA Data Retriever
 **Fecha:** 2026-09-21 · **Módulo:** M1 · **Estado:** Firme · **→ Reporte:** §8.x
 
@@ -1059,6 +1107,8 @@ Tres lecturas, y conviene no mezclarlas. **Las tres sobreviven a la corrección:
 **Impacto sobre D-013. Corregido:** la primera versión afirmaba que reps=1 entrega la máxima dispersión, empatada con reps=2. **En el punto de operación, k=12, eso es falso**, y ya lo era con los datos originales (0.0456 contra 0.0573): reps=2 dispersa un 30 % más. reps=1 se sostiene por las razones propias de D-013, es decir, coste y que bajo D-014 θ no se entrena, así que capas adicionales no añaden capacidad aprendible. **No se sostiene por dispersión.** La dispersión además es solo un indicador indirecto: si se traduce en separabilidad lo mide M7. Bajo la Arquitectura B, un embedding con reps=2 a k=12 cuesta minutos, así que compararlo en M7 sería un análisis de robustez barato. **Decisión del autor.**
 
 **Impacto sobre k.** El embedding a k=12 está notablemente más concentrado que a k=8: la mitad de dispersión, 0.042 contra 0.084. La elección de k=12 se justificó por coste y por diversidad de familias de features, no por dispersión. Si en M7 la separabilidad a k=12 resultara pobre, **k=8 merecería una comparación** antes de dar por buena la conclusión.
+
+**Nota del 2026-10-06 (H-043).** Sobre datos reales y con el θ del diseño, reps = 2 en el *ansatz* no aumenta la dispersión de C4 (de 0.058 a 0.047 en masas); la de C5 sube de 0.180 a 0.196. El 30 % de esta entrada es un promedio sobre sorteos de θ con entradas sintéticas.
 
 **Datos.** `Code/benchmark/B3_Sampling_and_Concentration.ipynb` §5; `Code/results/B3_concentracion_embedding.csv`, con la columna `std_media_con_ruido_simulado` como comprobación; figura `Docs/Figures/E4_embedding_concentration.png`, con la curva original punteada. Medición sobre datos sintéticos uniformes en [0,π]^k: sirve para caracterizar el circuito, pero **no sustituye** la medición sobre features radiómicas reales una vez exista M3.
 
@@ -1734,6 +1784,54 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 - **Alcance.** El cambio de k también cambia las features. El contraste mide el efecto conjunto del tamaño del registro y de las 4 features que k = 12 añade. En masas, esas 4 incluyen las tres de textura, así que con k = 8 no queda ninguna (cf. H-026).
 
 **Datos.** `Code/experiments/X3_Fewer_Qubits_k8.ipynb`; `Code/results/X3_comparacion_k8_k12.csv`, `X3_alineamiento_kernel.csv`, `X3_dimension_efectiva.csv`, `X3_diferencia_geometrica_resumen.csv`, `X3_metricas_embedding.csv` y `X3_verificaciones.csv`; figuras `Docs/Figures/X3_kernel_metrics_k8_k12.png` y `X3_embedding_metrics_k8_k12.png`.
+
+---
+
+### H-042 · El mismo MLP clasifica peor sobre las representaciones cuánticas: de 0.07 a 0.14 menos de AUC en el test
+**Fecha:** 2026-10-06 · **→ Reporte:** §6.x, OE-4, OE-5
+
+| AUC-ROC | C1 | C2 | C3 | C4 | C5 |
+|---|---|---|---|---|---|
+| Masas, validación cruzada | 0.652 | 0.641 | 0.648 | 0.565 | 0.563 |
+| Masas, test [IC 95 % por paciente] | 0.651 [0.58, 0.72] | 0.641 | 0.646 | 0.530 [0.47, 0.59] | 0.581 [0.52, 0.64] |
+| Calcificaciones, validación cruzada | 0.742 | 0.758 | 0.739 | 0.640 | 0.667 |
+| Calcificaciones, test | 0.769 [0.69, 0.84] | 0.788 | 0.758 | 0.633 [0.56, 0.70] | 0.652 [0.57, 0.73] |
+
+**Lecturas.**
+1. **Diferencias pareadas en el test frente a C1.**
+   - Masas: −0.12 para C4 [−0.20, −0.04] y −0.07 para C5 [−0.14, −0.004].
+   - Calcificaciones: −0.14 para C4 [−0.21, −0.06] y −0.12 para C5 [−0.18, −0.05].
+
+   Frente a C3 el resultado es el mismo, salvo C5 en masas, cuyo intervalo roza el cero: −0.065 [−0.14, 0.002]. C4 en masas no se distingue del azar en el test.
+2. **El control nulo funciona.** C2 − C1 da −0.011 [−0.06, 0.04] en masas y +0.020 [−0.03, 0.07] en calcificaciones: una rotación no cambia el resultado.
+3. **C5 frente a C4.** C5 va delante en casi todos los análisis (las excepciones son dos corridas de validación cruzada de masas, con las semillas 42 y 44), pero sin una diferencia significativa: en masas, 0.051 [−0.03, 0.13] en el test.
+4. **Coherente con el M6.** El orden coincide con el de la separabilidad: las condiciones clásicas van delante en ambas familias de métricas (H-039, H-040). La correlación formal entre ambos rankings (RF-21) corresponde al M8.
+
+**Impacto.** Es la respuesta del OE-4 y el OE-5 con el diseño preregistrado: no hay mejora de clasificación atribuible a la transformación cuántica, y sí una pérdida significativa.
+
+**Datos.** `Code/7_Classification.ipynb` (3°); `Code/results/7_cv_por_fold.csv`, `7_cv_resumen.csv`, `7_test.csv` y `7_test_diferencias.csv`; figuras `Docs/Figures/M7_auc.png` y `M7_roc_test.png`.
+
+---
+
+### H-043 · El resultado del M7 resiste semillas, red, escalado, parada temprana, reps = 2 y k = 8
+**Fecha:** 2026-10-06 · **→ Reporte:** §6.x, §7, OE-6 · *corrige la lectura de H-018 sobre datos reales*
+
+**Lecturas.**
+1. **Semillas.** El AUC medio de una condición en validación cruzada se mueve como mucho 0.039 entre las cinco semillas. Es menos de la mitad de la brecha entre clásico y cuántico, que ronda 0.08–0.10.
+2. **Configuraciones.** La red 16-8, la red 64-32 y las entradas sin estandarizar no cambian el orden.
+3. **Entrenar más no ayuda a lo cuántico.** Con 200 épocas sin parada temprana, C4 y C5 pierden AUC (0.533 y 0.557 en masas; 0.596 y 0.631 en calcificaciones), mientras las clásicas se mantienen o ganan (C1 en masas: 0.680). Los ajustes cuánticos que paran pronto lo hacen porque su pérdida de validación deja de mejorar, no por falta de entrenamiento.
+4. ***Ansatz* con dos capas.**
+   - **Dispersión.** Sobre datos reales y con el θ del diseño, la dispersión de C4 baja (de 0.058 a 0.047 en masas) y la de C5 sube (de 0.180 a 0.196). El +30 % de H-018 venía de entradas sintéticas promediadas sobre sorteos de θ y no se reproduce aquí para C4.
+   - **Clasificación.** C5 mejora (en el test, de 0.581 a 0.603 en masas y de 0.652 a 0.682 en calcificaciones), con intervalos que contienen el cero, y sigue por debajo de C1: −0.048 [−0.093, −0.005] y −0.086 [−0.141, −0.034]. C4 no cambia.
+5. **k = 8.** Las condiciones clásicas apenas cambian. C4 empeora en calcificaciones: 0.561 en el test, con una diferencia de −0.07 [−0.14, 0.00] frente a k = 12. C5 se mantiene. Las cuánticas quedan entre 0.07 y 0.19 por debajo de C1 en el test.
+   - Con k = 8 las métricas de kernel de C4 mejoraron (H-041) y su clasificación empeoró: otro caso de H-013. Un embedding más disperso no es necesariamente más informativo.
+
+**Impacto.**
+- La conclusión del M7 no depende del procedimiento de entrenamiento, de la profundidad del *ansatz* ni del número de qubits.
+- Descarta la objeción del subentrenamiento.
+- Matiza H-018: la dispersión del embedding no se traduce en clasificación, y con el θ del diseño reps = 2 ni siquiera dispersa más a C4.
+
+**Datos.** `Code/7_Classification.ipynb` (4° a 7°); `Code/results/7_cv_por_fold.csv` y `7_test_diferencias.csv`; figura `Docs/Figures/M7_sensitivity.png`.
 
 ---
 

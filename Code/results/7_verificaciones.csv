@@ -1,0 +1,17 @@
+check,value,passed
+mass: no patient has lesions in two folds,0.0,True
+mass: train lesions have folds 0-4 and test lesions -1,0.0,True
+calcification: no patient has lesions in two folds,0.0,True
+calcification: train lesions have folds 0-4 and test lesions -1,0.0,True
+class weights: w_c = N / (2 N_c) and the weighted classes have equal mass,0.0,True
+refitting with the same seed reproduces the predictions exactly,0.0,True
+reps = 2: the first 24 parameters equal theta of reps = 1,0.0,True
+mass: reps = 2 C4 local Z agrees with SparsePauliOp (lesion 0),6.544244313122505e-16,True
+mass: reps = 2 C4 local Z agrees with SparsePauliOp (lesion 1),3.712308238590367e-16,True
+calcification: reps = 2 C4 local Z agrees with SparsePauliOp (lesion 0),1.8388068845354155e-16,True
+calcification: reps = 2 C4 local Z agrees with SparsePauliOp (lesion 1),1.3892966638229254e-15,True
+mass: k = 8 frame has the same lesions and folds as Module 5,0.0,True
+calcification: k = 8 frame has the same lesions and folds as Module 5,0.0,True
+every main fit stopped before the epoch limit,184.0,True
+every test prediction is a probability,0.0,True
+"one test model per subset, analysis and condition",24.0,True
