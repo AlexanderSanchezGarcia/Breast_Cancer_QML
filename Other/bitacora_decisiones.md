@@ -112,6 +112,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-044 | 2026-10-07 | Un QSVM sobre el kernel de C4 iguala al SVM clásico y supera al MLP sobre los ⟨Zᵢ⟩: la información se pierde en la lectura, no en la codificación | Matiza H-039 y H-042; material de §6 y §7 |
 | H-045 | 2026-10-07 | Con las 67 features tampoco hay ventaja: los kernels cuánticos simulables son clásicos o se concentran | Responde la pregunta de las 67 features; material del OE-6 |
 | H-046 | 2026-10-07 | La auditoría independiente del pipeline no encuentra errores (25 de 25) | Descarta que un error esconda una ventaja |
+| H-047 | 2026-10-07 | Con la misma búsqueda anidada en ambos lados, ningún kernel cuántico supera a los clásicos en las etiquetas reales | Cierra la búsqueda de ventaja con el protocolo de D-038; dos hipótesis refutadas |
+| H-048 | 2026-10-07 | Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de la tarea | Respuesta central para §7: por qué la literatura reporta ventajas y aquí no |
 
 ### Preguntas abiertas
 
@@ -1924,6 +1926,61 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 
 **Datos.** `Code/experiments/X5_Pipeline_Audit.ipynb`; `Code/results/X5_auditoria.csv`.
+
+---
+
+### H-047 · Con la misma búsqueda anidada en ambos lados, ningún kernel cuántico supera a los clásicos en las etiquetas reales
+**Fecha:** 2026-10-07 · **→ Reporte:** §6.x, §7 · *protocolo de D-038*
+
+**Qué se probó (X6).**
+- **Lado cuántico:** mapas ZZ con entrelazamiento completo y lineal, con 1 y 2 repeticiones y en todo el barrido de c, y kernels proyectados (Huang et al., ec. 9) sobre ⟨X⟩, ⟨Y⟩ y ⟨Z⟩ de cada qubit.
+- **Lado clásico:** gaussianos, lineal y polinomiales.
+- **Selección:** validación cruzada anidada con los folds de M4 (3 folds internos por paciente) y SVM con C = 1.
+- **Test:** uno por contendiente global.
+
+| | Masas | Calcificaciones |
+|---|---|---|
+| CV anidada: clásico / cuántico | 0.677 / 0.651 | 0.745 / 0.753 |
+| Diferencia en CV anidada | −0.027 [−0.043, −0.009] | +0.007 [−0.007, 0.023] |
+| Test: clásico / cuántico | 0.652 / 0.656 | 0.760 / 0.755 |
+| Diferencia en el test | +0.004 [−0.023, 0.033] | −0.005 [−0.032, 0.022] |
+
+**Lecturas.**
+1. **Lo mejor que logra lo cuántico es la equivalencia.** Elige el mapa ZZ completo con c pequeño (0.05 y 0.2), el régimen en que el término de producto ya no influye (H-031).
+2. **Hipótesis refutada: el entrelazamiento lineal no reduce la concentración; la aumenta.** La mediana del kernel es 0.0001, frente a 0.002 con el completo. El razonamiento de la fase por qubit era incompleto: con menos acoplamientos el estado se acerca a uno producto, cuya fidelidad es un producto de solapamientos de un qubit, el término más concentrado de todos (5b, 6c).
+3. **Los kernels proyectados hacen lo que dicen Huang et al. y no ayudan.**
+   - Suben *g* de ~1.4 a 6–9, con una dimensión efectiva de ~10.
+   - Son las peores familias cuánticas en las etiquetas reales: −0.11 en masas y −0.06 en calcificaciones frente a lo clásico.
+   - Una *g* grande es necesaria, no suficiente.
+
+**Datos.** `Code/experiments/X6_Searching_for_Advantage.ipynb` (2° a 4°); `Code/results/X6_rejilla_candidatos.csv`, `X6_anidada.csv`, `X6_diferencias.csv`, `X6_test.csv` y `X6_geometria.csv`; figura `Docs/Figures/X6_nested_auc.png`.
+
+---
+
+### H-048 · Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de la tarea
+**Fecha:** 2026-10-07 · **→ Reporte:** §7, §2 (lectura de la literatura), OE-3, OE-6
+
+**Método.** Con el kernel cuántico K_Q y el clásico más cercano K_C, ambos sobre todo el train, se construye y = √K_Q·v (Apéndice G, ecs. G3–G4). Luego se binariza por la mediana y se compara el QSVM con el **mejor** SVM clásico elegido por validación cruzada.
+
+| CV AUC | Etiquetas construidas: QSVM / mejor clásico | Etiquetas reales: QSVM / mejor clásico |
+|---|---|---|
+| Masas, kernel proyectado | **0.998 / 0.800** | 0.566 / 0.682 |
+| Calcificaciones, kernel proyectado | **0.994 / 0.824** | 0.667 / 0.759 |
+| Masas, ZZ completo (C4) | 0.730 / 0.712 | 0.657 / 0.682 |
+| Calcificaciones, ZZ completo (C4) | 0.829 / 0.807 | 0.752 / 0.759 |
+
+**Lecturas.**
+1. **Sobre estas mismas lesiones y features existen etiquetas para las que un kernel cuántico gana con mucha ventaja.** Es el tipo de resultado que la literatura reporta: tareas cuyas etiquetas siguen la geometría del kernel cuántico.
+2. **Con el mapa ZZ completo, ni las etiquetas más favorables dan más que una ventaja pequeña**, porque su *g* es pequeña.
+3. **Las etiquetas del diagnóstico no siguen esa geometría.** Para los mapas ZZ, el cociente s_C/s_Q de las etiquetas reales queda cerca de 1 (0.85 a 1.21). Para el kernel proyectado ese cociente no es interpretable, porque su matriz es casi singular; ahí la lectura válida es la de los AUC.
+
+**Impacto.**
+- **Responde la duda del autor.** La literatura tiene razón en que hay ventajas, pero en tareas cuyas etiquetas siguen la geometría cuántica. El benigno/maligno medido con features radiómicas no la sigue.
+- **No es un error:** la auditoría (H-046) lo descarta.
+- **Es la conclusión más fuerte para §7.** La ausencia de ventaja es una propiedad de la tarea, medida y no supuesta, y el mismo protocolo detecta una ventaja cuando existe.
+- **Para leer la literatura:** cuando un trabajo reporta ventaja, la pregunta es si sus etiquetas tienen esa estructura o si la comparación es asimétrica (H-046).
+
+**Datos.** `Code/experiments/X6_Searching_for_Advantage.ipynb` (5°); `Code/results/X6_etiquetas_construidas.csv`; figura `Docs/Figures/X6_built_labels.png`.
 
 ---
 

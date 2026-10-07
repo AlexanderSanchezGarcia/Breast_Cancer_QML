@@ -1,0 +1,6 @@
+check,value,passed
+one-qubit Pauli expectations equal SparsePauliOp,1.7541523789077473e-14,True
+mass: g of the full ZZ map reproduces Module 6,1.176836406102666e-14,True
+calcification: g of the full ZZ map reproduces Module 6,6.439293542825908e-15,True
+every candidate was scored on every outer fold and C,1.0,True
+the built labels are balanced,6.0,True

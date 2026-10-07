@@ -43,7 +43,10 @@ TT/
 │   ├── experiments/                           # Exploratory analyses that do not change the design
 │   │   ├── X1_Selection_Information_Loss.ipynb # Information lost when keeping 12 of 67 features
 │   │   ├── X2_Kernel_Class_Structure.ipynb     # Similarity within and between classes in each kernel
-│   │   └── X3_Fewer_Qubits_k8.ipynb            # Modules 4–6 repeated with 8 qubits (robustness, Q-013)
+│   │   ├── X3_Fewer_Qubits_k8.ipynb            # Modules 4–6 repeated with 8 qubits (robustness, Q-013)
+│   │   ├── X4_QSVM_and_67_Features.ipynb       # Quantum kernel SVM against the readout, and the 67 features
+│   │   ├── X5_Pipeline_Audit.ipynb             # Independent audit of labels, leakage, kernel and encoding
+│   │   └── X6_Searching_for_Advantage.ipynb    # Nested search over quantum and classical kernels, Appendix G
 │   ├── env/                     # Reproducible environment definitions
 │   └── results/                 # CSV results and audits of every notebook
 ├── Data/                        # CBIS-DDSM CSV metadata, DICOM images and processed/ outputs (not versioned)

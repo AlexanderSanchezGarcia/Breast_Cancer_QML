@@ -1,0 +1,401 @@
+finding_type,family,kernel,hyper,side,C,fold,inner_auc,outer_auc
+mass,Linear,linear,,classical,1.0,0,0.6481403613459734,0.7527086924402856
+mass,Linear,linear,,classical,1.0,1,0.6643624405381661,0.6990718418514946
+mass,Linear,linear,,classical,1.0,2,0.6829385715376054,0.6303003287457514
+mass,Linear,linear,,classical,1.0,3,0.6893551409316063,0.5927922471229558
+mass,Linear,linear,,classical,1.0,4,0.6698464432390508,0.6630862871464376
+mass,Polynomial,polynomial 2,2.0,classical,1.0,0,0.6523913268037581,0.7498153164245259
+mass,Polynomial,polynomial 2,2.0,classical,1.0,1,0.6652664859408955,0.7277603664416588
+mass,Polynomial,polynomial 2,2.0,classical,1.0,2,0.6854783693672583,0.6496350364963505
+mass,Polynomial,polynomial 2,2.0,classical,1.0,3,0.6871580235201651,0.5990914597213809
+mass,Polynomial,polynomial 2,2.0,classical,1.0,4,0.6781885755259748,0.6525497417011917
+mass,Polynomial,polynomial 3,3.0,classical,1.0,0,0.6519367240464548,0.7657596651071166
+mass,Polynomial,polynomial 3,3.0,classical,1.0,1,0.6670535310967506,0.7325819672131149
+mass,Polynomial,polynomial 3,3.0,classical,1.0,2,0.6882492833700563,0.652309578202485
+mass,Polynomial,polynomial 3,3.0,classical,1.0,3,0.6828143997666349,0.6125984251968504
+mass,Polynomial,polynomial 3,3.0,classical,1.0,4,0.6788923505594666,0.6598639455782312
+mass,Gaussian,gaussian 0.25,0.25,classical,1.0,0,0.6467510521752496,0.7557867520315193
+mass,Gaussian,gaussian 0.25,0.25,classical,1.0,1,0.6581081595332923,0.7223963355834137
+mass,Gaussian,gaussian 0.25,0.25,classical,1.0,2,0.6806100206824844,0.6385468323396668
+mass,Gaussian,gaussian 0.25,0.25,classical,1.0,3,0.6792171247944031,0.591701998788613
+mass,Gaussian,gaussian 0.25,0.25,classical,1.0,4,0.6728401782908436,0.651219886450821
+mass,Gaussian,gaussian 0.5,0.5,classical,1.0,0,0.6494220866533621,0.7642821965033243
+mass,Gaussian,gaussian 0.5,0.5,classical,1.0,1,0.6607024348370005,0.7309546769527483
+mass,Gaussian,gaussian 0.5,0.5,classical,1.0,2,0.6853353114947317,0.6422243271856021
+mass,Gaussian,gaussian 0.5,0.5,classical,1.0,3,0.676872842305214,0.6067231980617808
+mass,Gaussian,gaussian 0.5,0.5,classical,1.0,4,0.6726598626335362,0.6527031865377729
+mass,Gaussian,gaussian 1,1.0,classical,1.0,0,0.6403399379108906,0.7740704260034474
+mass,Gaussian,gaussian 1,1.0,classical,1.0,1,0.6548565377798382,0.7216730954676952
+mass,Gaussian,gaussian 1,1.0,classical,1.0,2,0.6828181507167015,0.65091658773054
+mass,Gaussian,gaussian 1,1.0,classical,1.0,3,0.675846739465643,0.612961841308298
+mass,Gaussian,gaussian 1,1.0,classical,1.0,4,0.6771489865504389,0.6519871106337272
+mass,Gaussian,gaussian 2,2.0,classical,1.0,0,0.6334738562330561,0.7577567101699089
+mass,Gaussian,gaussian 2,2.0,classical,1.0,1,0.6456587791682228,0.7101615236258438
+mass,Gaussian,gaussian 2,2.0,classical,1.0,2,0.6806705514918076,0.6534239705800412
+mass,Gaussian,gaussian 2,2.0,classical,1.0,3,0.6652897363578189,0.6236220472440945
+mass,Gaussian,gaussian 2,2.0,classical,1.0,4,0.6768155539474033,0.6510664416142397
+mass,Gaussian,gaussian 4,4.0,classical,1.0,0,0.6216708073862719,0.7165722728392021
+mass,Gaussian,gaussian 4,4.0,classical,1.0,1,0.6352053880401233,0.6931653809064608
+mass,Gaussian,gaussian 4,4.0,classical,1.0,2,0.6630508612875762,0.6455675043182705
+mass,Gaussian,gaussian 4,4.0,classical,1.0,3,0.6543686096650475,0.6322834645669292
+mass,Gaussian,gaussian 4,4.0,classical,1.0,4,0.6736551723732335,0.639558078870646
+mass,Gaussian,gaussian 8,8.0,classical,1.0,0,0.5980677679110386,0.6878847574489042
+mass,Gaussian,gaussian 8,8.0,classical,1.0,1,0.6134416424941836,0.6826181292189006
+mass,Gaussian,gaussian 8,8.0,classical,1.0,2,0.6392912231801121,0.6260099180921602
+mass,Gaussian,gaussian 8,8.0,classical,1.0,3,0.6460013830077647,0.6334342822531799
+mass,Gaussian,gaussian 8,8.0,classical,1.0,4,0.654137225220659,0.6427804204388523
+mass,Gaussian,gaussian 16,16.0,classical,1.0,0,0.5899774611628884,0.6742797340556513
+mass,Gaussian,gaussian 16,16.0,classical,1.0,1,0.5975257264458625,0.6751446480231438
+mass,Gaussian,gaussian 16,16.0,classical,1.0,2,0.6248818572731617,0.604725023680838
+mass,Gaussian,gaussian 16,16.0,classical,1.0,3,0.6391323832755934,0.6305875227135069
+mass,Gaussian,gaussian 16,16.0,classical,1.0,4,0.6365124358508757,0.6294818679351439
+mass,Gaussian,gaussian 32,32.0,classical,1.0,0,0.5810874467984877,0.645469096281704
+mass,Gaussian,gaussian 32,32.0,classical,1.0,1,0.5836298215500564,0.6714079074252651
+mass,Gaussian,gaussian 32,32.0,classical,1.0,2,0.6115993087249126,0.5924109879088428
+mass,Gaussian,gaussian 32,32.0,classical,1.0,3,0.6219614881337877,0.6187764990914598
+mass,Gaussian,gaussian 32,32.0,classical,1.0,4,0.6177574435427942,0.6049306940821442
+mass,Gaussian,gaussian 64,64.0,classical,1.0,0,0.5711912874369703,0.5915414922432898
+mass,Gaussian,gaussian 64,64.0,classical,1.0,1,0.5699332863129011,0.6583895853423337
+mass,Gaussian,gaussian 64,64.0,classical,1.0,2,0.5919748814434805,0.5787039616649021
+mass,Gaussian,gaussian 64,64.0,classical,1.0,3,0.6000746821153278,0.5992125984251968
+mass,Gaussian,gaussian 64,64.0,classical,1.0,4,0.5978929168566651,0.5862104240192316
+mass,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,0,0.6107644497284712,0.7301772962324551
+mass,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,1,0.6230019253890422,0.702145612343298
+mass,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,2,0.6559666456284814,0.6209951523931576
+mass,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,3,0.6562507415550001,0.5880072683222289
+mass,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,4,0.6380911090608654,0.6456447240550355
+mass,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,0,0.5311930733547741,0.6079783304604778
+mass,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,1,0.5654602077484226,0.5356195756991321
+mass,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,2,0.565505269466622,0.5415946954922829
+mass,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,3,0.5542396117754862,0.5026650514839492
+mass,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,4,0.5520054730582791,0.5932177382231087
+mass,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,0,0.5279311611283113,0.6063777394730362
+mass,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,1,0.5773615186120165,0.5197685631629702
+mass,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,2,0.5692998243481334,0.568953028361286
+mass,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,3,0.572686843003425,0.5190793458509995
+mass,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,4,0.5647879284227298,0.6070277735154211
+mass,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,0,0.5244836237661423,0.6058852499384388
+mass,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,1,0.5716629487351736,0.5042189006750241
+mass,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,2,0.5663087359947264,0.5826600546052265
+mass,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,3,0.5685394465941739,0.5169594185342217
+mass,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,4,0.5557462885444714,0.6173597258452254
+mass,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,0,0.5238300103372822,0.6221989657719773
+mass,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,1,0.5706822974243634,0.478483606557377
+mass,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,2,0.5406398396736561,0.6052265002507382
+mass,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,3,0.559328503793529,0.5030890369473047
+mass,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,4,0.5400786191298311,0.6150580532965065
+mass,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,0,0.5370536778739045,0.6058852499384387
+mass,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,1,0.5689575773403672,0.4828230472516875
+mass,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,2,0.536051889155754,0.5905165208669972
+mass,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,3,0.5474759893373652,0.4932162325863113
+mass,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,4,0.5294384772947472,0.6046238044089817
+mass,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,0,0.6071015532378176,0.7418123614873183
+mass,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,1,0.6230972031302644,0.7025072324011572
+mass,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,2,0.6429408898491024,0.6460132612692929
+mass,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,3,0.661679248053565,0.5788007268322228
+mass,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,4,0.6392508509346314,0.6281008644059127
+mass,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,0,0.6419377592782052,0.6936099482885988
+mass,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,1,0.630307959267124,0.7213717454194792
+mass,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,2,0.6565934906031524,0.6568785869504652
+mass,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,3,0.6616187783929148,0.6284070260448213
+mass,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,4,0.6643613443758373,0.6533681141629584
+mass,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,0,0.6184278958433768,0.7321472543708447
+mass,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,1,0.6437916876566835,0.6882232401157184
+mass,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,2,0.6563539618370536,0.6573243439014878
+mass,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,3,0.6671940339407222,0.6334948516050878
+mass,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,4,0.6755096113163052,0.647792951767173
+mass,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,0,0.6359152004058694,0.7458754001477469
+mass,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,1,0.6403240847707142,0.7058823529411764
+mass,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,2,0.6687124103307678,0.6651808101632585
+mass,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,3,0.6652953136492404,0.6218049666868565
+mass,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,4,0.6783038003320067,0.6483044345557771
+mass,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,0,0.636229170471474,0.758864811622753
+mass,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,1,0.645256746279434,0.7145612343297975
+mass,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,2,0.6758684176800118,0.6364852064411879
+mass,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,3,0.6687217005967964,0.5931556632344033
+mass,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,4,0.6676035477410548,0.6414505651884813
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,0,0.609296698259122,0.7288229500123121
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,1,0.6082084738762367,0.6476615236258438
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,2,0.6314744398560823,0.5996545383629577
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,3,0.6528460151658111,0.550938824954573
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,4,0.6088368120857598,0.6379213339471127
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,0,0.5909237603132106,0.6234301896084709
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,1,0.5914803796586564,0.6187921890067503
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,2,0.6197388351494632,0.5921881094333314
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,3,0.6126702697829538,0.5884312537855845
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,4,0.58518185811011,0.6289703851465398
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,0,0.5612113043935912,0.6388204875646393
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,1,0.592961516387681,0.6502531340405014
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,2,0.5997443869424546,0.5944726138073215
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,3,0.6146357988207156,0.5614173228346455
+mass,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,4,0.6226979882181021,0.6015549076773566
+mass,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,0,0.5791172750184809,0.6758803250430929
+mass,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,1,0.5837742738300785,0.6853905496624879
+mass,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,2,0.6148173583439284,0.6223881428651028
+mass,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,3,0.6306358531671609,0.596305269533616
+mass,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,4,0.6354630463764991,0.607130070073142
+mass,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,0,0.5307719720901226,0.6511942871213987
+mass,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,1,0.5871535844932616,0.574433461909354
+mass,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,2,0.5877879081019178,0.5886220538251519
+mass,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,3,0.5971660120877283,0.5004845548152634
+mass,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,4,0.5532345118177148,0.5972584522530817
+mass,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,0,0.5286029212584178,0.6327259295739966
+mass,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,1,0.5708445715928493,0.5734691417550626
+mass,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,2,0.5721854777893426,0.5922995486710871
+mass,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,3,0.6036120734097966,0.5062386432465172
+mass,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,4,0.5600696813862188,0.5683596746969465
+mass,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,0,0.525170760201045,0.6284166461462694
+mass,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,1,0.557879298965234,0.6089681774349084
+mass,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,2,0.5570269496114907,0.5783696439516354
+mass,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,3,0.61681516815078,0.5235614778921865
+mass,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,4,0.5639666264014004,0.5979745281571275
+mass,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,0,0.5376527085208344,0.5450012312238366
+mass,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,1,0.5460014379729018,0.5663572806171648
+mass,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,2,0.5248575659445225,0.5586448988688917
+mass,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,3,0.5887086519573962,0.5211992731677771
+mass,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,4,0.5432674287629681,0.6155695360851107
+mass,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,0,0.5328329200984067,0.5311807436591973
+mass,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,1,0.5593606538059154,0.5570154291224687
+mass,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,2,0.5112462667052039,0.564885496183206
+mass,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,3,0.5797141164284122,0.562053301029679
+mass,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,4,0.5420369294365779,0.6001483300086952
+mass,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,0,0.577777902950673,0.6889928589017483
+mass,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,1,0.5821685670495736,0.6803881388621024
+mass,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,2,0.6137974112128702,0.6123586114670976
+mass,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,3,0.633834303010981,0.6262265293761357
+mass,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,4,0.6482469606389273,0.610454708199069
+mass,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,0,0.6087569913848319,0.714910120659936
+mass,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,1,0.6253649399232707,0.6848481195756991
+mass,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,2,0.6533672509276374,0.6397726639549787
+mass,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,3,0.6515278975864375,0.615687462144155
+mass,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,4,0.6819496354932674,0.636744923533323
+mass,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,0,0.6375963027507191,0.7746860379216941
+mass,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,1,0.6433620252387524,0.7014223722275796
+mass,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,2,0.6767656417656419,0.6437844765141806
+mass,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,3,0.6574244070435054,0.6070866141732284
+mass,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,4,0.6762294498046693,0.6372564063219274
+mass,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,0,0.6415875811480888,0.7610810145284413
+mass,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,1,0.6514024125521295,0.7186595949855352
+mass,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,2,0.6807453371463033,0.6311361230289185
+mass,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,3,0.6692822240148887,0.6009691096305269
+mass,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,4,0.6660786301662738,0.651219886450821
+mass,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,0,0.6411467073327687,0.7429820241319871
+mass,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,1,0.6506225457088411,0.7070274831243973
+mass,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,2,0.6714056340867934,0.6272914693263498
+mass,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,3,0.6783692656436262,0.574076317383404
+mass,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,4,0.6640145261520563,0.6609380594343
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,0,0.5902543096867906,0.6366658458507757
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,1,0.5755040338755384,0.702145612343298
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,2,0.6085370337302706,0.606173733771661
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,3,0.6416910461871481,0.5626892792247123
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,4,0.615903332249081,0.6276405298961689
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,0,0.585776896495049,0.7264220635311499
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,1,0.6135328303607858,0.6912970106075217
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,2,0.6478049933605489,0.6272357497074719
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,3,0.6544882748994606,0.6253785584494246
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,4,0.6675211308404346,0.642013196255946
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,0,0.6387242127382542,0.7586185668554543
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,1,0.644681309625581,0.7175144648023145
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,2,0.6791612976395586,0.6365409260600657
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,3,0.6687054888957231,0.6006662628709873
+mass,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,4,0.6606780192189027,0.647179172420848
+calcification,Linear,linear,,classical,1.0,0,0.7540977781886928,0.7257596371882086
+calcification,Linear,linear,,classical,1.0,1,0.7609458272051581,0.7057142857142857
+calcification,Linear,linear,,classical,1.0,2,0.7548902840377695,0.7472997673645729
+calcification,Linear,linear,,classical,1.0,3,0.7382188054452637,0.7923886138613861
+calcification,Linear,linear,,classical,1.0,4,0.7358081891249069,0.7522543304114415
+calcification,Polynomial,polynomial 2,2.0,classical,1.0,0,0.7454081087471449,0.720952380952381
+calcification,Polynomial,polynomial 2,2.0,classical,1.0,1,0.7496609939765766,0.71875
+calcification,Polynomial,polynomial 2,2.0,classical,1.0,2,0.748485810249039,0.7568959787304752
+calcification,Polynomial,polynomial 2,2.0,classical,1.0,3,0.7363114853594007,0.7689179632248939
+calcification,Polynomial,polynomial 2,2.0,classical,1.0,4,0.7281401315072754,0.7342196871199095
+calcification,Polynomial,polynomial 3,3.0,classical,1.0,0,0.7466552861949171,0.7189115646258504
+calcification,Polynomial,polynomial 3,3.0,classical,1.0,1,0.7512438755957559,0.7272619047619048
+calcification,Polynomial,polynomial 3,3.0,classical,1.0,2,0.7468734387723736,0.7696909272183451
+calcification,Polynomial,polynomial 3,3.0,classical,1.0,3,0.7447760121136162,0.7827086280056578
+calcification,Polynomial,polynomial 3,3.0,classical,1.0,4,0.7347002787873108,0.7317032252652771
+calcification,Gaussian,gaussian 0.25,0.25,classical,1.0,0,0.7505193785932899,0.7313378684807257
+calcification,Gaussian,gaussian 0.25,0.25,classical,1.0,1,0.7593081907795152,0.7193452380952381
+calcification,Gaussian,gaussian 0.25,0.25,classical,1.0,2,0.7548707310856398,0.7627118644067796
+calcification,Gaussian,gaussian 0.25,0.25,classical,1.0,3,0.7472058283291302,0.775990099009901
+calcification,Gaussian,gaussian 0.25,0.25,classical,1.0,4,0.7350584269802894,0.7423981881474647
+calcification,Gaussian,gaussian 0.5,0.5,classical,1.0,0,0.7474760046449699,0.7205895691609977
+calcification,Gaussian,gaussian 0.5,0.5,classical,1.0,1,0.7574564414275374,0.7269642857142856
+calcification,Gaussian,gaussian 0.5,0.5,classical,1.0,2,0.7477931808802961,0.7680707876370887
+calcification,Gaussian,gaussian 0.5,0.5,classical,1.0,3,0.7452143986316925,0.7772277227722773
+calcification,Gaussian,gaussian 0.5,0.5,classical,1.0,4,0.736101144886558,0.7392945518600845
+calcification,Gaussian,gaussian 1,1.0,classical,1.0,0,0.7492378156258418,0.7417687074829933
+calcification,Gaussian,gaussian 1,1.0,classical,1.0,1,0.7583574868676318,0.7284523809523811
+calcification,Gaussian,gaussian 1,1.0,classical,1.0,2,0.7418408350374023,0.7700648055832502
+calcification,Gaussian,gaussian 1,1.0,classical,1.0,3,0.7498894457756954,0.7913719943422913
+calcification,Gaussian,gaussian 1,1.0,classical,1.0,4,0.745164976914436,0.7361909155727048
+calcification,Gaussian,gaussian 2,2.0,classical,1.0,0,0.7535249021431331,0.7670294784580498
+calcification,Gaussian,gaussian 2,2.0,classical,1.0,1,0.764443202297009,0.7269047619047618
+calcification,Gaussian,gaussian 2,2.0,classical,1.0,2,0.7387682624061808,0.7772100365569956
+calcification,Gaussian,gaussian 2,2.0,classical,1.0,3,0.7551741087908211,0.7863330975954739
+calcification,Gaussian,gaussian 2,2.0,classical,1.0,4,0.7487720990749244,0.7400075493855639
+calcification,Gaussian,gaussian 4,4.0,classical,1.0,0,0.7532572517959416,0.76421768707483
+calcification,Gaussian,gaussian 4,4.0,classical,1.0,1,0.7611717657122056,0.7167261904761905
+calcification,Gaussian,gaussian 4,4.0,classical,1.0,2,0.7277100075506703,0.7843968095712862
+calcification,Gaussian,gaussian 4,4.0,classical,1.0,3,0.7466353419992616,0.7754154879773691
+calcification,Gaussian,gaussian 4,4.0,classical,1.0,4,0.7398468849772041,0.7412238392819696
+calcification,Gaussian,gaussian 8,8.0,classical,1.0,0,0.7431597731642814,0.740453514739229
+calcification,Gaussian,gaussian 8,8.0,classical,1.0,1,0.7464319322242439,0.6882738095238095
+calcification,Gaussian,gaussian 8,8.0,classical,1.0,2,0.7057021517279258,0.7735127949484879
+calcification,Gaussian,gaussian 8,8.0,classical,1.0,3,0.7294547227222198,0.7587959688826026
+calcification,Gaussian,gaussian 8,8.0,classical,1.0,4,0.7268346802607143,0.7298578199052134
+calcification,Gaussian,gaussian 16,16.0,classical,1.0,0,0.7320737675577286,0.7242630385487528
+calcification,Gaussian,gaussian 16,16.0,classical,1.0,1,0.7328546854950891,0.6601785714285714
+calcification,Gaussian,gaussian 16,16.0,classical,1.0,2,0.693573456946241,0.75660518444666
+calcification,Gaussian,gaussian 16,16.0,classical,1.0,3,0.7149266249965519,0.7456683168316831
+calcification,Gaussian,gaussian 16,16.0,classical,1.0,4,0.7117775434773849,0.7254959526905171
+calcification,Gaussian,gaussian 32,32.0,classical,1.0,0,0.7150819666862619,0.7109750566893425
+calcification,Gaussian,gaussian 32,32.0,classical,1.0,1,0.7160093949337393,0.6429166666666667
+calcification,Gaussian,gaussian 32,32.0,classical,1.0,2,0.6810829381535143,0.7438102359587904
+calcification,Gaussian,gaussian 32,32.0,classical,1.0,3,0.698047297305707,0.7217998585572842
+calcification,Gaussian,gaussian 32,32.0,classical,1.0,4,0.6891240176232407,0.7043576731116052
+calcification,Gaussian,gaussian 64,64.0,classical,1.0,0,0.6958747174977017,0.6899319727891156
+calcification,Gaussian,gaussian 64,64.0,classical,1.0,1,0.6943653422175529,0.6254761904761905
+calcification,Gaussian,gaussian 64,64.0,classical,1.0,2,0.6572741585853225,0.7278580923894982
+calcification,Gaussian,gaussian 64,64.0,classical,1.0,3,0.6770181438789021,0.6914338755304101
+calcification,Gaussian,gaussian 64,64.0,classical,1.0,4,0.6723879265064708,0.6783122929161599
+calcification,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,0,0.7545952348038957,0.7357369614512472
+calcification,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,1,0.7649371056544041,0.7180357142857142
+calcification,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,2,0.7415325413242672,0.7770438683948155
+calcification,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,3,0.7476273591241603,0.7857142857142856
+calcification,ZZ full,"ZZ full, c = 1",1.0,quantum,1.0,4,0.7520864781343076,0.7412657803128802
+calcification,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,0,0.672666893112939,0.7175056689342404
+calcification,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,1,0.6873767615849554,0.6767261904761905
+calcification,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,2,0.6793954377007315,0.6851528747092057
+calcification,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,3,0.674684856535674,0.6965169731258841
+calcification,Projected (ZZ full),projected (ZZ full) 0.25,0.25,quantum,1.0,4,0.6921681848290794,0.6559157824099316
+calcification,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,0,0.6598408180097057,0.6951927437641724
+calcification,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,1,0.6659395058365555,0.6517261904761905
+calcification,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,2,0.6612673294573401,0.6674559654370223
+calcification,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,3,0.6559781822345413,0.6786156294200849
+calcification,Projected (ZZ full),projected (ZZ full) 1,1.0,quantum,1.0,4,0.6694094014234852,0.6402717778803003
+calcification,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,0,0.6287441296561448,0.6652607709750566
+calcification,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,1,0.6395710787522841,0.595952380952381
+calcification,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,2,0.6365896872929085,0.6364240611498837
+calcification,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,3,0.6269955632808374,0.6459954031117398
+calcification,Projected (ZZ full),projected (ZZ full) 4,4.0,quantum,1.0,4,0.6365307967563556,0.5966950467642494
+calcification,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,0,0.5696137969348909,0.6202267573696144
+calcification,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,1,0.6115091494485747,0.5688690476190477
+calcification,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,2,0.5858344106001198,0.6094632768361582
+calcification,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,3,0.5802345867946856,0.5900813295615276
+calcification,Projected (ZZ full),projected (ZZ full) 16,16.0,quantum,1.0,4,0.5948014622315277,0.5623872834794279
+calcification,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,0,0.5501097498216888,0.556031746031746
+calcification,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,1,0.6041187703974145,0.5456547619047618
+calcification,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,2,0.5710132296672743,0.5579719175805916
+calcification,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,3,0.5761598863290637,0.5520243988684582
+calcification,Projected (ZZ full),projected (ZZ full) 64,64.0,quantum,1.0,4,0.55565245155621,0.5628486348194438
+calcification,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,0,0.7484434399805119,0.7491156462585034
+calcification,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,1,0.7608238640656789,0.718392857142857
+calcification,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,2,0.7437495966149341,0.7787055500166169
+calcification,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,3,0.7462815093842474,0.777183521923621
+calcification,ZZ full,"ZZ full, c = 0.5",0.5,quantum,1.0,4,0.7461414705105697,0.7430273036111228
+calcification,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,0,0.7548971748923802,0.748390022675737
+calcification,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,1,0.7646250638679511,0.713452380952381
+calcification,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,2,0.7310950836222722,0.7775423728813559
+calcification,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,3,0.7473506816138524,0.7827970297029703
+calcification,ZZ full,"ZZ full, c = 0.2",0.2,quantum,1.0,4,0.7333729710205414,0.759048777418949
+calcification,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,0,0.7474845727573377,0.744172335600907
+calcification,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,1,0.7542048637350955,0.6971428571428572
+calcification,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,2,0.7261623643832326,0.7746344300432036
+calcification,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,3,0.7406277746585794,0.7687411598302687
+calcification,ZZ full,"ZZ full, c = 0.1",0.1,quantum,1.0,4,0.7278390282069411,0.7380782619636792
+calcification,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,0,0.756633336669042,0.7613605442176871
+calcification,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,1,0.7582525203774949,0.7176190476190475
+calcification,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,2,0.7347202643995251,0.7700232635427052
+calcification,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,3,0.7528790101677284,0.7840346534653465
+calcification,ZZ full,"ZZ full, c = 0.05",0.05,quantum,1.0,4,0.7426593435455525,0.7343874512435516
+calcification,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,0,0.7480213758552283,0.7280725623582767
+calcification,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,1,0.756634069060229,0.7210714285714286
+calcification,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,2,0.7436377223488506,0.7688600864074443
+calcification,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,3,0.7454998914656175,0.7786863507779349
+calcification,ZZ full,"ZZ full, c = 0.02",0.02,quantum,1.0,4,0.7372092752760793,0.7346810384599254
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,0,0.6787166484706638,0.6808163265306122
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,1,0.6984183944057286,0.6935714285714285
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,2,0.6696217913009853,0.722457627118644
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,3,0.6879542447963853,0.7283415841584159
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 1",1.0,quantum,1.0,4,0.6988634929855139,0.6845195654909199
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,0,0.7265374468361573,0.7021315192743764
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,1,0.7101355117665555,0.6791071428571429
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,2,0.6922269991392422,0.7248670654702559
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,3,0.6811487084722921,0.7690505657708628
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.2",0.2,quantum,1.0,4,0.6956998970109475,0.7157236924883612
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,0,0.7449948178120249,0.7356916099773244
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,1,0.7397352293984126,0.6780952380952381
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,2,0.7148803556892345,0.7606763044200731
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,3,0.727154449828188,0.7745756718528997
+calcification,"ZZ full, reps 2","ZZ full, reps 2, c = 0.05",0.05,quantum,1.0,4,0.7289279448956528,0.7547288512351633
+calcification,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,0,0.7260786804418545,0.7121995464852608
+calcification,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,1,0.7194265114420292,0.6644047619047619
+calcification,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,2,0.7059167464388126,0.7319292123629113
+calcification,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,3,0.6990186599576257,0.7473921499292786
+calcification,ZZ linear,"ZZ linear, c = 1",1.0,quantum,1.0,4,0.6940092033085407,0.7117392945518601
+calcification,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,0,0.7226558203763188,0.7432199546485261
+calcification,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,1,0.7169659184313746,0.67375
+calcification,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,2,0.719897542329759,0.7620056497175142
+calcification,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,3,0.7113266550139287,0.7148603253182461
+calcification,Projected (ZZ linear),projected (ZZ linear) 0.25,0.25,quantum,1.0,4,0.7146253877468823,0.7046512603279789
+calcification,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,0,0.7249301116463492,0.7238095238095238
+calcification,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,1,0.7053861574836434,0.7196428571428571
+calcification,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,2,0.7200207310669281,0.7612994350282486
+calcification,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,3,0.7184065159947212,0.7384635785007072
+calcification,Projected (ZZ linear),projected (ZZ linear) 1,1.0,quantum,1.0,4,0.7205819125336023,0.721217967537642
+calcification,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,0,0.7051168570258345,0.687936507936508
+calcification,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,1,0.6856275390326374,0.7110119047619047
+calcification,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,2,0.6841897051310816,0.7238285144566302
+calcification,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,3,0.7009090979140195,0.7340876944837342
+calcification,Projected (ZZ linear),projected (ZZ linear) 4,4.0,quantum,1.0,4,0.6947758715230679,0.688965314767437
+calcification,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,0,0.6438718991418665,0.6261224489795918
+calcification,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,1,0.6362100567672099,0.6153571428571428
+calcification,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,2,0.6126784696320048,0.6560319042871386
+calcification,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,3,0.6395222561169832,0.7006276520509195
+calcification,Projected (ZZ linear),projected (ZZ linear) 16,16.0,quantum,1.0,4,0.6400383240912527,0.6003019754225559
+calcification,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,0,0.6133606315373236,0.6036281179138322
+calcification,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,1,0.6137308761564685,0.5731845238095238
+calcification,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,2,0.5845574822748378,0.6075523429710868
+calcification,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,3,0.6133747705726594,0.64122171145686
+calcification,Projected (ZZ linear),projected (ZZ linear) 64,64.0,quantum,1.0,4,0.6092940530974589,0.5832110053265109
+calcification,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,0,0.7011419666451156,0.7070748299319729
+calcification,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,1,0.7000146996264359,0.6463095238095239
+calcification,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,2,0.6754553495804033,0.7330508474576272
+calcification,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,3,0.6992992931106388,0.7056223479490806
+calcification,ZZ linear,"ZZ linear, c = 0.5",0.5,quantum,1.0,4,0.6870678695393356,0.6917334228075326
+calcification,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,0,0.7332431324519089,0.7639002267573696
+calcification,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,1,0.7378627639507482,0.6946428571428572
+calcification,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,2,0.7130394449110934,0.765744433366567
+calcification,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,3,0.737182396649748,0.7609176096181047
+calcification,ZZ linear,"ZZ linear, c = 0.2",0.2,quantum,1.0,4,0.7305195219313637,0.7306966405234241
+calcification,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,0,0.7428280627995588,0.7555102040816327
+calcification,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,1,0.7505364874146344,0.7104761904761905
+calcification,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,2,0.7341434414197804,0.761756397474244
+calcification,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,3,0.7485177199889083,0.7808521923620934
+calcification,ZZ linear,"ZZ linear, c = 0.1",0.1,quantum,1.0,4,0.7375159716543598,0.7222664933104056
+calcification,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,0,0.7481614301673044,0.7257596371882087
+calcification,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,1,0.7566588820742505,0.7170238095238095
+calcification,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,2,0.7462605491530893,0.7666583582585575
+calcification,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,3,0.744116403784068,0.7749734794908063
+calcification,ZZ linear,"ZZ linear, c = 0.05",0.05,quantum,1.0,4,0.7381655965306072,0.7333808665016985
+calcification,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,0,0.7561742584182266,0.7317913832199546
+calcification,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,1,0.7579929787090635,0.7164285714285715
+calcification,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,2,0.7529149215785359,0.760593220338983
+calcification,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,3,0.7423419967584555,0.7763437057991514
+calcification,ZZ linear,"ZZ linear, c = 0.02",0.02,quantum,1.0,4,0.7450696528701258,0.7408463700037747
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,0,0.7246512448339003,0.7165532879818595
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,1,0.7164630140929003,0.6580952380952381
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,2,0.702391061818636,0.7267364572947823
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,3,0.7067414957636656,0.7330710749646392
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 1",1.0,quantum,1.0,4,0.7010332303527279,0.7143815794992241
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,0,0.728043896533627,0.7384126984126984
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,1,0.7295976411376116,0.6708928571428571
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,2,0.705056905843688,0.7507062146892656
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,3,0.7253827751287879,0.7441654879773691
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.2",0.2,quantum,1.0,4,0.7197930809932651,0.724237721763201
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,0,0.7474377374944176,0.7279818594104308
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,1,0.7571749838568987,0.7222619047619048
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,2,0.7412197984012773,0.765744433366567
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,3,0.7463287404423008,0.7716584158415841
+calcification,"ZZ linear, reps 2","ZZ linear, reps 2, c = 0.05",0.05,quantum,1.0,4,0.7374654677946347,0.7290189992870024
