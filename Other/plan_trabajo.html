@@ -98,6 +98,8 @@ button:hover{color:var(--ink)}
 <tr><td><b>24 sep ✓</b></td><td>Embeddings y kernels</td><td>C1–C5 y kernels de fidelidad exactos (M5). C5 = (Y, ZZ) desde el 5 oct (D-031).</td></tr>
 <tr><td><b>6 oct ✓</b></td><td>Separabilidad</td><td>OE-3 respondido: sin mayor separabilidad cuántica con el diseño preregistrado (H-039, H-040), ni con k=8 (H-041).</td></tr>
 <tr><td><b>6 oct ✓</b></td><td>Clasificación</td><td>AUC-ROC en las 5 condiciones × 2 subconjuntos: las cuánticas quedan por debajo (H-042, H-043).</td></tr>
+<tr><td><b>7 oct ✓</b></td><td>Evaluación comparativa</td><td>M8: Spearman, masas frente a calcificaciones y OE-6 (H-049 a H-052). Se cierra la parte experimental.</td></tr>
+<tr><td><b>20 oct</b></td><td>Reporte técnico completo</td><td>Todas las secciones redactadas y compilando, listas para la revisión de los directores.</td></tr>
 <tr><td><b>23 oct</b></td><td>Congelamiento</td><td>No se corren experimentos nuevos. Lo que haya, se reporta.</td></tr>
 <tr><td><b>3 nov</b></td><td>Entrega a sinodales</td><td>Fecha dura, externa.</td></tr>
 <tr><td><b>17 nov</b></td><td>Presentaciones</td><td>Abre la ventana. Día aún sin asignar.</td></tr>
@@ -136,6 +138,8 @@ for (const k of ["f4.11", "f4.12", "f4.13", "f4.14"]) if (!(k in state)) state[k
 for (let i = 2; i <= 10; i++) if (!(("f4." + i) in state)) state["f4." + i] = true;
 // M7 hecho el 6 oct (f5.0 a f5.6).
 for (let i = 0; i <= 6; i++) if (!(("f5." + i) in state)) state["f5." + i] = true;
+// M8 hecho el 7 oct (f6.0 a f6.4).
+for (let i = 0; i <= 4; i++) if (!(("f6." + i) in state)) state["f6." + i] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -210,19 +214,37 @@ const PHASES = [
      "Sensibilidad: reps=2 en el ansatz, k=8, cinco semillas y cuatro configuraciones, una sin parada temprana (D-037)",
      "Test con bootstrap por paciente y diferencias pareadas entre condiciones (D-036)"]]
   ]},
- {id:"f6", n:"Fase 6 · Evaluación comparativa (M8)", due:"2026-10-23",
-  note:"Cierra con el congelamiento de resultados. Exploratorios hechos el 7 oct: un QSVM iguala al SVM clásico y la pérdida del M7 está en la lectura ⟨Zᵢ⟩ (X4, H-044); la auditoría no encuentra errores (X5, H-046); con búsqueda simétrica no hay ventaja en las etiquetas reales, pero sí con etiquetas construidas según el Apéndice G (X6, H-047, H-048).",
+ {id:"f6", n:"Fase 6 · Evaluación comparativa (M8) ✓", due:"2026-10-23",
+  note:"COMPLETA el 7 oct (8_Comparison), 16 días antes del congelamiento. Separabilidad y clasificación ordenan igual las condiciones: ρ_s de 0.67 a 0.97, y en todos los rankings van delante las tres clásicas (D-039, H-049). Las masas son más separables con los descriptores del radiólogo y menos con las features radiómicas (H-050). OE-6: el embedding cabe hasta k ≈ 25 y el kernel hasta ≈ 22 en esta máquina (H-051); con 1,024 shots el MLP casi no pierde AUC, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 (H-052). Antes, el 7 oct: QSVM (X4, H-044), auditoría (X5, H-046) y búsqueda simétrica de ventaja (X6, H-047, H-048). D-040 provisional, a validar.",
   groups:[
-   ["Análisis",[
-     "Correlación de Spearman entre ranking de separabilidad y ranking de AUC-ROC",
-     "OE-6 · restricciones del simulador cuantificadas",
+   ["Análisis · ✓ 7 oct (8_Comparison)",[
+     "Correlación de Spearman entre ranking de separabilidad y ranking de AUC-ROC, descriptiva para n = 5 (D-039, H-049)",
+     "OE-6 · restricciones del simulador cuantificadas: tiempo, qubits, shots en el embedding, el clasificador y el kernel, parameter-shift (H-051, H-052)",
      "Validación cruzada 5-fold: media ± desviación por condición (D-018); declarar que es algo optimista (H-027)",
-     "Tabla comparativa clásico vs cuántico",
+     "Tabla comparativa clásico vs cuántico, con los modelos exploratorios del X4 y el X6",
      "Análisis de beneficios y limitaciones · incluye H-030, la selección univariante frente a las interacciones"]]
   ]},
- {id:"f7", n:"Fase 7 · Documentación", due:"2026-11-03",
-  note:"La redacción corre en paralelo desde principios de octubre.",
+ {id:"f7", n:"Fase 7 · Documentación · reporte completo el 20 oct", due:"2026-10-20",
+  note:"Desde el 7 oct, el reporte técnico debe quedar completo el 20 oct, no el 3 nov: una parte por día según el calendario. El orden va de lo que más ha cambiado (§4 y §3) a lo que depende de todo lo demás (§6, §7, el Abstract). Del 21 oct al 3 nov quedan la revisión de los directores, las correcciones, INDAUTOR y la presentación. Lo redacta el autor.",
   groups:[
+   ["Calendario de redacción · 8 al 20 oct",[
+     "Jue 8 · Validar las decisiones provisionales (D-020 a D-022, D-036, D-040) y los 7 casos discordantes · §4.1 diagrama (D-030) y §4.2 requerimientos: RF-04 a RF-06, RF-14, RF-16, RNF-02, RNF-05, RNF-07 y RNF-08 contra lo implementado",
+     "Vie 9 · §4.3–§4.6, M1 a M4, desde el borrador (D-009, D-020 a D-026) · §4.5 con 67 features (D-023)",
+     "Sáb 10 · §4.7–§4.10, M5 a M8: sección nueva de separabilidad (D-030), C5 = (Y, ZZ) con las figuras de los circuitos (D-031), protocolo del MLP (D-036)",
+     "Dom 11 · §3 Marco teórico: fórmula de g (H-033) y g regularizada con la Fig. 2 de Huang et al. (H-038, D-034), Spearman con empates (D-039), ley de los shots (H-019), concentración del kernel (H-031)",
+     "Lun 12 · §6 Resultados I: datos, features, selección y embeddings (M2–M5, H-020 a H-028, H-035)",
+     "Mar 13 · §6 Resultados II: separabilidad (M6 y X3, H-036 a H-041)",
+     "Mié 14 · §6 Resultados III: clasificación, comparación y OE-6 (M7, M8, X4–X6; H-042 en adelante)",
+     "Jue 15 · §7 Conclusiones: respuesta a cada OE, limitaciones y trabajo a futuro (H-030, H-035, H-044, H-048)",
+     "Vie 16 · §8.x Implementación y cronograma en pgfgantt · §5 EDA: cobertura del 100 % (H-001) y PixelSpacing (H-002)",
+     "Sáb 17 · §1 y §2: alcance, estado del arte con las referencias por revisar y las cuatro preguntas de H-046 · Abstract",
+     "Dom 18 · Bibliografía (.bib y \\cite pendientes) y defectos del PDF de TT1",
+     "Lun 19 · Lectura completa: cada número contra la bitácora y los CSV, figuras, compilación limpia fuera de macOS",
+     "Mar 20 · Reporte técnico completo"], "f7c"],
+   ["Después del 20 oct",[
+     "21–23 oct · revisión de los directores; el 23 se congelan los resultados",
+     "24 oct – 2 nov · correcciones de la revisión",
+     "3 nov · entrega a sinodales"], "f7d"],
    ["Secciones nuevas · desde el 5 oct",[
      "Sección 6 · Resultados (hoy es un párrafo)",
      "Reescribir Sección 7 · Conclusiones",
@@ -260,11 +282,12 @@ const RISKS = [
  ["Resuelto · D-024","SelectKBest elegía variables redundantes en masas","Con la restricción |r| ≤ 0.95 salen los duplicados exactos y entra textura en masas (H-026), de forma estable entre 0.80 y 0.99."],
  ["Resuelto · D-025","Ángulos casi constantes en features de cola pesada","El min-max dejaba Energy y PixelSurface de calcificaciones con IQR de 0.05 rad (H-028). Con la transformación por cuantiles, todas las features tienen IQR = π/2."],
  ["Resuelto · D-029","Kernel cuántico concentrado","Mediana fuera de la diagonal ~0.003 frente a 0.61 del RBF (H-031). Se mantiene el diseño y se añade un barrido de c: el kernel solo informa cuando el término de producto xᵢxⱼ ya no influye."],
- ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6. La versión regularizada ya se extrajo y se usó en el M6 (H-038, D-032); queda la corrección del reporte."],
+ ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6. La versión regularizada ya se extrajo y se usó en el M6 (H-038, D-032); queda la corrección del reporte, prevista para el 11 oct. Ese día también la ecuación de Spearman, que solo vale sin empates (H-049)."],
  ["Resuelto · D-035","Comparar contra k=8 antes de concluir","Hecho en X3: con 8 qubits la concentración baja y el alineamiento cuántico crece de 1.7 a 4.6 veces, pero ninguna métrica pone a C4 o C5 por delante de las condiciones clásicas (H-041). La conclusión del OE-3 no depende de k=12."],
  ["Vigilar · H-037","Kernel de C5 extremadamente concentrado","Mediana 0.00003 frente a 0.002 de C4; entre el 26 y el 28 % de los pares queda por debajo de 10⁻⁶, un valor que en hardware exigiría unos 10⁶ disparos solo para observarlo una vez. Su embedding ⟨Zᵢ⟩, en cambio, se dispersa tres veces más que el de C4."],
- ["Pendiente del autor · D-020 a D-022","Decisiones de M2 provisionales","Validar la alineación por tipo de desajuste, la componente conexa mayor y el contrato de salida de M2. Decidir si se excluyen los 7 casos discordantes."],
- ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM."],
+ ["Pendiente del autor · D-020 a D-022, D-036, D-040","Decisiones provisionales","Validar la alineación por tipo de desajuste, la componente conexa mayor y el contrato de salida de M2, y decidir si se excluyen los 7 casos discordantes. Validar también el protocolo del MLP (D-036) y el contenido del M8 (D-040). Conviene hacerlo el 8 oct: si alguna cambia, hay que volver a correr antes del congelamiento del 23 oct."],
+ ["Vigilar · calendario","Reporte completo el 20 oct","Trece días para todas las secciones, una parte por día. Si un día se atrasa, se recorta del 19 (lectura completa), no del 20. Lo que no dependa del autor, como la verificación de números contra los CSV o la compilación fuera de macOS, se puede delegar."],
+ ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM. Previsto del 8 al 10 oct."],
  ["Resuelto · D-026","Semilla de los folds","Con la semilla 42, el fold 2 de calcificaciones tenía 52 % de malignas. La semilla se elige por balance de clases: desviación máxima de 0.011 y 0.019."],
  ["Vigilar","Pacientes repartidos entre folds","Hay 2.28 ROIs por paciente. Si la validación cruzada separa ROIs del mismo paciente entre folds, hay fuga; usar StratifiedGroupKFold por patient_id."]
 ];
@@ -276,6 +299,7 @@ const fmt = s => { const d=d2(s); return d.getDate()+" "+["ene","feb","mar","abr
 
 // countdown
 document.getElementById("count").innerHTML = [
+  ["2026-10-20","Reporte completo","Todas las secciones"],
   ["2026-10-23","Congelamiento","No más experimentos"],
   ["2026-11-03","Entrega a sinodales","Fecha dura"],
   ["2026-11-17","Presentaciones","Abre la ventana"]
@@ -288,10 +312,14 @@ document.getElementById("count").innerHTML = [
 // phases
 let allT=0, allD=0;
 document.getElementById("phases").innerHTML = PHASES.map(p=>{
-  let items=[], i=0;
-  const body = p.groups.map(([g,ts])=>{
+  // Un grupo puede declarar su propio prefijo de clave (tercer elemento): así, añadirlo no
+  // desplaza las claves de las tareas ya marcadas en el navegador.
+  let items=[], cnt={};
+  const body = p.groups.map(([g,ts,ns])=>{
+    const pre = ns || p.id;
     const lis = ts.map(t=>{
-      const k=p.id+"."+(i++), on=!!state[k]; items.push(k);
+      cnt[pre] = (cnt[pre] ?? -1) + 1;
+      const k=pre+"."+cnt[pre], on=!!state[k]; items.push(k);
       return `<li class="${on?"on":""}"><input type="checkbox" id="${k}" ${on?"checked":""}>
               <label for="${k}">${t}</label></li>`;
     }).join("");
