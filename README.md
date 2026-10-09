@@ -35,6 +35,7 @@ TT/
 │   ├── 5b_Quantum_Kernels.ipynb           # Module 5: fidelity kernels and bandwidth sweep
 │   ├── 6_Separability.ipynb               # Module 6: kernel and embedding separability (OE-3)
 │   ├── 7_Classification.ipynb             # Module 7: same MLP on C1–C5, CV + test, sensitivity analyses
+│   ├── 8_Comparison.ipynb                 # Module 8: Spearman M6–M7, masses vs calcifications, OE-6
 │   ├── Test.ipynb
 │   ├── benchmark/                             # Simulator studies behind the design decisions
 │   │   ├── B1_Quantum_Benchmark.ipynb         # Resource benchmark of the quantum circuit

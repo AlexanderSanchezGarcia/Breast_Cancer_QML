@@ -1,0 +1,9 @@
+finding_type,features,cv_auc_mean,cv_auc_std,categories
+mass,radiologist descriptors,0.8720685173447617,0.022765863423837043,35.0
+mass,12 angles of Module 4,0.6676955175228789,0.06376253398166816,12.0
+mass,X1: all 67 radiomic features,0.692627325171889,0.0393498872192689,
+mass,X1: 12 of Module 4 (fixed) radiomic features,0.6501871387821039,0.0561568356244155,
+calcification,radiologist descriptors,0.8245453006259332,0.017386990610975976,56.0
+calcification,12 angles of Module 4,0.7453405731048377,0.0290260509068647,12.0
+calcification,X1: all 67 radiomic features,0.8001927232265844,0.0279063130303161,
+calcification,X1: 12 of Module 4 (fixed) radiomic features,0.7583632475867281,0.0249382159535422,

@@ -1,0 +1,21 @@
+finding_type,source,comparison,evaluation,difference,ci_low,ci_high,interval_excludes_0
+mass,Module 7: MLP,C4 − C1,test,-0.1215354345062421,-0.2016333653574409,-0.0437693846738029,True
+mass,Module 7: MLP,C4 − C3,test,-0.1164363908410131,-0.1929623527180057,-0.0408582766700369,True
+mass,Module 7: MLP,C5 − C1,test,-0.070193802495606,-0.1398955016949376,-0.004277497769539,True
+mass,Module 7: MLP,C5 − C3,test,-0.065094758830377,-0.1385533430763609,0.0022850237232257,False
+calcification,Module 7: MLP,C4 − C1,test,-0.1348942993297673,-0.2078114751775347,-0.0610196172491438,True
+calcification,Module 7: MLP,C4 − C3,test,-0.1244851695333753,-0.1953561655527712,-0.0508545783325901,True
+calcification,Module 7: MLP,C5 − C1,test,-0.1179325950377364,-0.1816977092649644,-0.0462328089830248,True
+calcification,Module 7: MLP,C5 − C3,test,-0.1075234652413445,-0.1771424393710105,-0.0348322630085626,True
+mass,X4: kernel SVM,"QSVM C4, c = 1 − SVM RBF (D-027)",test,-0.0213580432953892,-0.0536679019076495,0.0120358009141597,False
+mass,X4: kernel SVM,"QSVM C5, c = 1 − SVM RBF (D-027)",test,-0.0493903649995664,-0.0934340877125687,-0.0066124802040554,True
+mass,X4: kernel SVM,"QSVM C4, best c = 0.05 − SVM classical best (gaussian 1)",test,-0.0018512442742691,-0.0235318376963749,0.0205734235562938,False
+mass,X4: kernel SVM,"QSVM C5, best c = 0.05 − SVM classical best (gaussian 1)",test,-0.0085269656470797,-0.0324676148306284,0.0160281732755696,False
+calcification,X4: kernel SVM,"QSVM C4, c = 1 − SVM RBF (D-027)",test,-0.0098296726106255,-0.0408231967855951,0.0228488731809912,False
+calcification,X4: kernel SVM,"QSVM C5, c = 1 − SVM RBF (D-027)",test,-0.068812757897697,-0.1164626186642559,-0.0224829289176216,True
+calcification,X4: kernel SVM,"QSVM C4, best c = 0.2 − SVM classical best (gaussian 2)",test,-0.0049784639415368,-0.0316784945517002,0.0220887245655977,False
+calcification,X4: kernel SVM,"QSVM C5, best c = 0.05 − SVM classical best (gaussian 2)",test,-0.0247188365094362,-0.0412321334875932,-0.0095302362108196,True
+mass,X6: nested search,Quantum (all) − Classical (all),nested CV,-0.0265961067590684,-0.0434298861225706,-0.0090807316392098,True
+calcification,X6: nested search,Quantum (all) − Classical (all),nested CV,0.0074584870049965,-0.0072221351315489,0.0230757851532235,False
+mass,X6: nested search,Quantum (all) − Classical (all),test,0.0037420366730295,-0.0230560171326444,0.0325319482469538,False
+calcification,X6: nested search,Quantum (all) − Classical (all),test,-0.0049784639415368,-0.0316784945517002,0.0220887245655977,False

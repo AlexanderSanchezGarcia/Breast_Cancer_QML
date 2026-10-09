@@ -1,0 +1,23 @@
+check,value,passed
+the stored predictions reproduce every test AUC of Module 7,0.0,True
+the stored out-of-fold predictions reproduce every fold AUC of Module 7,5.551115123125783e-17,True
+null control of Modules 6 and X3: C1 and C2 have the same embedding metrics,2.5757174171303632e-14,True
+"the forest plot lists the same comparisons, in the same order, for both subsets",0.0,True
+"without ties, Pearson on ranks equals the formula of the report",2.220446049250313e-16,True
+"with ties, Pearson on average ranks equals scipy.stats.spearmanr",1.1102230246251565e-16,True
+no ties: the exact two-sided p of a perfect agreement is 2/120,0.016666666666666666,True
+C1 = C2 tied: the exact two-sided p of the best attainable agreement is 4/120,0.03333333333333333,True
+k = 12: ranking by the linear alignment equals ranking by its excess over the permutation mean (D-033),0.0,True
+every separability ranking ties C1 and C2 (null control),0.0,True
+mass: case identifiers in the CBIS-DDSM files are unique,0.0,True
+mass: every training lesion has its radiologist descriptors,0.0,True
+calcification: case identifiers in the CBIS-DDSM files are unique,0.0,True
+calcification: every training lesion has its radiologist descriptors,0.0,True
+AerSimulator reproduces the C4 embedding of Module 5 on a real lesion,1.4988010832439613e-15,True
+mass C4: exact <Z_i> from the recomputed probabilities equal the embedding of Module 5,4.884981308350689e-15,True
+mass C5: exact <Z_i> from the recomputed probabilities equal the embedding of Module 5,6.217248937900877e-15,True
+calcification C4: exact <Z_i> from the recomputed probabilities equal the embedding of Module 5,4.884981308350689e-15,True
+calcification C5: exact <Z_i> from the recomputed probabilities equal the embedding of Module 5,6.106226635438361e-15,True
+the copied MLP reproduces the cross-validation of Module 7 on the exact embeddings,0.0,True
+"sampled <Z_i>: the error has the standard deviation of the measurement law, sqrt((1 - <Z>^2)/n), within 3 %",0.01302808496062291,True
+sampled <Z_i>: the mean error is within 4 standard errors of 0 (unbiased),3.2710996226639257,True

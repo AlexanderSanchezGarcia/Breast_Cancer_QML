@@ -1,0 +1,161 @@
+finding_type,k,ranking,condition,value,rank
+mass,12,test AUC,C1,0.6505875077303648,1.0
+mass,12,test AUC,C2,0.6407220897016814,3.0
+mass,12,test AUC,C3,0.6459051152928704,2.0
+mass,12,test AUC,C4,0.5303766528256325,5.0
+mass,12,test AUC,C5,0.5810583973849279,4.0
+mass,12,CV AUC,C1,0.6521742884444497,1.0
+mass,12,CV AUC,C2,0.641183857367764,3.0
+mass,12,CV AUC,C3,0.6478929265082443,2.0
+mass,12,CV AUC,C4,0.5647222952370405,4.0
+mass,12,CV AUC,C5,0.5634811748757352,5.0
+mass,12,Davies-Bouldin (subsample),C1,4.301004624938887,1.5
+mass,12,Davies-Bouldin (subsample),C2,4.301004624938885,1.5
+mass,12,Davies-Bouldin (subsample),C3,5.564108252843773,3.0
+mass,12,Davies-Bouldin (subsample),C4,5.898499072048984,4.0
+mass,12,Davies-Bouldin (subsample),C5,13.345693096346116,5.0
+mass,12,Fisher J (subsample),C1,0.669206189852465,2.5
+mass,12,Fisher J (subsample),C2,0.6692061898524655,2.5
+mass,12,Fisher J (subsample),C3,0.7806639535690563,1.0
+mass,12,Fisher J (subsample),C4,0.4494099335429424,5.0
+mass,12,Fisher J (subsample),C5,0.6677877749778869,4.0
+mass,12,linear KTA (subsample),C1,0.0701734088153673,1.5
+mass,12,linear KTA (subsample),C2,0.0701734088153673,1.5
+mass,12,linear KTA (subsample),C3,0.0587668306012294,3.0
+mass,12,linear KTA (subsample),C4,0.0408728404005168,4.0
+mass,12,linear KTA (subsample),C5,0.0118580367184294,5.0
+mass,12,Davies-Bouldin (full train),C1,4.626230681952196,1.5
+mass,12,Davies-Bouldin (full train),C2,4.62623068195217,1.5
+mass,12,Davies-Bouldin (full train),C3,5.7307084169334495,3.0
+mass,12,Davies-Bouldin (full train),C4,10.323462509125058,4.0
+mass,12,Davies-Bouldin (full train),C5,16.856479676727318,5.0
+mass,12,Fisher J (full train),C1,0.453953591808179,1.5
+mass,12,Fisher J (full train),C2,0.4539535918081834,1.5
+mass,12,Fisher J (full train),C3,0.4406873529646706,3.0
+mass,12,Fisher J (full train),C4,0.1282741880162331,5.0
+mass,12,Fisher J (full train),C5,0.2115365453881777,4.0
+mass,12,linear KTA (full train),C1,0.0617077918909396,1.5
+mass,12,linear KTA (full train),C2,0.0617077918909395,1.5
+mass,12,linear KTA (full train),C3,0.0561182045390161,3.0
+mass,12,linear KTA (full train),C4,0.0151574219655959,4.0
+mass,12,linear KTA (full train),C5,0.0075475871410952,5.0
+calcification,12,test AUC,C1,0.7685043088183214,2.0
+calcification,12,test AUC,C2,0.787746428993035,1.0
+calcification,12,test AUC,C3,0.7578798252862708,3.0
+calcification,12,test AUC,C4,0.6334159682052493,5.0
+calcification,12,test AUC,C5,0.6516743399047733,4.0
+calcification,12,CV AUC,C1,0.7420353827508531,2.0
+calcification,12,CV AUC,C2,0.7579838419256832,1.0
+calcification,12,CV AUC,C3,0.7390965405282205,3.0
+calcification,12,CV AUC,C4,0.6398588909982215,5.0
+calcification,12,CV AUC,C5,0.6666476326913668,4.0
+calcification,12,Davies-Bouldin (subsample),C1,2.387394756933977,1.5
+calcification,12,Davies-Bouldin (subsample),C2,2.3873947569339755,1.5
+calcification,12,Davies-Bouldin (subsample),C3,2.9949724609949557,3.0
+calcification,12,Davies-Bouldin (subsample),C4,6.88987790864766,5.0
+calcification,12,Davies-Bouldin (subsample),C5,6.2465012614823,4.0
+calcification,12,Fisher J (subsample),C1,1.283713455765478,2.5
+calcification,12,Fisher J (subsample),C2,1.2837134557654823,2.5
+calcification,12,Fisher J (subsample),C3,1.389766476418168,1.0
+calcification,12,Fisher J (subsample),C4,0.3985774042451902,5.0
+calcification,12,Fisher J (subsample),C5,0.7531830943875731,4.0
+calcification,12,linear KTA (subsample),C1,0.1812487391933966,1.5
+calcification,12,linear KTA (subsample),C2,0.1812487391933964,1.5
+calcification,12,linear KTA (subsample),C3,0.1612443436568482,3.0
+calcification,12,linear KTA (subsample),C4,0.0306580131271118,5.0
+calcification,12,linear KTA (subsample),C5,0.0409150094236378,4.0
+calcification,12,Davies-Bouldin (full train),C1,2.5822581847629458,1.5
+calcification,12,Davies-Bouldin (full train),C2,2.582258184762946,1.5
+calcification,12,Davies-Bouldin (full train),C3,3.1816948980572706,3.0
+calcification,12,Davies-Bouldin (full train),C4,5.283037137295005,4.0
+calcification,12,Davies-Bouldin (full train),C5,11.208025897221289,5.0
+calcification,12,Fisher J (full train),C1,1.061329420164398,1.5
+calcification,12,Fisher J (full train),C2,1.06132942016439,1.5
+calcification,12,Fisher J (full train),C3,1.0038810050305862,3.0
+calcification,12,Fisher J (full train),C4,0.4225175829498022,4.0
+calcification,12,Fisher J (full train),C5,0.3068481094765189,5.0
+calcification,12,linear KTA (full train),C1,0.1631177001456622,1.5
+calcification,12,linear KTA (full train),C2,0.1631177001456622,1.5
+calcification,12,linear KTA (full train),C3,0.1494722480230788,3.0
+calcification,12,linear KTA (full train),C4,0.0459570954278588,4.0
+calcification,12,linear KTA (full train),C5,0.013078278808634,5.0
+mass,8,test AUC,C1,0.6335070824866744,3.0
+mass,8,test AUC,C2,0.649615690432017,1.0
+mass,8,test AUC,C3,0.6357157581647378,2.0
+mass,8,test AUC,C4,0.5564537503313014,5.0
+mass,8,test AUC,C5,0.5612686633094797,4.0
+mass,8,CV AUC,C1,0.6397959480570721,2.0
+mass,8,CV AUC,C2,0.6156899319689132,3.0
+mass,8,CV AUC,C3,0.6450402605121239,1.0
+mass,8,CV AUC,C4,0.5503103850292905,5.0
+mass,8,CV AUC,C5,0.562589250678635,4.0
+mass,8,Davies-Bouldin (subsample),C1,3.8295780710197103,1.5
+mass,8,Davies-Bouldin (subsample),C2,3.829578071019713,1.5
+mass,8,Davies-Bouldin (subsample),C3,5.215623802988086,3.0
+mass,8,Davies-Bouldin (subsample),C4,7.402238937318216,5.0
+mass,8,Davies-Bouldin (subsample),C5,5.903237274557026,4.0
+mass,8,Fisher J (subsample),C1,0.5303123110457746,2.5
+mass,8,Fisher J (subsample),C2,0.5303123110457754,2.5
+mass,8,Fisher J (subsample),C3,0.722833002333618,1.0
+mass,8,Fisher J (subsample),C4,0.2826935714247757,5.0
+mass,8,Fisher J (subsample),C5,0.5055042737223816,4.0
+mass,8,linear KTA (subsample),C1,0.0706035751269898,1.5
+mass,8,linear KTA (subsample),C2,0.0706035751269898,1.5
+mass,8,linear KTA (subsample),C3,0.0568974637110844,3.0
+mass,8,linear KTA (subsample),C4,0.0294665597225124,5.0
+mass,8,linear KTA (subsample),C5,0.0400216447451536,4.0
+mass,8,Davies-Bouldin (full train),C1,4.093507043538082,1.5
+mass,8,Davies-Bouldin (full train),C2,4.0935070435380805,1.5
+mass,8,Davies-Bouldin (full train),C3,5.258117972238839,3.0
+mass,8,Davies-Bouldin (full train),C4,16.695547438815193,5.0
+mass,8,Davies-Bouldin (full train),C5,8.342454963004554,4.0
+mass,8,Fisher J (full train),C1,0.3743921533871787,1.5
+mass,8,Fisher J (full train),C2,0.374392153387185,1.5
+mass,8,Fisher J (full train),C3,0.3663123563688351,3.0
+mass,8,Fisher J (full train),C4,0.0907376490198927,5.0
+mass,8,Fisher J (full train),C5,0.1702073971678271,4.0
+mass,8,linear KTA (full train),C1,0.0633875870998,1.5
+mass,8,linear KTA (full train),C2,0.0633875870998,1.5
+mass,8,linear KTA (full train),C3,0.0569459682356051,3.0
+mass,8,linear KTA (full train),C4,0.0060060276588903,5.0
+mass,8,linear KTA (full train),C5,0.0207256660081955,4.0
+calcification,8,test AUC,C1,0.7524101837642152,3.0
+calcification,8,test AUC,C2,0.797465863927911,1.0
+calcification,8,test AUC,C3,0.7651005390941644,2.0
+calcification,8,test AUC,C4,0.5609727304922677,5.0
+calcification,8,test AUC,C5,0.6404202573486011,4.0
+calcification,8,CV AUC,C1,0.7359749243736358,3.0
+calcification,8,CV AUC,C2,0.7668320349178753,1.0
+calcification,8,CV AUC,C3,0.7431424755226193,2.0
+calcification,8,CV AUC,C4,0.5965695599481738,5.0
+calcification,8,CV AUC,C5,0.6570033502999609,4.0
+calcification,8,Davies-Bouldin (subsample),C1,2.4374939891695493,1.5
+calcification,8,Davies-Bouldin (subsample),C2,2.437493989169546,1.5
+calcification,8,Davies-Bouldin (subsample),C3,2.93466648045246,3.0
+calcification,8,Davies-Bouldin (subsample),C4,6.9948260830534394,5.0
+calcification,8,Davies-Bouldin (subsample),C5,5.50663884122191,4.0
+calcification,8,Fisher J (subsample),C1,1.2315857321212969,2.5
+calcification,8,Fisher J (subsample),C2,1.2315857321213015,2.5
+calcification,8,Fisher J (subsample),C3,1.2454986490584803,1.0
+calcification,8,Fisher J (subsample),C4,0.3436394411679959,5.0
+calcification,8,Fisher J (subsample),C5,0.4463699892878356,4.0
+calcification,8,linear KTA (subsample),C1,0.1784221983138829,1.5
+calcification,8,linear KTA (subsample),C2,0.1784221983138829,1.5
+calcification,8,linear KTA (subsample),C3,0.1595432410508526,3.0
+calcification,8,linear KTA (subsample),C4,0.0355428463940675,5.0
+calcification,8,linear KTA (subsample),C5,0.0391360514799502,4.0
+calcification,8,Davies-Bouldin (full train),C1,2.6475393702297776,1.5
+calcification,8,Davies-Bouldin (full train),C2,2.6475393702297785,1.5
+calcification,8,Davies-Bouldin (full train),C3,3.1417824861781427,3.0
+calcification,8,Davies-Bouldin (full train),C4,6.228065738800329,5.0
+calcification,8,Davies-Bouldin (full train),C5,4.792908854556327,4.0
+calcification,8,Fisher J (full train),C1,0.9804521734149972,1.5
+calcification,8,Fisher J (full train),C2,0.9804521734149892,1.5
+calcification,8,Fisher J (full train),C3,0.9560264212255548,3.0
+calcification,8,Fisher J (full train),C4,0.2907012156538694,5.0
+calcification,8,Fisher J (full train),C5,0.3713564622961114,4.0
+calcification,8,linear KTA (full train),C1,0.1606872979665014,1.5
+calcification,8,linear KTA (full train),C2,0.1606872979665013,1.5
+calcification,8,linear KTA (full train),C3,0.1476396070892155,3.0
+calcification,8,linear KTA (full train),C4,0.0429683898830927,5.0
+calcification,8,linear KTA (full train),C5,0.053362585757679,4.0

@@ -61,6 +61,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-036 | 2026-10-06 | Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente | M7 | Provisional | §4.8, §6.x |
 | D-037 | 2026-10-06 | Análisis de sensibilidad del M7: reps = 2 en el ansatz, k = 8, semillas y configuraciones | M7 | Firme | §6.x, §7 |
 | D-038 | 2026-10-07 | Análisis exploratorios X4 a X6: QSVM, auditoría y búsqueda de ventaja, con protocolo simétrico | X4–X6 | Firme | §6.x, §7 |
+| D-039 | 2026-10-07 | El Spearman del M8 se reporta como descriptivo: por subconjunto, con su distribución exacta para n = 5 | M8 | Firme | §3.4, §4.10, §6.x |
+| D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Provisional | §4.10, §6.x, §7, OE-6 |
 
 ### Hallazgos
 
@@ -114,6 +116,10 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-046 | 2026-10-07 | La auditoría independiente del pipeline no encuentra errores (25 de 25) | Descarta que un error esconda una ventaja |
 | H-047 | 2026-10-07 | Con la misma búsqueda anidada en ambos lados, ningún kernel cuántico supera a los clásicos en las etiquetas reales | Cierra la búsqueda de ventaja con el protocolo de D-038; dos hipótesis refutadas |
 | H-048 | 2026-10-07 | Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de la tarea | Respuesta central para §7: por qué la literatura reporta ventajas y aquí no |
+| H-049 | 2026-10-07 | Los rankings de separabilidad y de clasificación coinciden en lo esencial: lo clásico va delante en todos (ρ_s de 0.67 a 0.97) | Respuesta del OE-5 (RF-21); corrige la ecuación de Spearman del §3.4 |
+| H-050 | 2026-10-07 | Con los descriptores del radiólogo las masas son más separables; con las features radiómicas, menos | La inversión respecto al EDA está en las features; material de §5, §6 y §7 |
+| H-051 | 2026-10-07 | El simulador admite unos 25 qubits para el embedding y 22 para el kernel en esta máquina; el techo del diseño fue el gradiente | OE-6 (RF-22): tiempo por muestra, qubits y *parameter-shift* |
+| H-052 | 2026-10-07 | Con 1,024 shots el MLP recupera casi todo el AUC exacto, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 | OE-6 (RF-22, RNF-05): la concentración hace al kernel inmedible en hardware |
 
 ### Preguntas abiertas
 
@@ -739,6 +745,62 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 - **Todo se reporta**, incluidos los intentos que no funcionan.
 
 **Por qué.** Probar muchas variantes cuánticas contra una sola clásica produciría una «ventaja» por selección. La simetría del protocolo es lo que permite interpretar el resultado en cualquier dirección.
+
+---
+
+### D-039 · El Spearman del M8 se reporta como descriptivo
+**Fecha:** 2026-10-07 · **Módulo:** M8 · **Estado:** Firme (opción elegida por el autor) · **→ Reporte:** §3.4 (ec. `spearman`), §4.10, §6.x · *precisa RF-21*
+
+**Contexto.**
+- RF-21 pide correlacionar el ranking de separabilidad con el de clasificación de las cinco condiciones.
+- Con n = 5, la distribución nula exacta de ρ_s se obtiene de los 5! = 120 órdenes, todos igual de probables. Sin empates, solo el acuerdo perfecto baja de p = 0.05 bilateral: p = 2/120 ≈ 0.017. Basta un intercambio entre vecinos para tener ρ = 0.9 y p ≈ 0.083.
+- Además, toda métrica de separabilidad empata a C1 y C2 por construcción (D-016).
+
+**Opciones.**
+1. Reportar ρ_s de forma descriptiva, por subconjunto, con su distribución exacta.
+2. Juntar masas y calcificaciones para tener n = 10. Choca con D-005.
+3. Usar los análisis de sensibilidad (reps = 2, k = 8) como puntos extra. No son independientes del principal.
+
+**Decisión.** Opción 1.
+- **Cálculo.** ρ_s es la correlación de Pearson de los rangos promedio. Es la definición general; la fórmula del reporte, 1 − 6Σd²/(n(n²−1)), es su caso sin empates y no vale con el empate C1 = C2.
+- **Empates numéricos.** Los valores que difieren solo por ruido de punto flotante cuentan como empate: es el caso de C1 y C2, que difieren en 10⁻¹⁴.
+- **Valores primarios.** Las tres métricas de embedding (D-033) sobre la submuestra de 200 (D-028), contra el AUC del test, con k = 12. Son las métricas de la misma familia de vectores que recibe el MLP (H-013).
+- **Sensibilidad.** Todo el train, el AUC de validación cruzada y k = 8.
+- **Lectura por bloques.** Se reporta si cada ranking pone a las tres condiciones clásicas por encima de las dos cuánticas.
+- **Familia de kernels.** Solo hay tres kernels, así que solo se compara su orden con el del SVM del X4. Con n = 3, el p mínimo es 1/3.
+
+**Por qué.**
+- Con n = 5 y el empate, la prueba solo puede rechazar con un único orden.
+- Se calculan 48 valores de ρ sobre las mismas cinco condiciones, así que no son evidencia independiente.
+
+---
+
+### D-040 · Contenido del M8: el OE-6 medido y una referencia con los descriptores del radiólogo
+**Fecha:** 2026-10-07 · **Módulo:** M8 · **Estado:** **Provisional**: propuesta al implementar; la valida el autor · **→ Reporte:** §4.10, §6.x, §7, OE-6 · *precisa RF-22*
+
+**Contexto.**
+- RF-22 pide documentar cuatro cosas: el tiempo por muestra, el máximo de qubits, el impacto de los shots y el coste del *parameter-shift*.
+- B1 midió el tiempo y el *parameter-shift* hasta k = 16, y B3 la estabilidad de ⟨Zᵢ⟩ con muestreo real (H-019).
+- Faltaban tres cosas:
+  - el techo de qubits en esta máquina;
+  - el efecto de los shots sobre lo que se usa después, el clasificador y el kernel;
+  - una explicación de por qué el EDA esperaba que las masas fueran el subconjunto fácil, cuando el M7 encontró lo contrario.
+
+**Decisión.**
+- **Qubits.**
+  - Se cronometra un estado del circuito de C4 (*feature map* y *ansatz*) con `AerSimulator` en modo statevector, para k par de 8 a 28. El circuito solo devuelve los k valores ⟨Zᵢ⟩, para no duplicar la memoria al devolver el estado.
+  - Se proyectan cuatro tareas como cotas inferiores, sin la sobrecarga de las primitivas: el embedding, el kernel por *compute-uncompute*, el kernel con el atajo del vector de estado y el entrenamiento de θ.
+  - Una tarea es viable si su memoria cabe en la mitad de la RAM y termina en 24 h.
+- **Shots en el embedding.**
+  - Para cada lesión se sortean n cadenas de bits a partir de las probabilidades exactas, con un sorteo multinomial. Es la estadística de un *sampler* ideal.
+  - Con esas cadenas se reconstruyen los ⟨Zᵢ⟩ y se reentrena el MLP del M7 (D-036), solo en validación cruzada.
+  - n ∈ {64, 256, 1,024, 4,096, 16,384, 65,536}, con tres sorteos por nivel.
+- **Shots en el kernel.** No se simula nada. En hardware, el valor del kernel es la probabilidad de leer la cadena de ceros, así que su estimación es binomial y su coste se calcula de forma analítica sobre los kernels exactos del M5.
+- **Descriptores del radiólogo.**
+  - Regresión logística con los folds de M4 sobre los descriptores categóricos del CBIS-DDSM: forma y márgenes en masas, tipo y distribución en calcificaciones.
+  - Es una referencia, no un competidor: los escribió un radiólogo viendo la imagen.
+  - Se excluyen `assessment` (BI-RADS, que ya es un juicio de malignidad) y `subtlety`.
+- **El test no se vuelve a usar.** Los números de test del M8 son los del M7, el X4 y el X6.
 
 ---
 
@@ -1981,6 +2043,128 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 - **Para leer la literatura:** cuando un trabajo reporta ventaja, la pregunta es si sus etiquetas tienen esa estructura o si la comparación es asimétrica (H-046).
 
 **Datos.** `Code/experiments/X6_Searching_for_Advantage.ipynb` (5°); `Code/results/X6_etiquetas_construidas.csv`; figura `Docs/Figures/X6_built_labels.png`.
+
+---
+
+### H-049 · Los rankings de separabilidad y de clasificación coinciden en lo esencial: las tres condiciones clásicas van delante de las dos cuánticas en todos
+**Fecha:** 2026-10-07 · **→ Reporte:** §6.x, OE-5, RF-21 · *protocolo de D-039*
+
+| ρ_s primario (submuestra de 200 frente al AUC del test, k = 12) | Davies-Bouldin | Fisher J | KTA lineal |
+|---|---|---|---|
+| Masas | 0.72 (p = 0.17) | 0.82 (p = 0.13) | 0.72 (p = 0.17) |
+| Calcificaciones | 0.97 (p = 0.033) | 0.67 (p = 0.27) | 0.97 (p = 0.033) |
+
+**Lecturas.**
+1. **Los 48 coeficientes son positivos, entre 0.67 y 0.97.** Cubren tres métricas, dos muestras, dos evaluaciones, dos subconjuntos y dos valores de k.
+2. **En todos, ambos rankings ponen a C1–C3 por encima de C4 y C5.** El acuerdo está en esa partición.
+3. **Dentro de cada bloque, el orden es ruido.** C1 y C2 solo difieren en AUC por el ruido del entrenamiento (D-016), y C4 frente a C5 nunca fue significativo (H-042).
+4. **Cinco de los 48 valores bajan de p = 0.05.** Son justo el mejor orden alcanzable con el empate C1 = C2: ρ_s = 0.975, con p = 4/120. Se leen como acuerdo, no como prueba (D-039).
+5. **En la familia de kernels** (tres objetos, sin prueba posible), el RBF va primero tanto en alineamiento como en el AUC del SVM del X4. C4 y C5 se intercambian, pero sus excesos de KTA difieren en menos de 0.003.
+
+**Impacto.**
+- **Responde el OE-5.** Separabilidad y clasificación ordenan igual a las condiciones.
+- **La premisa de la hipótesis no se cumple.** La transformación cuántica no mejoró la separabilidad (H-039, H-040), y la menor separabilidad de C4 y C5 viene seguida de menor AUC. La correlación avala a las métricas del M6 como predictoras; no avala una ventaja.
+- **Corrección para §3.4.** La ecuación `spearman` del reporte, 1 − 6Σd²/(n(n²−1)), solo vale sin empates. Con el empate C1 = C2 se usa la correlación de Pearson de los rangos promedio.
+
+**Datos.** `Code/8_Comparison.ipynb` (3°); `Code/results/8_spearman.csv`, `8_spearman_nula.csv`, `8_rangos.csv` y `8_rangos_kernel.csv`; figuras `Docs/Figures/M8_spearman.png` y `M8_spearman_null.png`.
+
+---
+
+### H-050 · Con los descriptores del radiólogo las masas son el subconjunto más separable; con las features radiómicas, el menos: la inversión respecto al EDA está en las features
+**Fecha:** 2026-10-07 · **→ Reporte:** §5 (hallazgos del EDA), §6.x, §7 · *referencia de D-040*
+
+| AUC en validación cruzada, regresión logística | Masas | Calcificaciones |
+|---|---|---|
+| Descriptores del radiólogo (forma y márgenes; tipo y distribución) | **0.872** | 0.825 |
+| Las 67 features radiómicas (X1) | 0.693 | **0.800** |
+| Los 12 ángulos de M4 | 0.668 | 0.745 |
+
+**Lecturas.**
+1. **El EDA acertó sobre las clases.** En el vocabulario del radiólogo, las masas son más separables, como anticipaban la forma y los márgenes.
+2. **Las features invierten el orden.**
+   - En calcificaciones, las 67 features recuperan casi todo lo que llevan los descriptores: 0.800 contra 0.825.
+   - En masas, mucho menos: 0.693 contra 0.872.
+   - La debilidad de las masas es, por tanto, una propiedad de las features y no de las clases.
+3. **Hipótesis, no hallazgo.** Los márgenes (espiculados, mal definidos) son detalles del borde, y las features del M3 resumen toda la región y el contorno de la máscara. Comprobarlo requeriría features específicas del margen, y este trabajo no lo hace.
+4. **La penalización cuántica es la misma en ambos subconjuntos.** C4 − C1 vale −0.12 en masas y −0.14 en calcificaciones. La geometría del kernel también es igual:
+   - mediana de 0.002–0.003 en C4 y de 0.00003 en C5;
+   - *g* de 1.4 a 1.7.
+
+   Lo que cambia entre subconjuntos es la señal clásica, no la codificación cuántica.
+
+**Advertencia.** Los descriptores son una referencia, no un competidor: los escribió un radiólogo viendo la imagen, y ningún sistema automático los tiene al predecir. Se excluyeron `assessment` (BI-RADS) y `subtlety`.
+
+**Datos.** `Code/8_Comparison.ipynb` (4°); `Code/results/8_descriptores_radiologo.csv` y `8_masas_vs_calcificaciones.csv`.
+
+---
+
+### H-051 · En esta máquina, el simulador admite unos 25 qubits para el embedding y 22 para el kernel; el techo que condicionó el diseño fue el gradiente, no el número de qubits
+**Fecha:** 2026-10-07 · **→ Reporte:** §6.x, §8.x, OE-6, RF-22 · *completa H-011 y H-032*
+
+**Método.** Se cronometró un estado del circuito de C4 con `AerSimulator` (statevector) para k par de 8 a 28, en una Apple M3 con 16 GiB. Con esos tiempos se proyectaron cuatro tareas como cotas inferiores (D-040).
+
+| Tarea | Mayor k viable |
+|---|---|
+| Un estado en memoria (16 bytes × 2^k, hasta la mitad de la RAM) | 29 |
+| Embedding de todas las lesiones en 24 h | 25 |
+| Kernel de 200 × 200 por *compute-uncompute* en 24 h (la vía del hardware) | 22 |
+| Kernel de 200 × 200 con el atajo del vector de estado, con todos los estados en memoria | 21 |
+| Entrenar θ por *parameter-shift*, 50 épocas, un mapa, en 24 h (cota inferior) | 14 |
+
+**Lecturas.**
+1. **Tiempo por muestra a k = 12.** El mismo estado se calcula por tres vías:
+   - 3 ms con `AerSimulator`;
+   - 8 ms con el vector de estado directo del M5;
+   - 93 ms a través de `EstimatorQNN` (B1).
+
+   La diferencia entre las tres es sobrecarga de la primitiva, no física.
+2. **El coste crece como 2^k.**
+   - Por encima de 20 qubits, el tiempo crece unas 1.9 veces por qubit añadido.
+   - A k = 28 la medición (75 s por estado, 5.4 veces la de 26) queda por encima de la tendencia, probablemente por presión de memoria; no se verificó.
+   - Una primera ejecución del mismo barrido dio 152 s a k = 28 y límites de 26, 23 y 15. Los tiempos de los estados grandes dependen de la carga de la máquina, así que los límites tienen una incertidumbre de un qubit.
+3. **El *parameter-shift* es lo caro.** Necesita 48 evaluaciones por lesión a k = 12 (4.7 s) y unas 191 h por *feature map* para 50 épocas (B1). La Arquitectura B, unas 1,900 veces más rápida, era la única factible (D-014, H-011).
+4. **k = 12 está lejos de todos los límites.**
+
+**Impacto.** Material directo del OE-6. Cumple la parte de RF-22 sobre el tiempo por muestra, el máximo de qubits y el coste del *parameter-shift*. RNF-07, que pide k ∈ [8, 16] con entrenamiento, solo es alcanzable sin entrenar θ.
+
+**Datos.** `Code/8_Comparison.ipynb` (5° a–d); `Code/results/8_oe6_qubits.csv` y `8_oe6_resumen.csv`; figura `Docs/Figures/M8_oe6_qubits.png`.
+
+---
+
+### H-052 · Con 1,024 shots el MLP recupera casi todo el AUC exacto, pero el kernel cuántico no se puede medir: a c = 1, entre el 16 y el 74 % de sus valores leería 0
+**Fecha:** 2026-10-07 · **→ Reporte:** §3.x (medición), §6.x, §7, OE-6, RF-22, RNF-05 · *completa H-019 y H-037*
+
+**Embedding.**
+
+| | C4 masas | C4 calcificaciones | C5 masas | C5 calcificaciones |
+|---|---|---|---|---|
+| Ruido / dispersión entre lesiones, 1,024 shots | 0.55 | 0.65 | 0.17 | 0.17 |
+| Shots para que el ruido sea el 10 % de la dispersión | 31,000 | 44,000 | 2,900 | 3,000 |
+| AUC de validación cruzada, 1,024 shots (exacto) | 0.548 (0.565) | 0.630 (0.640) | 0.565 (0.563) | 0.654 (0.667) |
+
+**Kernel, c = 1.** En hardware, cada valor del kernel es la probabilidad de leer la cadena de ceros.
+
+| | C4 masas | C4 calcificaciones | C5 masas | C5 calcificaciones |
+|---|---|---|---|---|
+| Entradas que leen exactamente 0, 1,024 shots por par | 21 % | 16 % | 74 % | 72 % |
+| Lo mismo con 8,192 shots | 2.5 % | 1.5 % | 57 % | 56 % |
+| Mediana de shots por par para un error relativo del 10 % | 46,000 | 35,000 | 3.1 millones | 3.2 millones |
+
+**Lecturas.**
+1. **El clasificador tolera el ruido mejor que las coordenadas.**
+   - Con 1,024 shots, el mínimo de RNF-05, el AUC queda a menos de 0.02 del exacto en los cuatro casos.
+   - Con 64 shots pierde hasta 0.08 (calcificaciones, C4).
+2. **C5 es entre 10 y 15 veces más barato de medir que C4.**
+   - La varianza de la estimación es (1 − ⟨Z⟩²)/n, así que los shots necesarios crecen como 1/dispersión².
+   - C5 se dispersa tres veces más (H-037).
+3. **El kernel es lo que fallaría en hardware.**
+   - 58–60 % de los pares de C5 necesitan más de 10⁶ shots.
+   - Achicar los ángulos (c = 0.05) baja el coste a 400–630 shots por par, pero ese es el régimen en el que el kernel se comporta como uno clásico (H-031).
+4. **La concentración que dejó al kernel sin información (H-039) es la misma propiedad que lo hace imposible de medir.**
+
+**Formalismo frente a implementación.** La ley (1 − ⟨Z⟩²)/n y el carácter binomial del valor del kernel son propiedades de la medición cuántica. El sorteo multinomial reproduce lo que haría un *sampler* ideal (H-019).
+
+**Datos.** `Code/8_Comparison.ipynb` (5° e–h); `Code/results/8_oe6_shots_embedding.csv`, `8_oe6_shots_kernel.csv` y `8_oe6_resumen.csv`; figura `Docs/Figures/M8_oe6_shots.png`.
 
 ---
 
