@@ -1,0 +1,25 @@
+% Generado por Code/tools/tablas_latex.py desde 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv y 6_diferencia_geometrica_resumen.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Separabilidad en la familia de kernels (M6), $c = 1$, 200 lesiones de entrenamiento por subconjunto (D-028).}
+\label{tab:m6_kernels}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l r r r r r}
+\toprule
+Kernel & KTA centrada & Exceso sobre permutación & $p$ & $d_{\mathrm{eff}}$ (de 200) & $g$ regularizada \\
+\midrule
+\multicolumn{6}{l}{\textit{Masas}} \\
+\quad RBF (clásico) & 0.059 & 0.049 & $<$0.001 & 2.8 & — \\
+\quad C4, ZZ & 0.073 & 0.003 & 0.002 & 184.0 & 1.433 \\
+\quad C5, Y--ZZ & 0.075 & 0.005 & 0.003 & 171.3 & 1.511 \\
+\multicolumn{6}{l}{\textit{Calcificaciones}} \\
+\quad RBF (clásico) & 0.161 & 0.151 & $<$0.001 & 2.6 & — \\
+\quad C4, ZZ & 0.077 & 0.006 & $<$0.001 & 187.7 & 1.400 \\
+\quad C5, Y--ZZ & 0.075 & 0.007 & 0.003 & 167.6 & 1.701 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize El exceso es la KTA centrada menos la media de 1{,}000 permutaciones de etiquetas (D-033); $p$ es unilateral. $g$ es el mínimo de la \textit{geometric difference} regularizada sobre la batería de kernels clásicos del Apéndice L.3 de Huang et al.\ (D-032); $\sqrt{N} \approx 14$.}
+\end{table}

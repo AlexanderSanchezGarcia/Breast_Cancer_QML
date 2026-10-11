@@ -1,0 +1,11 @@
+check,value,passed
+theta seed 42 reproduces the theta of Module 5,0.0,True
+mass: C4 through the torch layer equals the embedding of Module 5 (all lesions),4.218847493575595e-15,True
+mass: C5 through the torch layer equals the embedding of Module 5 (all lesions),6.328271240363392e-15,True
+calcification: C4 through the torch layer equals the embedding of Module 5 (all lesions),3.941291737419306e-15,True
+calcification: C5 through the torch layer equals the embedding of Module 5 (all lesions),5.773159728050814e-15,True
+parameter shift and the torch layer give the same <Z_i> (20 lesions),1.8813076096968473e-15,True
+parameter shift and automatic differentiation give the same Jacobian (20 x 12 x 24),1.7763568394002505e-15,True
+"theta frozen reproduces the fold AUCs of Module 7 (masses, C4)",0.0,True
+every fit stopped before the epoch limit,80.0,True
+one test model per subset and map,4.0,True

@@ -1,0 +1,29 @@
+% Generado por Code/tools/tablas_latex.py desde 6_metricas_embedding.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Separabilidad en la familia de embeddings (M6): 200 lesiones de entrenamiento por subconjunto (D-028).}
+\label{tab:m6_embeddings}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l r r r}
+\toprule
+Condición & Davies--Bouldin $\downarrow$ & Fisher $J$ $\uparrow$ & KTA lineal $\uparrow$ \\
+\midrule
+\multicolumn{4}{l}{\textit{Masas}} \\
+\quad C1 & 4.301 & 0.669 & 0.070 \\
+\quad C2 & 4.301 & 0.669 & 0.070 \\
+\quad C3 & 5.564 & 0.781 & 0.059 \\
+\quad C4 & 5.898 & 0.449 & 0.041 \\
+\quad C5 & 13.346 & 0.668 & 0.012 \\
+\multicolumn{4}{l}{\textit{Calcificaciones}} \\
+\quad C1 & 2.387 & 1.284 & 0.181 \\
+\quad C2 & 2.387 & 1.284 & 0.181 \\
+\quad C3 & 2.995 & 1.390 & 0.161 \\
+\quad C4 & 6.890 & 0.399 & 0.031 \\
+\quad C5 & 6.247 & 0.753 & 0.041 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Fisher $J = \Delta\mu^\top S_W^{-1} \Delta\mu$, con la covarianza intraclase combinada (D-033). C1 y C2 coinciden por construcción (D-016).}
+\end{table}

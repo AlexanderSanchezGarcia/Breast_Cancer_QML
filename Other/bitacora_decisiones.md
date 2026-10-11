@@ -121,6 +121,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-051 | 2026-10-07 | El simulador admite unos 25 qubits para el embedding y 22 para el kernel en esta máquina; el techo del diseño fue el gradiente | OE-6 (RF-22): tiempo por muestra, qubits y *parameter-shift* |
 | H-052 | 2026-10-07 | Con 1,024 shots el MLP recupera casi todo el AUC exacto, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 | OE-6 (RF-22, RNF-05): la concentración hace al kernel inmedible en hardware |
 | H-053 | 2026-10-10 | El sorteo de θ mueve el AUC de C4 y C5 tanto o más que la semilla del MLP, pero ninguno de 40 sorteos alcanza a C1 | La conclusión del M7 no depende de θ; su magnitud sí (déficit de 0.03 a 0.18 frente a C1): reportar el rango |
+| H-054 | 2026-10-11 | Entrenar θ junto con el MLP gana a lo sumo 0.05 de AUC y no alcanza a C1; con gradientes del simulador cuesta minutos, no cientos de horas | La conclusión del M7 se mantiene con θ entrenado; matiza la razón de costo de D-014 y H-015 (vale para el hardware, no para el simulador) |
 
 ### Preguntas abiertas
 
@@ -2207,6 +2208,56 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 - Responde a H-017 en el diseño final: un θ único no sostiene la magnitud de la pérdida, pero sí su signo.
 
 **Datos.** `Code/experiments/X7_Theta_Draws.ipynb`; `Code/results/X7_sorteos.csv`, `X7_resumen.csv`, `X7_cv_por_fold.csv` y `X7_verificaciones.csv`; figura `Docs/Figures/X7_theta_draws.png`.
+
+---
+
+### H-054 · Entrenar θ junto con el MLP gana a lo sumo 0.05 de AUC y no alcanza a C1; con gradientes del simulador, entrenarlo cuesta minutos y no cientos de horas
+**Fecha:** 2026-10-11 · **→ Reporte:** §6.x, §7, §8.x, OE-6 · *exploratorio, en el sentido de D-038; matiza D-014 y H-015*
+
+**Qué se midió (X8).**
+- El protocolo del M7 con un solo cambio: θ se entrena junto con el MLP, partiendo del θ del diseño (semilla 42).
+- Dos elecciones se fijaron antes de ver resultados:
+  - tasa de aprendizaje de 10⁻² para θ, sin *weight decay*, porque son ángulos de orden 1;
+  - estandarización con las estadísticas del θ inicial.
+- Sensibilidad, solo en validación cruzada: θ inicial de las semillas 43 y 44, y tasa de 10⁻³.
+- El test se usó una vez por subconjunto y mapa.
+- El gradiente se calcula retropropagando a través del vector de estado, con una capa de torch que reproduce los ⟨Zᵢ⟩ del M5 con un error ≤ 6×10⁻¹⁵.
+- Con θ congelado, el mismo código reproduce exactamente los AUC por fold del M7. Pasan las 10 verificaciones.
+
+| AUC | θ fijo (M7) | θ entrenado | Entrenado − fijo, test | Entrenado − C1, test |
+|---|---|---|---|---|
+| Masas, C4: CV / test | 0.565 / 0.530 | 0.568 / 0.533 | +0.003 [−0.06, 0.07] | −0.118 [−0.19, −0.04] |
+| Masas, C5: CV / test | 0.563 / 0.581 | 0.612 / 0.585 | +0.004 [−0.05, 0.06] | −0.066 [−0.12, −0.02] |
+| Calcificaciones, C4: CV / test | 0.640 / 0.633 | 0.694 / 0.674 | +0.041 [−0.03, 0.10] | −0.094 [−0.15, −0.03] |
+| Calcificaciones, C5: CV / test | 0.667 / 0.652 | 0.687 / 0.671 | +0.020 [−0.04, 0.08] | −0.098 [−0.15, −0.05] |
+
+**Lecturas.**
+1. **La ganancia es pequeña y no significativa.** Entrenar θ gana de 0.00 a 0.05 en CV y de 0.00 a 0.04 en el test, con intervalos que contienen el cero. La sensibilidad da rangos parecidos.
+2. **La brecha con lo clásico se mantiene.** Las cuatro combinaciones siguen por debajo de C1 en el test, con intervalos que excluyen el cero.
+3. **Tampoco alcanzan al QSVM del X4,** que lee el mismo kernel sin ningún θ (0.628 y 0.599 en masas; 0.759 y 0.701 en calcificaciones). Doce observables locales, aun entrenados, recuperan menos de lo que ve el kernel.
+4. **θ se mueve poco.**
+   - El cambio medio es de 0.13 a 0.39 rad.
+   - La mejor época queda entre la 4 y la 27: la pérdida de validación deja de mejorar pronto.
+   - Con ~1,000 lesiones por fold, los 24 parámetros extra dan capacidad de ajustar el entrenamiento, no información.
+5. **El mismo gradiente con costos muy distintos.**
+   - *Parameter-shift* (`EstimatorQNN` exacto) y la retropropagación dan el mismo Jacobiano, con una diferencia de 1.8×10⁻¹⁵.
+   - Costo por lesión: 5.2 s contra 1.4 ms, unas 3,600 veces más.
+   - 50 épocas sobre todo el train, un mapa: ~205 h contra ~3.4 min.
+   - Los 89 ajustes del X8 tomaron 155 min con seis procesos.
+
+**Formalismo frente a implementación.**
+- La regla de *parameter-shift* es una propiedad del formalismo: el gradiente exacto sale de mediciones del circuito con parámetros desplazados ±π/2, y por eso funciona en hardware.
+- La retropropagación es una propiedad del simulador: necesita las 4,096 amplitudes, que un computador cuántico nunca expone porque medir colapsa el estado. Es el mismo tipo de atajo que el de H-032.
+
+**Impacto.**
+- **La conclusión del M7 (H-042) se mantiene con θ entrenado.** La pérdida de C4 y C5 no se explica por el sorteo de θ (H-053) ni por no entrenarlo. Leer 12 valores esperados locales pierde información que conservan las condiciones clásicas y el kernel.
+- **Matiz a D-014 y H-015.**
+  - La razón de costo de D-014 y la frase de H-015 «ningún método rescata la Arquitectura A» valen para gradientes que un computador cuántico puede producir.
+  - En el simulador, la Arquitectura A era asequible mediante un atajo que no existe en hardware.
+  - Las otras dos razones de D-014, validez interna y pregunta de investigación, no dependen del costo y se sostienen.
+  - Conviene declararlo en §4.8 y ante los sinodales.
+
+**Datos.** `Code/experiments/X8_Trained_Theta.ipynb`; `Code/results/X8_cv_por_fold.csv`, `X8_test.csv`, `X8_test_diferencias.csv`, `X8_theta_entrenado.csv`, `X8_costo_gradiente.csv` y `X8_verificaciones.csv`; los QSVM de referencia, en `X4_test.csv`; figura `Docs/Figures/X8_trained_theta.png`.
 
 ---
 

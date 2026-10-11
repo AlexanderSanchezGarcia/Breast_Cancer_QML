@@ -1,0 +1,23 @@
+% Generado por Code/tools/tablas_latex.py desde 8_spearman.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Correlación de Spearman entre el orden de separabilidad y el de clasificación de las cinco condiciones (M8, D-039).}
+\label{tab:m8_spearman}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l l r r}
+\toprule
+Subconjunto & Métrica de separabilidad & $\rho_s$ & $p$ exacto bilateral \\
+\midrule
+Masas & Davies--Bouldin & 0.718 & 0.167 \\
+Masas & Fisher $J$ & 0.821 & 0.133 \\
+Masas & KTA lineal & 0.718 & 0.167 \\
+Calcificaciones & Davies--Bouldin & 0.975 & 0.033 \\
+Calcificaciones & Fisher $J$ & 0.667 & 0.267 \\
+Calcificaciones & KTA lineal & 0.975 & 0.033 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Submuestra de 200 lesiones frente al AUC de prueba, $k = 12$. Con $n = 5$ hay 120 órdenes; $\rho_s$ es la correlación de Pearson de los rangos promedio, porque C1 y C2 empatan (D-016). Es descriptivo: con el empate, el mejor orden alcanzable da $p = 4/120$.}
+\end{table}

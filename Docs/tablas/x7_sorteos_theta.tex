@@ -1,0 +1,21 @@
+% Generado por Code/tools/tablas_latex.py desde X7_resumen.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Dependencia del AUC de C4 y C5 respecto al sorteo de $\theta$ (X7, H-053): 10 sorteos, mismo MLP y mismos folds que el M7.}
+\label{tab:x7_theta}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l l c c r r r}
+\toprule
+Subconjunto & Mapa & Semilla 42 (lugar) & Mín.--máx. & Rango ($\theta$) & Rango (MLP) & C1 $-$ mejor \\
+\midrule
+Masas & C4 & 0.565 (6.\textsuperscript{o}) & 0.546--0.589 & 0.042 & 0.039 & 0.064 \\
+Masas & C5 & 0.563 (9.\textsuperscript{o}) & 0.557--0.624 & 0.068 & 0.029 & 0.028 \\
+Calcificaciones & C4 & 0.640 (6.\textsuperscript{o}) & 0.566--0.676 & 0.110 & 0.022 & 0.066 \\
+Calcificaciones & C5 & 0.667 (1.\textsuperscript{o}) & 0.627--0.667 & 0.040 & 0.018 & 0.075 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize AUC medio en validación cruzada; el conjunto de prueba no se usó. Rango (MLP): variación entre las 5 semillas del MLP con el $\theta$ del diseño.}
+\end{table}

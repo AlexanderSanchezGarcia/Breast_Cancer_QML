@@ -108,7 +108,11 @@ Correspondencia entre requerimiento y decisión. Falta contrastarla con la redac
   - Con Holm sobre esa familia de cuatro, las cuatro siguen siendo significativas. Con Bonferroni, C5 en masas no lo es (0.044 × 4 ≈ 0.18).
   - Escribir «en el límite» para C5 en masas y decir qué corrección se usa.
 - [ ] **H-043, k = 8.** C4 en calcificaciones da −0.070 [−0.141, **+0.0005**]: el intervalo toca el cero. Cambiar «C4 empeora» por «C4 tiende a empeorar; el intervalo llega al cero».
-- [ ] **H-041, tabla.** El exceso de KTA del RBF en calcificaciones a k = 12 dice 0.151. El CSV da 0.1517, es decir, **0.152**, como en H-039.
+- [ ] **H-039, dos lugares.** La tabla (línea 1782) y la lectura 4 (línea 1798) dicen 0.152 para el exceso de KTA del RBF en calcificaciones. `6_alineamiento_kernel.csv` da 0.151451, es decir **0.151**, que es lo que dice H-041. *Corregido el 2026-10-11: la primera versión de esta lista decía lo contrario por un dato no verificado.*
+- [ ] **Líneas «Datos.» que citan el archivo equivocado** (trazabilidad, ver `Other/trazabilidad_cifras.md`).
+  - H-027: sus cifras de balance están en `4_semilla_folds.csv`, no en `4_folds.csv`.
+  - H-045: sus cifras de prueba están en `X4_test.csv` y `X4_test_diferencias.csv`.
+- [ ] **H-036 y H-037: cifras de la versión anterior.** Las del C5 original `['X','ZZ']` (0.505, 0.515, 0.046…) ya no están en los CSV actuales; marcarlas en el texto como de la versión anterior a D-031.
 - [ ] **H-052 frente a `8_oe6_resumen.csv`.** El CSV redondea a entero (2 % y 1 %) lo que H-052 da con un decimal (2.5 % y 1.5 %). Si esa tabla va al reporte, usar un decimal.
 - [ ] **«Preregistrado».** Aparece 10 veces en la bitácora y en la celda 11 de `7_Classification` («*preregistered configuration*»). Como no hay un registro público, conviene «fijado antes de ver los resultados» o «establecido a priori».
 - [ ] **H-048, alcance de la conclusión.** «La ausencia de ventaja es una propiedad de la tarea» conviene acotarlo: de **estas etiquetas, con estas 12 features y estas familias de kernels** (ZZ, Y-ZZ y proyectados). El mismo protocolo sí detecta una ventaja cuando las etiquetas siguen la geometría del kernel cuántico.

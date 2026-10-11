@@ -1,0 +1,4 @@
+method,gradient,seconds_per_lesion,hours_50_epochs_one_map_all_train,forward_seconds_per_lesion_parameter_shift_primitive
+"parameter shift (EstimatorQNN, exact)",Jacobian 12 x 24 (also needed for a scalar loss),5.15893992295023,205.21116582402027,0.09368810830055736
+automatic differentiation (state vector),Jacobian 12 x 24,0.23692936044972157,9.424523449000036,0.09368810830055736
+automatic differentiation (state vector),"scalar loss, one backward pass",0.0014203604005160742,0.056498780376083836,0.09368810830055736

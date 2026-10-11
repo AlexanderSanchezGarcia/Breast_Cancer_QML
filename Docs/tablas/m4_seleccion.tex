@@ -1,0 +1,28 @@
+% Generado por Code/tools/tablas_latex.py desde 4_seleccion.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Las 12 características seleccionadas en cada subconjunto (M4): F-test ANOVA sobre el entrenamiento con restricción de redundancia $|r| \le$ 0.95 (D-024).}
+\label{tab:m4_seleccion}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{r l l r l l r}
+\toprule
+ & \multicolumn{3}{c}{Masas} & \multicolumn{3}{c}{Calcificaciones} \\ \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+\# & Característica & Familia & $F$ & Característica & Familia & $F$ \\
+\midrule
+1 & firstorder\_Maximum & firstorder & 83.1 & shape2D\_MinorAxisLength & shape2D & 235.4 \\
+2 & firstorder\_90Percentile & firstorder & 82.6 & glrlm\_RunEntropy & glrlm & 200.9 \\
+3 & firstorder\_Energy & firstorder & 74.7 & shape2D\_Perimeter & shape2D & 177.0 \\
+4 & shape2D\_MinorAxisLength & shape2D & 66.7 & firstorder\_Skewness & firstorder & 174.6 \\
+5 & shape2D\_MaximumDiameter & shape2D & 62.3 & glrlm\_ShortRunLowGrayLevelEmphasis & glrlm & 166.2 \\
+6 & shape2D\_Perimeter & shape2D & 53.1 & glrlm\_ShortRunEmphasis & glrlm & 161.5 \\
+7 & shape2D\_MeshSurface & shape2D & 52.8 & glcm\_JointAverage & glcm & 150.9 \\
+8 & shape2D\_PerimeterSurfaceRatio & shape2D & 51.3 & glcm\_InverseVariance & glcm & 142.8 \\
+9 & glrlm\_GrayLevelNonUniformity & glrlm & 37.8 & glcm\_DifferenceEntropy & glcm & 135.6 \\
+10 & firstorder\_10Percentile & firstorder & 31.7 & firstorder\_Energy & firstorder & 135.1 \\
+11 & glcm\_Correlation & glcm & 31.0 & glcm\_ClusterShade & glcm & 133.9 \\
+12 & glrlm\_RunLengthNonUniformity & glrlm & 28.8 & shape2D\_PixelSurface & shape2D & 129.1 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
