@@ -120,6 +120,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-050 | 2026-10-07 | Con los descriptores del radiólogo las masas son más separables; con las features radiómicas, menos | La inversión respecto al EDA está en las features; material de §5, §6 y §7 |
 | H-051 | 2026-10-07 | El simulador admite unos 25 qubits para el embedding y 22 para el kernel en esta máquina; el techo del diseño fue el gradiente | OE-6 (RF-22): tiempo por muestra, qubits y *parameter-shift* |
 | H-052 | 2026-10-07 | Con 1,024 shots el MLP recupera casi todo el AUC exacto, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 | OE-6 (RF-22, RNF-05): la concentración hace al kernel inmedible en hardware |
+| H-053 | 2026-10-10 | El sorteo de θ mueve el AUC de C4 y C5 tanto o más que la semilla del MLP, pero ninguno de 40 sorteos alcanza a C1 | La conclusión del M7 no depende de θ; su magnitud sí (déficit de 0.03 a 0.18 frente a C1): reportar el rango |
 
 ### Preguntas abiertas
 
@@ -2165,6 +2166,47 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 **Formalismo frente a implementación.** La ley (1 − ⟨Z⟩²)/n y el carácter binomial del valor del kernel son propiedades de la medición cuántica. El sorteo multinomial reproduce lo que haría un *sampler* ideal (H-019).
 
 **Datos.** `Code/8_Comparison.ipynb` (5° e–h); `Code/results/8_oe6_shots_embedding.csv`, `8_oe6_shots_kernel.csv` y `8_oe6_resumen.csv`; figura `Docs/Figures/M8_oe6_shots.png`.
+
+---
+
+### H-053 · El sorteo de θ mueve el AUC de C4 y C5 tanto o más que la semilla del MLP, pero ninguno de 40 sorteos alcanza a las condiciones clásicas
+**Fecha:** 2026-10-10 · **→ Reporte:** §6.x, §7 · *responde a H-017 para el M7; completa D-037*
+
+**Qué se midió (X7).**
+- Diez sorteos de θ, con las semillas 42 a 51; la 42 es la del diseño.
+- El mismo MLP, con la misma semilla (42), y los mismos folds del M7.
+- Solo validación cruzada: el test no se usó, como en D-037, así que ningún sorteo se eligió con él.
+- Con la semilla 42 se reproducen bit a bit los embeddings del M5 y los AUC por fold del M7. Pasan las 11 verificaciones.
+
+| AUC medio en CV | Semilla 42 | Lugar entre 10 | Mín – máx sobre θ | Rango sobre θ | Rango sobre semillas del MLP | C1 − mejor sorteo |
+|---|---|---|---|---|---|---|
+| Masas, C4 | 0.565 | 6.º | 0.546 – 0.589 | 0.042 | 0.039 | 0.064 |
+| Masas, C5 | 0.563 | 9.º | 0.557 – 0.624 | 0.068 | 0.029 | 0.028 |
+| Calcificaciones, C4 | 0.640 | 6.º | 0.566 – 0.676 | 0.110 | 0.022 | 0.066 |
+| Calcificaciones, C5 | 0.667 | 1.º | 0.627 – 0.667 | 0.040 | 0.018 | 0.075 |
+
+**Lecturas.**
+1. **θ es una fuente de variación real.**
+   - Su rango iguala o supera al de las semillas del MLP, y lo quintuplica en calcificaciones con C4.
+   - Con un solo sorteo no se sabe cuánto pierde lo cuántico.
+2. **La semilla 42 no es un sorteo sesgado.** Es la 9.ª de 10 para C5 en masas, pero la mejor para C5 en calcificaciones y queda a la mitad para C4.
+3. **Ningún sorteo alcanza a C1 ni a C3** (C1: 0.652 en masas y 0.742 en calcificaciones).
+   - El mejor de diez es una estimación optimista: es el máximo de diez valores ruidosos medidos sobre los mismos folds.
+   - Aun así, queda entre 0.03 y 0.08 por debajo de C1.
+   - Según el sorteo, el déficit frente a C1 va de 0.03 a 0.18.
+4. **La dispersión no predice el AUC.**
+   - Sobre los diez sorteos, la correlación de Spearman entre la dispersión de ⟨Zᵢ⟩ y el AUC vale 0.09 y −0.02 en masas, y 0.03 y −0.37 en calcificaciones; en todos los casos p > 0.29.
+   - Extiende H-043 de la profundidad del *ansatz* a sus parámetros: un embedding más disperso no es más informativo.
+5. **Lo que θ no toca.**
+   - Las métricas de kernel del M6, X2, el QSVM del X4 y el X6 no dependen de θ, porque el *ansatz* se cancela en la fidelidad: V(θ)†V(θ) = I.
+   - Es una propiedad del formalismo (un unitario conserva los productos internos), no de Qiskit.
+   - θ solo decide qué 12 observables se leen del estado codificado.
+
+**Impacto.**
+- La conclusión del M7 (H-042) no depende del sorteo de θ; su tamaño sí. En §6, reportar el valor del diseño junto con el rango sobre sorteos.
+- Responde a H-017 en el diseño final: un θ único no sostiene la magnitud de la pérdida, pero sí su signo.
+
+**Datos.** `Code/experiments/X7_Theta_Draws.ipynb`; `Code/results/X7_sorteos.csv`, `X7_resumen.csv`, `X7_cv_por_fold.csv` y `X7_verificaciones.csv`; figura `Docs/Figures/X7_theta_draws.png`.
 
 ---
 

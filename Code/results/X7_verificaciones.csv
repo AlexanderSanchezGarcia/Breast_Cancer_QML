@@ -1,0 +1,12 @@
+check,value,passed
+theta seed 42 reproduces the theta of Module 5,0.0,True
+mass: C4 with theta seed 42 equals the embedding of Module 5,0.0,True
+mass: C5 with theta seed 42 equals the embedding of Module 5,0.0,True
+calcification: C4 with theta seed 42 equals the embedding of Module 5,0.0,True
+calcification: C5 with theta seed 42 equals the embedding of Module 5,0.0,True
+mass: C4 with theta seed 42 reproduces the fold AUCs of Module 7,0.0,True
+mass: C5 with theta seed 42 reproduces the fold AUCs of Module 7,0.0,True
+calcification: C4 with theta seed 42 reproduces the fold AUCs of Module 7,0.0,True
+calcification: C5 with theta seed 42 reproduces the fold AUCs of Module 7,0.0,True
+every fit stopped before the epoch limit,105.0,True
+"one cross-validation per subset, map and draw",40.0,True
