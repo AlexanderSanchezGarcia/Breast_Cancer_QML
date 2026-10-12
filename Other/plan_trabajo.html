@@ -231,22 +231,19 @@ const PHASES = [
      "Trazabilidad de cifras de la bitácora (un error: H-039 dice 0.152, es 0.151) y tablas LaTeX desde los CSV (Docs/tablas)"]]
   ]},
  {id:"f7", n:"Fase 7 · Documentación · reporte completo el 20 oct", due:"2026-10-20",
-  note:"Desde el 7 oct, el reporte técnico debe quedar completo el 20 oct, no el 3 nov: una parte por día según el calendario. El orden va de lo que más ha cambiado (§4 y §3) a lo que depende de todo lo demás (§6, §7, el Abstract). Del 21 oct al 3 nov quedan la revisión de los directores, las correcciones, INDAUTOR y la presentación. Lo redacta el autor.",
+  note:"Replanificado el 11 oct: del 8 al 11 se hicieron la re-ejecución, la revisión, X7 y X8 en lugar de redactar. Quedan nueve días, del 12 al 20, con el 20 como colchón. El orden va de lo que más ha cambiado (§4 y §3) a lo que depende de todo lo demás (§6, §7, el Abstract). El cronograma en pgfgantt y los \\bibitem corregidos se preparan aparte, en Docs/insumos/, para incluirlos con \\input. Del 21 oct al 3 nov quedan la revisión de los directores, las correcciones, INDAUTOR y la presentación. Lo redacta el autor.",
   groups:[
-   ["Calendario de redacción · 8 al 20 oct",[
-     "Jue 8 · Validar las decisiones provisionales (D-020 a D-022, D-036, D-040) y los 7 casos discordantes · §4.1 diagrama (D-030) y §4.2 requerimientos: RF-04 a RF-06, RF-14, RF-16, RNF-02, RNF-05, RNF-07 y RNF-08 contra lo implementado",
-     "Vie 9 · §4.3–§4.6, M1 a M4, desde el borrador (D-009, D-020 a D-026) · §4.5 con 67 features (D-023)",
-     "Sáb 10 · §4.7–§4.10, M5 a M8: sección nueva de separabilidad (D-030), C5 = (Y, ZZ) con las figuras de los circuitos (D-031), protocolo del MLP (D-036)",
-     "Dom 11 · §3 Marco teórico: fórmula de g (H-033) y g regularizada con la Fig. 2 de Huang et al. (H-038, D-034), Spearman con empates (D-039), ley de los shots (H-019), concentración del kernel (H-031)",
-     "Lun 12 · §6 Resultados I: datos, features, selección y embeddings (M2–M5, H-020 a H-028, H-035)",
-     "Mar 13 · §6 Resultados II: separabilidad (M6 y X3, H-036 a H-041)",
-     "Mié 14 · §6 Resultados III: clasificación, comparación y OE-6 (M7, M8, X4–X6; H-042 en adelante)",
-     "Jue 15 · §7 Conclusiones: respuesta a cada OE, limitaciones y trabajo a futuro (H-030, H-035, H-044, H-048)",
-     "Vie 16 · §8.x Implementación y cronograma en pgfgantt · §5 EDA: cobertura del 100 % (H-001) y PixelSpacing (H-002)",
-     "Sáb 17 · §1 y §2: alcance, estado del arte con las referencias por revisar y las cuatro preguntas de H-046 · Abstract",
-     "Dom 18 · Bibliografía (.bib y \\cite pendientes) y defectos del PDF de TT1",
-     "Lun 19 · Lectura completa: cada número contra la bitácora y los CSV, figuras, compilación limpia fuera de macOS",
-     "Mar 20 · Reporte técnico completo"], "f7c"],
+   ["Calendario de redacción · 12 al 20 oct (replanificado el 11 oct)",[
+     "Dom 11 · Validar las decisiones provisionales (D-020 a D-022, D-036, D-040) y los 7 casos discordantes · aplicar a la bitácora las correcciones aprobadas y volver a correr las herramientas · paquete de §4.1–§4.2",
+     "Lun 12 · §4.1 diagrama (D-030) · §4.2 requerimientos: RF-04 a RF-06, RF-09, RF-13, RF-14, RF-16, RNF-02, RNF-07 y RNF-08 contra lo implementado · §4.3 M1 · §4.4 M2 (D-009, D-010, D-020 a D-022)",
+     "Mar 13 · §4.5 M3: 67 features y binCount=32 (D-023, D-008) · §4.6 M4 (D-024 a D-026) · §4.7 M5: C5 = (Y, ZZ), C2 control nulo y figuras de los circuitos (D-013, D-016, D-031) · §4.8 M6 separabilidad, sección nueva (D-028, D-032, D-033) · §4.9 M7: D-014 con el matiz de H-054, D-018, D-036 · §4.10 M8 (D-039, D-040)",
+     "Mié 14 · §3 Marco teórico: g corregida (H-033) y regularizada con la Fig. 2 de Huang et al. (H-038, D-034), KTA centrada, Fisher multivariante, raíz espectral en vez de Cholesky, Spearman con empates (D-039), ley de los shots (H-019), concentración del kernel (H-031)",
+     "Jue 15 · §6 Resultados I y II: datos, features y selección (M2–M4; H-020 a H-028, H-035) y separabilidad (M5, M6, X2, X3; H-031, H-036 a H-041)",
+     "Vie 16 · §6 Resultados III: clasificación, comparación y OE-6 (M7, M8, X4–X8; H-042 a H-054)",
+     "Sáb 17 · §7 Conclusiones: respuesta a cada OE, limitaciones y trabajo a futuro · §5 EDA: cobertura del 100 % tras D-012 (H-001) y features en píxeles sin PixelSpacing (H-002)",
+     "Dom 18 · §1 y §2 con la bibliografía: TandFOnline2021, duplicados, GLOBOCAN, 10 \\bibitem sin \\cite, Azevedo con su AUC · §8.x Implementación, versión breve",
+     "Lun 19 · Abstract · lectura completa: Code/tools/trazabilidad_cifras.py, figuras y compilación fuera de macOS",
+     "Mar 20 · Colchón: lo que se haya atrasado y los defectos que rompen la compilación · reporte técnico completo"], "f7r"],
    ["Después del 20 oct",[
      "21–23 oct · revisión de los directores; el 23 se congelan los resultados",
      "24 oct – 2 nov · correcciones de la revisión",
@@ -258,7 +255,7 @@ const PHASES = [
      "Rehacer el cronograma en LaTeX (pgfgantt); el actual no contempla M2–M3"]],
    ["Defectos del PDF de TT1",[
      "sección ?? en la p. 56 · falta \\label{sec:metricas}",
-     "11 \\bibitem nunca citados (Wang 2020, Azevedo 2022, Xiang 2024, Baccouche 2022)",
+     "10 \\bibitem nunca citados, no 11 (Wang 2020, Azevedo 2022, Xiang 2024, Baccouche 2022…; lista en correcciones_verificadas.md §2)",
      "Q-004 cerrada (D-019): Azevedo et al. (2022). Añadir \\cite{Azevedo2022QuantumTransfer} en §1.3 y §2.1.5",
      "BCDR = Breast Cancer Digital Repository (portugués), no \"Barcelona\"",
      "Label eq:embedding_vector duplicado · float de 33pt · 12 Overfull \\hbox · RNF- 9",
@@ -292,10 +289,10 @@ const RISKS = [
  ["Resuelto · D-035","Comparar contra k=8 antes de concluir","Hecho en X3: con 8 qubits la concentración baja y el alineamiento cuántico crece de 1.7 a 4.6 veces, pero ninguna métrica pone a C4 o C5 por delante de las condiciones clásicas (H-041). La conclusión del OE-3 no depende de k=12."],
  ["Vigilar · H-037","Kernel de C5 extremadamente concentrado","Mediana 0.00003 frente a 0.002 de C4; entre el 26 y el 28 % de los pares queda por debajo de 10⁻⁶, un valor que en hardware exigiría unos 10⁶ disparos solo para observarlo una vez. Su embedding ⟨Zᵢ⟩, en cambio, se dispersa tres veces más que el de C4."],
  ["Pendiente del autor · D-020 a D-022, D-036, D-040","Decisiones provisionales","Validar la alineación por tipo de desajuste, la componente conexa mayor y el contrato de salida de M2, y decidir si se excluyen los 7 casos discordantes. Validar también el protocolo del MLP (D-036) y el contenido del M8 (D-040). Si alguna cambia, hay que volver a correr antes del congelamiento del 23 oct. La evidencia para validarlas está en correcciones_verificadas.md, §6. Pendiente al 11 oct."],
- ["Vigilar · calendario","Reporte completo el 20 oct","Del 8 al 11 oct se hicieron la re-ejecución, la revisión, X7 y X8 en lugar de redactar: §4.1–§4.10 y §3 siguen pendientes y hay que replanificar del 12 al 20. Si un día se atrasa, se recorta del 19 (lectura completa), no del 20. La verificación de números ya tiene script (Code/tools/trazabilidad_cifras.py) y las tablas se generan desde los CSV (Code/tools/tablas_latex.py)."],
+ ["Vigilar · calendario","Reporte completo el 20 oct","Replanificado el 11 oct a nueve días, del 12 al 20, con el 20 como colchón. Si no alcanza, se recorta en este orden: (1) el cronograma en pgfgantt pasa a una tabla simple; (2) los defectos cosméticos de TT1 se van al 24 oct–2 nov, salvo los que rompen el PDF (logos, llave del .bib, sec:metricas); (3) §8.x en una o dos páginas; (4) en §2 se elimina la afirmación de BreastMNIST sin fuente, y las cifras de la línea 783 si el PDF no las confirma; (5) en §6, X1, X2 y X5 en un párrafo cada uno; (6) B3 no se re-ejecuta y se cita con dos cifras significativas. No se recortan las fórmulas de §3, la coherencia de §4 con lo implementado, el núcleo de §6, §7, el Abstract ni la lectura automática del 19."],
  ["Resuelto · H-053, H-054","θ fijo con una sola semilla y sin entrenar","X7: diez sorteos de θ mueven el AUC hasta 0.11, pero ninguno alcanza a C1. X8: entrenar θ gana a lo sumo 0.05 y tampoco. La conclusión del M7 no depende de θ. Queda declarar en §4.8 que el costo de D-014 vale para el hardware: en el simulador, la retropropagación sobre el vector de estado es ~3,600 veces más barata que parameter-shift."],
  ["ABIERTO · correcciones","Aplicar las correcciones verificadas","Bitácora: H-039 dice 0.152 (es 0.151); las líneas Datos de H-027 y H-045; la redacción de H-043 (k = 8) y de H-048 (alcance de «propiedad de la tarea»); «preregistrado». Reporte: §3.4, bibliografía y las cifras de Azevedo. Lista completa en Other/correcciones_verificadas.md."],
- ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM. Previsto del 8 al 10 oct; sigue pendiente al 11 oct."],
+ ["ABIERTO · D-030","Renumerar módulos en el reporte","La separabilidad pasa a ser M6, la clasificación M7 y la evaluación M8. Hay que rehacer el §4.1 (el borrador tiene el TikZ), las secciones de módulos, la tabla de requisitos y la CRISP-DM. Replanificado para el 12 y el 13 oct (§4)."],
  ["Resuelto · D-026","Semilla de los folds","Con la semilla 42, el fold 2 de calcificaciones tenía 52 % de malignas. La semilla se elige por balance de clases: desviación máxima de 0.011 y 0.019."],
  ["Vigilar","Pacientes repartidos entre folds","Hay 2.28 ROIs por paciente. Si la validación cruzada separa ROIs del mismo paciente entre folds, hay fuga; usar StratifiedGroupKFold por patient_id."]
 ];
