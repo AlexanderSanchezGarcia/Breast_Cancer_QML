@@ -1,0 +1,170 @@
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131826476-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-131826476-1');
+    </script>
+
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+  <!-- favicon -->
+  <link rel="icon" href="/img/favicon.ico">
+  <link rel="icon" type="image/png" href="/img/favicon-16x16.png">
+  <link rel="icon" type="image/png" href="/img/favicon-32x32.png">
+
+<title>Algorithms for Learning Kernels Based on Centered Alignment</title>
+
+
+<link rel="alternate" type="application/rss+xml" href="/jmlr.xml" title="JMLR RSS">
+<link rel="stylesheet" type="text/css" href="/style.css">
+<style type="text/css">
+. {font-family:verdana,helvetica,sans-serif}
+a {text-decoration:none;color:#3030a0}
+
+#fixed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8em;
+    height: 100%;
+}
+body > #fixed {
+    position: fixed;
+}
+#content {
+    margin-top: 1em;
+    margin-left: 10em;
+    margin-right: 0.5em;
+}
+img.jmlr {
+    width: 7em;
+}
+img.rss {
+    width: 2em;
+}
+
+ul li {
+    margin-bottom: 0.5em;
+}
+</style>
+
+
+ <!-- MathJax -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- Google Scholar Meta -->
+<meta name="citation_title" content="Algorithms for Learning Kernels Based on Centered Alignment">
+<meta name="citation_author" content="Corinna Cortes">
+<meta name="citation_author" content="Mehryar Mohri">
+<meta name="citation_author" content="Afshin Rostamizadeh">
+<meta name="citation_journal_title" content="Journal of Machine Learning Research">
+<meta name="citation_volume" content="13">
+<meta name="citation_issue" content="28">
+<meta name="citation_firstpage" content="795">
+<meta name="citation_lastpage" content="828">
+<meta name="citation_pdf_url" content="http://jmlr.org/papers/volume13/cortes12a/cortes12a.pdf">
+<meta name="citation_publication_date" content="2012">
+<meta name="citation_public_url" content="http://jmlr.org/papers/v13/cortes12a.html">
+<meta name="citation_abstract_html_url" content="http://jmlr.org/papers/v13/cortes12a.html">
+<meta name="citation_issn" content="1533-7928">
+
+
+
+
+</head>
+<body>
+
+  <div id="fixed">
+  <br>
+  <a align="right" href="/" target=_top><img align="right" class="jmlr" src="/img/jmlr.jpg" border="0"></a> 
+  <p><br><br>
+  <p align="right"> <A href="/"> Home Page </A> 
+
+  <p align="right"> <A href="/papers"> Papers </A> 
+
+  <p align="right" > <A href="/author-info.html">  Submissions  </A> 
+    
+
+  <p align="right"> <A href="/news.html"> News </A> 
+
+  <!--<p align="right"> <A href="/scope.html"> Scope </A>-->
+
+  <p align="right" > <A href="/editorial-board.html"> Editorial Board </A> 
+
+    
+
+    <p align="right" > <A href="/special_issues/"> Special Issues </A> 
+
+        
+    
+  <p align="right"> <A href="/mloss">Open Source Software</A>
+
+  <p align="right"> <A href="https://proceedings.mlr.press/"> Proceedings (PMLR)</A>
+
+  <p align="right"> <A href="https://data.mlr.press/"> Data (DMLR) </A>
+      
+  <p align="right"> <A href="/tmlr"> Transactions (TMLR) </A>
+
+  <p align="right"> <A href="/search-jmlr.html"> Search </A>
+
+  <p align="right"> <A href="/stats.html">Statistics</A>
+
+  <p align="right"> <A href="/manudb"> Login </A></p>
+
+   <p align="right"> <A href="/faq.html">Frequently Asked Questions </A></p>
+                                     
+  <p align="right"> <A href="/contact.html"> Contact Us </A></p>
+
+  <br><br>
+  <p align="right"> <A href="/jmlr.xml"> 
+  <img src="/img/RSS.gif" class="rss" alt="RSS Feed">
+  </A>
+
+
+
+  </div>
+
+<div id="content">
+    
+<h2> Algorithms for Learning Kernels Based on Centered Alignment </h2>
+
+<p><b><i>Corinna Cortes, Mehryar Mohri, Afshin Rostamizadeh</i></b>; 13(28):795&minus;828, 2012.</p>
+
+
+<h3>Abstract</h3>
+<p class="abstract">
+
+This paper presents new and effective algorithms for learning kernels. In particular, as shown by our empirical results, these algorithms consistently outperform the so-called uniform combination solution that has proven to be difficult to improve upon in the past, as well as other algorithms for learning kernels based on convex combinations of base kernels in both classification and regression.  Our algorithms are based on the notion of centered alignment which is used as a similarity measure between kernels or kernel matrices. We present a number of novel algorithmic, theoretical, and empirical results for learning kernels based on our notion of centered alignment. In particular, we describe efficient algorithms for learning a maximum alignment kernel by showing that the problem can be reduced to a simple QP and discuss a one-stage algorithm for learning both a kernel and a hypothesis based on that kernel using an alignment-based regularization.  Our theoretical results include a novel concentration bound for centered alignment between kernel matrices, the proof of the existence of effective predictors for kernels with high alignment, both for classification and for regression, and the proof of stability-based generalization bounds for a broad family of algorithms for learning kernels based on centered alignment. We also report the results of experiments with our centered alignment-based algorithms in both classification and regression.
+
+</p>
+
+
+
+<font color="gray"><p>[abs]</font>[<a id="pdf" target="_blank" href="/papers/volume13/cortes12a/cortes12a.pdf">pdf</a>][<a id="bib" href="/papers/v13/cortes12a.bib">bib</a>]
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+                      
+    <table width="100%"> <tr>
+    <td
+    align="right"><font size="-1">&copy <a target="_top"
+    href="https://www.jmlr.org">JMLR</a> 2012. 
+(<a href="https://github.com/JmlrOrg/v13/tree/main/cortes12a">edit</a>, <a href="http://jmlr.org/beta/papers/v13/cortes12a.html">beta</a>)
+</td> </tr> </table>
+    
+
+</div>
+<!-- for mastodon verification -->
+<a style="font-size: 0" rel="me" href="https://sigmoid.social/@jmlr">Mastodon</a>
+</body>
+</html>
