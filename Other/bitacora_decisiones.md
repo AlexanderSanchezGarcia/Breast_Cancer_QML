@@ -1277,6 +1277,15 @@ Esa segunda propiedad es un test de alineación al píxel:
 
 Donde se puede comprobar, **la regla se cumple en 3,206 de 3,213 casos (99.8 %)**. Los 7 discordantes son masas y cuatro son asimetrías o distorsiones de la arquitectura, con máscaras amplias e irregulares. Se conservan y quedan marcados (`crop_check = "discordant"`). **Excluirlos es una decisión del autor.**
 
+**Decidido por el autor el 2026-10-12: los 7 discordantes se conservan y se declaran en §4.4 y §8.x.**
+- No es un desajuste de alineación: el recorte oficial aparece en la mamografía con NCC ≥ 0.99999. Lo que difiere es la extensión de la lesión que marca cada anotación.
+- Son 4 de train (3 malignas y 1 benigna) y 3 de test (benignas). Las asimetrías y distorsiones son `P_00695` (CC y MLO), `P_01221` y `P_01381`.
+- **Cota de su efecto.** Sin los 3 de test, el AUC del test de masas cambia entre +0.001 y +0.004 en las cinco condiciones (C1 +0.004, C2 +0.004, C3 +0.003, C4 +0.002, C5 +0.001). La brecha frente a C1 crece entre 0.001 y 0.003. Se usaron las predicciones ya guardadas del M7, sin reentrenar.
+- Ninguno está en la submuestra de 200 del M6 (D-028).
+- **Sin medir:** el efecto de los 4 de train sobre la selección, el escalado y el entrenamiento. Son 4 de 1,318 masas, y excluirlos obligaría a re-ejecutar de M4 a M8 y de X1 a X8.
+
+**Datos de la cota.** `Code/tools/sensibilidad_discordantes.py`; `Code/results/2_discordantes_sensibilidad.csv`.
+
 **`offset`.** Anclando la máscara sin escalar, la regla se cumple **exactamente** en los 2 casos. Remuestreándola, no se cumple, y los bordes de la máscara quedan desplazados hasta 37 px.
 
 **`scaled`.** Sus recortes oficiales no siguen la regla con ninguna de las dos hipótesis: se cortaron con otra geometría, con cajas más grandes y descentradas. Hace falta otro test. Se desplazó la máscara ±40 px y se midió, en cada posición, el contraste entre su interior y un anillo de 15 px a su alrededor. Si la máscara está bien colocada, el máximo debe caer en desplazamiento cero. El contraste es un indicador indirecto, así que se calibró sobre 80 masas alineadas:
