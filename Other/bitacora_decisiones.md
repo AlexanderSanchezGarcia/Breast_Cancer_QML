@@ -51,7 +51,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-026 | 2026-09-23 | Semilla de los folds elegida por balance de clases | M4, M6 | Firme | §4.9 |
 | D-027 | 2026-09-24 | γ del RBF por heurística de la mediana (C3 y kernel clásico de la *geometric difference*) | M5, M7 | Firme para C3; para *g*, enmendada por D-032 | §4.7, §4.9 |
 | D-028 | 2026-09-24 | Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas | M5, M7 | Firme | §4.9 |
-| D-029 | 2026-09-24 | Kernel concentrado: se mantiene el diseño preregistrado y se añade un barrido del factor de escala | M5, M7 | Firme | §4.9, §6.x, OE-6 |
+| D-029 | 2026-09-24 | Kernel concentrado: se mantiene el diseño fijado de antemano y se añade un barrido del factor de escala | M5, M7 | Firme | §4.9, §6.x, OE-6 |
 | D-030 | 2026-09-24 | La separabilidad pasa a ser el Módulo 6; la clasificación, el M7, y la evaluación comparativa, el M8 | todos | Firme | §4.1–§4.9, RF, CRISP-DM |
 | D-031 | 2026-10-05 | C5 pasa a `pauli_feature_map(paulis=['Y','ZZ'])` | M5 | Firme | §4.7, §6.x |
 | D-032 | 2026-10-06 | La *geometric difference* sigue el protocolo de Huang et al. (Apéndice L.3) | M6 | Firme | §3.4.2, §4.9, RF-16 |
@@ -115,7 +115,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-045 | 2026-10-07 | Con las 67 features tampoco hay ventaja: los kernels cuánticos simulables son clásicos o se concentran | Responde la pregunta de las 67 features; material del OE-6 |
 | H-046 | 2026-10-07 | La auditoría independiente del pipeline no encuentra errores (25 de 25) | Descarta que un error esconda una ventaja |
 | H-047 | 2026-10-07 | Con la misma búsqueda anidada en ambos lados, ningún kernel cuántico supera a los clásicos en las etiquetas reales | Cierra la búsqueda de ventaja con el protocolo de D-038; dos hipótesis refutadas |
-| H-048 | 2026-10-07 | Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de la tarea | Respuesta central para §7: por qué la literatura reporta ventajas y aquí no |
+| H-048 | 2026-10-07 | Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de estas etiquetas, no del protocolo | Respuesta central para §7: por qué la literatura reporta ventajas y aquí no |
 | H-049 | 2026-10-07 | Los rankings de separabilidad y de clasificación coinciden en lo esencial: lo clásico va delante en todos (ρ_s de 0.67 a 0.97) | Respuesta del OE-5 (RF-21); corrige la ecuación de Spearman del §3.4 |
 | H-050 | 2026-10-07 | Con los descriptores del radiólogo las masas son más separables; con las features radiómicas, menos | La inversión respecto al EDA está en las features; material de §5, §6 y §7 |
 | H-051 | 2026-10-07 | El simulador admite unos 25 qubits para el embedding y 22 para el kernel en esta máquina; el techo del diseño fue el gradiente | OE-6 (RF-22): tiempo por muestra, qubits y *parameter-shift* |
@@ -204,7 +204,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 
 **Consecuencias.** Contradice el texto de TT1; hay que corregirlo en §4.4 y explicar el cambio en §8.x. El coste computacional no sube de forma apreciable (0.14 s/caso).
 
-**Cifras actualizadas el 2026-09-23 (M2, conjunto completo).** El rango 41×65 a 1137×1641 venía de una muestra. Sobre las 3,568 lesiones, la caja de la lesión mide entre 86×55 y 1329×1365 px en masas (mediana 302×304) y entre 33×33 y 3801×2873 px en calcificaciones (mediana 273×289). Son las cifras que deben ir en §4.4.
+**Cifras actualizadas el 2026-09-23 (M2, conjunto completo).** El rango 41×65 a 1137×1641 venía de una muestra. Sobre las 3,568 lesiones, la caja de la lesión mide entre 86×55 y 1329×1365 px en masas (mediana 302×304) y entre 33×33 y 3,777×2,753 px en calcificaciones (mediana 273×289); el alto llega a 3,801 y el ancho a 2,873 en lesiones distintas. Son las cifras que deben ir en §4.4.
 
 **Evidencia revisada el 2026-09-23 (H-023).** El |d| ≈ 1.42 de H-003 no se sostiene con el conjunto completo: en masas las medidas de tamaño tienen |d| de 0.40 a 0.45, y cinco de ellas entran en el top 12. La decisión se mantiene, porque redimensionar igualaría esa señal a cero sea cual sea su magnitud, pero §4.4 no debe citar 1.42.
 
@@ -226,11 +226,11 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 ---
 
 ### D-011 · Unidad de análisis = lesión/ROI
-**Fecha:** 2026-08-25 · **Módulo:** M4 · **Estado:** Provisional · **→ Reporte:** §4.6
+**Fecha:** 2026-08-25 · **Módulo:** M4 · **Estado:** Firme (2026-09-22) · **→ Reporte:** §4.6
 
 **Contexto.** El reporte de TT1 nunca declara si la unidad de análisis es la lesión o el paciente.
 
-**Decisión provisional.** La unidad es la **lesión (ROI)**. Las métricas se reportan por lesión, no por paciente.
+**Decisión.** La unidad es la **lesión (ROI)**. Las métricas se reportan por lesión, no por paciente.
 
 **Por qué.** Es lo que corresponde al problema planteado (clasificar hallazgos) y lo que hace comparable el trabajo con la literatura sobre CBIS-DDSM. La alternativa por paciente exigiría una regla de agregación que el diseño actual no define.
 
@@ -275,6 +275,8 @@ Hay además un argumento de contenido. H-003 mostró que los features más discr
 **Por qué.** Tres razones independientes, y esto importa porque ninguna depende de las otras:
 
 1. **Coste.** H-011: 48 h a k=8, 382 h a k=12 y 5,304 h a k=16 bajo A, contra 2 min, 12 min y 148 min bajo B. Entre 1,472× y 2,155× más barato. H-015 confirma que ningún método de gradiente alternativo cambia el veredicto.
+
+   **Matizado el 2026-10-11 (H-054).** La razón de costo vale para los gradientes que puede producir un computador cuántico. En el simulador, la retropropagación a través del vector de estado da el mismo Jacobiano (diferencia 1.8×10⁻¹⁵) y es unas 3,600 veces más barata: 50 épocas costarían ~3.4 min en lugar de ~205 h. Ese atajo no existe en hardware. Las razones 2 y 3 no dependen del costo y se sostienen.
 2. **Validez interna.** C2 y C3 son no supervisados. Si C4 y C5 ajustan θ contra las etiquetas, cualquier ventaja podría venir del ajuste supervisado y no de la codificación cuántica. Bajo B las cinco condiciones son transformaciones que no miran las etiquetas. **Esto cierra Q-002 por construcción.**
 3. **Correspondencia con la pregunta de investigación.** §1.2 pregunta si el mapeo φ produce mayor separabilidad intrínseca. Eso es sobre la *codificación*, no sobre un procedimiento de optimización. B aísla φ; A lo mezclaba.
 
@@ -536,7 +538,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 
 ---
 
-### D-029 · Kernel concentrado: diseño preregistrado más barrido del factor de escala
+### D-029 · Kernel concentrado: diseño fijado de antemano más barrido del factor de escala
 **Fecha:** 2026-09-24 · **Módulo:** M5, M7 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.9, §6.x, OE-6 · *cierra Q-011*
 
 **Contexto.** H-031: con el diseño actual, el kernel de fidelidad es casi la identidad (mediana ~0.003 fuera de la diagonal), y escalar los ángulos solo lo corrige cuando desaparecen los productos xᵢxⱼ.
@@ -544,7 +546,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 **Alternativas.**
 - *Adoptar un c pequeño como diseño principal* — descartada: con c ≈ 0.02 el kernel es indistinguible del de un mapa sin el término de producto (correlación 1.0000, H-031), y elegir el diseño después de ver los datos añade grados de libertad al investigador.
 - *Cambiar la codificación* (entrelazamiento lineal o productos sin el desplazamiento de π) — descartada: redefine C4 y C5 tarde en el proyecto y obliga a revalidar D-015.
-- *Mantener el diseño preregistrado (c = 1) como análisis principal y añadir un barrido de c* — **elegida**.
+- *Mantener el diseño fijado de antemano (c = 1) como análisis principal y añadir un barrido de c* — **elegida**.
 
 **Decisión.** C4 y C5 se calculan con el diseño tal como está: k = 12, reps = 1, entrelazamiento completo y ángulos en [0, π]. Como análisis de sensibilidad del OE-6, el kernel de fidelidad se recalcula con los ángulos escalados, x → c·x, para c ∈ {1, 0.5, 0.2, 0.1, 0.05, 0.02}.
 
@@ -737,7 +739,7 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 ### D-038 · Análisis exploratorios X4 a X6, con un protocolo simétrico
 **Fecha:** 2026-10-07 · **Módulo:** X4–X6 · **Estado:** Firme (pedidos por el autor) · **→ Reporte:** §6.x, §7
 
-**Contexto.** El diseño preregistrado no mostró ventaja (H-039 a H-043). El autor pidió tres cosas: probar un modelo de QML sobre la codificación (X4), revisar si algún error podía esconder una ventaja (X5) y buscar activamente una ventaja con las herramientas de la literatura (X6).
+**Contexto.** El diseño fijado de antemano no mostró ventaja (H-039 a H-043). El autor pidió tres cosas: probar un modelo de QML sobre la codificación (X4), revisar si algún error podía esconder una ventaja (X5) y buscar activamente una ventaja con las herramientas de la literatura (X6).
 
 **Decisión.** Los tres son exploratorios y *post hoc*, y no cambian el diseño. Para que la búsqueda no fabrique una ventaja por azar:
 - **El mismo clasificador para todo kernel:** un SVM con pesos balanceados y C = 1. Se comprobó que C apenas influye.
@@ -863,6 +865,9 @@ Las 86 rutas rotas apuntan a **carpetas que existen pero están vacías**: desca
 Sobre muestra de 25 mamografías: `PixelSpacing` e `ImagerPixelSpacing` **ausentes en el 100 %**, `Manufacturer` también. Son conversiones de MATLAB a Secondary Capture; `Modality` = MG, `BitsStored` = 16, `PhotometricInterpretation` = MONOCHROME2 en todos.
 
 **Impacto.** PyRadiomics asume espaciado (1,1), así que las *shape features* salen en píxeles sin escala física. Como el DDSM original se digitalizó con escáneres de distinta resolución (µm/píxel distintos) y `Manufacturer` es UNKNOWN, **no hay forma de corregirlo**: el mismo tumor en mm da distinto número de píxeles según el digitalizador. Es una limitación real que conviene declarar como aportación del OE-6, no esconder. El reporte ya documenta el `Manufacturer` UNKNOWN en §5.4.2 pero no saca esta consecuencia.
+
+**Ampliado el 2026-10-13 a todo el dataset.** Sobre las 3,103 mamografías distintas, ninguna trae `PixelSpacing`, `ImagerPixelSpacing` ni `Manufacturer`; las tres etiquetas faltan, no valen «UNKNOWN». Todas son MG, de 16 bits y MONOCHROME2. §5.4 debe decir que la etiqueta falta.
+**Datos.** `Code/tools/verificar_metadatos_dicom.py`; `Code/results/1_metadatos_dicom.csv`.
 
 ---
 
@@ -1101,6 +1106,8 @@ Para optimización sin gradiente (PSO), el coste por iteración es *enjambre × 
 | 16 | 2,320.6 h | 225.4 h | 1,326.0 h |
 
 **Impacto.** Ningún método rescata la Arquitectura A. SPSA extrapolado a k=12 daría ~19 h contra las 2.95 h del embedding precomputado, y además solo *aproxima* el gradiente, así que necesita más iteraciones para converger y la ganancia efectiva es menor que el 10×. PSO con mini-lotes gana ~5× sobre parameter-shift pero sigue un orden de magnitud por encima de no entrenar θ.
+
+**Matizado el 2026-10-11 (H-054).** «Ningún método rescata la Arquitectura A» vale para los métodos que usan solo mediciones del circuito, es decir, *parameter-shift*, SPSA y PSO. La retropropagación sobre el vector de estado sí la haría asequible en simulación (~3.4 min por 50 épocas), pero no existe en hardware.
 
 Sobre las mesetas áridas: los métodos sin gradiente **no las esquivan**, porque en una meseta las *diferencias de costo* entre puntos son ellas mismas exponencialmente pequeñas y un enjambre acaba moviéndose por ruido. **PENDIENTE DE VERIFICAR** antes de citar: Arrasmith, Cerezo, Czarnik, Cincio y Coles, *Effect of barren plateaus on gradient-free optimization*, Quantum 5, 558 (2021).
 
@@ -1461,7 +1468,7 @@ En calcificaciones, la semilla 42 es la **peor** de las 200.
 
 **Limitación a declarar en §4.9.** Bajo la Arquitectura B los embeddings se calculan una sola vez (D-014), así que el selector y el escalador se ajustan una vez sobre todo el train y no dentro de cada fold. Las estimaciones de la validación cruzada son por tanto algo optimistas. El test oficial no se toca y sigue siendo la estimación insesgada.
 
-**Datos.** `Code/4_Selection_and_Scaling.ipynb` §5; `Code/results/4_folds.csv`.
+**Datos.** `Code/4_Selection_and_Scaling.ipynb` §5; `Code/results/4_semilla_folds.csv` (balance de los folds por semilla) y `4_folds.csv` (asignación de cada lesión).
 
 ---
 
@@ -1707,19 +1714,19 @@ Los pares comparten lesiones y no son independientes, así que la referencia es 
 
 Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.004 en masas y 0.008 en calcificaciones.
 
-**Actualizado el 2026-10-05 (D-031).** Las filas de C5 son del C5 actual, `['Y','ZZ']`. Con el C5 original, un mapa solo ZZ, eran 0.505 (p = 0.088) en masas y 0.515 (p = 0.042) en calcificaciones a c = 1.
+**Actualizado el 2026-10-05 (D-031).** Las filas de C5 son del C5 actual, `['Y','ZZ']`. Con el C5 original, un mapa solo ZZ, eran 0.505 (p = 0.088) en masas y 0.515 (p = 0.042) en calcificaciones a c = 1. Esas cifras son de la corrida anterior a D-031 y ya no están en `X2_auc_pares.csv`.
 
 **Lecturas.**
 
 1. **El kernel clásico sí ve las clases, aunque de forma modesta.** En calcificaciones el efecto viene sobre todo de que los pares B–M se parecen menos: mediana de 0.583, contra 0.652 en B–B y 0.663 en M–M. Las masas son difíciles para todos los kernels, de acuerdo con los tamaños de efecto moderados del M3 (H-023).
-2. **Con el diseño preregistrado, el kernel cuántico conserva solo parte de esa información.** En masas, C4 y C5 quedan como mucho 0.01 por encima del azar. En calcificaciones, C4 conserva más o menos una cuarta parte del margen del RBF sobre el azar (0.020 contra 0.075) y C5 cerca del 60 % (0.047). En los histogramas de C4 los tres tipos de par se superponen casi por completo; en los de C5 en calcificaciones, los pares B–M quedan visiblemente a la izquierda.
+2. **Con el diseño fijado de antemano, el kernel cuántico conserva solo parte de esa información.** En masas, C4 y C5 quedan como mucho 0.01 por encima del azar. En calcificaciones, C4 conserva más o menos una cuarta parte del margen del RBF sobre el azar (0.020 contra 0.075) y C5 cerca del 60 % (0.047). En los histogramas de C4 los tres tipos de par se superponen casi por completo; en los de C5 en calcificaciones, los pares B–M quedan visiblemente a la izquierda.
 3. **Achicar los ángulos la recupera, pero solo hasta el nivel clásico.** El AUC de pares sube al bajar c, y a c = 0.02 iguala al del RBF. A esa escala el kernel cuántico es prácticamente el de un mapa sin el término de producto xᵢxⱼ (H-031). La información de clase recuperada es la que un kernel clásico ya ve, no información nueva aportada por las interacciones.
 4. **C4 contra C5 (D-031).** En masas son indistinguibles a c = 1. En calcificaciones C5 supera a C4 en 0.027, unas tres o cuatro desviaciones estándar de la permutación; como se prueban muchos kernels, es un indicio y no una prueba formal. Aun así, C5 queda por debajo del RBF. Con el C5 original, solo ZZ, los dos mapas eran indistinguibles.
 5. **Valores irresolubles.** El 26–28 % de los pares de C5 tiene fidelidad menor que 10⁻⁶ (H-037). La señal no viene de ahí: restringido a los pares con fidelidad de 10⁻⁶ o más, el AUC de pares de C5 es 0.510 en masas y 0.570 en calcificaciones.
 
 **Impacto.**
 
-- **Con esta medida por pares no hay indicio** de que la codificación cuántica capture estructura de clase que el kernel clásico no vea; con el diseño preregistrado captura menos. Anticipa el resultado del KTA y de la *geometric difference* del M6, que siguen siendo las métricas formales.
+- **Con esta medida por pares no hay indicio** de que la codificación cuántica capture estructura de clase que el kernel clásico no vea; con el diseño fijado de antemano captura menos. Anticipa el resultado del KTA y de la *geometric difference* del M6, que siguen siendo las métricas formales.
 - **Alcance.** El AUC de pares es una medida global sobre todos los pares. Valores de 0.52 a 0.58 son normales cuando las clases son heterogéneas, y no acotan el AUC de un clasificador, que puede aprovechar la estructura local.
 - **Q-012 quedó cerrada por D-031** (C5 = `['Y','ZZ']`). Con el C5 original, C4 y C5 eran indistinguibles con esta medida; con el término Y difieren en calcificaciones. La conclusión principal no cambia: ningún kernel cuántico supera al RBF.
 - Se corrige de paso un detalle de la figura de 5b: su eje y cuenta cada par dos veces, porque toma los dos triángulos de la matriz simétrica. En X2 cada par se cuenta una vez. La forma de la distribución no cambia.
@@ -1734,7 +1741,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 
 | | Masas | Calcificaciones |
 |---|---|---|
-| Desviación estándar media por dimensión de ⟨Zᵢ⟩, C4 | 0.057 | 0.048 |
+| Desviación estándar media por dimensión de ⟨Zᵢ⟩, C4 (todas las lesiones) | 0.056 | 0.048 |
 | Lo mismo, C5 original (`['X','ZZ']`) | 0.055 | 0.046 |
 | Lo mismo, C5 actual (`['Y','ZZ']`) | **0.180** | **0.178** |
 | Mediana del kernel fuera de la diagonal, C4 | 0.0022 | 0.0029 |
@@ -1757,7 +1764,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 - **Para el M6.** La *geometric difference* de C5 se calculará sobre una matriz todavía más cercana a la identidad que la de C4, así que la versión regularizada del Apéndice F (H-033) es aún más necesaria.
 - Pese a la concentración, el AUC de pares de C5 en calcificaciones es el mayor de los dos mapas cuánticos y no depende de los valores irresolubles (H-036).
 
-**Datos.** `Code/5a_Embeddings.ipynb` (2°a, celda de inspección y 4°a); `Code/5b_Quantum_Kernels.ipynb` (6c y 7°); `Code/results/5a_resumen.csv` y `5b_concentracion_kernel.csv`.
+**Datos.** `Code/5a_Embeddings.ipynb` (2°a, celda de inspección y 4°a); `Code/5b_Quantum_Kernels.ipynb` (6c y 7°); `Code/results/5a_resumen.csv` y `5b_concentracion_kernel.csv`. Las filas del C5 original vienen de la corrida anterior a D-031; los CSV actuales solo tienen el C5 con `['Y','ZZ']`.
 
 ---
 
@@ -1791,7 +1798,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 
 | 200 lesiones de train por subconjunto, c = 1 | Masas | Calcificaciones |
 |---|---|---|
-| Exceso de KTA centrada sobre la permutación, RBF (D-027) | 0.049 | 0.152 |
+| Exceso de KTA centrada sobre la permutación, RBF (D-027) | 0.049 | 0.151 |
 | Lo mismo, C4 / C5 | 0.003 / 0.005 | 0.006 / 0.007 |
 | Dimensión efectiva, RBF | 2.8 | 2.6 |
 | Lo mismo, C4 / C5 (de 200) | 184 / 171 | 188 / 168 |
@@ -1807,10 +1814,10 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 3. ***g* ≪ √N.** Es el caso de la primera prueba del diagrama de flujo (Fig. 1) en que el aprendizaje clásico predice igual o mejor, sea cual sea el etiquetado.
    - El modelo clásico más cercano es el gaussiano más estrecho de la malla (γ ≈ 6.3–6.8, λ = 0.01), un kernel clásico que también trata a las lesiones como casi aisladas.
    - El mínimo cae en el borde de la malla, y la malla extendida lo baja: la conclusión se refuerza.
-4. **Barrido de c.** A c = 0.02, el exceso de KTA sube a 0.043 en masas y a 0.143 en calcificaciones (contra 0.049 y 0.152 del RBF), d baja a ~4 y *g* queda entre 2.1 y 2.5. El máximo de *g* en todo el barrido es 3.1 (C5, c = 0.5). Lo que se recupera es lo que ya ve el kernel clásico (H-031). En C5, d y *g* no son monótonos en c, como sus medianas (H-037).
+4. **Barrido de c.** A c = 0.02, el exceso de KTA sube a 0.043 en masas y a 0.143 en calcificaciones (contra 0.049 y 0.151 del RBF), d baja a ~4 y *g* queda entre 2.1 y 2.5. El máximo de *g* en todo el barrido es 3.1 (C5, c = 0.5). Lo que se recupera es lo que ya ve el kernel clásico (H-031). En C5, d y *g* no son monótonos en c, como sus medianas (H-037).
 5. **El RBF de D-027** no tiene ningún λ admisible para c ≥ 0.05: un kernel clásico suave no puede imitar a los cuánticos sin un error de entrenamiento grande.
 
-**Impacto.** Es la respuesta del OE-3 en la familia de kernels: con el diseño preregistrado no hay indicio de ventaja cuántica potencial. Coincide con el AUC de pares de X2 (H-036). Bajo la regla 1 del proyecto es un resultado de viabilidad.
+**Impacto.** Es la respuesta del OE-3 en la familia de kernels: con el diseño fijado de antemano no hay indicio de ventaja cuántica potencial. Coincide con el AUC de pares de X2 (H-036). Bajo la regla 1 del proyecto es un resultado de viabilidad.
 
 **Datos.** `Code/6_Separability.ipynb` (3°); `Code/results/6_alineamiento_kernel.csv`, `6_dimension_efectiva.csv`, `6_diferencia_geometrica.csv` y `6_diferencia_geometrica_resumen.csv`; figuras `Docs/Figures/M6_kernel_metrics.png` y `M6_geometric_difference.png`.
 
@@ -1859,7 +1866,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 | Exceso de KTA, C4 / C5 | 0.003 / 0.005 | 0.012 / 0.023 | 0.006 / 0.007 | 0.011 / 0.024 |
 | Exceso de KTA del RBF | 0.049 | 0.049 | 0.151 | 0.150 |
 | *g* mínima, C4 / C5 (√N = 14.1) | 1.43 / 1.51 | 2.40 / 3.23 | 1.40 / 1.70 | 1.71 / 2.16 |
-| Dispersión del embedding, C4 / C5 | 0.057 / 0.180 | 0.099 / 0.276 | 0.048 / 0.178 | 0.076 / 0.267 |
+| Dispersión del embedding en todo el train, C4 / C5 | 0.058 / 0.180 | 0.099 / 0.276 | 0.048 / 0.178 | 0.076 / 0.267 |
 | Fisher J sobre todo el train, C1 / C4 / C5 | 0.45 / 0.13 / 0.21 | 0.37 / 0.09 / 0.17 | 1.06 / 0.42 / 0.31 | 0.98 / 0.29 / 0.37 |
 
 **Lecturas.**
@@ -1876,7 +1883,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 5. **La prueba de regresión reproduce exactamente el M6** para k = 12, con una diferencia máxima de 3×10⁻¹⁴. Pasan 29 de 29 verificaciones.
 
 **Impacto.**
-- **La conclusión del OE-3 no depende de k = 12.** Con el diseño preregistrado, las transformaciones cuánticas no dan mayor separabilidad que las clásicas, ni con 12 ni con 8 qubits.
+- **La conclusión del OE-3 no depende de k = 12.** Con el diseño fijado de antemano, las transformaciones cuánticas no dan mayor separabilidad que las clásicas, ni con 12 ni con 8 qubits.
 - **Material del OE-6.** La concentración tiene un coste medible: con 4 qubits menos, el alineamiento cuántico explicado por las etiquetas se multiplica por 1.7 a 4.6, aunque el punto de partida es muy bajo.
 - **Alcance.** El cambio de k también cambia las features. El contraste mide el efecto conjunto del tamaño del registro y de las 4 features que k = 12 añade. En masas, esas 4 incluyen las tres de textura, así que con k = 8 no queda ninguna (cf. H-026).
 
@@ -1904,7 +1911,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 3. **C5 frente a C4.** C5 va delante en casi todos los análisis (las excepciones son dos corridas de validación cruzada de masas, con las semillas 42 y 44), pero sin una diferencia significativa: en masas, 0.051 [−0.03, 0.13] en el test.
 4. **Coherente con el M6.** El orden coincide con el de la separabilidad: las condiciones clásicas van delante en ambas familias de métricas (H-039, H-040). La correlación formal entre ambos rankings (RF-21) corresponde al M8.
 
-**Impacto.** Es la respuesta del OE-4 y el OE-5 con el diseño preregistrado: no hay mejora de clasificación atribuible a la transformación cuántica, y sí una pérdida significativa.
+**Impacto.** Es la respuesta del OE-4 y el OE-5 con el diseño fijado de antemano: no hay mejora de clasificación atribuible a la transformación cuántica, y sí una pérdida significativa.
 
 **Datos.** `Code/7_Classification.ipynb` (3°); `Code/results/7_cv_por_fold.csv`, `7_cv_resumen.csv`, `7_test.csv` y `7_test_diferencias.csv`; figuras `Docs/Figures/M7_auc.png` y `M7_roc_test.png`.
 
@@ -1920,7 +1927,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 4. ***Ansatz* con dos capas.**
    - **Dispersión.** Sobre datos reales y con el θ del diseño, la dispersión de C4 baja (de 0.058 a 0.047 en masas) y la de C5 sube (de 0.180 a 0.196). El +30 % de H-018 venía de entradas sintéticas promediadas sobre sorteos de θ y no se reproduce aquí para C4.
    - **Clasificación.** C5 mejora (en el test, de 0.581 a 0.603 en masas y de 0.652 a 0.682 en calcificaciones), con intervalos que contienen el cero, y sigue por debajo de C1: −0.048 [−0.093, −0.005] y −0.086 [−0.141, −0.034]. C4 no cambia.
-5. **k = 8.** Las condiciones clásicas apenas cambian. C4 empeora en calcificaciones: 0.561 en el test, con una diferencia de −0.07 [−0.14, 0.00] frente a k = 12. C5 se mantiene. Las cuánticas quedan entre 0.07 y 0.19 por debajo de C1 en el test.
+5. **k = 8.** Las condiciones clásicas apenas cambian. C4 tiende a empeorar en calcificaciones: 0.561 en el test, con una diferencia de −0.070 [−0.141, +0.0005] frente a k = 12; el intervalo llega al cero. C5 se mantiene. Las cuánticas quedan entre 0.07 y 0.19 por debajo de C1 en el test.
    - Con k = 8 las métricas de kernel de C4 mejoraron (H-041) y su clasificación empeoró: otro caso de H-013. Un embedding más disperso no es necesariamente más informativo.
 
 **Impacto.**
@@ -1975,7 +1982,7 @@ Con las etiquetas barajadas, la desviación estándar del AUC de pares es de 0.0
 
 **Impacto.** Más features no abren una ventaja. Los kernels cuánticos que admiten 67 features y se pueden simular son clásicos de hecho. Los que no lo son no se pueden evaluar en un simulador, y sus valores serían irresolubles en hardware por la concentración. Material directo del OE-6.
 
-**Datos.** `Code/experiments/X4_QSVM_and_67_Features.ipynb` (4°); `Code/results/X4_67_features.csv`; figura `Docs/Figures/X4_67_features.png`.
+**Datos.** `Code/experiments/X4_QSVM_and_67_Features.ipynb` (4°); `Code/results/X4_67_features.csv`, `X4_test.csv` y `X4_test_diferencias.csv`; figura `Docs/Figures/X4_67_features.png`.
 
 ---
 
@@ -2032,7 +2039,7 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 
 ---
 
-### H-048 · Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de la tarea
+### H-048 · Etiquetas construidas según el Apéndice G dan una ventaja cuántica grande sobre las mismas lesiones: la ausencia de ventaja es una propiedad de estas etiquetas, no del protocolo
 **Fecha:** 2026-10-07 · **→ Reporte:** §7, §2 (lectura de la literatura), OE-3, OE-6
 
 **Método.** Con el kernel cuántico K_Q y el clásico más cercano K_C, ambos sobre todo el train, se construye y = √K_Q·v (Apéndice G, ecs. G3–G4). Luego se binariza por la mediana y se compara el QSVM con el **mejor** SVM clásico elegido por validación cruzada.
@@ -2052,7 +2059,7 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 **Impacto.**
 - **Responde la duda del autor.** La literatura tiene razón en que hay ventajas, pero en tareas cuyas etiquetas siguen la geometría cuántica. El benigno/maligno medido con features radiómicas no la sigue.
 - **No es un error:** la auditoría (H-046) lo descarta.
-- **Es la conclusión más fuerte para §7.** La ausencia de ventaja es una propiedad de la tarea, medida y no supuesta, y el mismo protocolo detecta una ventaja cuando existe.
+- **Es la conclusión más fuerte para §7.** La ausencia de ventaja es una propiedad de la tarea tal como se planteó: estas etiquetas, estas 12 features y las familias de kernels probadas (mapas ZZ con entrelazamiento completo o lineal, una o dos repeticiones, y sus kernels proyectados). Está medida, no supuesta, y el mismo protocolo detecta una ventaja cuando las etiquetas siguen la geometría del kernel cuántico.
 - **Para leer la literatura:** cuando un trabajo reporta ventaja, la pregunta es si sus etiquetas tienen esa estructura o si la comparación es asimétrica (H-046).
 
 **Datos.** `Code/experiments/X6_Searching_for_Advantage.ipynb` (5°); `Code/results/X6_etiquetas_construidas.csv`; figura `Docs/Figures/X6_built_labels.png`.
@@ -2388,7 +2395,7 @@ La *(b)* no usa features ni rendimiento y es defendible, pero hay que declararla
 
 H-031: con el diseño actual (k=12, entrelazamiento completo, ángulos en [0, π]), el kernel de fidelidad es casi la identidad. Escalar los ángulos solo lo corrige cuando desaparecen los productos. Salidas:
 
-- *(a)* mantener el diseño preregistrado (c = 1) como análisis principal y reportar un barrido de c como sensibilidad del OE-6;
+- *(a)* mantener el diseño fijado de antemano (c = 1) como análisis principal y reportar un barrido de c como sensibilidad del OE-6;
 - *(b)* adoptar un c pequeño, elegido sin mirar etiquetas, como diseño principal;
 - *(c)* cambiar la codificación (entrelazamiento lineal, o productos xᵢxⱼ sin el desplazamiento de π), lo que redefine C4 y C5.
 
