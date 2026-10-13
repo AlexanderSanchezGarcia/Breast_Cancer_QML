@@ -157,7 +157,7 @@ const PHASES = [
      "Resolver cómo se calcula la geometric difference (kernel contra kernel, no sobre ⟨Zᵢ⟩)"]]
   ]},
  {id:"f2", n:"Fase 2 · Ingeniería de datos (M2–M4)", due:"2026-10-03",
-  note:"COMPLETA. M2, M3 y M4 hechos el 23 sep; Q-009 y Q-010 cerradas (D-025, D-026). Quedan provisionales D-020 a D-022 (ver riesgos).",
+  note:"COMPLETA. M2, M3 y M4 hechos el 23 sep; Q-009 y Q-010 cerradas (D-025, D-026). D-020 a D-022 validadas por el autor el 12 oct.",
   groups:[
    ["Desbloqueo · ✓ resuelto entre el 25 ago y el 23 sep",[
      "Entorno radiomics con PyRadiomics compilado desde GitHub (D-007, H-006); también en qml_cancer desde el 23 sep (H-029)",
@@ -203,7 +203,7 @@ const PHASES = [
      "Circuitos de C4 y C5 dibujados en 5a: M5_circuit_k4.png y M5_circuit_12q.png"]]
   ]},
  {id:"f5", n:"Fase 5 · Modelos de clasificación (M7)", due:"2026-10-17",
-  note:"COMPLETA el 6 oct (7_Classification). El mismo MLP clasifica peor sobre C4/C5: de 0.07 a 0.14 menos de AUC en el test (H-042); resiste semillas, red, escalado, parada temprana, reps=2 y k=8 (H-043). Protocolo provisional D-036, a validar.",
+  note:"COMPLETA el 6 oct (7_Classification). El mismo MLP clasifica peor sobre C4/C5: de 0.07 a 0.14 menos de AUC en el test (H-042); resiste semillas, red, escalado, parada temprana, reps=2 y k=8 (H-043). Protocolo D-036 validado por el autor el 12 oct.",
   groups:[
    ["Entrenamiento",[
      "MLP sobre la matriz de embeddings en caché, sin TorchConnector ni qiskit en el bucle (D-014)",
@@ -215,7 +215,7 @@ const PHASES = [
      "Test con bootstrap por paciente y diferencias pareadas entre condiciones (D-036)"]]
   ]},
  {id:"f6", n:"Fase 6 · Evaluación comparativa (M8) ✓", due:"2026-10-23",
-  note:"COMPLETA el 7 oct (8_Comparison), 16 días antes del congelamiento. Separabilidad y clasificación ordenan igual las condiciones: ρ_s de 0.67 a 0.97, y en todos los rankings van delante las tres clásicas (D-039, H-049). Las masas son más separables con los descriptores del radiólogo y menos con las features radiómicas (H-050). OE-6: el embedding cabe hasta k ≈ 25 y el kernel hasta ≈ 22 en esta máquina (H-051); con 1,024 shots el MLP casi no pierde AUC, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 (H-052). Antes, el 7 oct: QSVM (X4, H-044), auditoría (X5, H-046) y búsqueda simétrica de ventaja (X6, H-047, H-048). D-040 provisional, a validar.",
+  note:"COMPLETA el 7 oct (8_Comparison), 16 días antes del congelamiento. Separabilidad y clasificación ordenan igual las condiciones: ρ_s de 0.67 a 0.97, y en todos los rankings van delante las tres clásicas (D-039, H-049). Las masas son más separables con los descriptores del radiólogo y menos con las features radiómicas (H-050). OE-6: el embedding cabe hasta k ≈ 25 y el kernel hasta ≈ 22 en esta máquina (H-051); con 1,024 shots el MLP casi no pierde AUC, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 (H-052). Antes, el 7 oct: QSVM (X4, H-044), auditoría (X5, H-046) y búsqueda simétrica de ventaja (X6, H-047, H-048). D-040 validada por el autor el 12 oct.",
   groups:[
    ["Análisis · ✓ 7 oct (8_Comparison)",[
      "Correlación de Spearman entre ranking de separabilidad y ranking de AUC-ROC, descriptiva para n = 5 (D-039, H-049)",
@@ -288,7 +288,7 @@ const RISKS = [
  ["ABIERTO · H-033","Fórmula de la geometric difference invertida en el reporte","§3.4.2 y RF-16 escriben √K_C K_Q⁻¹ √K_C; Huang et al. (2021, ec. 5) definen g_CQ = √‖√K_Q K_C⁻¹ √K_Q‖∞. Corregir antes de escribir §6. La versión regularizada ya se extrajo y se usó en el M6 (H-038, D-032); queda la corrección del reporte, junto con la ecuación de Spearman, que solo vale sin empates (H-049), y las de Fisher y KTA, que el reporte define distinto de lo implementado (correcciones_verificadas.md, §1). Pendiente al 11 oct."],
  ["Resuelto · D-035","Comparar contra k=8 antes de concluir","Hecho en X3: con 8 qubits la concentración baja y el alineamiento cuántico crece de 1.7 a 4.6 veces, pero ninguna métrica pone a C4 o C5 por delante de las condiciones clásicas (H-041). La conclusión del OE-3 no depende de k=12."],
  ["Vigilar · H-037","Kernel de C5 extremadamente concentrado","Mediana 0.00003 frente a 0.002 de C4; entre el 26 y el 28 % de los pares queda por debajo de 10⁻⁶, un valor que en hardware exigiría unos 10⁶ disparos solo para observarlo una vez. Su embedding ⟨Zᵢ⟩, en cambio, se dispersa tres veces más que el de C4."],
- ["Pendiente del autor · D-020 a D-022, D-036, D-040","Decisiones provisionales","Validar la alineación por tipo de desajuste, la componente conexa mayor y el contrato de salida de M2. Los 7 casos discordantes ya se decidieron el 12 oct: se conservan y se declaran (H-020). Validar también el protocolo del MLP (D-036) y el contenido del M8 (D-040). Si alguna cambia, hay que volver a correr antes del congelamiento del 23 oct. La evidencia para validarlas está en correcciones_verificadas.md, §6. Pendiente al 11 oct."],
+ ["Resuelto · D-020 a D-022, D-036, D-040","Decisiones provisionales","El autor validó las cinco el 12 oct: la alineación por tipo de desajuste, la componente conexa mayor, el contrato de salida de M2, el protocolo del MLP y el contenido del M8. Los 7 casos discordantes se conservan y se declaran (H-020): quitar los 3 de test cambia el AUC del test entre +0.001 y +0.004. No hay que volver a correr nada."],
  ["Vigilar · calendario","Reporte completo el 20 oct","Replanificado el 11 oct a nueve días, del 12 al 20, con el 20 como colchón. Si no alcanza, se recorta en este orden: (1) el cronograma en pgfgantt pasa a una tabla simple; (2) los defectos cosméticos de TT1 se van al 24 oct–2 nov, salvo los que rompen el PDF (logos, llave del .bib, sec:metricas); (3) §8.x en una o dos páginas; (4) en §2 se elimina la afirmación de BreastMNIST sin fuente, y las cifras de la línea 783 si el PDF no las confirma; (5) en §6, X1, X2 y X5 en un párrafo cada uno; (6) B3 no se re-ejecuta y se cita con dos cifras significativas. No se recortan las fórmulas de §3, la coherencia de §4 con lo implementado, el núcleo de §6, §7, el Abstract ni la lectura automática del 19."],
  ["Resuelto · H-053, H-054","θ fijo con una sola semilla y sin entrenar","X7: diez sorteos de θ mueven el AUC hasta 0.11, pero ninguno alcanza a C1. X8: entrenar θ gana a lo sumo 0.05 y tampoco. La conclusión del M7 no depende de θ. Queda declarar en §4.8 que el costo de D-014 vale para el hardware: en el simulador, la retropropagación sobre el vector de estado es ~3,600 veces más barata que parameter-shift."],
  ["ABIERTO · correcciones","Aplicar las correcciones verificadas","Bitácora: H-039 dice 0.152 (es 0.151); las líneas Datos de H-027 y H-045; la redacción de H-043 (k = 8) y de H-048 (alcance de «propiedad de la tarea»); «preregistrado». Reporte: §3.4, bibliografía y las cifras de Azevedo. Lista completa en Other/correcciones_verificadas.md."],

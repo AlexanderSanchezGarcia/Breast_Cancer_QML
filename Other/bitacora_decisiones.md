@@ -42,9 +42,9 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-017 | 2026-09-22 | La *geometric difference* se calcula con `FidelityQuantumKernel` | M7 | Firme; protocolo de cálculo en D-032 | §3.4.2, §4.9 |
 | D-018 | 2026-09-22 | Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento | M6 | Firme | §4.8, §4.9 |
 | D-019 | 2026-09-23 | Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022) | reporte | Firme | §1.3, §2.1.5 |
-| D-020 | 2026-09-23 | Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 | M2 | Provisional | §4.4, §8.x |
-| D-021 | 2026-09-23 | Reducir cada máscara a su componente conexa mayor | M2 | Provisional | §4.4, §8.x |
-| D-022 | 2026-09-23 | Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD | M2, M3 | Provisional | §4.4, §8.x |
+| D-020 | 2026-09-23 | Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 | M2 | Firme (validada por el autor el 2026-10-12) | §4.4, §8.x |
+| D-021 | 2026-09-23 | Reducir cada máscara a su componente conexa mayor | M2 | Firme (validada por el autor el 2026-10-12) | §4.4, §8.x |
+| D-022 | 2026-09-23 | Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD | M2, M3 | Firme (validada por el autor el 2026-10-12) | §4.4, §8.x |
 | D-023 | 2026-09-23 | M3 extrae 67 features: cuatro familias sobre la imagen original, sin filtros | M3 | Firme | §4.5 |
 | D-024 | 2026-09-23 | Selección por F-test con restricción de redundancia \|r\| ≤ 0.95 | M4 | Firme | §4.6 |
 | D-025 | 2026-09-23 | Escalado angular por cuantiles (uniforme × π) en lugar de min-max | M4 | Firme | §4.6 |
@@ -58,11 +58,11 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-033 | 2026-10-06 | Definiciones de las demás métricas del M6 | M6 | Firme | §4.9 |
 | D-034 | 2026-10-06 | Se reproduce la Fig. 2 de Huang et al. (2021) en el reporte | reporte | Firme | §3.4.2 |
 | D-035 | 2026-10-06 | Se compara contra k = 8 antes de concluir el OE-3, como experimento X3 | M4–M6 | Firme | §6.x, §7, OE-6 |
-| D-036 | 2026-10-06 | Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente | M7 | Provisional | §4.8, §6.x |
+| D-036 | 2026-10-06 | Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente | M7 | Firme (validada por el autor el 2026-10-12) | §4.8, §6.x |
 | D-037 | 2026-10-06 | Análisis de sensibilidad del M7: reps = 2 en el ansatz, k = 8, semillas y configuraciones | M7 | Firme | §6.x, §7 |
 | D-038 | 2026-10-07 | Análisis exploratorios X4 a X6: QSVM, auditoría y búsqueda de ventaja, con protocolo simétrico | X4–X6 | Firme | §6.x, §7 |
 | D-039 | 2026-10-07 | El Spearman del M8 se reporta como descriptivo: por subconjunto, con su distribución exacta para n = 5 | M8 | Firme | §3.4, §4.10, §6.x |
-| D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Provisional | §4.10, §6.x, §7, OE-6 |
+| D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Firme (validada por el autor el 2026-10-12) | §4.10, §6.x, §7, OE-6 |
 
 ### Hallazgos
 
@@ -377,7 +377,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 ---
 
 ### D-020 · Alinear cada máscara según su tipo de desajuste
-**Fecha:** 2026-09-23 · **Módulo:** M2 · **Estado:** Provisional (propuesta implementada en `2_Preprocessing.ipynb`, pendiente de validación del autor) · **→ Reporte:** §4.4, §8.x
+**Fecha:** 2026-09-23 · **Módulo:** M2 · **Estado:** Firme (implementada en `2_Preprocessing.ipynb`; validada por el autor el 2026-10-12) · **→ Reporte:** §4.4, §8.x
 
 **Contexto.** H-004 encontró 80 máscaras con dimensiones distintas a las de su mamografía y proponía remuestrearlas todas por vecino más cercano. H-020 muestra que son dos problemas distintos.
 
@@ -397,7 +397,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 ---
 
 ### D-021 · Reducir cada máscara a su componente conexa mayor
-**Fecha:** 2026-09-23 · **Módulo:** M2 · **Estado:** Provisional (propuesta implementada, pendiente de validación del autor) · **→ Reporte:** §4.4, §8.x
+**Fecha:** 2026-09-23 · **Módulo:** M2 · **Estado:** Firme (validada por el autor el 2026-10-12) · **→ Reporte:** §4.4, §8.x
 
 **Contexto.** Cada registro anota **una** lesión, pero el 86.3 % de las máscaras de masas trae islas desconectadas de pocos píxeles (H-021). PyRadiomics calcula `Perimeter` sumando el borde de todas las componentes, y `MaximumDiameter` como la mayor distancia entre dos puntos cualesquiera de la máscara.
 
@@ -416,7 +416,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 ---
 
 ### D-022 · Contrato de salida de M2
-**Fecha:** 2026-09-23 · **Módulo:** M2, M3 · **Estado:** Provisional (propuesta implementada, pendiente de validación del autor) · **→ Reporte:** §4.4, §8.x
+**Fecha:** 2026-09-23 · **Módulo:** M2, M3 · **Estado:** Firme (validada por el autor el 2026-10-12) · **→ Reporte:** §4.4, §8.x
 
 **Decisión y alternativas**, parámetro por parámetro:
 
@@ -691,7 +691,7 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 ---
 
 ### D-036 · Protocolo de clasificación del M7
-**Fecha:** 2026-10-06 · **Módulo:** M7 · **Estado:** **Provisional**: fijada al implementar; la valida el autor · **→ Reporte:** §4.8, §6.x · *precisa RF-18, RF-19, D-018 y D-014*
+**Fecha:** 2026-10-06 · **Módulo:** M7 · **Estado:** Firme (fijada al implementar; validada por el autor el 2026-10-12) · **→ Reporte:** §4.8, §6.x · *precisa RF-18, RF-19, D-018 y D-014*
 
 **Contexto.** El reporte fija un MLP con al menos dos capas ocultas, BCE ponderada con w_c = N/(C·N_c), Adam, la misma semilla en todas las condiciones y las métricas sobre el test oficial. No fija los hiperparámetros.
 
@@ -778,7 +778,7 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 ---
 
 ### D-040 · Contenido del M8: el OE-6 medido y una referencia con los descriptores del radiólogo
-**Fecha:** 2026-10-07 · **Módulo:** M8 · **Estado:** **Provisional**: propuesta al implementar; la valida el autor · **→ Reporte:** §4.10, §6.x, §7, OE-6 · *precisa RF-22*
+**Fecha:** 2026-10-07 · **Módulo:** M8 · **Estado:** Firme (propuesta al implementar; validada por el autor el 2026-10-12) · **→ Reporte:** §4.10, §6.x, §7, OE-6 · *precisa RF-22*
 
 **Contexto.**
 - RF-22 pide documentar cuatro cosas: el tiempo por muestra, el máximo de qubits, el impacto de los shots y el coste del *parameter-shift*.
@@ -803,6 +803,8 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
   - Es una referencia, no un competidor: los escribió un radiólogo viendo la imagen.
   - Se excluyen `assessment` (BI-RADS, que ya es un juicio de malignidad) y `subtlety`.
 - **El test no se vuelve a usar.** Los números de test del M8 son los del M7, el X4 y el X6.
+
+**Validada por el autor el 2026-10-12.** Al redactar, los límites de qubits de H-051 se escriben como 25–26, 22–23 y 14–15 según la carga de la máquina, y las cifras de H-052 con un decimal (`correcciones_verificadas.md`, §0 y §5).
 
 ---
 

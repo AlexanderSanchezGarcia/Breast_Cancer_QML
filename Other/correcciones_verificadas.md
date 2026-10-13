@@ -128,6 +128,7 @@ Los números que sostienen D-020 y D-021, recalculados de `2_preprocesamiento_qa
   - Lo removido tiene una mediana de 5 px (máximo 110 px) y nunca está a más de 14 px de la lesión.
 - **Los 7 casos discordantes** (`crop_check = discordant`): **decidido el 2026-10-12, se conservan y se declaran** (H-020). Quitar los 3 de test cambia el AUC del test entre +0.001 y +0.004 (`2_discordantes_sensibilidad.csv`).
 - D-022, D-036 y D-040: sin hallazgos en contra en la revisión.
+- **Validadas las cinco por el autor el 2026-10-12** (D-020, D-021, D-022, D-036 y D-040).
 
 ---
 
