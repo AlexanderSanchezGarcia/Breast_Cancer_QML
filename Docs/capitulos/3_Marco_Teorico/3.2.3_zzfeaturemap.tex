@@ -1,0 +1,79 @@
+% ---
+% Reemplaza líneas 1275-1346 de Docs/Technical_Report.tex
+% Decisiones: D-031, H-031
+% ---
+
+\subsubsection{\textit{ZZFeatureMap}: evolución de Pauli-Z de segundo orden}
+
+El \textit{ZZFeatureMap} es un circuito de evolución de
+Pauli-Z de segundo orden introducido por Havlíček et al.
+\cite{havlicek2019supervised} y disponible en Qiskit como
+\texttt{zz\_feature\_map}.
+Para $n$ qubits y $r$ repeticiones (\texttt{reps}),
+el circuito implementa el unitario:
+
+\begin{equation}
+  U_{\text{ZZ}}(\mathbf{x}) =
+  \left[\mathcal{U}_\Phi(\mathbf{x})\,H^{\otimes n}
+  \right]^r
+  \label{eq:zzfeaturemap}
+\end{equation}
+
+\noindent donde $H^{\otimes n}$ es la capa de compuertas
+de Hadamard que inicializa la superposición uniforme, y
+$\mathcal{U}_\Phi(\mathbf{x})$ es el bloque de codificación
+de datos definido por\footnote{Havlíček et al. y la documentación de Qiskit escriben $+i$; el circuito de Qiskit implementa $-i$, que produce el estado complejo conjugado. El núcleo de fidelidad y los valores esperados de este trabajo no dependen de esa elección.}:
+
+\begin{equation}
+  \mathcal{U}_\Phi(\mathbf{x}) =
+  \exp\!\left(-i \sum_{S \subseteq [n],\,|S|\leq 2}
+  \phi_S(\mathbf{x})\,\bigotimes_{j \in S} Z_j\right)
+  \label{eq:Uphi}
+\end{equation}
+
+\noindent Los coeficientes $\phi_S(\mathbf{x})$ codifican
+los datos clásicos en el hamiltoniano de evolución:
+
+\begin{equation}
+  \phi_{\{i\}}(\mathbf{x}) = x_i, \qquad
+  \phi_{\{i,j\}}(\mathbf{x}) =
+  (\pi - x_i)(\pi - x_j)
+  \label{eq:phi_coefficients}
+\end{equation}
+
+Como $e^{-i\phi Z} = \operatorname{diag}(e^{-i\phi}, e^{i\phi})$, cada término introduce una fase
+relativa $2\phi_S$ entre las componentes del estado. Por eso el circuito de Qiskit aplica
+compuertas de fase $P(2x_i)$ y $P\bigl(2(\pi-x_i)(\pi-x_j)\bigr)$: el factor 2 corresponde al
+parámetro \texttt{alpha} de la función, cuyo valor por defecto es 2. Con $x_i\in[0,\pi]$, la fase
+relativa propia recorre la circunferencia una vez.
+
+\noindent El término de un qubit $\phi_{\{i\}}$ codifica
+cada característica $x_i$ como una rotación alrededor del
+eje $Z$. El término de dos qubits $\phi_{\{i,j\}}$
+introduce \textit{entrelazamiento} entre pares de qubits
+que codifica las interacciones de segundo orden entre
+características, operando mediante la compuerta:
+
+\begin{equation}
+  e^{i\,\phi_{\{i,j\}}(\mathbf{x})\,Z_i Z_j} =
+  \text{CNOT}_{i \to j}\;
+  e^{i\,\phi_{\{i,j\}}(\mathbf{x})\,Z_j}\;
+  \text{CNOT}_{i \to j}
+  \label{eq:zz_gate}
+\end{equation}
+
+\noindent Esta capacidad de capturar interacciones de segundo
+orden entre pares de características es la razón por la que
+el ZZFeatureMap es uno de los métodos
+de codificación de datos más utilizados en tareas de
+clasificación cuántica, dada su capacidad para enriquecer la
+expresividad del espacio de características cuántico y la
+dificultad de simularlo clásicamente. 
+
+Es importante señalar que en Qiskit 2.x el uso de la clase
+\texttt{ZZFeatureMap} está marcado como obsoleto
+(\textit{deprecated}) a favor de la función
+\texttt{zz\_feature\_map()}, que retorna un
+\texttt{QuantumCircuit} estándar \cite{ibmquantum2024docs}.
+En el presente trabajo se utiliza la función actualizada
+compatible con Qiskit 2.x.

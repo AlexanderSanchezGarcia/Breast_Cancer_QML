@@ -1,0 +1,19 @@
+% ---
+% Reemplaza líneas 1669-1709 de Docs/Technical_Report.tex
+% Decisiones: D-014, H-011, H-052
+% ---
+
+\subsubsection{Implementación en Qiskit 2.x}
+
+En Qiskit 2.x, el flujo computacional del pipeline se estructura en los siguientes pasos:
+\begin{enumerate}
+  \item Construcción del \textit{feature map} con \texttt{zz\_feature\_map(12, reps=1)} o \texttt{pauli\_feature\_map(12, reps=1, paulis=['Y','ZZ'])}.
+  \item Instanciación del \textit{ansatz} con \texttt{real\_amplitudes(12, reps=1)} y vector de parámetros $\boldsymbol{\theta}$ sorteado una sola vez con semilla determinista 42.
+  \item Composición del circuito y asignación fija de parámetros mediante los métodos \texttt{compose} y \texttt{assign\_parameters}.
+  \item Cálculo del vector de estado mediante la clase \texttt{Statevector} y obtención de los valores de expectativa $\langle Z_i\rangle = \sum_b p(b)\,(1-2b_i)$ a partir de las probabilidades exactas de la base computacional.
+  \item Evaluación del núcleo de fidelidad cuántica mediante la clase \texttt{FidelityStatevectorKernel} de \texttt{qiskit-machine-learning}.
+\end{enumerate}
+
+En este trabajo no se usan \texttt{EstimatorQNN} ni \texttt{TorchConnector}. \texttt{EstimatorQNN} solicita por defecto una precisión de $0.015625$, y con ella la primitiva \texttt{StatevectorEstimator} suma a cada valor esperado un ruido gaussiano de esa desviación; el \texttt{EstimatorV2} de Qiskit Aer tampoco muestrea, sino que devuelve el valor exacto más un ruido gaussiano de la precisión pedida. Por eso, en este trabajo, «exacto» significa vector de estado directo o precisión cero explícita, y el estudio de \textit{shots} se hace con un muestreo de las probabilidades exactas.
+
+Es importante señalar que las clases \texttt{ZZFeatureMap}, \texttt{PauliFeatureMap} y \texttt{RealAmplitudes} están marcadas como obsoletas en Qiskit 2.x a favor de las funciones \texttt{zz\_feature\_map()}, \texttt{pauli\_feature\_map()} y \texttt{real\_amplitudes()}, que retornan un \texttt{QuantumCircuit} estándar en lugar de un \texttt{BlueprintCircuit} \cite{ibmquantum2024docs}. El presente trabajo utiliza las funciones actualizadas para garantizar compatibilidad con Qiskit 2.x.

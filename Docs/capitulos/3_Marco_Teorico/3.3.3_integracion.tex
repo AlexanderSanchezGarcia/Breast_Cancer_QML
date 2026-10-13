@@ -1,0 +1,49 @@
+% ---
+% Reemplaza líneas 1618-1668 de Docs/Technical_Report.tex
+% Decisiones: D-014, H-011, H-054
+% ---
+
+\subsubsection{Integración cuántico-clásica: \textit{embeddings} precomputados}
+
+La integración entre los circuitos cuánticos y el clasificador clásico se formula
+mediante una arquitectura desacoplada basada en representaciones intermedias.
+En lugar de ensamblar el circuito cuántico como una
+capa diferenciable dentro de la red neuronal mediante adaptadores de software como
+\texttt{TorchConnector} \cite{qiskitml2024}, el pipeline separa la fase
+de transformación cuántica de la fase de clasificación supervisada.
+
+El flujo de procesamiento opera de acuerdo con las siguientes etapas metodológicas:
+\begin{enumerate}
+  \item \textbf{Generación determinista de representaciones:} A partir del vector de
+        características seleccionado y escalado $\mathbf{x} \in [0, \pi]^{12}$ (M4),
+        el circuito cuántico compuesto por el mapa de características (\texttt{zz\_feature\_map}
+        en C4 o \texttt{pauli\_feature\_map} en C5) y el \textit{ansatz} \texttt{real\_amplitudes}
+        con parámetros fijos $\boldsymbol{\theta}$ calcula de forma analítica el vector
+        de expectativas exactas $\mathbf{e}(\mathbf{x}, \boldsymbol{\theta}) \in [-1, 1]^{12}$.
+  \item \textbf{Almacenamiento de representaciones:} Los vectores resultantes se
+        precomputan una sola vez para la totalidad del conjunto de datos y se persisten
+        en disco en formato estructurado, eliminando la necesidad de reevaluar circuitos
+        durante el ciclo de optimización del clasificador.
+  \item \textbf{Estandarización:} Los vectores de cada condición experimental
+        se estandarizan empleando la media y desviación estándar ajustadas sobre el conjunto de entrenamiento de cada partición, compensando la disparidad
+        en las escalas numéricas de las distintas condiciones (M7).
+  \item \textbf{Entrenamiento del clasificador clásico:} El perceptrón multicapa (MLP)
+        en PyTorch se entrena sobre las representaciones estandarizadas,
+        optimizando sus pesos sin modificar los parámetros del circuito cuántico.
+\end{enumerate}
+
+Este diseño responde a tres razones:
+\begin{itemize}
+  \item \textbf{Validez interna del experimento:} Las condiciones clásicas C2 (PCA) y
+        C3 (Kernel PCA) operan como transformaciones no supervisadas que no acceden a las
+        etiquetas de patología para construir el nuevo espacio. Si C4 y C5 ajustaran
+        $\boldsymbol{\theta}$ contra las etiquetas durante el entrenamiento, cualquier
+        ganancia en clasificación podría atribuirse al ajuste paramétrico supervisado y no
+        a las propiedades geométricas de la codificación cuántica $\phi$.
+  \item \textbf{Correspondencia con la pregunta de investigación:} El objetivo del trabajo
+        consiste en determinar si el mapeo cuántico al espacio de Hilbert genera mayor
+        separabilidad intrínseca en las características radiómicas, aislando la capacidad
+        representacional del \textit{feature map} frente a la optimización variacional.
+  \item \textbf{Viabilidad computacional:} Evita el costo de cientos de horas de ejecución
+        que demandaría el método \textit{parameter-shift} en cada época de entrenamiento; en el simulador la retropropagación sobre el vector de estado abarataría el entrenamiento, pero ese atajo no existe en hardware (sección~\ref{sec:parameter_shift}).
+\end{itemize}

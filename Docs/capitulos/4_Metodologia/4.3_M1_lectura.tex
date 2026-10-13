@@ -1,0 +1,67 @@
+% ---
+% Reemplaza líneas 2577–2629 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-001, D-012, H-001, H-002, H-010.
+% ---
+
+\subsection{Módulo 1: Lectura de datos}
+
+El primer módulo gestiona la adquisición y unificación de
+los datos del dataset CBIS-DDSM, disponible públicamente
+en The Cancer Imaging Archive (TCIA). El dataset comprende 1,566
+pacientes con imágenes mamográficas digitalizadas en
+formato DICOM y cuatro archivos CSV con metadatos clínicos
+y anotaciones patológicas validadas.
+
+La lectura de los archivos DICOM se realiza mediante la
+librería \texttt{pydicom}, extrayendo el arreglo de píxeles
+en formato de 16 bits y los metadatos clínicos relevantes:
+\texttt{PatientID}, \texttt{Modality},
+\texttt{Rows}, \texttt{Columns}, \texttt{BitsStored} y
+\texttt{PhotometricInterpretation}. El análisis exploratorio
+confirmó que la totalidad de las imágenes del dataset
+utilizan la convención fotométrica \texttt{MONOCHROME2},
+donde los valores altos corresponden al blanco (tejido
+denso) y los valores bajos al negro (fondo), lo que
+elimina la necesidad de inversión de píxeles en el
+preprocesamiento.
+
+Ninguna de las 3\,103 mamografías incluye las etiquetas \texttt{PixelSpacing},
+\texttt{ImagerPixelSpacing} ni \texttt{Manufacturer}. Sin un espaciado físico, las características de
+forma se expresan en píxeles, y no es posible distinguir el digitalizador de origen.
+
+Los cuatro archivos CSV del dataset
+(\texttt{mass\_case\_description\_train\_set},
+\texttt{mass\_case\_description\_test\_set},
+\texttt{calc\_case\_description\_train\_set},
+\texttt{calc\_case\_description\_test\_set})
+se unifican en un DataFrame mediante
+\texttt{pandas}, agregando las columnas
+\texttt{finding\_type} (masa / calcificación) y
+\texttt{split} (train / test). La etiqueta objetivo
+\texttt{pathology} se normaliza a una variable binaria:
+\texttt{BENIGN\_WITHOUT\_CALLBACK} se trata equivalente
+a \texttt{BENIGN}, resultando en la codificación
+0\,=\,benigno y 1\,=\,maligno.
+
+El enlace entre los registros CSV y los archivos DICOM
+en disco se resuelve mediante un índice construido
+recursivamente sobre la estructura de carpetas del
+NBIA Data Retriever, identificando para cada caso el
+archivo de mamografía completa, la máscara ROI binaria
+y la imagen recortada. La clasificación entre máscara
+y recorte se realiza leyendo el contenido de píxeles:
+las máscaras presentan exactamente dos valores únicos
+(0 y 255) mientras que las imágenes recortadas presentan
+cientos de valores distintos.
+
+La descarga inicial resultó incompleta, lo que dejaba la cobertura en el 97.6\,\%.
+Las 84 series faltantes se recuperaron mediante la API REST de TCIA, solicitando
+cada serie por su identificador, después de que el NBIA Data Retriever rechazara
+un manifiesto reconstruido. Con ello la cobertura alcanza los 3\,568 registros.
+Estos corresponden a 3\,103 mamografías distintas, porque varias lesiones
+comparten la misma imagen.
+
+La salida de este módulo es un DataFrame unificado con
+3,568 registros, con rutas resueltas a los archivos DICOM
+correspondientes y etiquetas binarias validadas, que sirve
+como base para todos los módulos posteriores.

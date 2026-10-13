@@ -1,0 +1,66 @@
+% ---
+% Reemplaza líneas 1347-1390 de Docs/Technical_Report.tex
+% Decisiones: D-031, H-012, H-034
+% ---
+
+\subsubsection{\textit{PauliFeatureMap}: generalización por elección de los operadores de Pauli}
+
+El circuito \textit{PauliFeatureMap} constituye la generalización del esquema de
+Havl{\'{\i}}{\v{c}}ek et al. que permite seleccionar subconjuntos arbitrarios de
+operadores de Pauli ($X$, $Y$, $Z$) en el bloque unitario de codificación. El operador
+adopta la forma general:
+\begin{equation}
+  U_{\text{Pauli}}(\mathbf{x}) = \left[\mathcal{U}_\Phi^{(P)}(\mathbf{x})\,H^{\otimes n}\right]^r,
+  \label{eq:paulifeaturemap}
+\end{equation}
+donde el generador diagonal o no diagonal se define a partir de una familia de cadenas
+de Pauli $\{P_S\}$:
+\begin{equation}
+  \mathcal{U}_\Phi^{(P)}(\mathbf{x}) = \prod_{P \in \mathcal{P}}
+  \exp\!\left(-i \sum_{S} \phi_S(\mathbf{x})\,\bigotimes_{j \in S} P_j\right),
+  \label{eq:pauli_expansion}
+\end{equation}
+donde $\mathcal{P}$ es la lista de cadenas de Pauli elegida, en el orden en que se aplican. Si los
+términos no conmutan, como $Y$ y $ZZ$, el bloque es un producto de exponenciales y no una
+sola exponencial: en C5 se aplica primero $\exp\bigl(-i\sum_i x_i Y_i\bigr)$ y después
+$\exp\bigl(-i\sum_{i<j}(\pi-x_i)(\pi-x_j)Z_iZ_j\bigr)$.
+En el presente trabajo, la condición experimental C5 se define formalmente como
+\texttt{pauli\_feature\_map(paulis=['Y', 'ZZ'], reps=1)}, manteniendo el mismo número
+de qubits ($k = 12$) e idéntica conectividad de entrelazamiento de segundo orden
+($ZZ$) que el mapa C4 (\texttt{zz\_feature\_map}). La
+comparación entre C4 y C5 aísla con precisión el efecto de sustituir el eje de rotación
+de la codificación de primer orden (eje $Z$ frente a eje $Y$), preservando
+inalterada la estructura del entrelazamiento de dos cuerpos.
+
+La elección de operadores de Pauli en la codificación de un solo qubit tiene consecuencias
+geométricas sobre la esfera de Bloch:
+\begin{enumerate}
+  \item \textbf{El término en $X$ no codifica nada:} Tras la capa inicial de Hadamard,
+        el estado del registro se encuentra en $|+\rangle^{\otimes n} = \left(\frac{|0\rangle + |1\rangle}{\sqrt{2}}\right)^{\otimes n}$.
+        Dado que el estado $|+\rangle$ es un autoestado del operador de Pauli $X$ con
+        autovalor $+1$ ($X|+\rangle = |+\rangle$), la aplicación del operador unitario de
+        evolución bajo $X$ satisface:
+        \begin{equation}
+          e^{-i\,\phi(x_i)\,X}|+\rangle = e^{-i\,\phi(x_i)}\,|+\rangle.
+          \label{eq:x_eigenstate_phase}
+        \end{equation}
+        La variable $x_i$ induce únicamente una fase global no física sobre el qubit, sin
+        alterar las amplitudes relativas ni modificar la densidad de probabilidad en
+        ninguna base. Un mapa basado en $\{X, ZZ\}$ anula la codificación
+        de primer orden y degenera en un circuito de puro entrelazamiento $ZZ$.
+  \item \textbf{Rotación a lo largo del ecuador (Pauli $Z$, C4):} El generador $Z$ desplaza
+        el estado $|+\rangle$ a lo largo del plano ecuatorial de la esfera de Bloch, alterando
+        la fase relativa $\varphi$ entre $|0\rangle$ y $|1\rangle$ sin cambiar las
+        probabilidades marginales de ocupación de los polos.
+  \item \textbf{Rotación fuera del ecuador hacia los polos (Pauli $Y$, C5):} El generador
+        $Y$ actúa perpendicularmente al estado ecuatorial $|+\rangle$, rotándolo a lo largo
+        de un meridiano hacia los polos $|0\rangle$ y $|1\rangle$. Esta transformación
+        modifica de forma directa las probabilidades de medición en la base computacional
+        antes de la aplicación del entrelazamiento.
+\end{enumerate}
+
+Qiskit construye el término $\exp(-i x_i Y)$ como $\sqrt{X}\,P(2x_i)\,\sqrt{X}^\dagger$, que equivale a $R_Y(2x_i)$ salvo una fase global. La condición C5 añade 12 compuertas
+$\sqrt{X}$ (\texttt{SX}) y 12 compuertas $\sqrt{X}^\dagger$ (\texttt{SXdg}) respecto a C4,
+con lo que la profundidad del circuito pasa de 65 a 67 capas, sin compuertas CNOT
+adicionales. Al restringirse ambos mapas a interacciones de grado $|S| \le 2$, C5
+no introduce interacciones de orden superior respecto a C4.

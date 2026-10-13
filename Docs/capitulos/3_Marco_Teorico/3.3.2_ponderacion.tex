@@ -1,0 +1,35 @@
+% ---
+% Reemplaza líneas 1585-1617 de Docs/Technical_Report.tex
+% Decisiones: N/A (sin cambio)
+% ---
+
+\subsubsection{Ponderación de clases para datos desbalanceados}
+% -----------------------------------------------------------
+
+Dado el desbalance de clases observado en el análisis
+exploratorio del dataset CBIS-DDSM (ratio 1.78:1 en
+calcificaciones), se aplica ponderación de clases durante
+el entrenamiento del MLP. La pérdida ponderada se define
+como:
+
+\begin{equation}
+  \mathcal{L}_w = -\left[
+  w_1\,y\log\hat{y} +
+  w_0\,(1-y)\log(1-\hat{y})
+  \right]
+  \label{eq:weighted_bce}
+\end{equation}
+
+\noindent donde los pesos $w_0$ y $w_1$ se calculan
+inversamente proporcionales a la frecuencia de cada clase
+en el conjunto de entrenamiento:
+
+\begin{equation}
+  w_c = \frac{N}{C \cdot N_c}, \qquad c \in \{0, 1\}
+  \label{eq:class_weights}
+\end{equation}
+
+\noindent siendo $N$ el número total de muestras, $C = 2$
+el número de clases y $N_c$ el número de muestras de la
+clase $c$. Este ajuste se aplica de forma independiente
+para los subconjuntos de masas y calcificaciones.

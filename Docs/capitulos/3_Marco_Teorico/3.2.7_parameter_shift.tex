@@ -1,0 +1,30 @@
+% ---
+% Reemplaza líneas 1465-1512 de Docs/Technical_Report.tex
+% Decisiones: D-014, H-011, H-054
+% ---
+
+\subsubsection{El método \textit{parameter-shift} para el cálculo del gradiente}
+\label{sec:parameter_shift}
+
+Para la optimización de circuitos cuánticos variacionales en plataformas físicas, el
+cálculo del gradiente de un valor de expectativa respecto a los parámetros del circuito
+$\boldsymbol{\theta}$ no puede llevarse a cabo mediante la retropropagación clásica de
+errores (\textit{backpropagation}), dado que el estado interno colapsa durante la medición
+y las amplitudes intermedias son físicamente inaccesibles. En su lugar, se recurre a la
+regla analítica del \textit{parameter-shift} \cite{mitarai2018quantum, cerezo2021variational}.
+Para compuertas unitarias generadas por operadores hermíticos con dos autovalores
+distintos (tales como las rotaciones de Pauli $R_Y(\theta) = \exp(-i \frac{\theta}{2} Y)$),
+la derivada exacta del valor esperado viene dada por:
+\begin{equation}
+  \frac{\partial \langle Z_i \rangle}{\partial \theta_j} =
+  \frac{1}{2}\left[
+    \langle Z_i \rangle_{\theta_j + \frac{\pi}{2}} -
+    \langle Z_i \rangle_{\theta_j - \frac{\pi}{2}}
+  \right],
+  \label{eq:parameter_shift}
+\end{equation}
+donde $\langle Z_i \rangle_{\theta_j \pm \pi/2}$ denota el valor de expectativa del circuito
+evaluado sustituyendo el parámetro escalar $\theta_j$ por $\theta_j \pm \pi/2$, manteniendo
+los demás parámetros constantes.
+
+Con $m = n(r+1) = 24$ parámetros, cada gradiente por muestra exige $2m = 48$ evaluaciones del circuito. Medido en el simulador con valores exactos, el gradiente por \textit{parameter-shift} tardó 5.16~s por lesión, lo que para las 2\,864 lesiones de entrenamiento y 50 épocas representa unas 205~h por \textit{feature map}. La retropropagación a través del vector de estado produce el mismo gradiente (con una diferencia de $1.8\times10^{-15}$) en 3.4~min, unas 3\,600 veces menos tiempo, pero exige conocer simultáneamente las $2^n$ amplitudes del estado, información que un computador cuántico no entrega porque medir colapsa el estado. En este trabajo $\boldsymbol{\theta}$ no se entrena (sección~\ref{sec:modulo5}); el costo se documenta como parte del OE-6.

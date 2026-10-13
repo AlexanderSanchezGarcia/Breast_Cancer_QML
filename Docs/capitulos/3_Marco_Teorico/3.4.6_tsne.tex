@@ -1,0 +1,24 @@
+% ---
+% Reemplaza líneas 1884-1906 de Docs/Technical_Report.tex
+% Decisiones: D-033
+% ---
+
+\subsubsection{Visualización \textit{t-SNE}}
+
+El algoritmo \textit{t-Distributed Stochastic Neighbor
+Embedding} (t-SNE) \cite{vandermaaten2008tsne} proyecta
+vectores de alta dimensionalidad a un espacio de dos
+dimensiones preservando la estructura de vecindad local.
+Se utiliza como herramienta de visualización cualitativa
+de la separabilidad de clases en el espacio de embeddings:
+si la proyección t-SNE muestra clusters compactos y bien
+separados por clase, el espacio de representación tiene
+estructura discriminativa.
+
+Como complemento visual de las métricas de separabilidad del espacio de embeddings
+(DB, Fisher multivariante y KTA lineal), se emplea el algoritmo \textit{t-Distributed Stochastic
+Neighbor Embedding} (t-SNE) \cite{vandermaaten2008tsne} como herramienta de exploración cualitativa.
+Para garantizar reproducibilidad, la proyección bidimensional se genera fijando
+perplejidad 30, inicialización determinista basada en las dos primeras componentes principales
+(PCA) y semilla aleatoria 42 (\texttt{sklearn.manifold.TSNE}). Se utiliza con fines
+de soporte visual y no como criterio numérico de decisión.

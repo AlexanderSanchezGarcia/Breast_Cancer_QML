@@ -1,0 +1,40 @@
+% ---
+% Reemplaza líneas 1391-1421 de Docs/Technical_Report.tex
+% Decisiones: D-014, H-011, H-054
+% ---
+
+\subsubsection{El \textit{ansatz} variacional: RealAmplitudes}
+
+El bloque variacional $W(\boldsymbol{\theta})$ introduce capas de rotaciones
+parametrizadas y compuertas de entrelazamiento destinadas a manipular las amplitudes
+del estado codificado $|\phi(\mathbf{x})\rangle$. En este trabajo se emplea la
+función \texttt{real\_amplitudes} de Qiskit 2.x, compuesta por una capa inicial de
+rotaciones $R_Y$ seguida de $r$ bloques repetidos con una cadena de CNOT entre qubits vecinos y nuevas rotaciones $R_Y$:
+\begin{equation}
+  W(\boldsymbol{\theta}) = \left[\prod_{\ell=r}^{1} \Bigl(\bigotimes_{i=1}^{n} R_Y(\theta_{\ell,i})\Bigr)\, E \right] \bigotimes_{i=1}^{n} R_Y(\theta_{0,i}),
+  \label{eq:real_amplitudes}
+\end{equation}
+donde $E$ es la cadena de CNOT, $r$ es el número de repeticiones (\texttt{reps}) y el producto se
+escribe con $\ell$ creciente hacia la izquierda, que es el orden en que actúan las capas. Para
+$r = 1$, $W(\boldsymbol{\theta}) = \bigl(\bigotimes_i R_Y(\theta_{1,i})\bigr)\,E\,\bigl(\bigotimes_i R_Y(\theta_{0,i})\bigr)$.
+El número total de parámetros es:
+\begin{equation}
+  m = n\,(r + 1).
+  \label{eq:num_params_ansatz}
+\end{equation}
+Para la configuración experimental fijada en este trabajo ($n = 12$ qubits y $r = 1$
+repetición), el \textit{ansatz} contiene exactamente $m = 12 \times (1 + 1) = 24$
+parámetros angulares $\boldsymbol{\theta} \in \mathbb{R}^{24}$. $R_Y$ y CNOT son matrices reales: aplicadas sobre $|0\rangle^{\otimes n}$ producirían solo amplitudes reales, de ahí el nombre. En este trabajo actúan sobre el estado complejo que deja el \textit{feature map}.
+
+El \textit{ansatz} no puede suprimirse. En C4 (\texttt{zz\_feature\_map}), la codificación
+aplica Hadamard seguido de compuertas diagonales ($Z$ y $ZZ$). Las compuertas
+diagonales modifican las fases relativas pero preservan inalteradas las magnitudes de las
+amplitudes complejas $|c_j| = 2^{-n/2}$. En consecuencia, medir el valor de expectativa
+en la base $Z$ directamente tras el mapa de características produciría
+$\langle Z_i \rangle = 0$ para cualquier entrada $\mathbf{x}$. La información reside
+en las fases relativas del estado cuántico, a las que la medición en la base
+computacional es ciega. En C5 el giro en $Y$ sí cambia las probabilidades, pero sin el \textit{ansatz} se tendría
+$\langle Z_i\rangle = -\sin(2x_i)$: cada valor dependería de una sola característica y las fases
+del acoplamiento $ZZ$ seguirían sin verse. El \textit{ansatz} $W(\boldsymbol{\theta})$ mezcla los
+qubits y convierte parte de las diferencias de fase en diferencias de probabilidad medibles en
+$\langle Z_i \rangle$.

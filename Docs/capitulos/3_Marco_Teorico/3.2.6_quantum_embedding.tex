@@ -1,0 +1,28 @@
+% ---
+% Reemplaza líneas 1422-1464 de Docs/Technical_Report.tex
+% Decisiones: D-014, H-019, H-053
+% ---
+
+\subsubsection{El \textit{quantum embedding}: vector de salida del circuito}
+\label{sec:quantum_embedding}
+
+A partir del estado conjunto $|\psi(\mathbf{x}, \boldsymbol{\theta})\rangle = W(\boldsymbol{\theta})\,U(\mathbf{x})\,|0\rangle^{\otimes n}$,
+el circuito extrae información mediante la medición del valor de expectativa del operador de Pauli $Z$ sobre cada qubit $i$:
+\begin{equation}
+  \langle Z_i \rangle = \langle \psi(\mathbf{x}, \boldsymbol{\theta}) | Z_i | \psi(\mathbf{x}, \boldsymbol{\theta}) \rangle \in [-1, 1].
+  \label{eq:expval}
+\end{equation}
+El \textit{quantum embedding} de la muestra $\mathbf{x}$ se formaliza como el vector
+de los $n$ valores de expectativa:
+\begin{equation}
+  \mathbf{e}(\mathbf{x}, \boldsymbol{\theta}) = \bigl(\langle Z_1 \rangle, \langle Z_2 \rangle, \dots, \langle Z_n \rangle\bigr)^\top \in [-1, 1]^n.
+  \label{eq:embedding_vector}
+\end{equation}
+En el diseño adoptado, el vector de parámetros
+$\boldsymbol{\theta}$ no se entrena mediante optimización iterativa supervisada: se fija
+de forma determinista una sola vez mediante un sorteo uniforme en $[0, 2\pi)$ con
+semilla declarada (42). Los valores de expectativa $\mathbf{e}(\mathbf{x}, \boldsymbol{\theta})$
+se calculan analíticamente de forma exacta sobre el vector de estado (\textit{statevector})
+y se almacenan para alimentar directamente a los clasificadores clásicos.
+
+Por otra parte, la matriz de kernel de fidelidad cuántica $K_Q(\mathbf{x}, \mathbf{x}')$, definida en la ecuación~\eqref{eq:quantum_kernel}, se evalúa exclusivamente sobre el \textit{feature map} $U(\mathbf{x})$, sin incluir el \textit{ansatz} $W(\boldsymbol{\theta})$. Dado que $W(\boldsymbol{\theta})$ es un operador unitario ($W^\dagger W = I$), su inserción antes de la medición se cancelaría en el producto interno: $|\langle \phi(\mathbf{x}) | W^\dagger W | \phi(\mathbf{x}') \rangle|^2 = |\langle \phi(\mathbf{x}) | \phi(\mathbf{x}') \rangle|^2$.

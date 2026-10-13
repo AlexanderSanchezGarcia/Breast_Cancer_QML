@@ -1,0 +1,60 @@
+% ---
+% Reemplaza líneas 1139-1190 de Docs/Technical_Report.tex
+% Decisiones: D-014, D-040, H-019, H-052
+% ---
+
+\subsubsection{Medición y valores de expectativa}
+
+La medición en computación cuántica extrae información clásica del estado cuántico
+al precio de colapsar la superposición. Para un observable $\hat{O}$ representado
+por un operador hermítico, el valor de expectativa cuantifica el promedio estadístico
+obtenido al medir dicho observable sobre un ensamble de estados idénticos $|\psi\rangle$:
+\begin{equation}
+  \langle \hat{O} \rangle = \langle \psi | \hat{O} | \psi \rangle.
+  \label{eq:expectation}
+\end{equation}
+En el presente trabajo, los observables corresponden a las matrices
+de Pauli $Z$ aplicadas a cada qubit individual $i \in \{1, \dots, n\}$. Su valor
+de expectativa está en el intervalo $[-1, 1]$:
+\begin{equation}
+  \langle Z_i \rangle = \langle \psi | Z_i | \psi \rangle \in [-1, 1],
+  \label{eq:expZ}
+\end{equation}
+donde $\langle Z_i \rangle = +1$ denota el estado computacional $|0\rangle$,
+$\langle Z_i \rangle = -1$ denota el estado $|1\rangle$, y valores intermedios
+describen superposiciones coherentes o mezclas estadísticas. El vector ordenado de
+expectativas:
+\begin{equation}
+  \mathbf{e}_Z = \bigl(\langle Z_1 \rangle, \langle Z_2 \rangle, \dots, \langle Z_n \rangle\bigr)^\top \in [-1, 1]^n
+  \label{eq:expZ_vector}
+\end{equation}
+resume la proyección del estado cuántico sobre cada qubit.
+
+En un dispositivo físico cuántico, $\langle Z_i \rangle$ no se mide de forma
+directa sino que se estima mediante el promedio de $n_{\text{shots}}$ mediciones
+proyectivas independientes. Dado que los autovalores de $Z_i$ son $\pm 1$, cada disparo da $\pm 1$ con probabilidad $P(+1) = (1+\langle Z_i\rangle)/2$, de modo que la varianza de un disparo individual es $1-\langle Z_i\rangle^2$. La varianza del estimador empírico
+$\hat{Z}_i = \frac{1}{n_{\text{shots}}} \sum_{s=1}^{n_{\text{shots}}} z_i^{(s)}$
+está determinada exactamente por:
+\begin{equation}
+  \operatorname{Var}(\hat{Z}_i) = \frac{1 - \langle Z_i \rangle^2}{n_{\text{shots}}}.
+  \label{eq:shot_noise_variance}
+\end{equation}
+La dispersión muestral es máxima cuando el estado es puramente ecuatorial
+($\langle Z_i \rangle = 0$, varianza $1/n_{\text{shots}}$) y se anula si el qubit
+se halla en un autoestado de la base computacional ($\langle Z_i \rangle = \pm 1$).
+
+El núcleo de fidelidad cuántica, $K_Q(\mathbf{x}, \mathbf{x}') = |\langle \phi(\mathbf{x}) | \phi(\mathbf{x}') \rangle|^2$,
+se estima en hardware de otra forma: se implementa el circuito de
+\textit{compute-uncompute} $U^\dagger(\mathbf{x}') U(\mathbf{x})$ sobre el estado
+$|0\rangle^{\otimes n}$ y se cuenta la frecuencia con la que se registra
+la cadena nula $|0\dots 0\rangle$. Por lo tanto, la estimación del kernel en hardware
+es un proceso binomial con probabilidad de éxito $p = K_Q$, cuya
+varianza muestral es $K_Q(1 - K_Q)/n_{\text{shots}}$.
+
+En la metodología principal del presente trabajo, con objeto de evaluar las
+propiedades geométricas de las representaciones sin el ruido
+que introduce un número finito de disparos, los valores de
+expectativa y las matrices de fidelidad se evalúan analíticamente en simulación a
+partir del vector de estado exacto (\textit{statevector}). El impacto empírico y
+analítico de la cota finita de disparos ($n_{\text{shots}}$) se analiza de forma
+explícita en el módulo de restricciones del simulador (M8).

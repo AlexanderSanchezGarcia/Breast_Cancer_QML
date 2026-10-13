@@ -1,0 +1,75 @@
+% ---
+% Reemplaza líneas 1513-1584 de Docs/Technical_Report.tex
+% Decisiones: N/A (sin cambio)
+% ---
+
+\subsection{Red neuronal clásica e integración
+            Qiskit--PyTorch}
+
+% -----------------------------------------------------------
+\subsubsection{Perceptrón multicapa (MLP)}
+% -----------------------------------------------------------
+
+La red neuronal clásica utilizada como clasificador
+\textit{downstream} en el pipeline del presente trabajo es
+un perceptrón multicapa (MLP, \textit{Multi-Layer
+Perceptron}), una arquitectura de aprendizaje supervisado
+compuesta por capas de neuronas totalmente conectadas
+\cite{goodfellow2016deep}.
+
+Formalmente, dado un vector de entrada
+$\mathbf{z} \in \mathbb{R}^n$ ---que puede ser el
+\textit{quantum embedding}
+$\mathbf{e}(\mathbf{x}, \boldsymbol{\theta})$ o cualquiera
+de los vectores de las condiciones clásicas--- la
+transformación de la capa $\ell$ se define como:
+
+\begin{equation}
+  \mathbf{h}^{(\ell)} = \sigma\!\left(
+  W^{(\ell)}\,\mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}
+  \right), \qquad \ell = 1, \ldots, L
+  \label{eq:mlp_layer}
+\end{equation}
+
+\noindent donde $W^{(\ell)} \in \mathbb{R}^{d_\ell \times
+d_{\ell-1}}$ es la matriz de pesos, $\mathbf{b}^{(\ell)}
+\in \mathbb{R}^{d_\ell}$ es el vector de sesgos, y
+$\sigma(\cdot)$ es la función de activación no lineal.
+La capa de salida produce una probabilidad de clasificación
+binaria mediante la función sigmoide:
+
+\begin{equation}
+  \hat{y} = \sigma_{\text{sig}}\!\left(
+  W^{(L)}\,\mathbf{h}^{(L-1)} + b^{(L)}
+  \right) =
+  \frac{1}{1 + e^{-(W^{(L)}\mathbf{h}^{(L-1)}
+  + b^{(L)})}}
+  \in [0, 1]
+  \label{eq:sigmoid_output}
+\end{equation}
+
+\noindent El modelo se entrena minimizando la función de
+pérdida de entropía cruzada binaria (\textit{Binary
+Cross-Entropy}, BCE):
+
+\begin{equation}
+  \mathcal{L}_{\text{BCE}}(\hat{y}, y) =
+  -\left[y\log\hat{y} + (1-y)\log(1-\hat{y})\right]
+  \label{eq:bce_loss}
+\end{equation}
+
+\noindent donde $y \in \{0, 1\}$ es la etiqueta real
+(0\,=\,benigno, 1\,=\,maligno). Los parámetros
+$\{W^{(\ell)}, \mathbf{b}^{(\ell)}\}$ se optimizan
+mediante descenso de gradiente estocástico (\textit{Adam}
+o equivalente) a través del algoritmo de
+\textit{backpropagation} \cite{goodfellow2016deep}.
+
+La arquitectura del MLP se mantiene idéntica para las cinco
+condiciones experimentales: mismo número de capas ocultas,
+mismas dimensiones, misma función de activación, mismos
+hiperparámetros y misma semilla aleatoria. Esta
+invarianza es el principio metodológico central que garantiza
+que las diferencias de rendimiento entre condiciones sean
+atribuibles únicamente a la transformación aplicada en M5,
+y no a diferencias en el clasificador.

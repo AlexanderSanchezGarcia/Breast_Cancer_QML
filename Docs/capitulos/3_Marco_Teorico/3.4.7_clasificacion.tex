@@ -1,0 +1,68 @@
+% ---
+% Reemplaza líneas 1907-1967 de Docs/Technical_Report.tex
+% Decisiones: D-018, D-036
+% ---
+
+\subsubsection{Métricas de clasificación}
+
+El desempeño del clasificador MLP sobre cada condición experimental se evalúa a partir de
+las predicciones de probabilidad de malignidad $\hat{y} \in [0, 1]$ generadas por la función
+sigmoide de salida. Para las métricas dependientes de umbral, se adopta el umbral de decisión
+operativo estándar de 0.5 ($\hat{y} \geq 0.5 \implies \text{maligno}$):
+
+\textbf{Exactitud (\textit{Accuracy}):}
+\begin{equation}
+  \text{Acc} =
+  \frac{TP + TN}{TP + TN + FP + FN}
+  \label{eq:accuracy}
+\end{equation}
+
+\textbf{Precisión (\textit{Precision}):}
+\begin{equation}
+  \text{Prec} =
+  \frac{TP}{TP + FP}
+  \label{eq:precision}
+\end{equation}
+
+\textbf{Exhaustividad (\textit{Recall}):}
+\begin{equation}
+  \text{Rec} =
+  \frac{TP}{TP + FN}
+  \label{eq:recall}
+\end{equation}
+
+\textbf{F1-Score:}
+\begin{equation}
+  F_1 =
+  \frac{2 \cdot \text{Prec} \cdot \text{Rec}}
+  {\text{Prec} + \text{Rec}}
+  \label{eq:f1}
+\end{equation}
+
+\textbf{Área bajo la curva ROC (AUC-ROC):}
+\begin{equation}
+  \text{AUC} =
+  \int_0^1 \text{TPR}(t)\,d\,\text{FPR}(t)
+  \label{eq:auc_roc}
+\end{equation}
+
+\noindent donde $TP$, $TN$, $FP$ y $FN$ son los
+verdaderos positivos, verdaderos negativos, falsos
+positivos y falsos negativos respectivamente;
+$\text{TPR}(t) = TP/(TP+FN)$ es la tasa de verdaderos
+positivos y $\text{FPR}(t) = FP/(FP+TN)$ es la tasa
+de falsos positivos, ambas evaluadas al umbral de
+decisión $t$.
+
+El \textbf{Área bajo la curva ROC (AUC-ROC)}, formalizada en la ecuación~\eqref{eq:auc_roc},
+constituye la métrica principal de comparación técnica entre condiciones. Al integrar la
+tasa de verdaderos positivos en función de la tasa de falsos positivos sobre la totalidad de
+los umbrales posibles $t \in [0, 1]$, el AUC-ROC cuantifica la capacidad discriminativa intrínseca
+del modelo con independencia del umbral operativo y de forma robusta frente al desbalance
+de clases del CBIS-DDSM.
+
+El protocolo de validación evalúa todas las métricas mediante validación cruzada de 5 \textit{folds}
+estratificada por clase y agrupada por paciente sobre el conjunto de entrenamiento, así
+como mediante una evaluación final sobre el conjunto de prueba oficial, que se usa una sola vez por modelo, reportando
+intervalos de confianza al 95\,\% derivados de 2\,000 remuestreos \textit{bootstrap} pareados por
+paciente.

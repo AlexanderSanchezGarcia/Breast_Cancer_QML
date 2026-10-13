@@ -1,0 +1,45 @@
+% ---
+% Reemplaza líneas 1845-1883 de Docs/Technical_Report.tex
+% Decisiones: D-016, D-033
+% ---
+
+\subsubsection{Razón multivariante de Fisher}
+
+La razón de Fisher cuantifica la separabilidad lineal entre dos clases comparando la
+distancia entre sus centroides frente a la dispersión intraclase. En el análisis univariado
+clásico introducido por Fisher \cite{fisher1936use}, el coeficiente mide la separación a lo
+largo de un único eje. Sin embargo, en un espacio de representación multivariado $\mathbb{R}^k$
+(como el espacio de $k = 12$ dimensiones de los embeddings cuánticos o de las características
+radiómicas), la formulación unidimensional promediada coordenada por coordenada ignora las
+covarianzas entre variables y adolece de una limitación geométrica: no es invariante
+ante transformaciones de rotación.
+
+Para garantizar consistencia metodológica, en este trabajo se adopta la
+\textit{razón multivariante de Fisher} (distancia de Mahalanobis al cuadrado entre medias de
+clase con la matriz de covarianza combinada):
+\begin{equation}
+  J = \Delta\boldsymbol{\mu}^\top S_W^{-1} \Delta\boldsymbol{\mu},
+  \label{eq:fisher_multivariate}
+\end{equation}
+donde $\Delta\boldsymbol{\mu} = \boldsymbol{\mu}_1 - \boldsymbol{\mu}_0$ denota el vector de
+diferencia entre los centroides de las clases maligna y benigna en $\mathbb{R}^k$, y $S_W$ es
+la matriz de dispersión intraclase combinada (\textit{pooled within-class covariance}):
+\begin{equation}
+  S_W = \frac{1}{N - 2} \left[ \sum_{i \in \mathcal{C}_0} (\mathbf{e}_i - \boldsymbol{\mu}_0)(\mathbf{e}_i - \boldsymbol{\mu}_0)^\top + \sum_{j \in \mathcal{C}_1} (\mathbf{e}_j - \boldsymbol{\mu}_1)(\mathbf{e}_j - \boldsymbol{\mu}_1)^\top \right].
+  \label{eq:pooled_covariance}
+\end{equation}
+La formulación matricial de la ecuación~\eqref{eq:fisher_multivariate} posee una propiedad
+algebraica relevante: es invariante ante cualquier transformación afín
+invertible del espacio de características, $\mathbf{e} \mapsto A\mathbf{e} + \mathbf{b}$,
+con $A \in \mathbb{R}^{k \times k}$ y $\det(A) \neq 0$:
+\begin{align}
+  J(A\mathbf{e} + \mathbf{b}) &= (A\Delta\boldsymbol{\mu})^\top (A S_W A^\top)^{-1} (A\Delta\boldsymbol{\mu}) \nonumber \\
+  &= \Delta\boldsymbol{\mu}^\top A^\top (A^\top)^{-1} S_W^{-1} A^{-1} A \Delta\boldsymbol{\mu} \nonumber \\
+  &= \Delta\boldsymbol{\mu}^\top S_W^{-1} \Delta\boldsymbol{\mu} = J(\mathbf{e}).
+  \label{eq:fisher_affine_invariance}
+\end{align}
+Esta invariancia afín es necesaria para el diseño experimental del proyecto. La condición
+C2 aplica una transformación por Componentes Principales completa sin reducción de dimensión
+($k \to k$). Dicha proyección es una traslación seguida de una rotación ($A \in \mathrm{O}(k)$),
+por lo que, bajo la formulación multivariante, se cumple necesariamente que
+$J(\text{C1}) = J(\text{C2})$ por construcción.

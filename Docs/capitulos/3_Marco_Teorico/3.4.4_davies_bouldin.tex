@@ -1,0 +1,47 @@
+% ---
+% Reemplaza líneas 1803-1844 de Docs/Technical_Report.tex
+% Decisiones: D-016, D-033
+% ---
+
+\subsubsection{Índice Davies-Bouldin}
+
+El índice Davies-Bouldin (DB) \cite{davies1979cluster}
+mide la calidad de la separación entre clusters en un
+espacio de representación, combinando la dispersión
+intra-clase con la separación inter-clase. Para el
+problema de clasificación binaria (benigno / maligno),
+las dos clases diagnósticas se definen como clusters
+predeterminados ($C = 2$). El índice se define como:
+
+\begin{equation}
+  \text{DB} =
+  \frac{1}{C}\sum_{i=1}^{C}
+  \max_{j \neq i}
+  \left\{
+  \frac{s_i + s_j}{d(c_i, c_j)}
+  \right\}
+  \label{eq:davies_bouldin}
+\end{equation}
+
+\noindent donde $C = 2$ es el número de clases,
+$s_i$ es la dispersión promedio de los puntos de la
+clase $i$ respecto a su centroide $c_i$:
+
+\begin{equation}
+  s_i = \frac{1}{|C_i|}
+  \sum_{\mathbf{z} \in C_i}
+  \|\mathbf{z} - c_i\|_2
+  \label{eq:dispersion}
+\end{equation}
+
+\noindent y $d(c_i, c_j) = \|c_i - c_j\|_2$ es la
+distancia euclidiana entre los centroides de las clases
+$i$ y $j$. Valores bajos del índice DB indican clusters
+compactos y bien separados; el valor óptimo es 0.
+Esta métrica es independiente del clasificador y puede
+aplicarse directamente sobre el vector de embeddings
+$\mathbf{e}(\mathbf{x}, \boldsymbol{\theta})$ de las
+condiciones cuánticas o sobre los vectores transformados
+de las condiciones clásicas. Al depender de distancias
+euclidianas invariantes ante rotaciones ortogonales,
+el índice DB genera el mismo valor para C1 y C2.

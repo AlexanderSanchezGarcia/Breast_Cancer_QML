@@ -1,0 +1,59 @@
+% ---
+% Reemplaza líneas 1037-1092 de Docs/Technical_Report.tex
+% Decisiones: N/A (sin cambio)
+% ---
+
+\subsubsection{Compuertas cuánticas de un qubit}
+% -----------------------------------------------------------
+
+Las operaciones sobre qubits se realizan mediante \textit{compuertas cuánticas}, representadas por matrices unitarias $U \in \mathbb{C}^{2\times 2}$ que satisfacen $UU^\dagger = I$. La unitariedad garantiza la reversibilidad de la operación y la conservación de la norma del estado. Las compuertas más relevantes para los circuitos variacionales son las rotaciones parametrizadas alrededor de los ejes de la esfera de Bloch \cite{nielsen2010quantum}:
+
+\begin{equation}
+    R_X(\theta) = e^{-i\frac{\theta}{2}X} = 
+    \begin{pmatrix} 
+        \cos\frac{\theta}{2}  & -i\sin\frac{\theta}{2} \\ 
+        -i\sin\frac{\theta}{2} & \cos\frac{\theta}{2} 
+    \end{pmatrix}
+    \label{eq:rx}
+\end{equation}
+
+\begin{equation}
+    R_Y(\theta) = e^{-i\frac{\theta}{2}Y} = 
+    \begin{pmatrix} 
+        \cos\frac{\theta}{2}  & -\sin\frac{\theta}{2} \\ 
+        \sin\frac{\theta}{2}  & \cos\frac{\theta}{2} 
+    \end{pmatrix}
+    \label{eq:ry}
+\end{equation}
+
+\begin{equation}
+    R_Z(\theta) = e^{-i\frac{\theta}{2}Z} = 
+    \begin{pmatrix} 
+        e^{-i\frac{\theta}{2}} & 0 \\ 
+        0 & e^{i\frac{\theta}{2}} 
+    \end{pmatrix}
+    \label{eq:rz}
+\end{equation}
+
+\noindent donde $X$, $Y$ y $Z$ son las matrices de Pauli:
+
+\begin{equation}
+    X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
+    Y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}, \quad
+    Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+    \label{eq:pauli}
+\end{equation}
+
+Estas compuertas de rotación son los bloques de construcción del ansatz variacional implementado en Qiskit, donde los ángulos $\theta$ son los parámetros entrenables del circuito. La compuerta de Hadamard, definida como:
+
+\begin{equation}
+    H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 
+    \end{pmatrix}
+    \label{eq:hadamard}
+\end{equation}
+
+\noindent transforma el estado base $|0\rangle$ en la 
+superposición uniforme 
+$\frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)$, y es 
+ampliamente utilizada como compuerta de inicialización en 
+circuitos cuánticos.

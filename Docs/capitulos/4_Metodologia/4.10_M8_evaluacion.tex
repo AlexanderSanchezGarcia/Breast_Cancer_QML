@@ -1,0 +1,34 @@
+% ---
+% Reemplaza líneas 2872–2921 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-030, D-039, D-040, H-049, H-052.
+% ---
+
+\subsection{Módulo 8: Evaluación comparativa}
+
+El módulo de evaluación compara las cinco condiciones a partir de los resultados de M6 y M7, sin
+volver a usar el conjunto de prueba.
+
+\textbf{Métricas de clasificación.} Se reportan AUC-ROC, F1, \textit{accuracy}, \textit{precision}
+y \textit{recall} en el conjunto de prueba, por condición y por tipo de hallazgo. El AUC-ROC es la
+métrica principal, porque no depende de un umbral de decisión y es robusta al desbalance de clases;
+las demás usan el umbral 0.5.
+
+\textbf{Correlación entre separabilidad y clasificación.} Se calcula el coeficiente de Spearman
+$\rho_s$ entre el ordenamiento de las cinco condiciones según cada métrica de separabilidad y su
+ordenamiento según el AUC-ROC. Con cinco condiciones solo hay $5! = 120$ órdenes posibles, y sin
+empates solo el acuerdo perfecto alcanza $p < 0.05$. Además, C1 y C2 empatan en toda métrica de
+separabilidad por construcción. Por eso $\rho_s$ se reporta de forma descriptiva, por subconjunto y
+con su distribución exacta, y se calcula como la correlación de Pearson entre rangos promedio, que
+admite empates (ecuación~\eqref{eq:spearman}).
+
+\textbf{Masas frente a calcificaciones.} Para interpretar la diferencia de dificultad entre
+subconjuntos, se ajusta una regresión logística sobre los descriptores que el CBIS-DDSM registra
+para cada lesión: forma y márgenes en masas, tipo y distribución en calcificaciones. Es una
+referencia, no un competidor: esos descriptores los escribió un radiólogo viendo la imagen.
+
+\textbf{Restricciones del simulador (OE-6).} Se miden el tiempo por muestra y el número máximo de
+qubits viable en el equipo de trabajo, y el costo del entrenamiento por \textit{parameter-shift}. El
+efecto del número de \textit{shots} se mide de dos formas. En el \textit{embedding}, se simulan
+mediciones con $n$ disparos a partir de las probabilidades exactas, con $n$ de 64 a 65\,536, y se
+reentrena el clasificador. En el núcleo, se calcula de forma analítica el número de disparos que
+exigiría estimar cada valor en hardware.

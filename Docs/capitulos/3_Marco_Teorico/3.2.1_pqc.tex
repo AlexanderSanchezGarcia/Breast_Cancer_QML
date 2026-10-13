@@ -1,0 +1,42 @@
+% ---
+% Reemplaza líneas 1191-1229 de Docs/Technical_Report.tex
+% Decisiones: N/A (sin cambio)
+% ---
+
+\subsection{Circuitos cuánticos variacionales y 
+            \textit{quantum embeddings}}
+
+% -----------------------------------------------------------
+\subsubsection{Circuitos cuánticos parametrizados (PQC)}
+% -----------------------------------------------------------
+
+Un \textit{circuito cuántico parametrizado} (PQC, por sus
+siglas en inglés) es un circuito cuántico cuyas compuertas
+dependen de un conjunto de parámetros reales
+$\boldsymbol{\theta} \in \mathbb{R}^m$ que pueden ajustarse
+mediante optimización clásica \cite{cerezo2021variational}.
+Un \textit{circuito cuántico variacional} (VQC) es un tipo
+específico de PQC que combina un bloque de codificación de
+datos $U(\mathbf{x})$ con un bloque variacional entrenable
+$W(\boldsymbol{\theta})$, produciendo el estado cuántico:
+
+\begin{equation}
+  |\psi(\mathbf{x}, \boldsymbol{\theta})\rangle =
+  W(\boldsymbol{\theta})\,U(\mathbf{x})\,
+  |0\rangle^{\otimes n}
+  \label{eq:vqc_state}
+\end{equation}
+
+\noindent donde $n$ es el número de qubits,
+$U(\mathbf{x})$ es el \textit{feature map} cuántico que
+codifica el vector de características clásico
+$\mathbf{x} \in \mathbb{R}^k$ en el estado cuántico inicial,
+y $W(\boldsymbol{\theta})$ es el \textit{ansatz} variacional
+que introduce correlaciones entre qubits mediante compuertas
+entrenables \cite{schuld2019quantum}.
+
+La arquitectura VQC es la más adecuada para el régimen NISQ
+actual porque mantiene profundidades de circuito moderadas
+y es diferenciable de extremo a extremo mediante el método
+de \textit{parameter-shift}, descrito en la
+sección~\ref{sec:parameter_shift}.

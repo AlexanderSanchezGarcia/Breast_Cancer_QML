@@ -1,0 +1,43 @@
+% ---
+% Reemplaza líneas 1968-2007 de Docs/Technical_Report.tex
+% Decisiones: D-016, D-039, H-049
+% ---
+
+\subsubsection{Análisis de correlación separabilidad--clasificación}
+
+Para dar cumplimiento al objetivo específico OE-5, se evalúa si la jerarquía de separabilidad
+geométrica observada en el espacio de representación predice el desempeño predictivo alcanzado
+por el clasificador MLP. Para cuantificar la concordancia monótona entre los ordenamientos de las
+cinco condiciones experimentales (C1 a C5), se calcula el coeficiente de correlación de rangos
+de Spearman $\rho_s$.
+
+La fórmula $1-6\sum d_i^2/(n(n^2-1))$ solo vale sin empates. En el diseño metodológico del presente trabajo,
+las condiciones C1 y C2 arrojan idénticos valores de separabilidad por construcción matemática
+(invariancia rotacional de Davies-Bouldin, Fisher multivariante y KTA lineal). Al asignarse
+rangos promedio a las condiciones empatadas, las sumas de cuadrados de los rangos disminuyen
+respecto al caso de rangos discretos enteros, lo que invalida la fórmula de diferencias
+cuadráticas. La definición de $\rho_s$, adoptada en este trabajo, corresponde a
+la \textit{correlación de Pearson evaluada sobre los rangos promedio}:
+\begin{equation}
+  \rho_s = \frac{\sum_{i=1}^{n} (R_i - \bar{R})(S_i - \bar{S})}{\sqrt{\sum_{i=1}^{n} (R_i - \bar{R})^2 \sum_{i=1}^{n} (S_i - \bar{S})^2}},
+  \label{eq:spearman}
+\end{equation}
+donde $R_i$ representa el rango asignado a la condición $i$ según la métrica de separabilidad, $S_i$
+denota el rango de la condición según el AUC-ROC de clasificación, y $\bar{R} = \bar{S} = \frac{n+1}{2} = 3$
+es la media teórica de los rangos para $n = 5$ condiciones. A las condiciones C1 y C2 se les asigna
+el rango medio compartido correspondiente a las posiciones que ocupan conjuntamente.
+
+Debido al tamaño reducido del conjunto de condiciones ($n = 5$), el espacio muestral de posibles
+permutaciones consta de exactamente $5! = 120$ órdenes posibles, todos equiprobables bajo la hipótesis
+nula de ordenamiento aleatorio. En este régimen de muestra pequeña, las aproximaciones asintóticas
+estándar (como la distribución $t$ de Student) carecen de validez, y la distribución nula exacta es
+discreta:
+\begin{itemize}
+  \item sin empates, solo $\rho_s=\pm1$ llega a $p<0.05$ bilateral, $p = 2/120 \approx 0.017$, y una sola inversión de vecinos da $\rho_s = 0.9$ con $p = 10/120 \approx 0.083$;
+  \item con el empate C1 = C2, el máximo es $\rho_s=\sqrt{19/20}\approx0.975$, alcanzado por 2 de los 120 órdenes, con $p$ bilateral $= 4/120 \approx 0.033$.
+\end{itemize}
+Por esta razón, el coeficiente de Spearman entre separabilidad y clasificación se reporta con
+carácter descriptivo por subproblema (masas y calcificaciones), complementado con su
+distribución nula exacta tabulada, evaluando cualitativamente si las
+tres condiciones clásicas (C1, C2, C3) se posicionan sistemáticamente por encima de las dos
+cuánticas (C4, C5) tanto en separabilidad como en desempeño clasificatorio.

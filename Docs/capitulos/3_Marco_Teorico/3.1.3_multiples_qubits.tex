@@ -1,0 +1,49 @@
+% ---
+% Reemplaza líneas 1093-1138 de Docs/Technical_Report.tex
+% Decisiones: N/A (sin cambio)
+% ---
+
+\subsubsection{Sistemas de múltiples qubits y entrelazamiento}
+% -----------------------------------------------------------
+
+El estado de un sistema de $n$ qubits se describe mediante el producto tensorial de los espacios de Hilbert individuales:
+
+\begin{equation}
+    \mathcal{H}^{\otimes n} = 
+    \underbrace{\mathbb{C}^2 \otimes \mathbb{C}^2 \otimes 
+    \cdots \otimes \mathbb{C}^2}_{n}, 
+    \quad \dim(\mathcal{H}^{\otimes n}) = 2^n
+    \label{eq:tensor}
+\end{equation}
+
+\noindent El estado general de $n$ qubits es una superposición 
+de los $2^n$ estados de la base computacional 
+$\{|0\cdots0\rangle, |0\cdots1\rangle, \ldots, 
+|1\cdots1\rangle\}$:
+
+\begin{equation}
+    |\Psi\rangle = \sum_{k=0}^{2^n - 1} c_k |k\rangle, 
+    \quad c_k \in \mathbb{C}, 
+    \quad \sum_{k=0}^{2^n-1} |c_k|^2 = 1
+    \label{eq:multiQubit}
+\end{equation}
+
+El \textit{entrelazamiento cuántico} es la propiedad por la cual el estado de un sistema de múltiples qubits no puede factorizarse como el producto tensorial de estados individuales. Un estado entrelazado no tiene representación separable y exhibe correlaciones entre qubits que no tienen análogo clásico \cite{nielsen2010quantum}. La compuerta estándar para generar entrelazamiento es la \textit{compuerta CNOT} (Controlled-NOT), que opera sobre dos qubits: un qubit de control $c$ y un qubit objetivo $t$, aplicando una negación al objetivo condicionada al estado del control:
+
+\begin{equation}
+    \text{CNOT} = 
+    \begin{pmatrix} 
+        1 & 0 & 0 & 0 \\ 
+        0 & 1 & 0 & 0 \\ 
+        0 & 0 & 0 & 1 \\ 
+        0 & 0 & 1 & 0 
+    \end{pmatrix}
+    \label{eq:cnot}
+\end{equation}
+
+\noindent La combinación de compuertas de rotación de un qubit 
+y compuertas CNOT es suficiente para aproximar cualquier 
+operación unitaria sobre $n$ qubits, propiedad conocida como 
+\textit{universalidad} \cite{nielsen2010quantum}. Esta 
+combinación es precisamente la que estructura el ansatz 
+variacional RealAmplitudes utilizado en el presente trabajo.

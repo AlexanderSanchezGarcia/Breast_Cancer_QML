@@ -1,0 +1,37 @@
+% ---
+% Subsección nueva en Docs/Technical_Report.tex
+% Decisiones: D-033, H-038, H-039
+% ---
+
+\subsubsection{Dimensión efectiva}
+\label{sec:dimension_efectiva}
+
+Para caracterizar la expresividad y la estructura espectral de la matriz de kernel sin
+depender de las etiquetas de clase, Huang et al. \cite{huang2021power} propusieron el concepto
+de \textit{dimensión efectiva} $d(K)$. Esta métrica cuantifica cuántas direcciones
+independientes u ortogonales explora el conjunto de datos en el espacio de Hilbert inducido
+por el kernel.
+
+Sea $K \in \mathbb{R}^{N \times N}$ una matriz de kernel normalizada a traza $N$
+($\operatorname{Tr}(K) = N$). Sean $t_1 \ge t_2 \ge \dots \ge t_N \ge 0$ los autovalores
+ordenados de forma decreciente de $K$. La dimensión efectiva se define como:
+\begin{equation}
+  d(K) = \sum_{k=1}^{N} \frac{1}{N - k + 1}\sum_{l=k}^{N} t_l.
+  \label{eq:dim_efectiva}
+\end{equation}
+En la ecuación~\eqref{eq:dim_efectiva}, el término interior $\sum_{l=k}^{N} t_l$ representa
+la suma de la cola espectral a partir del $k$-ésimo autovalor, y el denominador
+la promedia entre las $N-k+1$ direcciones restantes.
+
+\textbf{Nota sobre errata en la literatura:} La ecuación (F12) del apéndice suplementario de Huang et al. \cite{huang2021power} imprime el factor normalizador como $\frac{1}{N - k}$, formulación que incurre en una indeterminación por división entre cero en el último sumando ($k = N$). La corrección consiste en emplear el denominador $N - k + 1$. Con esta formulación, la métrica satisface las cotas que enuncian los autores:
+\begin{equation}
+  1 \le d(K) \le N.
+  \label{eq:effective_dim_bounds}
+\end{equation}
+Los dos extremos se comprueban directamente:
+\begin{itemize}
+  \item \textbf{Cota inferior ($d = 1$):} Si todas las muestras mapean al mismo estado cuántico, la matriz de kernel tiene rango 1 ($t_1 = N$ y $t_l = 0$ para $l \ge 2$). La suma total colapsa a $d = \frac{1}{N} t_1 = \frac{N}{N} = 1$.
+  \item \textbf{Cota superior ($d = N$):} Si todas las muestras mapean a estados mutuamente ortogonales en el espacio de Hilbert ($K = I$, autovalores $t_l = 1$ para todo $l$), la cola espectral para cada índice $k$ satisface $\sum_{l=k}^N 1 = N - k + 1$. Al cancelarse con el denominador, cada sumando vale idénticamente 1, resultando en $d = \sum_{k=1}^N 1 = N$.
+\end{itemize}
+
+Valores de $d$ cercanos a $N$ indican que cada lesión ocupa casi su propia dirección, como ocurre con un núcleo concentrado; valores pequeños, que el núcleo agrupa las lesiones en pocas direcciones.

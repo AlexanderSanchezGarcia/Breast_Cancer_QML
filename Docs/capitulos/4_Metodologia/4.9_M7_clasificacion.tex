@@ -1,0 +1,39 @@
+% ---
+% Reemplaza líneas 2844–2869 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-014, D-018, D-026, D-030, D-036, D-037,
+% H-011, H-035, H-051, H-054.
+% ---
+
+\subsection{Módulo 7: Clasificación}
+
+El módulo de clasificación entrena el mismo perceptrón multicapa en PyTorch sobre la
+representación de cada condición: una capa de entrada de dimensión 12, capas ocultas de 32 y 16
+neuronas con activación ReLU, y una salida sigmoide que da la probabilidad de malignidad. La pérdida
+es la entropía cruzada binaria ponderada (ecuación~\eqref{eq:weighted_bce}), con los pesos de la
+ecuación~\eqref{eq:class_weights}, optimizada con Adam (tasa $10^{-3}$, decaimiento de pesos
+$10^{-4}$, lotes de 128). Las entradas se estandarizan con la media y la desviación del
+entrenamiento de cada ajuste: las representaciones difieren en escala en más de un orden de magnitud (en masas, desviación típica media por dimensión de 0.90 en C1 frente a 0.056 en C4), y
+sin estandarizar el optimizador favorecería a las de escala grande por una razón ajena a su
+información. El entrenamiento se detiene cuando la pérdida, medida sobre el 15\,\% de los pacientes
+del entrenamiento, deja de mejorar durante 40 épocas, y se conservan los mejores pesos. Los
+hiperparámetros se fijaron antes de ver los resultados y son idénticos en las cinco condiciones, con
+la misma semilla.
+
+Cada condición se evalúa con validación cruzada de cinco \textit{folds}, los fijados en M4, y con un
+único ajuste sobre todo el entrenamiento que se evalúa una sola vez en el conjunto de prueba oficial.
+La incertidumbre del conjunto de prueba se estima con 2\,000 remuestreos \textit{bootstrap} por
+paciente, pareados entre condiciones. El selector y el escalador de M4 se ajustan una sola vez con todo
+el entrenamiento, no dentro de cada \textit{fold}, así que la validación cruzada es algo optimista;
+volver a seleccionar dentro de cada \textit{fold} cambia el AUC en 0.006 o menos.
+
+Los parámetros $\boldsymbol\theta$ del circuito no se entrenan. La razón principal es de validez
+interna: C2 y C3 son transformaciones que no ven las etiquetas, y si C4 y C5 ajustaran
+$\boldsymbol\theta$ contra ellas, cualquier ventaja podría deberse al ajuste supervisado y no a la
+codificación. Además, la pregunta de investigación se refiere a la codificación $\phi$ y no a un
+procedimiento de optimización. Una tercera razón es el costo: con el método de
+\textit{parameter-shift}, el que puede usarse en un computador cuántico, entrenar $\boldsymbol\theta$, medido en el simulador,
+costaría unas 205 horas por \textit{feature map}. En el simulador existe un atajo: retropropagar a
+través del vector de estado da el mismo gradiente unas 3\,600 veces más rápido. Pero ese atajo no
+existe en el hardware, porque exige conocer todas las amplitudes del estado. La sensibilidad de la
+conclusión a la semilla, la red, el escalado, la parada temprana, \texttt{reps} y $k$ se reporta en
+la sección de resultados.

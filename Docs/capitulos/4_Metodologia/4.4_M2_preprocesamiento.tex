@@ -1,0 +1,55 @@
+% ---
+% Reemplaza líneas 2632–2663 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-005, D-009, D-010, D-020, D-021, D-022,
+% H-020, H-021, H-022, H-023, H-025.
+% ---
+
+\subsection{Módulo 2: Preprocesamiento de imagen}
+
+El módulo de preprocesamiento transforma las imágenes DICOM en pares (imagen, máscara) alineados y
+centrados en la región de interés, que son la entrada del módulo de extracción.
+
+La primera etapa resuelve la correspondencia geométrica entre imagen y máscara. En 80 de los
+3\,568 registros las dimensiones de la máscara no coinciden con las de la mamografía, y el desajuste
+es de dos tipos. En 78 masas la máscara reproduce la imagen a una escala de 0.870 en ambos ejes, y se
+remuestrea al tamaño de la imagen por vecino más cercano, que conserva su carácter binario. En
+2 calcificaciones la diferencia es de pocas decenas de píxeles y no es proporcional, de modo que la
+máscara se ancla sin escalar. Ambas reglas se verificaron de forma independiente: cuando imagen y
+máscara están alineadas, los recortes que acompañan al CBIS-DDSM coinciden con la caja de la máscara
+ampliada en 20 píxeles por lado, relación que se cumple en el 99.8\,\% de los casos
+verificables; para las máscaras escaladas se empleó una prueba de contraste entre la lesión y su
+entorno. En 7 masas el recorte oficial y la máscara describen extensiones distintas de la lesión; se
+conservan y se declaran, porque excluirlas del conjunto de prueba cambia el AUC en menos de 0.004.
+
+A continuación, cada máscara se reduce a su componente conexa mayor, con conectividad 8. El
+86.3\,\% de las máscaras de masas contiene islas de pocos píxeles, residuos de la
+rasterización del contorno, que alterarían el perímetro y el diámetro máximo de la región. La
+componente mayor conserva en todos los casos al menos el 99.55\,\% del área.
+
+La segunda etapa recorta la región de interés: se extrae la caja mínima de la máscara ampliada en
+20 píxeles por lado, \textbf{conservando la resolución y las intensidades originales de 16 bits}.
+Los recortes del CBIS-DDSM no se emplean para la extracción, porque su intensidad está reescalada
+con una ganancia distinta en cada caso, de 1.00 a 5.31.
+
+La decisión de no redimensionar el recorte es deliberada. Las cajas de las lesiones miden de
+\(116\times55\) a \(1\,329\times1\,365\) píxeles en masas y de \(33\times33\) a \(3\,777\times2\,753\)
+en calcificaciones, y las medidas de tamaño figuran entre las características más discriminativas:
+en masas, cinco de las doce con mayor tamaño de efecto en el conjunto de entrenamiento son de forma
+y tamaño (\(|d|\) de Cohen entre 0.40 y 0.45). Redimensionar a una malla común igualaría la escala de
+las lesiones y eliminaría esa señal. La normalización a \(224\times224\) correspondía a la estrategia
+basada en un codificador convolucional, descartada en favor de la extracción radiómica.
+
+Por la misma razón, la ecualización adaptativa de histograma (CLAHE) \cite{reza2004realization} se excluye de la ruta de
+extracción: es una transformación local que depende del contenido y altera la reproducibilidad de las
+características de primer orden y de textura bajo el estándar IBSI%
+% FALTA CITA IBSI: Zwanenburg et al. (2020), Radiology 295(2)
+. Se genera además una variante con CLAHE, aplicada a la mamografía completa convertida a 8 bits, solo para
+cuantificar su efecto sobre las características extraídas.
+
+Las imágenes de masas y calcificaciones se procesan por
+separado a lo largo de todo el pipeline, dado que sus
+características morfológicas relevantes son
+cualitativamente distintas: las masas requieren capturar
+geometría global y márgenes, mientras que las
+calcificaciones requieren capturar patrones texturales
+finos y distribución espacial de los depósitos de calcio.

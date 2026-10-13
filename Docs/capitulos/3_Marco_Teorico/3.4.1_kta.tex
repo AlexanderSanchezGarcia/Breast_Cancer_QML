@@ -1,0 +1,66 @@
+% ---
+% Reemplaza líneas 1721-1760 de Docs/Technical_Report.tex
+% Decisiones: D-033, H-038
+% ---
+
+\subsubsection{\textit{Kernel-Target Alignment} (KTA)}
+
+El \textit{Kernel-Target Alignment} (KTA) cuantifica la similitud entre una matriz de
+kernel $K \in \mathbb{R}^{N \times N}$ evaluada sobre $N$ muestras y la matriz de etiquetas
+ideales de clasificación $Y = \mathbf{y}\mathbf{y}^\top$, donde $\mathbf{y} \in \{-1, +1\}^N$
+denota el vector de etiquetas binarias de patología.
+
+La formulación original propuesta por Cristianini et al. \cite{cristianini2002kernel}
+define la alineación no centrada como el coseno de Frobenius entre ambas matrices:
+\begin{equation}
+  \widehat{\text{KTA}}_u(K, \mathbf{y}) =
+  \frac{\langle K, \mathbf{y}\mathbf{y}^\top \rangle_F}{\|K\|_F \cdot \|\mathbf{y}\mathbf{y}^\top\|_F} =
+  \frac{\mathbf{y}^\top K \mathbf{y}}{N\,\|K\|_F},
+  \label{eq:kta_uncentered}
+\end{equation}
+donde $\langle A, B \rangle_F = \operatorname{Tr}(A^\top B) = \sum_{i,j} A_{ij} B_{ij}$ es el
+producto interno de Frobenius y $\|\cdot\|_F$ su norma inducida. Dado que $y_i \in \{-1, +1\}$,
+la norma de la matriz de etiquetas ideales satisface $\|\mathbf{y}\mathbf{y}^\top\|_F = N$.
+
+No obstante, la métrica no centrada presenta un sesgo ante conjuntos de datos con
+desbalance de clases. Si la proporción de clases difiere del 50\,\%, el valor esperado de
+$y_i y_j$ es positivo, lo que provoca que una matriz de kernel no informativa
+(e.g., una matriz constante u homogénea) obtenga valores elevados
+de alineación simplemente por capturar la media de las etiquetas. Para suprimir este artefacto,
+Cortes, Mohri y Rostamizadeh \cite{Cortes2012} introdujeron la \textit{alineación de kernel centrada}
+(\textit{Centered Kernel Alignment}), adoptada en este trabajo como la métrica principal de KTA:
+\begin{equation}
+  \widehat{\text{KTA}}_c(K, \mathbf{y}) =
+  \frac{\langle K_c, (\mathbf{y}\mathbf{y}^\top)_c \rangle_F}{\|K_c\|_F \cdot \|(\mathbf{y}\mathbf{y}^\top)_c\|_F} =
+  \frac{\mathbf{y}^\top K_c \mathbf{y}}{\|K_c\|_F\,\sum_{i=1}^N (y_i - \bar{y})^2},
+  \label{eq:kta_centered}
+\end{equation}
+donde $K_c = H K H$ representa la matriz de kernel centrada mediante la matriz de proyección
+$H = I - \frac{1}{N}\mathbf{1}\mathbf{1}^\top$, con componentes escalares:
+\begin{equation}
+  (K_c)_{ij} = K_{ij} - \frac{1}{N}\sum_{k=1}^N K_{ik} - \frac{1}{N}\sum_{l=1}^N K_{lj} + \frac{1}{N^2}\sum_{k,l=1}^N K_{kl}.
+  \label{eq:kernel_centering_scalar}
+\end{equation}
+El término de normalización $\|(\mathbf{y}\mathbf{y}^\top)_c\|_F$ coincide con la
+suma de desviaciones cuadráticas de las etiquetas centradas, $\sum_{i=1}^N (y_i - \bar{y})^2$.
+
+A pesar del centrado, los kernels que presentan concentración exhiben una cota
+inferior analítica fija. Para la matriz identidad $K = I$ (el kernel de un espacio donde todas
+las muestras son mutuamente ortogonales), la KTA centrada adopta un valor
+constante e independiente de las etiquetas:
+\begin{equation}
+  \widehat{\text{KTA}}_c(I, \mathbf{y}) = \frac{1}{\sqrt{N - 1}},
+  \label{eq:kta_identity_floor}
+\end{equation}
+que para la submuestra de evaluación de $N = 200$ lesiones equivale a $1/\sqrt{199} \approx 0.0709$.
+(Para la formulación no centrada, dicho valor equivale a $1/\sqrt{N} = 1/\sqrt{200} \approx 0.0707$).
+En consecuencia, las magnitudes absolutas de KTA no son directamente comparables entre kernels
+cuyos espectros de autovalores difieren mucho. Para establecer una comparación válida,
+la alineación de cada kernel se evalúa calculando el \textit{exceso de alineación} respecto a
+la media de una prueba de permutación con $1\,000$ barajadas de las etiquetas que
+conservan el número de lesiones de cada clase:
+\begin{equation}
+  \Delta\text{KTA}_c = \widehat{\text{KTA}}_c(K, \mathbf{y}) - \mathbb{E}_{\pi}\left[\widehat{\text{KTA}}_c(K, \mathbf{y}_\pi)\right].
+  \label{eq:kta_excess}
+\end{equation}
+Para C4 y C5 el núcleo es el de fidelidad (ecuación~\eqref{eq:quantum_kernel}); la referencia clásica es el RBF con $\gamma$ fijado por la heurística de la mediana; sobre los vectores de cada condición se calcula además la KTA del núcleo lineal.

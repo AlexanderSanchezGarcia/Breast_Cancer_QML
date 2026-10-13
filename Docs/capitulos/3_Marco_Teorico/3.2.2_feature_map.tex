@@ -1,0 +1,47 @@
+% ---
+% Reemplaza líneas 1230-1274 de Docs/Technical_Report.tex
+% Decisiones: N/A (sin cambio)
+% ---
+
+\subsubsection{El \textit{feature map} como mapeo no lineal al espacio de Hilbert}
+% -----------------------------------------------------------
+
+El bloque $U(\mathbf{x})$ define un mapeo no lineal:
+
+\begin{equation}
+  \phi: \mathbb{R}^k \rightarrow \mathcal{H}, \qquad
+  \mathbf{x} \mapsto |\phi(\mathbf{x})\rangle =
+  U(\mathbf{x})\,|0\rangle^{\otimes n}
+  \label{eq:feature_map}
+\end{equation}
+
+\noindent donde $\mathcal{H} = \mathbb{C}^{2^n}$ es el
+espacio de Hilbert del sistema de $n$ qubits, de dimensión
+$2^n$. Como se argumentó en la sección del planteamiento
+del problema, este espacio no es simplemente una versión
+ampliada del espacio clásico de entrada: su geometría está
+determinada por productos internos cuánticos
+$\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle$, no por
+distancias euclidianas. El mapeo $\phi$ introduce
+correlaciones de orden superior entre las componentes de
+$\mathbf{x}$ que los métodos de codificación clásicos no
+capturan \cite{schuld2019quantum, havlicek2019supervised}.
+
+Este mapeo define implícitamente un \textit{kernel cuántico}:
+
+\begin{equation}
+  k_Q(\mathbf{x}, \mathbf{x}') =
+  \left|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle
+  \right|^2 =
+  \left|\langle 0|^{\otimes n}\,U^\dagger(\mathbf{x}')\,
+  U(\mathbf{x})\,|0\rangle^{\otimes n}\right|^2
+  \label{eq:quantum_kernel}
+\end{equation}
+
+\noindent La elección del \textit{feature map} $U(\mathbf{x})$
+determina completamente la geometría del espacio de
+representación y, con ello, la capacidad del sistema para
+separar las clases en ese espacio. En el presente trabajo
+se comparan dos diseños de \textit{feature map}:
+\textit{ZZFeatureMap} y \textit{PauliFeatureMap},
+descritos a continuación.

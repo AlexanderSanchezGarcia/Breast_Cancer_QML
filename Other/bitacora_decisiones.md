@@ -204,7 +204,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 
 **Consecuencias.** Contradice el texto de TT1; hay que corregirlo en §4.4 y explicar el cambio en §8.x. El coste computacional no sube de forma apreciable (0.14 s/caso).
 
-**Cifras actualizadas el 2026-09-23 (M2, conjunto completo).** El rango 41×65 a 1137×1641 venía de una muestra. Sobre las 3,568 lesiones, la caja de la lesión mide entre 86×55 y 1329×1365 px en masas (mediana 302×304) y entre 33×33 y 3,777×2,753 px en calcificaciones (mediana 273×289); el alto llega a 3,801 y el ancho a 2,873 en lesiones distintas. Son las cifras que deben ir en §4.4.
+**Cifras actualizadas el 2026-09-23 (M2, conjunto completo).** El rango 41×65 a 1137×1641 venía de una muestra. Sobre las 3,568 lesiones, la caja de la lesión mide entre 116×55 y 1,329×1,365 px en masas (mediana 302×304; el alto mínimo, 86, y el ancho mínimo, 55, son de lesiones distintas) y entre 33×33 y 3,777×2,753 px en calcificaciones (mediana 273×289); el alto llega a 3,801 y el ancho a 2,873 en lesiones distintas. Son las cifras que deben ir en §4.4.
 
 **Evidencia revisada el 2026-09-23 (H-023).** El |d| ≈ 1.42 de H-003 no se sostiene con el conjunto completo: en masas las medidas de tamaño tienen |d| de 0.40 a 0.45, y cinco de ellas entran en el top 12. La decisión se mantiene, porque redimensionar igualaría esa señal a cero sea cual sea su magnitud, pero §4.4 no debe citar 1.42.
 

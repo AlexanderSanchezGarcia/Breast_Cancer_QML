@@ -1,0 +1,44 @@
+% ---
+% Reemplaza líneas 2722–2768 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-004, D-013, D-018, D-024, D-025, D-026,
+% H-024, H-026, H-031.
+% ---
+
+\subsection{Módulo 4: Selección y escalado}
+
+El módulo de selección y escalado prepara el vector de características para el circuito cuántico.
+Debe reducir la dimensión al número de qubits, $k = 12$, y convertir cada característica en un
+ángulo de rotación. Todos sus parámetros se ajustan solo con el conjunto de entrenamiento.
+
+\textbf{Selección.} Las características se ordenan por el estadístico $F$ del ANOVA entre clases y
+se recorren en ese orden: una característica se acepta solo si su correlación absoluta de Pearson
+con todas las ya aceptadas es como máximo 0.95, hasta reunir doce. La restricción elimina
+duplicados exactos que PyRadiomics produce en 2D, como \texttt{Energy} y \texttt{TotalEnergy}, y
+variables casi idénticas, que harían que varios qubits codificaran el mismo valor. Sin ella, la
+selección en masas no incluía ninguna característica de textura. Con ella, las doce características
+de masas combinan intensidad, forma y textura (4, 5 y 3), y las de calcificaciones también (2, 3 y 7).
+
+\textbf{Escalado angular.} Cada característica seleccionada, con valor radiómico $r_i$, se transforma
+mediante su función de distribución empírica en entrenamiento, $\hat F_i$:
+\begin{equation}
+  x_i = \pi\,\hat F_i(r_i) \in [0,\pi].
+  \label{eq:quantile_scaling}
+\end{equation}
+Es la transformación integral de probabilidad: cada ángulo se distribuye de manera uniforme en
+$[0,\pi]$, por sesgada que sea la característica. Conserva el orden de las lesiones y descarta las
+distancias dentro de cada característica. Con un escalado min-max, las características de cola
+pesada, como la energía o la superficie, quedaban casi constantes: en calcificaciones, la energía de
+la mitad de las lesiones caía a menos de 0.05 rad de cero, y su qubit recibía casi la misma rotación
+para todas. El rango $[0,\pi]$ se debe a que el
+\textit{feature map} aplica una fase $2x_i$: con $x_i\in[0,\pi]$, esa fase recorre la circunferencia
+una sola vez, sin que dos valores distintos de la característica produzcan la misma rotación.
+
+\textbf{Partición para la validación cruzada.} El conjunto de entrenamiento se divide en cinco
+\textit{folds} estratificados por clase y agrupados por paciente, de modo que todas las lesiones de
+un paciente quedan en el mismo \textit{fold}. La semilla de la partición se elige entre 200
+candidatas con un criterio que solo mira las etiquetas: la menor desviación de la proporción de
+malignas entre \textit{folds}. Los \textit{folds} se fijan aquí y los usan todos los módulos
+posteriores.
+
+El vector $\mathbf{x}\in[0,\pi]^{12}$ resultante es el mismo para las cinco condiciones de M5, de
+forma que lo único que cambia entre ellas es la transformación.
