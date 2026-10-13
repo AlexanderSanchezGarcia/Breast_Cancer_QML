@@ -1,0 +1,208 @@
+================================================================================
+FRAGMENTO 1: Archivo no encontrado - Logos/ipn_logo.png (Línea 256)
+================================================================================
+LaTeX Warning: File `Logos/ipn_logo.png' not found on input line 256.
+
+================================================================================
+FRAGMENTO 2: Error de paquete pdftex.def - Logos/ipn_logo.png (Línea 256)
+================================================================================
+./Technical_Report.tex:256: Package pdftex.def Error: File `Logos/ipn_logo.png'
+ not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.256 ...raphics[height=2.5cm]{Logos/ipn_logo.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+================================================================================
+FRAGMENTO 3: Archivo no encontrado - Logos/escom_logo.png (Línea 265)
+================================================================================
+LaTeX Warning: File `Logos/escom_logo.png' not found on input line 265.
+
+================================================================================
+FRAGMENTO 4: Error de paquete pdftex.def - Logos/escom_logo.png (Línea 265)
+================================================================================
+./Technical_Report.tex:265: Package pdftex.def Error: File `Logos/escom_logo.pn
+g' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.265 ...phics[height=2.2cm]{Logos/escom_logo.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+================================================================================
+FRAGMENTO 5: Referencia indefinida puntual - sec:metricas (Línea 2884, pág. 56)
+================================================================================
+LaTeX Warning: Reference `sec:metricas' on page 56 undefined on input line 2884
+.
+
+================================================================================
+FRAGMENTO 6: Resumen global - Referencias indefinidas
+================================================================================
+LaTeX Warning: There were undefined references.
+
+================================================================================
+FRAGMENTO 7: Etiqueta duplicada puntual - eq:embedding_vector (Líneas 1174 y 1452)
+================================================================================
+LaTeX Warning: Label `eq:embedding_vector' multiply defined.
+
+================================================================================
+FRAGMENTO 8: Resumen global - Etiquetas duplicadas
+================================================================================
+LaTeX Warning: There were multiply-defined labels.
+
+================================================================================
+FRAGMENTO 9: Float demasiado grande para la página (Línea 973)
+================================================================================
+LaTeX Warning: Float too large for page by 33.23714pt on input line 973.
+
+================================================================================
+FRAGMENTO 10: Overfull \hbox en portada secundaria (Líneas 255--267)
+================================================================================
+Overfull \hbox (10.67986pt too wide) in paragraph at lines 255--267
+ [] 
+ []
+
+================================================================================
+FRAGMENTO 11: Overfull \hbox en PauliFeatureMap (Líneas 779--780)
+================================================================================
+Overfull \hbox (3.99277pt too wide) in paragraph at lines 779--780
+[]\T1/ptm/b/n/10 PauliFeatureMap\T1/ptm/m/n/10 : ge-ne-ra-li-za el ZZ-Fea-tu-re
+-Map agre-gan-do ro-ta-cio-nes al-re-de-dor de los tres ejes de Pau-li $\OT1/zt
+mcm/m/n/10 (\OML/ztmcm/m/it/10 X; Y; Z\OT1/ztmcm/m/n/10 )$
+ []
+
+================================================================================
+FRAGMENTO 12: Overfull \hbox en celda ZZFeatureMap (Línea 964)
+================================================================================
+Overfull \hbox (4.23474pt too wide) in paragraph at lines 964--964
+[]|\T1/ptm/b/n/10.95 ZZFeatureMap
+ []
+
+================================================================================
+FRAGMENTO 13: Overfull \hbox en celda PauliFeatureMap (Línea 964)
+================================================================================
+Overfull \hbox (13.85966pt too wide) in paragraph at lines 964--964
+\T1/ptm/b/n/10.95 PauliFeatureMap| 
+ []
+
+================================================================================
+FRAGMENTO 14: Overfull \hbox en alineación de tabla de estado del arte (Línea 964)
+================================================================================
+Overfull \hbox (52.18251pt too wide) in alignment at lines 964--964
+[][][][][][][][][] 
+ []
+
+================================================================================
+FRAGMENTO 15: Overfull \hbox en descripción de estado de qubits (Líneas 1106--1110)
+================================================================================
+Overfull \hbox (18.68253pt too wide) in paragraph at lines 1106--1110
+\T1/ptm/m/n/10 El es-ta-do ge-ne-ral de $\OML/ztmcm/m/it/10 n$ \T1/ptm/m/n/10 q
+u-bits es una su-per-po-si-ción de los $\OT1/ztmcm/m/n/10 2[]$ \T1/ptm/m/n/10 e
+s-ta-dos de la ba-se compu-tacio-nal $\OMS/ztmcm/m/n/10 fj\OT1/ztmcm/m/n/10 0 [
+] 0\OMS/ztmcm/m/n/10 i\OML/ztmcm/m/it/10 ; \OMS/ztmcm/m/n/10 j\OT1/ztmcm/m/n/10
+ 0 [] 1\OMS/ztmcm/m/n/10 i\OML/ztmcm/m/it/10 ; [] ; \OMS/ztmcm/m/n/10 j\OT1/ztm
+
+================================================================================
+FRAGMENTO 16: Overfull \hbox en TorchConnector VQC-MLP (Líneas 1622--1631)
+================================================================================
+Overfull \hbox (17.14537pt too wide) in paragraph at lines 1622--1631
+[]\T1/ptm/m/n/10 La in-te-gra-ción del cir-cui-to cuán-ti-co VQC con el cla-si-
+fi-ca-dor MLP de Py-Torch se rea-li-za me-dian-te la cla-se \T1/cmtt/m/n/10 Tor
+chConnector
+ []
+
+================================================================================
+FRAGMENTO 17: Overfull \hbox en diagrama tikzpicture del pipeline (Líneas 2216--2217)
+================================================================================
+Overfull \hbox (33.4336pt too wide) in paragraph at lines 2216--2217
+ [][] 
+ []
+
+================================================================================
+FRAGMENTO 18: Overfull \hbox en nombres de archivos CSV CBIS-DDSM (Líneas 2601--2614)
+================================================================================
+Overfull \hbox (2.62917pt too wide) in paragraph at lines 2601--2614
+[]\T1/ptm/m/n/10 Los cua-tro ar-chi-vos CSV del da-ta-set (\T1/cmtt/m/n/10 mass
+_case_description_train_set\T1/ptm/m/n/10 , \T1/cmtt/m/n/10 mass_case_descripti
+on_test_set\T1/ptm/m/n/10 ,
+ []
+
+================================================================================
+FRAGMENTO 19: Overfull \hbox en etiquetas pathology (Líneas 2971--2981)
+================================================================================
+Overfull \hbox (5.58589pt too wide) in paragraph at lines 2971--2981
+[]\T1/ptm/m/n/10 La eti-que-ta ob-je-ti-vo \T1/cmtt/m/n/10 pathology \T1/ptm/m/
+n/10 pre-sen-tó tres va-lo-res dis-tin-tos en los da-tos ori-gi-na-les: \T1/cmt
+t/m/n/10 BENIGN \T1/ptm/m/n/10 (1,548 ca-sos), \T1/cmtt/m/n/10 MALIGNANT
+ []
+
+================================================================================
+FRAGMENTO 20: Overfull \hbox en metadatos DICOM SOPClassUID (Líneas 3282--3292)
+================================================================================
+Overfull \hbox (13.8299pt too wide) in paragraph at lines 3282--3292
+[]\T1/ptm/m/n/10 La ins-pec-ción de los me-ta-da-tos DI-COM re-ve-ló que las im
+á-ge-nes del da-ta-set son de ti-po \T1/ptm/m/it/10 Se-con-dary Cap-tu-re \T1/p
+tm/m/n/10 (\T1/cmtt/m/n/10 SOPClassUID\T1/ptm/m/n/10 :
+ []
+
+================================================================================
+FRAGMENTO 21: Overfull \hbox en dimensiones mamografías (Líneas 3433--3441)
+================================================================================
+Overfull \hbox (2.93655pt too wide) in paragraph at lines 3433--3441
+[]\T1/ptm/b/n/10 Imágenes de al-ta di-men-sio-na-li-dad. \T1/ptm/m/n/10 Las ma-
+mo-gra-fías com-ple-tas tie-nen di-men-sio-nes me-dia-nas de 5,037$\OMS/ztmcm/m
+/n/10 ^^B$\T1/ptm/m/n/10 2,960
+ []
+
+================================================================================
+FRAGMENTO 22: Underfull \hbox en tabla comparativa de estado del arte (Línea 964, badness 10000)
+================================================================================
+Underfull \hbox (badness 10000) in paragraph at lines 964--964
+[]|\T1/ptm/b/n/10.95 Circuito
+ []
+
+================================================================================
+FRAGMENTO 23: Underfull \hbox en bibliografía - Stop Breast Cancer (Líneas 3617--3619)
+================================================================================
+Underfull \hbox (badness 1609) in paragraph at lines 3617--3619
+[]\T1/ptm/m/n/10 Stop Breast Can-cer. (2025). Facts & fi-gu-res. Re-trie-ved fr
+om [][]$\T1/cmtt/m/n/10 https : / / www . stopbreastcancer . org /
+ []
+
+================================================================================
+FRAGMENTO 24: Underfull \hbox en bibliografía - Windsong Radiology (Líneas 3647--3649)
+================================================================================
+Underfull \hbox (badness 10000) in paragraph at lines 3647--3649
+[]\T1/ptm/m/n/10 Windsong Ra-dio-logy. (2026). How early de-tec-tion af-fects b
+reast can-cer sur-
+ []
+
+Underfull \hbox (badness 10000) in paragraph at lines 3647--3649
+\T1/ptm/m/n/10 vi-val ra-tes. Re-trie-ved from [][]$\T1/cmtt/m/n/10 https : / /
+ windsongwny . com / breast-[]health /
+ []
+
+================================================================================
+FRAGMENTO 25: Underfull \hbox en bibliografía - Goodfellow et al. (Líneas 3797--3799)
+================================================================================
+Underfull \hbox (badness 5217) in paragraph at lines 3797--3799
+[]\T1/ptm/m/n/10 Goodfellow, I., Ben-gio, Y., & Cour-vi-lle, A. (2016). \T1/ptm
+/m/it/10 Deep Lear-ning\T1/ptm/m/n/10 . MIT Press. [][]$\T1/cmtt/m/n/10 https :
+ / / www .
+
+================================================================================
+FRAGMENTO 26: Underfull \hbox en bibliografía - IBM Quantum (Líneas 3862--3865)
+================================================================================
+Underfull \hbox (badness 1127) in paragraph at lines 3862--3865
+[]\T1/ptm/m/n/10 IBM Quan-tum. (2024). Ba-sics of quan-tum in-for-ma-tion. IBM 
+Quan-tum Lear-ning. [][]$\T1/cmtt/m/n/10 https : / / learning .
+ []
