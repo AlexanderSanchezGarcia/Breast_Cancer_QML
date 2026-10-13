@@ -53,8 +53,24 @@ El texto es el de TT1; el código hace lo que dicen las decisiones. Se corrige e
   - Varias se nombran en el texto sin `\cite` («Azevedo et al. (2022)», «Xiang et al. (2024)»…).
 - [ ] **Azevedo et al. (2022)** (línea 825 y la tabla de §2). El 84 % de exactitud lo alcanzan **tanto** la ResNet clásica con *transfer learning* (C+TL) como las híbridas CQ1 y CQ4 (Tabla 4, p. 11). La diferencia que destacan está en el **AUC: 0.77 frente a 0.58**. En `ibm_lagos` la exactitud baja a 81 % (Tabla 5). Y concluyen: «*It is too soon to say whether or not QML can be an advantage*». El nombre correcto del dataset es Breast Cancer Digital Repository (ya estaba en la lista de TT1).
   - **Verificado, sin cambio: la atribución de D-019 es correcta.** §6 del artículo: «*As future work, an interesting approach could be to separate the dataset into masses and calcifications and only then perform classification*» y «*Lastly, the best way to know how well this model performs would be to see how the data appears in our Hilbert space. Ideally, both classes would appear very separately in it, as tight clusters.*»
-- [ ] **Línea 783, cáncer de pulmón con QSVM, sin cita.** El trabajo es arXiv:2506.03272: El Hafidi, Toufah y Kadim (2025), *Investigating Quantum Feature Maps in Quantum Support Vector Machines for Lung Cancer Classification*. Tiene 309 registros de pacientes, 39 sin cáncer y 270 con cáncer. **Falta confirmar en el PDF** que las cifras de la línea 783 (ZZ 0.91, Pauli 0.96) son de ese trabajo y de qué subconjunto.
-- [ ] **Línea 805, BreastMNIST con ResNet50 y una QNN (69 % frente a 67 %), sin cita.** La fuente **no se ha localizado**. Pista: arXiv:2512.02066 menciona en sus trabajos relacionados un modelo con ResNet50 que llega a 69 % en BreastMNIST. Hay que encontrar el artículo primario antes de citarlo.
+- [ ] **Línea 783, cáncer de pulmón con QSVM, sin cita.** El trabajo es arXiv:2506.03272: El Hafidi, Toufah y Kadim (2025), *Investigating Quantum Feature Maps in Quantum Support Vector Machines for Lung Cancer Classification*.
+  - **Verificado en el PDF el 2026-10-13.** Las cifras de la línea 783 son de ese trabajo:
+    - ZZFeatureMap: *accuracy* 0.91 y F1 0.91;
+    - PauliFeatureMap: 0.96 en todas las métricas;
+    - la frase sobre «la naturaleza de los datos y la resiliencia al ruido» también es suya.
+  - **Contexto que el reporte omite:**
+    - Son promedios sobre seis subconjuntos balanceados de 78 pacientes cada uno (los 39 negativos más 39 positivos distintos), en el simulador `qasm`.
+    - Su SVM clásico con RBF alcanza 0.95 de *accuracy*, prácticamente lo mismo que Pauli. Es un caso para las preguntas de H-046.
+    - Su PauliFeatureMap usa rotaciones en Z, X e Y, no el (Y, ZZ) de C5.
+  - Entrada lista en `Docs/insumos/bibitems_nuevos.tex` (`ElHafidi2025`).
+
+- [ ] **Línea 805, BreastMNIST con ResNet50 y una QNN (69 % frente a 67 %), sin cita.**
+  - **Fuente primaria localizada el 2026-10-13:** Rifat, Tonmoy, Aziz y Abdul Qayum (2024), *Enhanced Hybrid Quantum Neural Network for Breast Cancer Detection*, 2024 27th International Conference on Computer and Information Technology (ICCIT), IEEE, pp. 1464–1469, doi:10.1109/ICCIT64611.2024.11021989 (metadatos de Crossref en `Docs/insumos/fuentes_bib/Rifat2024.json`).
+  - El 69 % solo está confirmado en una fuente secundaria. arXiv:2512.02066 (Yurtseven, 2025), en sus trabajos relacionados, dice literalmente «*Rifat et al. [20] introduced a modified Dressed Quantum Network (DQN) where the conventional fully connected dimension reduction layer is replaced with a convolutional layer for feature extraction from ResNet50 … tested on the BreastMNIST dataset, achieved an 69% classification accuracy*».
+  - **El «frente a 67 %» no aparece en esa fuente.** El artículo primario está en IEEE Xplore, de pago, y no se leyó.
+  - **Opciones:**
+    - citar a Rifat et al. solo con el 69 %, tras confirmarlo en el PDF (acceso institucional del IPN);
+    - o quitar el «frente a 67 %» y la afirmación de que reconocen las restricciones del hardware, que tampoco está verificada.
 
 ---
 
@@ -70,7 +86,7 @@ Autores, título, revista, volumen y páginas comprobados por DOI. **El contenid
 | Parigi, Khosrojerdi, Caruso y Banchi, *Analysis of quantum image representations for supervised classification* (arXiv:2507.22039) | AVS Quantum Science 8(1), 013801 (2026) | 10.1116/5.0296376 |
 | Le, Dong y Hirota, FRQI | Quantum Information Processing 10(1), 63–84 (número de 2011; en línea desde 2010) | 10.1007/s11128-010-0177-y |
 | Zhang, Lu, Gao y Wang (2013), NEQR | Quantum Information Processing 12(8), 2833–2860 | 10.1007/s11128-013-0567-z |
-| Thanasilp, Wang, Cerezo y Holmes (2024), *Exponential concentration in quantum kernel methods*: candidata para H-031 | Nature Communications 15, 5200 | 10.1038/s41467-024-49287-w |
+| Thanasilp, Wang, Cerezo y Holmes (2024), *Exponential concentration in quantum kernel methods*: candidata para H-031. **Resumen verificado el 2026-10-13**: los valores del kernel pueden concentrarse exponencialmente (en el número de qubits) hacia un valor fijo, y con un número polinomial de mediciones el modelo se vuelve trivial. Respalda H-031 y H-052 | Nature Communications 15, 5200 | 10.1038/s41467-024-49287-w |
 | Schuld, Sweke y Meyer (2021), *Effect of data encoding on the expressive power of variational quantum-machine-learning models*: la de las series de Fourier | Physical Review A 103(3), 032430 | 10.1103/PhysRevA.103.032430 |
 | Hubregtsen, Wierichs, Gil-Fuster, Derks, Faehrmann y Meyer (2022), *Training quantum embedding kernels on near-term quantum computers* | Physical Review A 106(4), 042431 | 10.1103/PhysRevA.106.042431 |
 
