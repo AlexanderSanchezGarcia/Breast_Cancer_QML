@@ -6,8 +6,12 @@ Cada carpeta es un capítulo completo de `Docs/Technical_Report.tex`, en el orde
 |---|---|
 | `3_Marco_Teorico/` | Completo. Las subsubsecciones sin cambios son copia literal del `.tex`; las demás se reescribieron con el paquete del miércoles, ya corregido. |
 | `4_Metodologia/` | Completo, con la numeración M1–M8 de D-030 y los paquetes del lunes y del martes. |
+| `5_EDA/` | El texto de TT1 sin cambios, salvo cuatro correcciones: las 84 series recuperadas por la API REST y el 97.6 % inicial; sin recortes de 224×224; `Manufacturer`, `PixelSpacing` e `ImagerPixelSpacing` ausentes en las 3,103 mamografías, en lugar de «UNKNOWN», y sin la figura `D2_manufacturers.png`, que graficaba ese valor de relleno; sin «normalización de intensidades». |
+| `6_Resultados/` | Capítulo nuevo, escrito a partir de las entradas H-020 a H-054 de la bitácora y de las tablas de `Docs/tablas/`. Cada párrafo con cifras lleva un `% fuente:` con las entradas y los CSV de donde salen. |
 
 ## Cómo usarlo
+
+- **Para comprobar las cifras de §6:** `python Code/tools/verificar_cifras_capitulos.py Docs/capitulos/6_Resultados` busca cada número en las fuentes que declara su párrafo. Las cifras marcadas `EN_CSV(revisar)` coinciden con algún valor del CSV citado, pero la coincidencia podría ser casual; se revisaron a mano el 2026-10-13.
 
 - **Para copiar una tabla o un párrafo:** abre el archivo de esa subsección y cópialo al `.tex`.
 - **Para sustituir un capítulo entero:** borra en el `.tex` el rango de líneas que indican las cabeceras y pon `\input{capitulos/4_Metodologia/4.0_introduccion}` y los demás, en orden.
@@ -35,6 +39,14 @@ Cada carpeta es un capítulo completo de `Docs/Technical_Report.tex`, en el orde
 - **§3.3.4:** la precisión de 0.015625 la pone `EstimatorQNN`. La de `StatevectorEstimator` por defecto es 0, comprobado en Qiskit 2.3.0.
 - **§3.2.5:** la ecuación de `real_amplitudes` estaba en el orden equivocado.
 - **§4.4 y D-009:** la caja más pequeña de masas mide **116×55**. «86×55» junta el alto mínimo de una lesión con el ancho mínimo de otra; es el mismo error que «3,801×2,873» en calcificaciones. D-009 ya está corregida.
+
+## Correcciones a lo que entregó Gemini en §5 y §6 (2026-10-13)
+
+- **§6.6:** puso los porcentajes de lectura nula del kernel con un decimal inventado («21.0 %»). Se sustituyeron por los del CSV: 21.5, 15.7, 74.5 y 71.6 %; 2.5, 1.5, 57.0 y 55.9 % con 8,192 disparos. El costo del *parameter-shift* se dejó en 205 h, la misma cifra que en §3.2.7.
+- **§6.2:** las medianas a c = 0.02 venían de una prueba rápida con 60 masas. Ahora usan las 200 lesiones: 0.55 y 0.54 en masas, 0.59 y 0.58 en calcificaciones. La dimensión efectiva de C4 con k = 8 en masas es 139.6, no 140.0.
+- **§6.4:** decía «auditoría independiente» a la vez que «la formuló el propio equipo»; se quitó «independiente».
+- **§5:** se restauraron los anchos originales de tres figuras, entre ellas la galería D4, que con `\textwidth` desbordaba la página.
+- **Tablas:** los pies de `Docs/tablas/*.tex` ya no muestran identificadores D-xxx ni H-xxx (`tablas_latex.py`).
 
 ## Pendiente cosmético
 

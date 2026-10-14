@@ -1,0 +1,63 @@
+% ---
+% Reemplaza líneas 2941–2996 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-005, D-012, H-001.
+% ---
+
+\subsection{Validación y limpieza de los datos}
+
+% fuente: H-001, D-005
+La carga y unificación de los cuatro archivos CSV produjo
+un DataFrame consolidado de 3\,568 registros, con las
+columnas \texttt{finding\_type} (masa / calcificación) y
+\texttt{split} (train / test) agregadas para facilitar
+el análisis por subconjunto. La Tabla~\ref{tab:eda_resumen}
+presenta el resumen de la composición del dataset.
+
+% fuente: H-001, D-005, H-038
+\begin{table}[htbp]
+\centering
+\caption{Composición del dataset CBIS-DDSM unificado}
+\label{tab:eda_resumen}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}Xrr@{}}
+\toprule
+\textbf{Subconjunto} &
+\textbf{Train} & \textbf{Test} \\
+\midrule
+Masas (mass)           & 1\,318 & 378 \\
+Calcificaciones (calc) & 1\,546 & 326 \\
+\midrule
+\textbf{Total}         & \textbf{2\,864} &
+                         \textbf{704} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% fuente: D-005, H-001; 1_EDA.ipynb
+La etiqueta objetivo \texttt{pathology} presentó tres
+valores distintos en los datos originales:
+\texttt{BENIGN} (1\,548 casos),
+\texttt{MALIGNANT} (1\,457 casos) y
+\texttt{BENIGN\_WITHOUT\_CALLBACK} (563 casos).
+Los casos \texttt{BENIGN\_WITHOUT\_CALLBACK} fueron
+normalizados a \texttt{BENIGN} por equivalencia clínica,
+resultando en la codificación binaria
+0\,=\,benigno (2\,111 casos, 59.2\,\%) y
+1\,=\,maligno (1\,457 casos, 40.8\,\%).
+
+La validación de nulos confirmó que las columnas
+\texttt{mass\_shape}, \texttt{mass\_margins},
+\texttt{calc\_type} y \texttt{calc\_distribution}
+presentan valores faltantes de naturaleza estructural:
+los registros de calcificaciones no tienen valores en
+las columnas de masas y viceversa, por diseño del
+dataset. No se identificaron errores de datos que
+requirieran corrección.
+
+% fuente: D-012, H-001
+La verificación del enlace entre registros CSV y
+archivos DICOM en disco arrojó una cobertura del
+100\,\% (3\,568/3\,568 registros con archivo
+DICOM encontrado), alcanzada tras recuperar las 84 series
+faltantes mediante la API REST de TCIA; la descarga inicial
+con el NBIA Data Retriever dejaba una cobertura del 97.6\,\%.

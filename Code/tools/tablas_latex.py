@@ -57,7 +57,7 @@ def seleccion():
             cells += [tex_name(r.feature), r.family, f'{r.F:.1f}']
         body.append(f'{i + 1} & ' + ' & '.join(cells) + r' \\')
     write('m4_seleccion', '4_seleccion.csv',
-          'Las 12 características seleccionadas en cada subconjunto (M4): F-test ANOVA sobre el entrenamiento con restricción de redundancia $|r| \\le$ 0.95 (D-024).',
+          'Las 12 características seleccionadas en cada subconjunto (M4): F-test ANOVA sobre el entrenamiento con restricción de redundancia $|r| \\le$ 0.95.',
           'tab:m4_seleccion', 'r l l r l l r',
           r' & \multicolumn{3}{c}{Masas} & \multicolumn{3}{c}{Calcificaciones} \\ \cmidrule(lr){2-4}\cmidrule(lr){5-7}' '\n'
           r'\# & Característica & Familia & $F$ & Característica & Familia & $F$', body)
@@ -76,11 +76,11 @@ def separabilidad_kernels():
             gg = '—' if k == 'K_C' else f3(g[(g.finding_type == ft) & (g['map'] == k) & (g.c == 1.0)].g_min.iloc[0])
             body.append(f'\\quad {name} & {f3(ra.kta_centered)} & {f3(ra.excess_centered)} & {p_fmt(ra.p_centered)} & {re_.effective_dimension:.1f} & {gg} \\\\')
     write('m6_separabilidad_kernels', '6_alineamiento_kernel.csv, 6_dimension_efectiva.csv y 6_diferencia_geometrica_resumen.csv',
-          'Separabilidad en la familia de kernels (M6), $c = 1$, 200 lesiones de entrenamiento por subconjunto (D-028).',
+          'Separabilidad en la familia de kernels (M6), $c = 1$, 200 lesiones de entrenamiento por subconjunto.',
           'tab:m6_kernels', 'l r r r r r',
           r'Kernel & KTA centrada & Exceso sobre permutación & $p$ & $d_{\mathrm{eff}}$ (de 200) & $g$ regularizada', body,
-          r'El exceso es la KTA centrada menos la media de 1{,}000 permutaciones de etiquetas (D-033); $p$ es unilateral. '
-          r'$g$ es el mínimo de la \textit{geometric difference} regularizada sobre la batería de kernels clásicos del Apéndice L.3 de Huang et al.\ (D-032); $\sqrt{N} \approx 14$.')
+          r'El exceso es la KTA centrada menos la media de 1{,}000 permutaciones de etiquetas; $p$ es unilateral. '
+          r'$g$ es el mínimo de la \textit{geometric difference} regularizada sobre la batería de kernels clásicos del Apéndice L.3 de Huang et al.\; $\sqrt{N} \approx 14$.')
 
 
 def separabilidad_embeddings():
@@ -93,9 +93,9 @@ def separabilidad_embeddings():
             r = d[(d.finding_type == ft) & (d.condition == c)].iloc[0]
             body.append(f'\\quad {c} & {f3(r.davies_bouldin)} & {f3(r.fisher_j)} & {f3(r.kta_linear)} \\\\')
     write('m6_separabilidad_embeddings', '6_metricas_embedding.csv',
-          'Separabilidad en la familia de embeddings (M6): 200 lesiones de entrenamiento por subconjunto (D-028).',
+          'Separabilidad en la familia de embeddings (M6): 200 lesiones de entrenamiento por subconjunto.',
           'tab:m6_embeddings', 'l r r r', r'Condición & Davies--Bouldin $\downarrow$ & Fisher $J$ $\uparrow$ & KTA lineal $\uparrow$', body,
-          r'Fisher $J = \Delta\mu^\top S_W^{-1} \Delta\mu$, con la covarianza intraclase combinada (D-033). C1 y C2 coinciden por construcción (D-016).')
+          r'Fisher $J = \Delta\mu^\top S_W^{-1} \Delta\mu$, con la covarianza intraclase combinada. C1 y C2 coinciden por construcción.')
 
 
 def clasificacion():
@@ -112,7 +112,7 @@ def clasificacion():
             body.append(f'\\quad {c} & {f3(v.auc_mean)} $\\pm$ {v.auc_std:.3f} & {f3(r.auc)} {ci(r.auc_ci_low, r.auc_ci_high)} & '
                         f'{f3(r.f1)} & {f3(r.accuracy)} & {f3(r.precision)} & {f3(r.recall)} \\\\')
     write('m7_clasificacion', '7_test.csv y 7_cv_resumen.csv',
-          'Clasificación con el mismo MLP sobre las cinco representaciones (M7, $k = 12$, D-036).',
+          'Clasificación con el mismo MLP sobre las cinco representaciones (M7, $k = 12$).',
           'tab:m7_clasificacion', 'l c c r r r r',
           r'Condición & AUC en VC & AUC en prueba [IC 95\,\%] & F1 & Exactitud & Precisión & Sensibilidad', body,
           r'VC: media $\pm$ desviación estándar sobre los 5 folds de M4. Prueba: el conjunto oficial, usado una sola vez por modelo; '
@@ -145,10 +145,10 @@ def spearman():
         for r in d[d.finding_type == ft].itertuples():
             body.append(f'{title} & {names[r.metric]} & {r.rho:.3f} & {r.p_exact_two_sided:.3f} \\\\')
     write('m8_spearman', '8_spearman.csv',
-          'Correlación de Spearman entre el orden de separabilidad y el de clasificación de las cinco condiciones (M8, D-039).',
+          'Correlación de Spearman entre el orden de separabilidad y el de clasificación de las cinco condiciones (M8).',
           'tab:m8_spearman', 'l l r r', r'Subconjunto & Métrica de separabilidad & $\rho_s$ & $p$ exacto bilateral', body,
           r'Submuestra de 200 lesiones frente al AUC de prueba, $k = 12$. Con $n = 5$ hay 120 órdenes; $\rho_s$ es la correlación de Pearson '
-          r'de los rangos promedio, porque C1 y C2 empatan (D-016). Es descriptivo: con el empate, el mejor orden alcanzable da $p = 4/120$.')
+          r'de los rangos promedio, porque C1 y C2 empatan. Es descriptivo: con el empate, el mejor orden alcanzable da $p = 4/120$.')
 
 
 def sorteos_theta():
@@ -159,7 +159,7 @@ def sorteos_theta():
             body.append(f'{title} & {r.condition} & {f3(r.auc_design_draw)} ({r.rank_design_draw}.\\textsuperscript{{o}}) & '
                         f'{f3(r.auc_min)}--{f3(r.auc_max)} & {f3(r.range_over_theta)} & {f3(r.range_over_mlp_seeds)} & {f3(r.C1_minus_best_draw)} \\\\')
     write('x7_sorteos_theta', 'X7_resumen.csv',
-          'Dependencia del AUC de C4 y C5 respecto al sorteo de $\\theta$ (X7, H-053): 10 sorteos, mismo MLP y mismos folds que el M7.',
+          'Dependencia del AUC de C4 y C5 respecto al sorteo de $\\theta$: 10 sorteos, mismo MLP y mismos folds que el M7.',
           'tab:x7_theta', 'l l c c r r r',
           r'Subconjunto & Mapa & Semilla 42 (lugar) & Mín.--máx. & Rango ($\theta$) & Rango (MLP) & C1 $-$ mejor', body,
           r'AUC medio en validación cruzada; el conjunto de prueba no se usó. Rango (MLP): variación entre las 5 semillas del MLP con el $\theta$ del diseño.')
@@ -187,7 +187,7 @@ def theta_entrenado():
             body.append(f'\\quad {q} & {f3(cv_fx)} $\\to$ {f3(cv_tr)} & {f3(fixed.auc)} $\\to$ {f3(trained.auc)} & '
                         f'{ci(trained.auc_ci_low, trained.auc_ci_high)} & {f3(dd.mean_difference)} {ci(dd.ci_low, dd.ci_high)} \\\\')
     write('x8_theta_entrenado', 'X8_test.csv, X8_test_diferencias.csv, X8_cv_por_fold.csv y 7_cv_resumen.csv',
-          'Efecto de entrenar $\\theta$ junto con el MLP (X8): de $\\theta$ fijo (M7) a $\\theta$ entrenado.',
+          'Efecto de entrenar $\\theta$ junto con el MLP: de $\\theta$ fijo (M7) a $\\theta$ entrenado.',
           'tab:x8_theta', 'l c c c c',
           r'Mapa & AUC en VC & AUC en prueba & IC 95\,\% (entrenado) & Entrenado $-$ C1 en prueba', body,
           r'Mismo protocolo que el M7; solo cambia que $\theta$ se entrena desde el sorteo del diseño, con gradientes exactos del simulador.')

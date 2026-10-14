@@ -1,0 +1,62 @@
+% ---
+% Reemplaza líneas 3395–3449 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-005, D-006, D-009, D-022, H-002, H-050.
+% ---
+
+\subsection{Hallazgos principales}
+
+El análisis exploratorio permite identificar los
+siguientes hallazgos de mayor relevancia para el
+diseño del pipeline experimental:
+
+\begin{enumerate}
+
+% fuente: D-005, RF-19; 1_EDA.ipynb
+\item \textbf{Desbalance de clases diferenciado.}
+El ratio benigno/maligno es 1.16:1 para masas y
+1.78:1 para calcificaciones. La ponderación de
+clases durante el entrenamiento del MLP es
+necesaria para calcificaciones pero opcional para
+masas. Los modelos se evalúan con AUC-ROC como
+métrica principal por su robustez ante este
+desbalance.
+
+% fuente: H-050
+\item \textbf{Asimetría de separabilidad esperada.}
+Las masas presentan patrones morfológicos
+claramente diferenciados entre clases
+(IRREGULAR/\allowbreak SPICULATED vs.\ OVAL/\allowbreak CIRCUMSCRIBED),
+prediciendo mayor separabilidad en el espacio
+de representación. Las calcificaciones comparten
+el tipo morfológico más frecuente (PLEOMORPHIC)
+entre ambas clases, prediciendo menor separabilidad
+y constituyendo el caso de prueba más exigente
+para los quantum embeddings.
+
+% fuente: D-006
+\item \textbf{Variables clínicas no predictivas.}
+La densidad mamaria y el \textit{subtlety}
+tienen correlación prácticamente nula con la
+patología. La información discriminativa reside
+en los patrones morfológicos de la imagen,
+validando el uso de PyRadiomics como extractor
+de características.
+
+% fuente: D-009, H-051; 1_EDA.ipynb
+\item \textbf{Imágenes de alta dimensionalidad.}
+Las mamografías completas tienen dimensiones
+medianas de 5\,037\,$\times$\,2\,960 píxeles,
+incompatibles con la entrada directa al circuito
+cuántico. El trabajo con recortes de la región de
+interés a resolución original, seguido de
+extracción de características radiómicas y selección
+de $k$ características, es la estrategia viable para
+la simulación cuántica disponible.
+
+% fuente: D-022, H-002; 1_metadatos_dicom.csv
+\item \textbf{Convención fotométrica uniforme.}
+La totalidad del dataset utiliza \texttt{MONOCHROME2},
+eliminando la necesidad de inversión de píxeles
+en el preprocesamiento.
+
+\end{enumerate}
