@@ -1,0 +1,59 @@
+# Shaydulin2022Bandwidth · Importance of kernel bandwidth in quantum machine learning
+
+- Autores y año: Shaydulin, R., & Wild, S. M. (2022).
+- Versión leída: Docs/fuentes/pdf/Shaydulin2022Bandwidth.pdf · versión de revista (Physical Review A, 106(4), 042407 / arXiv:2111.05456) · 14 páginas
+- Tipo: experimental y metodológico (simulaciones numéricas extensivas)
+
+## Qué concluye
+- Introducen el hiperparámetro de ancho de banda del kernel cuántico y demuestran que controla directamente la expresividad del modelo resultante: «In this work we introduce the hyperparameter controlling the bandwidth of a quantum kernel and show that it controls the expressivity of the resulting model.» (p. 1)
+- Evidencian una transición sistemática en el comportamiento del clasificador: desde subajuste cuando el ancho de banda es excesivo hasta sobreajuste cuando es muy estrecho, alcanzando generalización óptima en un valor intermedio: «We use extensive numerical experiments with multiple quantum kernels and classical datasets to show consistent change in the model behavior from underfitting (bandwidth too large) to overfitting (bandwidth too small), with optimal generalization in between.» (p. 1)
+- Demuestran que para los mapas de características cuánticos estudiados el ancho de banda se controla directamente mediante el reescalamiento de los datos de entrada: «We show that for the quantum feature maps considered, the bandwidth can be controlled by rescaling the datapoints.» (p. 2)
+- La optimización del ancho de banda mitiga el decaimiento exponencial de los valores del kernel con el número de qubits, que era el factor responsable de la degradación observada en estudios previos: «Furthermore, we show that optimizing the bandwidth can help mitigate the exponential decay of kernel values with qubit count, which is the cause behind recent observations that the performance of quantum kernel methods decreases with qubit count.» (p. 1)
+- Al reproducir los resultados negativos de Huang et al. (2021), demuestran que calibrando el ancho de banda el rendimiento mejora con el número de qubits y alcanza un nivel competitivo con los mejores métodos clásicos: «We reproduce these negative results and show that if the kernel bandwidth is optimized, the performance instead improves with growing qubit count and becomes competitive with the best classical methods.» (p. 1)
+- Comprueban que para un conjunto de datos dado existe una franja amplia de valores de ancho de banda adecuados, lo que simplifica sustancialmente su ajuste práctico: «As a pleasant surprise, we discover that for a given dataset a wide range of bandwidth values work well» (p. 8)
+
+## Qué deja como trabajo futuro o limitación declarada
+- Indican que en su trabajo únicamente evaluaron dos hiperparámetros (factor de escala y pasos de Trotter): «In this paper we consider only two hyperparameters» (p. 8), señalando que mapas de características más elaborados exigirán estudiar hiperparámetros adicionales: «scaling factor and the number of Trotter steps in the Hamiltonian evolution feature map.» (p. 8).
+- Reconocen que para escalar a cantidades de qubits significativamente mayores a las accesibles en el estudio será necesario combinar la optimización de ancho de banda con proyecciones a subespacios de menor dimensión: «The projection can be straightforwardly combined with bandwidth optimization to more precisely modulate the inductive bias of the model.» (p. 8) y «Such techniques may be required to achieve good performance with qubit counts significantly larger than accessible for study at the time of writing.» (p. 8).
+- Observan que las limitaciones de hardware (ruido de muestreo y precisión de control) no impidieron el rendimiento en sus simulaciones: «We show that hardware limitations, such as finite precision of controls and the variance introduced by sampling, are not obstacles to achieving the observed performance.» (p. 2), pero dejan abierta la verificación en procesadores físicos a gran escala.
+
+## Diseño experimental (solo obras experimentales)
+- Datos: Conjuntos de referencia de clasificación binaria FMNIST (camisetas vs. pantalones), KMNIST y el conjunto de curvas de luz astronómicas PLAsTiCC: «the more difficult plasticc dataset, considered in [22], the performance improves for the entire range of qubit counts considered, namely, up to 22.» (p. 6)
+- Reducción dimensional: Entradas reducidas mediante PCA a dimensiones de $d = 3$ hasta $22$ (y circuitos evaluados hasta con 26 qubits).
+- Modelos cuánticos: Clasificador SVC con kernel cuántico basado en evolución hamiltoniana (HamEvo) y circuitos de paridad cuántica instantánea (IQP).
+- Simulador o hardware: Simuladores numéricos clásicos sin ruido y con ruido estadístico finito evaluado desde 1\,000 hasta 50\,000 shots: «To numerically evaluate the effects of finite sampling in a realistic setting, we consider the Hamiltonian evolution feature map with» (p. 7), así como truncamiento de precisión numérica de controles (de 1 a 6 decimales).
+- Métrica: Exactitud de predicción (*prediction accuracy*) en prueba, número medio de vectores de soporte, con y sin validación cruzada: «for (a) classical RBF kernel and quantum kernels using 19 qubits with (b) and without (c) cross-validation.» (p. 7).
+- Comparación clásica: Se contrastan contra los mejores modelos clásicos reportados en la literatura previa sobre esos mismos datos: «The performance of our quantum kernel with optimized bandwidth approaches that of the best classical methods reported in [7].» (p. 3).
+
+## Las cuatro preguntas de H-046 (solo obras que reportan una ventaja o un resultado cuántico frente a clásico)
+1. ¿El modelo clásico recibió el mismo ajuste y las mismas features?
+   El estudio no busca demostrar superioridad sobre los modelos clásicos, sino rescatar a los kernels cuánticos de la degradación trivial y llevarlos a competir con los modelos clásicos de referencia previamente optimizados en Huang et al. (2021): «The performance of our quantum kernel with optimized bandwidth approaches that of the best classical methods reported in [7].» (p. 3).
+2. ¿La diferencia supera su incertidumbre (hay intervalos, desviaciones, pruebas)?
+   No aplica ventaja sobre clásico: el modelo cuántico calibrado empata el rendimiento clásico en lugar de superarlo. Reportan cuantiles del 50\% y extremos mínimo y máximo sobre semillas de inicialización: «with the box showing the middle 50% quantile range and whiskers showing minimum and maximum.» (p. 3).
+3. ¿El test se usó una sola vez?
+   Sí: utilizaron particiones independientes y validación cruzada para reportar la exactitud de prueba: «for (a) classical RBF kernel and quantum kernels using 19 qubits with (b) and without (c) cross-validation.» (p. 7).
+4. ¿El kernel o el circuito cuántico es realmente difícil de simular clásicamente?
+   No: todos los experimentos fueron ejecutados en simuladores numéricos clásicos para sistemas de hasta 26 qubits: «performing simulations with multiple quantum feature maps and datasets using up to 26 qubits.» (p. 2).
+
+## Preguntas específicas
+- **Cómo definen el ancho de banda (factor que multiplica los datos antes del feature map)**:
+  El ancho de banda del kernel cuántico se controla mediante un factor de escala (*scaling factor*) $t$ o $c$ que premultiplica el vector de datos clásico antes de ingresar a las rotaciones del circuito unitario: «We show that for the quantum feature maps considered, the bandwidth can be controlled by rescaling the datapoints.» (p. 2). En la codificación por evolución hamiltoniana, el parámetro temporal $t$ fija la escala temporal de evolución: «Large values of t lead to the kernel’s being too “narrow” (small bandwidth), making learning impossible.» (p. 3). Este escalamiento es conceptual y matemáticamente análogo al parámetro $\gamma$ en el kernel gaussiano clásico $k(x_i, x_j) = \exp(-\gamma \|x_i - x_j\|^2)$, donde $\gamma$ actúa como reescalamiento de las distancias euclidianas entre datos: «Analogously to the case of the quantum feature map we considered above, γ can be subsumed into the definition of input data as a scaling factor.» (p. 6).
+- **Qué pasa con el kernel cuando el ancho es grande o pequeño**:
+  - *Ancho de banda grande (factor de escala pequeño)*: El kernel se vuelve excesivamente ancho («wide»), los estados cuánticos no se dispersan en la esfera de Bloch y permanecen mutuamente cercanos, arrojando valores de kernel cercanos a 1. El modelo carece de capacidad discriminativa y subajusta (*underfitting*): «For small values, the kernel is wide, and the model is insufficiently expressive, leading to underfitting.» (p. 7).
+  - *Ancho de banda pequeño (factor de escala grande)*: El kernel se vuelve excesivamente estrecho («narrow»), los estados correspondientes a entradas distintas son mutuamente ortogonales y la matriz de Gram se reduce a la matriz identidad; el clasificador memoriza las etiquetas del conjunto de entrenamiento y sobreajusta (*overfitting*), convirtiendo a todas las muestras de entrenamiento en vectores de soporte: «For large values of γ or the scaling factor, the kernel is narrow, and the models can fit any data, leading to overfitting.» (p. 7).
+  - *Ancho de banda óptimo*: Se ubica en un régimen intermedio donde el kernel equilibra la no-linealidad sin colapsar la matriz de similitud.
+- **Resultados de clasificación**:
+  Al reproducir la parametrización fija $t = d/3$ empleada por Huang et al. (2021), la exactitud del clasificador cuántico decae hasta $0.50$ (azar puro) alrededor de los 20 qubits. En contraste, fijando $t = 0.05$ (o factores de escala en el rango $0.01 - 0.05$), la exactitud no decae sino que crece con el número de variables preservadas por PCA, alcanzando $\sim 0.88 - 0.90$ en FMNIST y KMNIST y saturando en el nivel de los mejores métodos clásicos: «The performance of our quantum kernel with optimized bandwidth approaches that of the best classical methods reported in [7].» (p. 3).
+
+## Relevancia para el TT
+- Conexión con **D-007**, **D-028**, **H-049** y **§6.4**: justifica empíricamente por qué en nuestra tesis fue indispensable calibrar la escala angular $c$ al evaluar clasificadores QSVM sobre las características radiómicas del CBIS-DDSM.
+- Respalda directamente la observación de que a escala $c=1$ sobre 67 variables el kernel cuántico colapsa a la identidad (concentración / sobreajuste), mientras que reduciendo la escala $c$ se recupera la correlación entre muestras, aproximándose analíticamente a un kernel RBF clásico ($\prod \cos^2(c \Delta_i) \approx \exp(-c^2 \|\Delta\|^2)$).
+- Corrobora que la calibración del ancho de banda permite a los kernels cuánticos alcanzar un desempeño respetable pero que no supera al SVM clásico con RBF, en plena consonancia con la conclusión general de ausencia de ventaja cuántica observada en nuestro proyecto.
+- **Qué NO se puede afirmar con esta fuente**:
+  - No se puede afirmar que Shaydulin y Wild demuestren una ventaja cuántica frente a modelos clásicos; demuestran que los kernels cuánticos pueden empatar o aproximarse a los métodos clásicos cuando se calibra su ancho de banda («approaches that of the best classical methods»).
+  - No se puede afirmar que optimizar el factor de escala sea suficiente para garantizar ventaja en problemas de cientos de variables sin incorporar sesgos inductivos adicionales.
+
+## Contraste con lo que el proyecto ya le atribuye
+- `Docs/Technical_Report.tex`, `Other/referencias_por_revisar.md`, `Other/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
+  - Clave agregada en `Docs/insumos/bibitems_noche.tex` durante la consolidación de fuentes bibliográficas para fundamentar el concepto de ancho de banda.
+  - Sostenido: La evidencia empírica de Shaydulin y Wild coincide exactamente con lo reportado en §6.4 del reporte sobre el efecto del factor de escala $c$ en el comportamiento del kernel de producto tensorial sobre 67 qubits.

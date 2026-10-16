@@ -1,0 +1,104 @@
+# packages in environment at /opt/anaconda3/envs/qml_cancer:
+#
+# Name                    Version                   Build  Channel
+appnope                   0.1.4                    pypi_0    pypi
+asttokens                 3.0.1                    pypi_0    pypi
+bzip2                     1.0.8                h80987f9_6  
+ca-certificates           2025.12.2            hca03da5_0  
+cmake                     4.4.2                    pypi_0    pypi
+comm                      0.2.3                    pypi_0    pypi
+contourpy                 1.3.2                    pypi_0    pypi
+cycler                    0.12.1                   pypi_0    pypi
+debugpy                   1.8.20                   pypi_0    pypi
+decorator                 5.2.1                    pypi_0    pypi
+dill                      0.4.1                    pypi_0    pypi
+docopt                    0.6.2                    pypi_0    pypi
+exceptiongroup            1.3.1                    pypi_0    pypi
+executing                 2.2.1                    pypi_0    pypi
+expat                     2.7.4                h50f4ffc_0  
+filelock                  3.25.0                   pypi_0    pypi
+fonttools                 4.61.1                   pypi_0    pypi
+fsspec                    2026.2.0                 pypi_0    pypi
+imageio                   2.37.2                   pypi_0    pypi
+ipykernel                 7.2.0                    pypi_0    pypi
+ipython                   8.38.0                   pypi_0    pypi
+jedi                      0.19.2                   pypi_0    pypi
+jinja2                    3.1.6                    pypi_0    pypi
+joblib                    1.5.3                    pypi_0    pypi
+jupyter-client            8.8.0                    pypi_0    pypi
+jupyter-core              5.9.1                    pypi_0    pypi
+kiwisolver                1.4.9                    pypi_0    pypi
+lazy-loader               0.5                      pypi_0    pypi
+libcxx                    21.1.8               hb4ce287_0  
+libexpat                  2.7.4                h50f4ffc_0  
+libffi                    3.4.4                hca03da5_1  
+libzlib                   1.3.1                h5f15de7_0  
+markupsafe                3.0.3                    pypi_0    pypi
+matplotlib                3.10.8                   pypi_0    pypi
+matplotlib-inline         0.2.1                    pypi_0    pypi
+mpmath                    1.3.0                    pypi_0    pypi
+ncurses                   6.5                  hee39554_0  
+nest-asyncio              1.6.0                    pypi_0    pypi
+networkx                  3.4.2                    pypi_0    pypi
+ninja                     1.13.0                   pypi_0    pypi
+numpy                     2.2.6                    pypi_0    pypi
+opencv-python-headless    4.13.0.92                pypi_0    pypi
+openssl                   3.5.5                ha0b305a_0  
+packaging                 26.3                     pypi_0    pypi
+pandas                    2.3.3                    pypi_0    pypi
+parso                     0.8.6                    pypi_0    pypi
+pathspec                  1.1.1                    pypi_0    pypi
+pexpect                   4.9.0                    pypi_0    pypi
+pillow                    12.1.1                   pypi_0    pypi
+pip                       26.0.1             pyhc872135_0  
+platformdirs              4.9.4                    pypi_0    pypi
+prompt-toolkit            3.0.52                   pypi_0    pypi
+psutil                    7.2.2                    pypi_0    pypi
+ptyprocess                0.7.0                    pypi_0    pypi
+pure-eval                 0.2.3                    pypi_0    pypi
+pyarrow                   25.0.1                   pypi_0    pypi
+pydicom                   3.0.1                    pypi_0    pypi
+pygments                  2.19.2                   pypi_0    pypi
+pykwalify                 1.8.0                    pypi_0    pypi
+pylatexenc                2.11                     pypi_0    pypi
+pyparsing                 3.3.2                    pypi_0    pypi
+pyradiomics               3.1.1.dev111+g8ed579383          pypi_0    pypi
+python                    3.10.19              hf701271_0  
+python-dateutil           2.9.0.post0              pypi_0    pypi
+pytz                      2026.1.post1             pypi_0    pypi
+pywavelets                1.8.0                    pypi_0    pypi
+pyzmq                     27.1.0                   pypi_0    pypi
+qiskit                    2.3.0                    pypi_0    pypi
+qiskit-aer                0.17.2                   pypi_0    pypi
+qiskit-machine-learning   0.9.0                    pypi_0    pypi
+readline                  8.3                  h0b18652_0  
+ruamel-yaml               0.19.1                   pypi_0    pypi
+rustworkx                 0.17.1                   pypi_0    pypi
+scikit-build-core         1.0.3                    pypi_0    pypi
+scikit-image              0.25.2                   pypi_0    pypi
+scikit-learn              1.7.2                    pypi_0    pypi
+scipy                     1.15.3                   pypi_0    pypi
+seaborn                   0.13.2                   pypi_0    pypi
+setuptools                80.10.2         py310hca03da5_0  
+setuptools-scm            10.2.1                   pypi_0    pypi
+simpleitk                 2.5.3                    pypi_0    pypi
+six                       1.17.0                   pypi_0    pypi
+sqlite                    3.51.1               h67002bf_1  
+stack-data                0.6.3                    pypi_0    pypi
+stevedore                 5.7.0                    pypi_0    pypi
+sympy                     1.14.0                   pypi_0    pypi
+threadpoolctl             3.6.0                    pypi_0    pypi
+tifffile                  2025.5.10                pypi_0    pypi
+tk                        8.6.15               hcd8a7d5_0  
+tomli                     2.4.1                    pypi_0    pypi
+torch                     2.10.0                   pypi_0    pypi
+torchvision               0.25.0                   pypi_0    pypi
+tornado                   6.5.4                    pypi_0    pypi
+traitlets                 5.14.3                   pypi_0    pypi
+typing-extensions         4.15.0                   pypi_0    pypi
+tzdata                    2025.3                   pypi_0    pypi
+vcs-versioning            2.5.0                    pypi_0    pypi
+wcwidth                   0.6.0                    pypi_0    pypi
+wheel                     0.46.3          py310hca03da5_0  
+xz                        5.8.2                h8bbcb1d_0  
+zlib                      1.3.1                h5f15de7_0  

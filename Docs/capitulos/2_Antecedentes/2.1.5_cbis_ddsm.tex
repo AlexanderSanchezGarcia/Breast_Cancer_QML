@@ -1,0 +1,21 @@
+% ---
+% Reemplaza líneas 815–830 de Docs/Technical_Report.tex.
+% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% ---
+
+\subsubsection{Trabajos específicos sobre el dataset CBIS-DDSM}
+
+El CBIS-DDSM se ha convertido como el dataset de referencia más utilizado en investigación de CADx mamográfico, precisamente por su partición train-test previamente definida, sus máscaras ROI validadas patológicamente y su licencia pública CC BY 3.0. 
+
+\textbf{Trabajos clásicos en CBIS-DDSM}
+
+El trabajo de Shen et al. (2019) estableció una línea base de rendimiento con CNN sobre este dataset, alcanzando AUC de 0.91 con un ensemble de modelos ResNet y VGG. Baccouche et al. (2022) propusieron un ensemble de modelos ResNet (ResNet50V2, ResNet101V2, ResNet152V2) que alcanzó una accuracy de 95.13\% en clasificación de patología y 90.02\% en clasificación de forma sobre CBIS-DDSM, demostrando la ventaja del aprendizaje por ensemble para superar las metodologías de deep learning individuales más recientes.
+
+\textbf{Trabajos de QML en CBIS-DDSM}
+
+La revisión de la literatura no ha identificado ningún trabajo publicado que aplique circuitos cuánticos variacionales reales (con codificación de datos en estados cuánticos mediante compuertas cuánticas) directamente sobre imágenes del dataset CBIS-DDSM. El trabajo más cercano en el dominio del QML aplicado a mamografías es el de Azevedo et al. (2022), que implementa quantum transfer learning mediante redes neuronales híbridas clásico-cuánticas con angle embedding sobre el dataset BCDR (Barcelona Digital Breast Cancer Dataset), obteniendo 84\% de accuracy y señalando como trabajo futuro explícito la necesidad de evaluar la distribución de los datos en el espacio de Hilbert resultante para verificar la separabilidad de clases. Este trabajo, aunque no usa CBIS-DDSM, establece el único precedente de QML con circuitos reales en imagen mamográfica y define las brechas metodológicas que el presente trabajo aborda.
+
+
+% -----------------------------------------------------------
+% 2.1.6 Tabla comparativa y brechaa identificadas
+% -----------------------------------------------------------

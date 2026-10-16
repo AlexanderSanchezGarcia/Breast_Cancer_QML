@@ -1,0 +1,53 @@
+% ---
+% Reemplaza líneas 751–798 de Docs/Technical_Report.tex.
+% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% ---
+
+\subsubsection{Fundamentos de quantum machine learning y codificación cuántica de datos}
+
+\textbf{El origen teórico, QML como extensión de kernerls}
+
+El quantum machine learning (QML) surge de una observación fundamental establecida por Schuld y Killoran en 2019, la idea básica de la computación cuántica es sorprendentemente similar a la de los métodos kernel en machine learning, es decir, realizar eficientemente cómputos en un espacio de Hilbert de tamaño intratable. El proceso de codificar entradas en un estado cuántico se interpreta como un mapa de características no lineal que mapea datos al espacio de Hilbert cuántico; en este espacio de características, el dispositivo cuántico puede estimar productos internos de estados cuánticos para computar un kernel clásicamente intratable, el cual puede alimentar cualquier modelo clásico como una máquina de vectores de soporte.
+Esta formalización sentó las bases teóricas de todo el campo del QML moderno y es la justificación fundamental del presente trabajo: si el espacio de Hilbert de $2^n$ dimensiones generado por $n$ qubits ofrece una geometría más favorable para la separación de clases morfológicas mamográficas, entonces la proyección cuántica aporta valor real al pipeline de clasificación. \cite{Schuld2019QuantumML}
+
+El trabajo de Havlíček et al. (2019) en IBM Nature formalizó esta idea operacionalmente, demostrando dos algoritmos de clasificación que usan el espacio de estados cuánticos para producir mapas de características, probados en procesadores superconductores. Esto estableció el ZZFeatureMap como referencia estándar en la comunidad y demostró la posibilidad de ventaja cuántica cuando el espacio de características es grande y las funciones kernel son computacionalmente costosas de estimar clásicamente.
+
+\textbf{Circuitos cuánticos variacionales}
+
+Los circuitos cuánticos variacionales (VQC) son la arquitectura predominante en QML para el régimen NISQ actual. Los VQC son un tipo específico de circuito cuántico parametrizado (PQC) que combina circuitos cuánticos con optimizadores clásicos; son ampliamente utilizados en algoritmos cuánticos y, entre los distintos tipos de PQC, son el enfoque que típicamente optimiza sus parámetros mediante métodos variacionales, minimizando una función de costo mediante optimización híbrida cuántico-clásica. \cite{Long2025HybridQCQ}
+
+Un VQC está estructurado en tres bloques consecutivos que corresponden directamente a la arquitectura a implementar en el presente trabajo. El primero es el mapa de características $U(x)$, que codifica el vector clásico $x$ en el estado cuántico inicial $|\phi(x)\rangle = U(x)|0\rangle^{\otimes n}$. El segundo es el ansatz variacional $W(\theta)$, que aplica rotaciones parametrizadas y compuertas de entrelazamiento entrenables, generando el estado final $|\psi(x,\theta)\rangle = W(\theta)|\phi(x)\rangle$. El tercero es la medición, que extrae el vector de valores de expectativa $\langle Z_i \rangle$ de cada qubit como salida clásica del circuito.
+
+Los parámetros $\theta$ se optimizan mediante el método de
+parameter-shift, que calcula el gradiente exacto del circuito evaluándolo en dos puntos desplazados: $\nabla_\theta \langle O \rangle = \frac{1}{2}[\langle O \rangle_{\theta+\pi/2} - \langle O \rangle_{\theta-\pi/2}]$.
+Este método es diferenciable durante el proceso de entrenamiento y compatible con backpropagation clásico, lo que habilita el entrenamiento conjunto del circuito cuántico y la red neuronal clásica downstream mediante optimizadores estándar de PyTorch.
+
+\textbf{Los métodos de codificación cuántica}
+
+La elección del método de codificación es la decisión de diseño más importante en un sistema QML, ya que determina la geometría del espacio de Hilbert donde los datos quedan representados. La integración de técnicas de codificación cuántica de datos en algoritmos de machine learning clásicos contribuye a mejorar la precisión de clasificación y los valores F1, de manera particularmente notable en modelos que se benefician intrínsecamente de una representación de características enriquecida.
+
+Los tres tipos de codifiacación más utilizados en la literatura son:
+
+\begin{itemize}
+  \item \textbf{Angle encoding}: codifica cada componente del vector de características como un ángulo de rotación en un qubit, por ejemplo, $x_i$ se codifica como una rotación $R_y(x_i)$ en el qubit $i$. Es simple pero puede requerir muchos qubits para vectores de alta dimensionalidad. Su principal ventaja es la simplicidad y la diferenciabilidad directa; su limitación es que las relaciones entre características solo se pueden expresar a través de las capas variacionales posteriores, no en la etapa de codificación.
+  \item \textbf{ZZFeatureMap}: construido sobre el mapa angular, agrega compuertas de entrelazamiento entre pares de qubits que codifican productos de features: $e^{i x_i x_j Z_i Z_j}$. El ZZFeatureMap captura interacciones de features por pares, pero algunos datasets requieren interacciones de orden superior.
+  \item \textbf{PauliFeatureMap}: generaliza el ZZFeatureMap agregando rotaciones alrededor de los tres ejes de Pauli $(X, Y, Z)$ y operaciones de entrelazamiento más complejas. El PauliFeatureMap extiende la codificación utilizando rotaciones multi-eje y entrelazamiento cuántico complejo para codificar dependencias de características más profundas; es altamente expresivo, capaz de capturar interacciones de orden superior y patrones ocultos dentro de los datos, siendo particularmente poderoso para datasets donde las relaciones entre características son complejas y no lineales. Su mayor expresividad tiene como contrapartida una mayor sensibilidad al ruido cuántico, relevante incluso en simulación cuando el número de shots es limitado.
+
+\end{itemize}
+
+La elección entre estos métodos de codificación no es trivial y depende de la estructura de correlación de los datos de entrada. Un estudio reciente aplicó los tres métodos a la clasificación de cáncer de pulmón con QSVM, obteniendo que ZZFeatureMap alcanzó una accuracy de 0.91 y F1-score de 0.91, mientras que PauliFeatureMap logró un rendimiento consistente de 0.96 en todas las métricas incluyendo accuracy, precisión, recall y F1-score; la elección del mapa apropiado depende de dos factores principales, la naturaleza de los datos y la resiliencia al ruido del dispositivo cuántico. Estos resultados motivan la estrategia del presente trabajo de comparar ambos métodos de codifiación sobre características morfológicas mamográficas.
+
+
+\textbf{El problema "barren plateau"}
+
+Una limitación teórica importante de los VQC profundos es el fenómeno del *barren plateau*. A medida que el circuito aumenta en número de qubits y capas, la optimización se vuelve exponencialmente plana, con gradientes que convergen a cero. Esto hace el entrenamiento prácticamente imposible para circuitos de gran profundidad con una inicialización aleatoria de parámetros. 
+Esta limitación tiene implicaciones directas para el diseño del experimento, justifica el uso de circuitos de profundidad moderada y la estrategia de inicialización cuidadosa de los parámetros $\theta$.
+
+\textbf{El uso de Qiskit como plataforma de desarrollo}
+
+Qiskit, es el framework de código abierto de IBM para computación cuántica, provee la infraestructura completa para implementar el pipeline descrito. Su ecosistema de machine learning (qiskit-machine-learning) ofrece EstimatorQNN, que encapsula un VQC y devuelve vectores de valores de expectativa diferenciables; TorchConnector, que envuelve el QNN como una capa nn.Module de PyTorch habilitando backpropagation a través del circuito; y el simulador Qiskit Aer con backend AerSimulator, que permite ejecutar circuitos de hasta 20--30 qubits con simulación de alta fidelidad en hardware estándar. La disponibilidad de estos componentes maduros y bien documentados, combinados con el acceso a los servidores del CIC del IPN, garantiza la viabilidad técnica del prototipo experimental.
+
+
+% -----------------------------------------------------------
+% 2.1.4 Modelos híbridos cuántico.clasico en el sector salud
+% -----------------------------------------------------------

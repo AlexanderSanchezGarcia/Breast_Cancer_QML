@@ -1,0 +1,62 @@
+# Glick2024Covariant · Covariant quantum kernels for data with group structure
+
+- Autores y año: Jennifer R. Glick, Tanvi P. Gujarati, Antonio D. Córcoles, Youngseok Kim, Abhinav Kandala, Jay M. Gambetta y Kristan Temme (2024).
+- Versión leída: Docs/fuentes/pdf/Glick2024Covariant.pdf · preprint de arXiv (arXiv:2105.03406v2; publicado en Nature Physics 20(3), 479–483, 2024) · 18 páginas.
+- Tipo: experimental en hardware cuántico superconductor y desarrollo teórico-metodológico.
+
+## Qué concluye
+- Encontrar kernels cuánticos que confieran ventaja en datos del mundo real sigue siendo un desafío abierto central: «It is an important challenge to ﬁnd quantum kernels that provide an advantage in the classiﬁcation of real-world data.» (p. 1).
+- Introducen una clase de kernels cuánticos covariantes diseñados para datos con estructura de grupo, donde el mapa se construye a partir de representaciones unitarias del grupo y un estado fiducial optimizable: «We introduce a class of quantum kernels that can be used for data with a group structure.» (p. 1) y «The kernel is deﬁned in terms of a unitary representation of the group and a ﬁducial state that can be optimized using a technique called kernel alignment.» (p. 1).
+- Demuestran experimentalmente la ejecución del algoritmo de aprendizaje en un procesador cuántico superconductor con 27 qubits: «We implement the learning algorithm with 27 qubits on a superconducting processor.» (p. 1).
+- Para optimizar el estado fiducial utilizan una versión ponderada (*weighted*) de alineamiento de kernel, que minimiza directamente la cota superior del SVM sobre el error de generalización: «We use a “weighted” version of the alignment [27, 28] to optimize the kernel parameters while the SVM is used to optimize the model parameters.» (p. 2) y «This approach can be seen as optimizing the SVM upper bound on the generalization error directly» (p. 2).
+- Las técnicas de mitigación de errores (escalamiento de pulsos en compuertas CNOT) mejoran notablemente la calidad de la matriz de kernel estimada en 27 qubits: «The experiment shows that even for a 27 qubit experiment the kernel matrix can be signiﬁcantly improved by using error mitigation techniques.» (p. 5).
+- El modelo alcanza un 100 % de exactitud de prueba en una instancia del problema en hardware ruidoso: «reaches 100% test accuracy on a 27-qubit problem instance on noisy hardware.» (p. 11).
+
+## Qué deja como trabajo futuro o limitación declarada
+- Los datos del experimento fueron generados sintéticamente para garantizar una referencia controlada de alta fidelidad: «The data for the problem was generated artiﬁcially, so that we could ensure that the classiﬁcation problem could be solved to arbitrary precision and we have a high ﬁdelity benchmark of the experiment.» (p. 4).
+- El circuito cuántico evaluado en 27 qubits es lo bastante poco profundo como para ser simulado eficientemente de manera clásica: «The considered circuit, although supported on a larger number of qubits, is still suﬃciently shallow so that classical simulation methods can be applied [37].» (p. 5).
+- No se aplicó mitigación de errores de lectura (*readout*), sugiriendo que para problemas como regresión estas correcciones serán más críticas: «Note that no readout error mitigation [38] has been applied here, giving rise to the hope that, using threshold functions of the kernels, this approach is indeed robust against small experimental imperfections.» (p. 5).
+
+## Diseño experimental (solo obras experimentales)
+- Datos: Problema sintético de etiquetado de clases laterales con errores (*labeling cosets with errors*) sobre el grupo $G = \mathrm{SU}(2)^{\otimes 27}$ y subgrupo de Pauli/estabilizador: «The learning problem we have studied experimentally serves as an abstract representation of many group theoretic problems, i.e. classiﬁcation of data that is close to cosets of a group.» (p. 4).
+- Tamaño y partición: Muestras de entrenamiento con optimización SPSA de $\lambda$, evaluadas contra conjuntos de prueba de 50 puntos por etiqueta: «targeting a test set with 50 data points per label.» (p. 4).
+- Métricas: Función de costo de alineamiento de kernel ponderado $F(\alpha, \lambda)$ y porcentaje de éxito/exactitud en el conjunto de prueba, graficadas a lo largo de las iteraciones de SPSA (p. 4).
+- Hardware cuántico: Procesador superconductor de 27 qubits `ibmq_kolkata` con conectividad de red pesada hexagonal: «The connectivity of the 27-qubit device ibmq_kolkata.» (p. 3), y «The device (ibmq_kolkata, with the same topology as the device in Ref. [30]), consists of 27 ﬁxed-frequency transmons» (p. 12).
+- Muestreo y mitigación: Cada circuito cuántico se muestreó 8,192 veces: «Each circuit in all these experiments is sampled 8,192 times.» (p. 4), aplicando extrapolación de Richardson con compuertas CNOT extendidas en tiempo ($c = 1$ y $c = 1.3$) para mitigar errores de dos qubits (p. 4, p. 13).
+- Comparación clásica: No realiza benchmark numérico contra modelos clásicos como Random Forest o SVM con RBF sobre la misma tarea; discute que los kernels clásicos para datos de grupo son costosos y se aproximan por Fourier: «Advanced classical kernels for group-data [19] are known to be computationally expensive to evaluate, which is why they are mostly approximated in terms of their lowest Fourier-weights [18, 36].» (p. 4).
+
+## Las cuatro preguntas de H-046 (solo obras que reportan una ventaja o un resultado cuántico frente a clásico)
+1. ¿El modelo clásico recibió el mismo ajuste y las mismas features?
+   - No lo dice / No aplica: El artículo no implementa ni compite directamente contra un modelo clásico ajustado en las mismas muestras sintéticas; se centra en la viabilidad experimental de estimar kernels covariantes en un procesador de 27 qubits frente al ruido.
+2. ¿La diferencia supera su incertidumbre (hay intervalos, desviaciones, pruebas)?
+   - Sí: en hardware, la comparación entre la ejecución mitigada y la no mitigada muestra que la mitigación acelera la convergencia y alcanza 100 % de exactitud con 8,192 disparos: «reaches 100% test accuracy on a 27-qubit problem instance on noisy hardware.» (p. 11).
+3. ¿El test se usó una sola vez?
+   - Sí: el clasificador optimizado se evalúa sobre conjuntos de datos de prueba independientes de 50 muestras por clase: «targeting a test set with 50 data points per label.» (p. 4).
+4. ¿El kernel o el circuito cuántico es realmente difícil de simular clásicamente?
+   - No: los autores reconocen explícitamente que la profundidad somera del circuito permite su simulación en computadoras clásicas: «The considered circuit, although supported on a larger number of qubits, is still suﬃciently shallow so that classical simulation methods can be applied [37].» (p. 5).
+
+## Preguntas específicas
+- **El problema de clases laterales**:
+  - Consiste en clasificar a qué clase lateral (*coset*) pertenece un elemento perturbado con errores respecto a un subgrupo $S \subset G$: «The learning problem we have studied experimentally serves as an abstract representation of many group theoretic problems, i.e. classiﬁcation of data that is close to cosets of a group.» (p. 4). Al elegir un estado fiducial invariante bajo el subgrupo, los elementos de una misma clase lateral colapsan al mismo estado cuántico, volviendo linealmente separable un problema que en el espacio original no lo era (p. 2).
+- **Cuántos qubits y qué hardware**:
+  - Se implementó con 27 qubits: «We implement the learning algorithm with 27 qubits on a superconducting processor.» (p. 1). El hardware físico utilizado es el procesador cuántico superconductor `ibmq_kolkata`: «The connectivity of the 27-qubit device ibmq_kolkata.» (p. 3), compuesto por 27 transmones de frecuencia fija: «The device (ibmq_kolkata, with the same topology as the device in Ref. [30]), consists of 27 ﬁxed-frequency transmons» (p. 12).
+- **Qué es el *kernel alignment* que usan**:
+  - Emplean una variante ponderada (*weighted kernel alignment*) que busca el estado fiducial óptimo $|\psi_\lambda\rangle = V_\lambda |0^n\rangle$: «We use a “weighted” version of the alignment [27, 28] to optimize the kernel parameters while the SVM is used to optimize the model parameters.» (p. 2). Esta técnica minimiza la cota del SVM sobre el error de generalización respecto al parámetro variacional $\lambda$: «This approach can be seen as optimizing the SVM upper bound on the generalization error directly» (p. 2). Mencionan además que este procedimiento puede adaptarse usando alineamiento no ponderado o centrado (CKA): «A similar algorithm can be envisioned by replacing the weighted kernel alignment with alternatives like the unweighted kernel alignment [26] and the centered kernel alignment [27, 54, 55].» (p. 12).
+- **Si afirman ventaja en datos reales**:
+  - NO: admiten de manera explícita que la ventaja en datos del mundo real sigue siendo un desafío pendiente: «It is an important challenge to ﬁnd quantum kernels that provide an advantage in the classiﬁcation of real-world data.» (p. 1). Su problema es estrictamente sintético y diseñado ad-hoc: «The data for the problem was generated artiﬁcially, so that we could ensure that the classiﬁcation problem could be solved to arbitrary precision and we have a high ﬁdelity benchmark of the experiment.» (p. 4), y su circuito es clásicamente simulable: «The considered circuit, although supported on a larger number of qubits, is still suﬃciently shallow so that classical simulation methods can be applied [37].» (p. 5).
+
+## Relevancia para el TT
+- Conexión con §7 y H-048: Constituye el arquetipo de problema donde un kernel cuántico tiene éxito gracias a una simetría de grupo matemática inherente, mostrando que la utilidad de los kernels cuánticos depende de la presencia de invarianzas algebraicas precisas en los datos.
+- Relevancia para D-032 y la técnica de alineamiento: Ilustra el uso de técnicas de *kernel-target alignment* (KTA) para optimizar o evaluar representaciones cuánticas, conectando con las métricas de alineamiento exploradas en la bitácora del TT (H-038, H-049).
+- Explicación de la ausencia de ventaja en CBIS-DDSM: Los datos radiómicos de mamografía carecen de estructura de grupo de Lie o simetría bajo transformaciones unitarias locales; por consiguiente, el mecanismo algebraico que confiere separabilidad en Glick et al. no opera en las lesiones de la tesis.
+- **Qué NO se puede afirmar con esta fuente**: No se puede afirmar que Glick et al. hayan demostrado ventaja cuántica práctica ni supremacía computacional frente a algoritmos clásicos, puesto que utilizaron datos puramente artificiales y circuitos deliberadamente poco profundos que admiten simulación clásica eficiente.
+
+## Contraste con lo que el proyecto ya le atribuye
+- `Docs/Technical_Report.tex`: No está citado en el texto principal del reporte (aparece en `Docs/insumos/bibitems_nuevos.tex:65-69`).
+- `Other/referencias_por_revisar.md:21-30`:
+  - Afirma que el problema consiste en clasificar a qué clase lateral (*coset*) de un subgrupo pertenece un elemento perturbado. **Sí lo sostiene**: «The learning problem we have studied experimentally serves as an abstract representation of many group theoretic problems, i.e. classiﬁcation of data that is close to cosets of a group.» (p. 4).
+  - Afirma que los kernels se construyen con representaciones unitarias del grupo y respetan sus simetrías. **Sí lo sostiene**: «We introduce a class of quantum kernels that can be used for data with a group structure.» (p. 1).
+  - Afirma que se demostró con 27 qubits de un procesador superconductor. **Sí lo sostiene**: «We implement the learning algorithm with 27 qubits on a superconducting processor.» (p. 1) e «ibmq_kolkata» (p. 3).
+  - Deja pendiente verificar año y revista de la versión publicada (preprint 2021) y autores completos. **Verificado en esta ficha**: Publicado en *Nature Physics* 20(3), 479–483 en 2024; autores: Jennifer R. Glick, Tanvi P. Gujarati, Antonio D. Córcoles, Youngseok Kim, Abhinav Kandala, Jay M. Gambetta y Kristan Temme.
+  - Señala uso previsto en §7 como datos con estructura de grupo donde las etiquetas están alineadas con la geometría cuántica. **Sí lo sostiene**: La obra fundamenta exactamente cómo el estado fiducial invariante alinea los estados cuánticos con las clases laterales.
+- `Other/correcciones_verificadas.md:84`: Registra la publicación en *Nature Physics* 20(3), 479–483 (2024), DOI: 10.1038/s41567-023-02340-9. **Sí lo sostiene**: Totalmente coincidente.

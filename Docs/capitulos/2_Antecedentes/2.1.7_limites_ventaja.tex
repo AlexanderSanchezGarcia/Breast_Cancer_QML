@@ -1,0 +1,110 @@
+% ---
+% Subsección 2.1.7 de Docs/Technical_Report.tex.
+% Decisiones y hallazgos que lo respaldan: D-007, D-028, D-032; H-031, H-033, H-038, H-047, H-048, H-049.
+% ---
+
+\subsubsection{Límites de la ventaja cuántica con datos clásicos}
+\label{sec:limites_ventaja}
+
+La búsqueda de una aceleración cuántica (\textit{quantum speed-up}) en aprendizaje automático supervisado ha producido demostraciones teóricas formales, pero delimitadas a familias de problemas con propiedades matemáticas altamente especializadas. Comprender los fundamentos y los límites de estas demostraciones resulta indispensable para evaluar la viabilidad del aprendizaje automático cuántico sobre datos clásicos genéricos, tales como las características radiómicas extraídas de imágenes mamográficas.
+
+\textbf{Ventaja cuántica mediante estructura algebraica en las etiquetas}
+
+Las demostraciones más rigurosas de ventaja cuántica en aprendizaje supervisado a partir de datos clásicos provienen del diseño de tareas donde la regla de clasificación encierra una simetría o estructura matemática oculta. 
+% respaldo: «In this paper, we establish a rigorous quantum speed-up for supervised classiﬁcation using a general-purpose quantum learning algorithm that only requires classical access to data.» (Liu2021Speedup, p. 1)
+Liu et al. demostraron de forma analítica una aceleración cuántica rigurosa para clasificación supervisada empleando un algoritmo que requiere únicamente acceso clásico a los datos \cite{Liu2021Speedup}.
+% respaldo: «Our quantum classiﬁer is a conventional support vector machine that uses a fault-tolerant quantum computer to estimate a kernel function.» (Liu2021Speedup, p. 1)
+En su formulación, el clasificador corresponde a una máquina de vectores de soporte convencional que utiliza una computadora cuántica tolerante a fallos exclusivamente para estimar una función de kernel cuántico \cite{Liu2021Speedup}.
+% respaldo: «We construct a family of datasets and show that no classical learner can classify the data inverse-polynomially better than random guessing, assuming the widely-believed hardness of the discrete logarithm problem.» (Liu2021Speedup, p. 1)
+Bajo el supuesto de intratabilidad clásica del problema del logaritmo discreto (DLP), los autores construyeron una familia de conjuntos de datos donde ningún modelo de aprendizaje clásico eficiente puede superar al azar por una fracción inversa-polinomial \cite{Liu2021Speedup}.
+% respaldo: «the training data samples are clustered in two intervals: [s, s + p−3 2 ] with label +1, and [s + p−1 2 , s + p −2] with label −1, for the unknown s ∈Z∗ p (which deﬁnes the unknown concept fs).» (Liu2021Speedup, p. 11)
+Crucialmente, la ventaja cuántica no se deriva de una propiedad geométrica intrínseca de las variables clásicas, sino de la estructura algebraica de las etiquetas, las cuales se agrupan en dos intervalos definidos por el logaritmo discreto \cite{Liu2021Speedup}.
+% respaldo: «While the learning problem we have presented here that demonstrates an exponential quantum speed-up is not practically motivated, our result sets a positive theoretical foundation for the search of practical quantum advantage in machine learning.» (Liu2021Speedup, p. 7)
+Los propios autores aclararon explícitamente que su problema carece de motivación práctica y constituye una prueba de principio teórica \cite{Liu2021Speedup}.
+
+% respaldo: «It is an important challenge to ﬁnd quantum kernels that provide an advantage in the classiﬁcation of real-world data.» (Glick2024Covariant, p. 1)
+En un marco similar, Glick et al. señalaron que encontrar kernels cuánticos que ofrezcan una ventaja en la clasificación de datos del mundo real constituye un desafío abierto fundamental \cite{Glick2024Covariant}.
+% respaldo: «We introduce a class of quantum kernels that can be used for data with a group structure.» (Glick2024Covariant, p. 1)
+Para avanzar en dicha dirección, introdujeron una clase de kernels cuánticos covariantes diseñados para conjuntos de datos que poseen una estructura de grupo definida a partir de representaciones unitarias \cite{Glick2024Covariant}.
+% respaldo: «The learning problem we have studied experimentally serves as an abstract representation of many group theoretic problems, i.e. classiﬁcation of data that is close to cosets of a group.» (Glick2024Covariant, p. 4)
+El problema evaluado experimentalmente modela de forma abstracta la clasificación de muestras perturbadas próximas a clases laterales (\textit{cosets}) de un grupo \cite{Glick2024Covariant}.
+% respaldo: «The considered circuit, although supported on a larger number of qubits, is still suﬃciently shallow so that classical simulation methods can be applied [37].» (Glick2024Covariant, p. 5)
+Aunque implementaron el algoritmo con 27 qubits en un procesador superconductor, los autores observaron que el circuito empleado es lo bastante poco profundo como para permitir métodos de simulación clásica eficientes \cite{Glick2024Covariant}.
+
+\textbf{Ventaja cuántica con datos que son originariamente estados cuánticos}
+
+Una segunda clase de problemas donde se ha comprobado formalmente una ventaja cuántica exponencial corresponde a escenarios en los que las entradas no son datos clásicos preexistentes, sino que constituyen estados físicos cuánticos.
+% respaldo: «An experimental setup that transduces data from a physical system to a stable quantum memory, and processes that data using a quantum computer, could have significant advantages over conventional experiments in which the physical system is measured and the outcomes are processed using a classical computer.» (Huang2022Experiments, p. 1)
+Huang et al. demostraron que una configuración experimental que transfiere datos desde un sistema físico hacia una memoria cuántica estable para procesarlos en una computadora cuántica ofrece ventajas significativas sobre experimentos convencionales donde el sistema físico se mide de inmediato y se procesa clásicamente \cite{Huang2022Experiments}.
+% respaldo: «The exponential advantage holds in predicting properties of physical systems, performing quantum principal component analysis on noisy states, and learning approximate models of physical dynamics.» (Huang2022Experiments, p. 1)
+Los autores probaron que esta ventaja exponencial se verifica en la predicción de propiedades de sistemas físicos, la ejecución de análisis cuántico de componentes principales (qPCA) en estados ruidosos y el aprendizaje de dinámicas físicas \cite{Huang2022Experiments}.
+% respaldo: «showing that a sufficiently large quantum memory is needed to achieve this task in the quantum-enhanced scenario.» (Huang2022Experiments, p. 3)
+Sin embargo, subrayaron que disponer de una memoria cuántica suficientemente grande es estrictamente necesario para alcanzar dicha ventaja, \cite{Huang2022Experiments}. Este resultado no se extiende a los datos del presente trabajo: una mamografía digitalizada y los descriptores radiómicos que se extraen de ella son registros clásicos de una medición ya realizada, no estados cuánticos que puedan cargarse en una memoria cuántica.
+
+\textbf{Comportamiento con datos clásicos genéricos codificados angularmente}
+
+Cuando se analizan problemas de aprendizaje supervisado con datos clásicos arbitrarios codificados mediante rotaciones angulares, la literatura reciente documenta limitaciones estructurales severas que impiden o condicionan la ventaja cuántica.
+% respaldo: «with the help of data, classical machine learning models can be competitive with quantum models even if they are tailored to quantum problems.» (huang2021power, p. 1)
+Huang et al. establecieron que, con la ayuda de datos de entrenamiento, los modelos clásicos de aprendizaje automático pueden competir con modelos cuánticos incluso en tareas orientadas a problemas cuánticos \cite{huang2021power}.
+% respaldo: «The small geometric difference is a consequence of the exponentially large Hilbert space employed by existing quantum models, where all inputs are too far apart.» (huang2021power, p. 2)
+Asimismo, identificaron que múltiples modelos cuánticos habituales rinden igual o peor que los clásicos debido a una pequeña diferencia geométrica (\textit{geometric difference}) $g$, la cual es consecuencia directa de un espacio de Hilbert exponencialmente grande donde todas las entradas quedan excesivamente distantes entre sí \cite{huang2021power}.
+% respaldo: «We see that small geometric difference g always results in classical ML being competitive or outperforming the quantum ML model.» (huang2021power, p. 7)
+En sus experimentos numéricos observaron que una diferencia geométrica pequeña siempre se acompañó de modelos clásicos competitivos o superiores a los cuánticos \cite{huang2021power}.
+% respaldo: «Only when the geometric difference g is large (projected kernel method with embedding E3) can we see some mild advantage over the best classical method.» (huang2021power, p. 7)
+De acuerdo con sus hallazgos, únicamente cuando la diferencia geométrica es amplia es posible observar alguna ventaja frente al mejor método clásico de referencia \cite{huang2021power}.
+
+% respaldo: «We show that, under certain conditions, values of quantum kernels over different input data can be exponentially concentrated (in the number of qubits) towards some fixed value.» (Thanasilp2024, p. 1)
+De manera convergente, Thanasilp et al. probaron analíticamente que los valores de los kernels cuánticos sobre diferentes datos de entrada pueden concentrarse exponencialmente con el número de qubits hacia un valor fijo \cite{Thanasilp2024}.
+% respaldo: «We identify four sources that can lead to concentration including expressivity of data embedding, global measurements, entanglement and noise.» (Thanasilp2024, p. 1)
+Identificaron cuatro mecanismos formales que originan esta concentración: la expresividad del mapa de características, las mediciones globales en $2^n$ dimensiones, el entrelazamiento y el ruido del hardware cuántico \cite{Thanasilp2024}.
+% respaldo: «In such cases, the number of shots required to resolve the kernels to a sufficiently high accuracy scales exponentially.» (Thanasilp2024, p. 2)
+Como consecuencia, el número de ejecuciones de medición (\textit{shots}) requerido para resolver los valores del kernel con exactitud suficiente escala exponencialmente con el número de qubits \cite{Thanasilp2024}.
+% respaldo: «Thus on training with a polynomial number of measurements, one ends up with a trivial model where the predictions on unseen inputs are independent of the input data.» (Thanasilp2024, p. 1)
+Por consiguiente, al entrenar con una cantidad polinomial de mediciones, el modelo resultante se vuelve trivial y sus predicciones sobre datos no vistos resultan independientes de los datos de entrada \cite{Thanasilp2024}.
+
+% respaldo: «However, having an exponentially large feature space renders the problem of generalization hard.» (Kubler2021Inductive, p. 1)
+El análisis del sesgo inductivo desarrollado por Kübler et al. complementa esta perspectiva al demostrar que contar con un espacio de características exponencialmente grande dificulta severamente la generalización estadística \cite{Kubler2021Inductive}.
+% respaldo: «Furthermore, being able to evaluate inner products in high dimensional spaces efficiently by itself does not guarantee a quantum advantage» (Kubler2021Inductive, p. 1)
+Los autores enfatizaron que la capacidad de evaluar eficientemente productos internos en espacios de alta dimensión no garantiza por sí sola una ventaja cuántica \cite{Kubler2021Inductive}.
+% respaldo: «To make learning from data feasible we cannot use the full expressive power of the quantum Hilbert space but instead only very restricted embeddings allow to learn from data.» (Kubler2021Inductive, p. 7)
+Concluyeron que, para hacer viable el aprendizaje a partir de muestras finitas, no es posible emplear la expresividad completa del espacio de Hilbert cuántico, sino que se requieren codificaciones fuertemente restringidas \cite{Kubler2021Inductive}.
+% respaldo: «To summarize, we conclude that there is no indication that quantum machine learning will substantially improve supervised learning on classical datasets.» (Kubler2021Inductive, p. 10)
+En sus reflexiones finales, concluyeron que no existe indicio alguno de que el aprendizaje automático cuántico mejore sustancialmente el aprendizaje supervisado sobre conjuntos de datos clásicos \cite{Kubler2021Inductive}.
+
+\textbf{El control del ancho de banda y la evidencia empírica en benchmarks}
+
+Para impedir que las representaciones cuánticas colapsen a la matriz identidad o sufran subajuste, la literatura ha establecido el control del ancho de banda como hiperparámetro crítico.
+% respaldo: «In this work we introduce the hyperparameter controlling the bandwidth of a quantum kernel and show that it controls the expressivity of the resulting model.» (Shaydulin2022Bandwidth, p. 1)
+Shaydulin y Wild introdujeron el hiperparámetro de ancho de banda (\textit{bandwidth}) en kernels cuánticos y demostraron que gobierna directamente la expresividad del clasificador \cite{Shaydulin2022Bandwidth}.
+% respaldo: «We show that for the quantum feature maps considered, the bandwidth can be controlled by rescaling the datapoints.» (Shaydulin2022Bandwidth, p. 2)
+Comprobaron que en los mapas cuánticos habituales dicho ancho de banda se controla directamente mediante el reescalamiento multiplicativo de los datos de entrada \cite{Shaydulin2022Bandwidth}.
+% respaldo: «We use extensive numerical experiments with multiple quantum kernels and classical datasets to show consistent change in the model behavior from underfitting (bandwidth too large) to overfitting (bandwidth too small), with optimal generalization in between.» (Shaydulin2022Bandwidth, p. 1)
+A través de experimentos numéricos extensivos, mostraron una transición sistemática desde el subajuste cuando el ancho de banda es excesivo hasta el sobreajuste cuando es demasiado estrecho, ubicándose la generalización óptima en un régimen intermedio \cite{Shaydulin2022Bandwidth}.
+
+% respaldo: «Specifically, we show that changing the value of the bandwidth can take a model from provably not being able to generalize to any target function to good generalization for well-aligned targets.» (Canatar2023Bandwidth, p. 1)
+De forma complementaria, Canatar et al. formalizaron mediante análisis espectral que variar el ancho de banda puede transformar un modelo desde una incapacidad demostrable de generalizar hacia una generalización exitosa para funciones objetivo bien alineadas \cite{Canatar2023Bandwidth}.
+% respaldo: «Our analysis shows how the bandwidth controls the spectrum of the kernel integral operator and thereby the inductive bias of the model.» (Canatar2023Bandwidth, p. 1)
+Demostraron que el factor de escala controla el espectro de autovalores del operador integral del kernel y modula el sesgo inductivo del modelo cuántico \cite{Canatar2023Bandwidth}.
+% respaldo: «On the other hand, bandwidth enables sufficient decay in the spectrum of the kernel, and Eq. 9 shows that P ∼O(nl) samples yield an excess generalization error» (Canatar2023Bandwidth, p. 8)
+Asimismo, probaron que calibrar el ancho de banda induce un decaimiento suficiente en el espectro que permite alcanzar generalización con una complejidad muestral polinomial en lugar de exponencial \cite{Canatar2023Bandwidth}.
+
+La necesidad de someter los modelos cuánticos a comparaciones empíricas rigurosas frente a métodos clásicos convencionales ha sido puesta de relieve por evaluaciones metodológicas recientes.
+% respaldo: «We find that overall, out-of-the-box classical machine learning models outperform the quantum classifiers.» (Bowles2024Benchmarking, p. 1)
+En un estudio de referencia a gran escala que evaluó 12 modelos cuánticos sobre 160 conjuntos de datos, Bowles et al. hallaron que, en términos globales, los modelos clásicos estándar sin adaptaciones complejas superan a los clasificadores cuánticos \cite{Bowles2024Benchmarking}.
+% respaldo: «In all three model families, the prototypical classical models came first.» (Bowles2024Benchmarking, p. 14)
+En las tres familias de arquitecturas examinadas (redes cuánticas, kernels cuánticos y redes convolucionales cuánticas), los clasificadores clásicos de referencia obtuvieron el primer lugar del ordenamiento comparativo \cite{Bowles2024Benchmarking}.
+% respaldo: «Moreover, removing entanglement from a quantum model often results in as good or better performance, suggesting that “quantumness” may not be the crucial ingredient for the small learning tasks considered here.» (Bowles2024Benchmarking, p. 1)
+Además, observaron que eliminar el entrelazamiento de los circuitos cuánticos produce frecuentemente un rendimiento igual o superior, sugiriendo que las correlaciones cuánticas no constituyen el componente crítico en tareas sobre datos de escala pequeña o moderada \cite{Bowles2024Benchmarking}.
+
+% respaldo: «We argue that these challenges call for a critical debate on whether quantum advantage and the narrative of “beating” classical machine learning should continue to dominate the literature the way it does, and highlight examples for how other perspectives in existing research provide an important alternative to the focus on advantage.» (SchuldKilloran2022Advantage, p. 1)
+Frente a estas dificultades estructurales, Schuld y Killoran plantearon un debate crítico sobre la conveniencia de que la narrativa de la ventaja cuántica y el afán por «vencer» al aprendizaje clásico continúen dominando la literatura \cite{SchuldKilloran2022Advantage}.
+% respaldo: «To state it in simple terms, quantum machine learning research is trying to beat large, high-performing algorithms for problems that are conceptually hard to study.» (SchuldKilloran2022Advantage, p. 1)
+Argumentaron que la investigación en QML se encuentra en la encrucijada de intentar superar algoritmos clásicos de alto rendimiento en problemas donde resulta conceptualmente difícil fundamentar aceleraciones prácticas \cite{SchuldKilloran2022Advantage}.
+% respaldo: «How can we make quantum software ready for machine learning applications?.» (SchuldKilloran2022Advantage, p. 2)
+Propusieron reorientar los objetivos de la disciplina hacia preguntas constructivas centradas en cómo diseñar y preparar herramientas, modelos y software cuántico rigurosos para aplicaciones de aprendizaje automático \cite{SchuldKilloran2022Advantage}.
+
+\textbf{Conexión con el diseño del presente trabajo}
+
+El marco teórico revisado delimita con precisión las premisas bajo las cuales cabe o no esperar una ventaja cuántica en aprendizaje automático. Las ventajas demostradas hasta ahora se apoyan en etiquetas con estructura algebraica o en entradas que ya son estados cuánticos. Para datos clásicos codificados por ángulos, la concentración de los kernels y una diferencia geométrica pequeña son los escenarios en los que la literatura revisada observa que los métodos clásicos igualan o superan a los cuánticos; ninguna de las obras revisadas ofrece razones para anticipar una superioridad cuántica en ese régimen.
+
+En concordancia con estos fundamentos, el presente trabajo no formula la hipótesis de una ventaja cuántica preconcebida ni concibe el experimento como una competencia de rendimiento final. En su lugar, adopta el marco de la diferencia geométrica ($g$) de Huang et al. para cuantificar de manera formal la separabilidad de clases en el espacio de Hilbert inducido por circuitos variacionales frente a kernels clásicos, y examina el efecto del ancho de banda mediante un barrido del factor de escala angular.

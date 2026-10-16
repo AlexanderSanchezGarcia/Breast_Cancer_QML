@@ -1,0 +1,76 @@
+% ---
+% Subsección 2.1.8 de Docs/Technical_Report.tex.
+% Decisiones y hallazgos que lo respaldan: D-001, D-007, D-020; H-046.
+% ---
+
+\subsubsection{Representaciones cuánticas de imágenes}
+\label{sec:imagenes_cuanticas}
+
+El procesamiento de imágenes en dispositivos cuánticos demanda esquemas de codificación que transformen la matriz bidimensional de píxeles clásicos en un estado cuántico multipartito. En el estado del arte se han formulado diversas representaciones cuánticas de imágenes (\textit{Quantum Image Representations}, QImRs), cuya viabilidad computacional depende críticamente de la cantidad de qubits lógicos requeridos y de la complejidad del circuito de preparación de estados.
+
+\textbf{Representación FRQI}
+
+% respaldo: «A Flexible Representation of Quantum Images (FRQI) is proposed to provide a representation for images on quantum computers in the form of a normalized state which captures information about colors and their corresponding positions in the images.» (Le2011FRQI, p. 1)
+Le et al. introdujeron el modelo FRQI (\textit{Flexible Representation of Quantum Images}), diseñado para representar imágenes digitales en computadoras cuánticas como un estado normalizado que captura de forma simultánea los colores y sus posiciones espaciales correspondientes \cite{Le2011FRQI}.
+Para una imagen de $2^n \times 2^n$ píxeles, FRQI emplea $2n$ qubits para indexar las coordenadas espaciales $|i\rangle$ y un único qubit auxiliar de color, requiriendo un total de $2n+1$ qubits. La intensidad del píxel se codifica en las amplitudes de probabilidad del qubit de color mediante un ángulo de rotación $\theta_i \in [0, \pi/2]$:
+\begin{equation}
+  |\psi_{\text{FRQI}}\rangle = \frac{1}{2^n} \sum_{i=0}^{2^{2n}-1} \left( \cos\theta_i |0\rangle + \sin\theta_i |1\rangle \right) \otimes |i\rangle.
+\end{equation}
+
+% respaldo: «Theorem 1 (Polynomial preparation theorem) Given a vector θ = (θ0, θ1, . . . , θ22n−1), (n ∈N) of angles, there is a unitary transform P that turns quantum computers from the initialized state, |0⟩⊗2n+1 to the FRQI state» (Le2011FRQI, p. 7)
+Para inicializar el sistema, los autores formularon un teorema de preparación que transforma el estado base $|0\rangle^{\otimes 2n+1}$ en el estado FRQI mediante una secuencia unitaria de compuertas Hadamard y rotaciones controladas \cite{Le2011FRQI}.
+% respaldo: «The total number of simple operations used to prepare FRQI state is 2n + 22n × 22n−1 −1 + 22n−1 −2 = 24n −3.22n + 2n.» (Le2011FRQI, p. 7)
+El número exacto de operaciones elementales para preparar el estado sin comprimir es $2^{4n} - 3 \cdot 2^{2n} + 2n$, cuyo orden dominante escala como $O(2^{4n})$ compuertas cuánticas simples \cite{Le2011FRQI}.
+Aunque los autores caracterizan dicha preparación como cuadrática respecto al número de píxeles ($N = 2^{2n}$), en términos del número de qubits lógicos la complejidad resulta estrictamente exponencial.
+% respaldo: «For example a 216 position image needs 232 simple gates for preparation.» (Le2011FRQI, p. 8)
+Los propios autores ejemplificaron que una imagen de resolución intermedia de $2^{16}$ posiciones ($256 \times 256$ píxeles) requiere $2^{32}$ compuertas elementales para su preparación \cite{Le2011FRQI}. Asimismo, la recuperación clásica del valor de los píxeles a partir del estado FRQI es probabilística y depende de estimaciones de tomografía cuántica sobre las amplitudes del qubit de color.
+
+\textbf{Representación NEQR}
+
+% respaldo: «In this paper, based on analysis of existing quantum image representations, a novel enhanced quantum representation (NEQR) for digital images is proposed, which improves the latest ﬂexible representation of quantum images (FRQI).» (Zhang2013NEQR, p. 1)
+Para superar las limitaciones de fidelidad y recuperación de FRQI, Zhang et al. propusieron el modelo NEQR (\textit{Novel Enhanced Quantum Representation}) como una mejora sobre el estado del arte \cite{Zhang2013NEQR}.
+% respaldo: «The newly proposed quantum image representation uses the basis state of a qubit sequence to store the gray-scale value of each pixel in the image for the ﬁrst time, instead of the probability amplitude of a qubit, as in FRQI.» (Zhang2013NEQR, p. 1)
+A diferencia de FRQI, NEQR almacena los valores de escala de grises de cada píxel en el estado base computacional de una secuencia de qubits, en lugar de modular amplitudes de probabilidad \cite{Zhang2013NEQR}.
+% respaldo: «NEQR needs q + 2n qubits to represent a 2n × 2n image with gray range 2q.» (Zhang2013NEQR, p. 6)
+Esta estructura requiere exactamente $q + 2n$ qubits para una imagen de $2^n \times 2^n$ píxeles con $2^q$ niveles de gris ($2n$ qubits para direccionamiento espacial y $q$ qubits para la intensidad del píxel) \cite{Zhang2013NEQR}.
+El estado global se formaliza como:
+\begin{equation}
+  |\psi_{\text{NEQR}}\rangle = \frac{1}{2^n} \sum_{Y=0}^{2^n-1} \sum_{X=0}^{2^n-1} |f(Y, X)\rangle |Y\rangle |X\rangle,
+\end{equation}
+donde $|f(Y, X)\rangle = |C_0 C_1 \cdots C_{q-1}\rangle$ representa la codificación binaria del tono de gris.
+
+% respaldo: «Theorem 2 The whole preparation of NEQR costs no more than O(qn22n) for a 2n × 2n image with gray range 2q. This is equivalent to an approximately quadratic decrease compared to FRQI.» (Zhang2013NEQR, p. 10)
+En términos de costo de circuito, los autores demostraron que la preparación completa de NEQR cuesta a lo sumo $O(q n 2^{2n})$ operaciones elementales disponiendo de suficientes qubits ancilares, lo que equivale a una disminución aproximadamente cuadrática respecto a FRQI \cite{Zhang2013NEQR}.
+% respaldo: «Compared with the preparation complexity O(24n) for FRQI, the time complexity of constructing the quantum image for NEQR has experienced an approximately quadratic decrease.» (Zhang2013NEQR, p. 10)
+Al contrastar frente al límite dominante $O(2^{4n})$ de FRQI, la complejidad temporal de construcción experimenta una reducción cuadrática sustancial \cite{Zhang2013NEQR}.
+% respaldo: «Through quantum measurements, the original digital image can be accurately retrieved from the NEQR quantum image, not probabilistically as in FRQI.» (Zhang2013NEQR, p. 27)
+Además, mediante mediciones en la base computacional, la imagen digital puede recuperarse de forma exacta y determinista, superando el carácter probabilístico de FRQI \cite{Zhang2013NEQR}.
+% respaldo: «It means when the image size is large, the whole preparation will still take unacceptable time consumption.» (Zhang2013NEQR, p. 11)
+A pesar de esta mejora algorítmica, los autores reconocieron que cuando el tamaño de la imagen es grande la preparación continúa demandando un consumo de tiempo inaceptable \cite{Zhang2013NEQR}. Para resoluciones estándar, la dependencia $O(2^{2n})$ sigue siendo exponencial en el número de qubits espaciales $2n$.
+
+\textbf{Análisis comparativo de representaciones cuánticas de imágenes}
+
+% respaldo: «In this work, we compare and examine the compression properties of four different Quantum Image Representations (QImRs): namely, Tensor Network Representation (TNR), Flexible Representation of Quantum Image (FRQI), Novel Enhanced Quantum Representation NEQR, and Quantum Probability Image Encoding (QPIE).» (Parigi2026QImR, p. 1)
+En un estudio comparativo sistemático, Parigi et al. evaluaron las propiedades de compresión y desempeño en clasificación de cuatro representaciones cuánticas de imágenes: TNR (\textit{Tensor Network Representation}), FRQI, NEQR y QPIE (\textit{Quantum Probability Image Encoding}) \cite{Parigi2026QImR}.
+% respaldo: «Our simulations show that FRQI and QPIE perform a higher compression of image information than TNR and NEQR.» (Parigi2026QImR, p. 1)
+Sus simulaciones mostraron que FRQI y QPIE logran una compresión de la información de la imagen notablemente mayor que TNR y NEQR \cite{Parigi2026QImR}.
+% respaldo: «In fact, the most off-diagonal elements of FRQI and QPIE Gram matrices are in the range [0.8,1], while for NEQR case they are in the interval [0,0.4]. The TNR Gram matrix shows an intermediate level of compression with respect to FRQI, QPIE, and NEQR, and its elements are in the range [0.4,0.7].» (Parigi2026QImR, p. 7)
+Esta marcada diferencia de compresión se refleja directamente en las matrices de Gram de los kernels inducidos: la mayoría de los elementos fuera de la diagonal para FRQI y QPIE se ubican en el rango $[0.8, 1.0]$, indicando que los estados cuánticos colapsan hacia regiones compactas con alta similitud mutua, mientras que en NEQR se concentran en $[0.0, 0.4]$ y en TNR ocupan un nivel intermedio entre $[0.4, 0.7]$ \cite{Parigi2026QImR}.
+
+% respaldo: «Our results indicate that quantum kernels provide comparable classification average accuracy but require exponentially fewer resources for image storage.» (Parigi2026QImR, p. 1)
+Al aplicar estos kernels en tareas de clasificación supervisada mediante SVM, hallaron que los kernels cuánticos proporcionan una exactitud media comparable a la de los modelos clásicos, requiriendo exponencialmente menos recursos de almacenamiento de la imagen \cite{Parigi2026QImR}.
+% respaldo: «Quantum kernels on average perform binary classification with the same accuracy as the classical linear kernel, but with exponentially lower storage cost.» (Parigi2026QImR, p. 7)
+Específicamente, concluyeron que los kernels cuánticos alcanzan en promedio la misma exactitud de clasificación binaria que un kernel lineal clásico ordinario \cite{Parigi2026QImR}.
+
+% respaldo: «However, we highlight that to date the best known protocols for loading an exact representation of the data into an n-qubit state require a number of quantum gates equal to O(2n), which predominates the complexity of quantum algorithms and compromises its potential quantum advantage7.» (Parigi2026QImR, p. 8)
+Frente a la supuesta aceleración computacional, los autores subrayaron que los protocolos más eficientes conocidos hasta la fecha para cargar una representación exacta de los datos en un estado de $n$ qubits requieren $O(2^n)$ compuertas cuánticas, factor que domina la complejidad del algoritmo y compromete la potencial ventaja cuántica \cite{Parigi2026QImR}.
+% respaldo: «An efficient loading of the classical date into a quantum state is still an open question.» (Parigi2026QImR, p. 8)
+Por esta razón, la carga eficiente de datos clásicos en estados cuánticos permanece como un problema abierto en la literatura \cite{Parigi2026QImR}.
+
+\textbf{Justificación metodológica: codificación de características radiómicas}
+
+Estas limitaciones explican la decisión de diseño adoptada en este trabajo: prescindir de la codificación directa de la matriz de píxeles mamográficos y optar por la codificación cuántica de un vector reducido de características radiómicas.
+
+Las mamografías completas del CBIS-DDSM miden en mediana unos $5\,037 \times 2\,960$ píxeles con 16 bits por píxel (Capítulo~\ref{sec:eda}). Para codificarlas con NEQR habría que completarlas a $2^{13} \times 2^{13}$ posiciones ($n = 13$, $q = 16$), lo que exige $16 + 2 \cdot 13 = 42$ qubits y, con la cota de Zhang et al., del orden de $16 \cdot 13 \cdot 2^{26} \approx 1.4 \times 10^{10}$ operaciones elementales de preparación, fuera del alcance del hardware NISQ y de la simulación de vector de estado. Incluso con imágenes reducidas, los experimentos de Parigi et al. muestran kernels de imagen con una exactitud comparable, no superior, a la de un kernel lineal clásico, y el coste de carga sigue siendo el factor dominante.
+
+Por estos motivos, el presente trabajo desacopla el procesamiento espacial del cómputo cuántico: la segmentación y la extracción de descriptores de forma, textura e intensidad con PyRadiomics \cite{vanGriethuysen2017} se efectúan de manera clásica, y es únicamente el vector representativo compacto resultante el que se proyecta a los circuitos cuánticos variacionales.

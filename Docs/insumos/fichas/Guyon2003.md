@@ -1,0 +1,43 @@
+# Guyon2003 · An introduction to variable and feature selection
+
+- Autores y año: Guyon, I., & Elisseeff, A. (2003).
+- Versión leída: Docs/fuentes/pdf/Guyon2003.pdf · versión publicada en Journal of Machine Learning Research, 3, 1157–1182 · 26 páginas
+- Tipo: revisión / tutorial metodológico
+
+## Qué concluye
+- Define los tres objetivos centrales de la selección de variables: mejorar el rendimiento predictivo, acelerar el cómputo y facilitar la comprensión del proceso subyacente que genera los datos: «The objective of variable selection is three-fold: improving the prediction performance of the predictors, providing faster and more cost-effective predictors, and providing a better understanding of the underlying process that generated the data.» (p. 1)
+- Demuestra que evaluar y puntuar variables de manera individual e independiente (métodos de ranking univariante) es incapaz de identificar qué combinación de variables produce el mejor desempeño predictivo: «Therefore, methods that score variables individually and independently of each other are at loss to determine which combination of variables would give best performance.» (p. 9)
+- Prueba analítica y gráficamente que variables individualmente inútiles (cuyas proyecciones marginales solapan por completo entre clases) pueden aportar una mejora sustancial o permitir una separación perfecta cuando se consideran conjuntamente: «By itself one variable is “useless”. Still, the two dimensional separation is better than the separation using the “useful” variable alone. Therefore, a variable that is completely useless by itself can provide a signiﬁcant performance improvement when taken with others.» (p. 9) y «Two variables that are useless by themselves can be useful together.» (p. 9)
+- En problemas tipo XOR o tablero de ajedrez, las proyecciones univariantes no exhiben capacidad discriminativa alguna; sin embargo, en el espacio multidimensional conjunto las clases son altamente separables: «Still, taken together, the variables provide good class separability .» (p. 10)
+- Demuestra que variables independientes e idénticamente distribuidas (i.i.d.) no son verdaderamente redundantes, ya que su promediado o combinación reduce la varianza del ruido intra-clase en un factor de $\sqrt{n}$: «I.i.d. variables are not truly redundant.» (p. 7)
+- Clasifica la selección multivariante de subconjuntos en tres familias metodológicas: filtros (*filters*), envolturas (*wrappers*) y métodos embebidos (*embedded*), destacando la utilidad de seleccionar subconjuntos con complementariedad predictiva en lugar de ordenar por poder individual: «In the previous section, we presented examples that illustrate the usefulness of selecting subsets of variables that together have good predictive power, as opposed to ranking variables according to their individual predictive power.» (p. 10)
+
+## Qué deja como trabajo futuro o limitación declarada
+- Advierte que los métodos multivariantes más sofisticados (*wrappers* y *embedded*) sufren la maldición de la dimensionalidad y son altamente propensos al sobreajuste cuando la relación entre variables y muestras es desfavorable: «Sophisticated wrapper or embedded methods improve predictor performance compared to simpler variable ranking methods like correlation methods, but the improvements are not always signiﬁcant: domains with large numbers of input variables suffer from the curse of dimensionality and multivariate methods may overﬁt the data.» (p. 23)
+- Alerta sobre el peligro del prefiltrado univariante previo a métodos multivariantes: al descartar variables con bajo puntaje individual, se pueden eliminar variables críticas que solo son informativas en interacción con otras: «It is tempting to use a variable ranking method to ﬁlter out the least promising variables before using a multivariate method. Still one may wonder whether one could potentially lose some valuable variables through that ﬁltering process.» (p. 9)
+- Señala como trabajo pendiente la construcción de un marco teórico unificador para la selección de características y el establecimiento de conexiones formales con inferencia causal y diseño experimental.
+
+## Diseño experimental (solo obras experimentales)
+No aplica: artículo de revisión exhaustiva, fundamentos teóricos y tutorial metodológico en aprendizaje automático (publicado en el número especial de JMLR). Incluye construcciones analíticas y simulaciones geométricas en dos dimensiones (problemas lineales, correlación intraclase, XOR y tableros de ajedrez).
+
+## Las cuatro preguntas de H-046 (solo obras que reportan una ventaja o un resultado cuántico frente a clásico)
+No aplica: obra clásica de machine learning estadístico; no involucra ni evalúa modelos cuánticos.
+
+## Preguntas específicas
+- **Lo que dicen de la selección univariante:** Guyon y Elisseeff demuestran que los métodos univariantes (como ranking por correlación, información mutua o prueba ANOVA F de `SelectKBest`) son ciegos a las interacciones entre variables: «methods that score variables individually and independently of each other are at loss to determine which combination of variables would give best performance.» (p. 9). Indican que usar un filtro univariante para reducir dimensionalidad de forma previa corre el riesgo cierto de eliminar variables altamente predictivas: «It is tempting to use a variable ranking method to ﬁlter out the least promising variables before using a multivariate method. Still one may wonder whether one could potentially lose some valuable variables through that ﬁltering process.» (p. 9).
+- **Variables inútiles por sí solas pero útiles juntas (citas literales con página):**
+  - «By itself one variable is “useless”. Still, the two dimensional separation is better than the separation using the “useful” variable alone. Therefore, a variable that is completely useless by itself can provide a signiﬁcant performance improvement when taken with others.» (p. 9)
+  - «Two variables that are useless by themselves can be useful together.» (p. 9)
+  - «The classes consist of disjoint clumps such that in projection on the axes the class conditional densities overlap perfectly. Therefore, individual variables have no separation power. Still, taken together, the variables provide good class separability .» (p. 10)
+- **Relación con H-030 del proyecto:** En la tesis, el hallazgo H-030 (y la decisión D-007) documenta que «las 12 elegidas por F no superan a 12 al azar» (`bitacora_decisiones.md:1681`). El texto de Guyon y Elisseeff (2003) provee el sustento teórico exacto que explica dicho fenómeno: `SelectKBest` con estadístico F evalúa cada característica radiómica de forma estrictamente univariante e ignora la correlación multivariante y la redundancia entre características. Al filtrar sin considerar complementariedad, el subconjunto resultante no logra mejor separabilidad que un conjunto tomado al azar que preserva mayor diversidad informativa.
+
+## Relevancia para el TT
+- Fundamenta teóricamente los hallazgos H-030 y H-035 sobre las limitaciones de la selección univariante de características radiómicas en el CBIS-DDSM (§2.1, §5.3, D-007).
+- Justifica por qué el pipeline radiómico requirió comparar `SelectKBest` con variantes multivariantes y conjuntos aleatorios como control metodológico.
+- Conecta con la entrada de `Other/referencias_por_revisar.md:69`: «Guyon y Elisseeff (2003), An introduction to variable and feature selection, JMLR 3 | H-035 | Verificar contra la fuente».
+- **Qué NO se puede afirmar con esta fuente:** No se puede citar a Guyon & Elisseeff para afirmar que los métodos *wrapper* o multivariantes siempre superan a los filtros univariantes en problemas de alta dimensión. Los autores advierten explícitamente que en dominios con muchas variables y pocas muestras, los métodos multivariantes pueden sobreajustar y los filtros simples a menudo resultan más robustos.
+
+## Contraste con lo que el proyecto ya le atribuye
+- `Other/referencias_por_revisar.md:69`: «Guyon y Elisseeff (2003), An introduction to variable and feature selection, JMLR 3 | H-035 | Verificar contra la fuente». Sostiene: Sí («An Introduction to Variable and Feature Selection», p. 1).
+- `Other/correcciones_verificadas.md:93`: Registra que Guyon y Elisseeff (2003) se verifica en jmlr.org. Sostiene: Sí.
+- `Other/bitacora_decisiones.md:1681`: En H-030, analiza por qué las 12 características radiómicas elegidas por F no superan a 12 al azar. Sostiene: Sí; coincide exactamente con las advertencias de Guyon y Elisseeff sobre la insuficiencia del ranking univariante («methods that score variables individually and independently of each other are at loss to determine which combination of variables would give best performance», p. 9).

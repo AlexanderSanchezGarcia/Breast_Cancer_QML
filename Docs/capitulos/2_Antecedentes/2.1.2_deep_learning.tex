@@ -1,0 +1,30 @@
+% ---
+% Reemplaza líneas 726–750 de Docs/Technical_Report.tex.
+% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% ---
+
+\subsubsection{Deep Learning en el diagnóstico mamográfico}
+
+\textbf{El avance de las CNN en mamografías}
+
+La aplicación de redes neuronales convolucionales (CNN) en el análisis de mamografías marcó un nuevo paradignma respecto a los sistemas CAD clásicos. A diferencia de los enfoques basados en features manuales, las CNN aprenden representaciones jerárquicas directamente desde los píxeles de la imagen, eliminando la dependencia de descriptores diseñados por expertos. Las CNN poco profundas fueron utilizadas para investigar el cáncer de mama desde 1995; sin embargo, fue a partir de 2012, con el surgimiento de Alex-Net y el aumento de la capacidad computacional, la disponibilidad de hardware de menor costo, los algoritmos de código abierto y el auge del big data, cuando las CNN se volvieron predominantes en el procesamiento de imágenes médicas. Arquitecturas como VGG, ResNet, DenseNet e InceptionV3 se convirtieron en la base de la mayoría de los sistemas CAD modernos para mamografía. \cite{Abdelhafiz2019DeepCNN}
+
+\textbf{Resultados reportados en distintos datasets}
+
+Los modelos de deep learning han alcanzado resultados notables en condiciones controladas sobre los datasets más utilizados en la comunidad. Shen et. al \cite{Shen2019DeepLearning} desarrollaron un sistema de CNN de extremo a extremo sobre CBIS-DDSM con un enfoque que aprovecha tanto anotaciones de lesiones como etiquetas de imagen completa, el mejor modelo individual alcanzó un AUC por imagen de 0.88 sobre el conjunto de prueba del CBIS-DDSM, y el promedio de cuatro modelos mejoró este resultado a un AUC de 0.91, con una especificidad de 80.1\% a una sensibilidad de 86.1\%, comparable al promedio estimado de radiólogos en Estados Unidos.
+
+En el dominio específico de las calcificaciones, la comparación entre arquitecturas evidencia diferencias significativas según el tipo de lesión. Al evaluar modelos ResNet-50, ResNet-101 y cinco variantes de EfficientNet (B0 a B4) para clasificación de microcalcificaciones benignas y malignas usando validación cruzada de cinco pliegues sobre imágenes mamográficas con etiquetas BI-RADS confirmadas, todos los modelos EfficientNet superaron significativamente a las variantes ResNet en F1-score; adicionalmente, bajo validación externa con CBIS-DDSM, EfficientNet-B3 mantuvo su superioridad con mayor recall tanto para clases benignas como malignas. Este hallazgo nos muestra que el performace de un modelo es sensible no solo al dataset de entrenamiento sino al tipo de hallazgo mamográfico analizado, lo que refuerza la necesidad de evaluar masas y calcificaciones de forma separada. \cite{Shia2025MicrocalcClassification}
+
+\textbf{El problema de la generalización}
+
+A pesar de los resultados prometedores reportados en validación interna, existe un problema estructural que la literatura ha mencionado de manera consistente, los modelos de deep learning no generalizan entre datasets con distribuciones distintas. Wang et al. (2020) realizaron el análisis más sistemático de este fenómeno, evaluando seis modelos sobre cuatro datasets diferentes. Como se señaló en la sección 1.1.2, los modelos que reportaron AUC de validación entre 0.88 y 0.95 mostraron caídas hasta el rango de 0.44--0.65 al evaluarse sobre datos externos. La variabilidad entre lectores y la dificultad intrínseca de interpretar características radiográficas sutiles limitan frecuentemente la precisión del diagnóstico; el impacto del cambio de dominio queda evidenciado en pruebas de generalización, que marcan la necesidad de conjuntos de datos diversos durante el entrenamiento para construir herramientas de tamizaje confiables y ampliamente aplicables.
+
+Este problema tiene raíces más profundas que la simple escasez de datos. La investigación futura debe enfocarse en enriquecer los algoritmos de deep learning, garantizar la privacidad de los datos, mejorar la interpretabilidad de los modelos y establecer la generalización para integrar exitosamente el diagnóstico asistido por deep learning en programas rutinarios de tamizaje de cáncer de mama.
+
+\textbf{La representación como problema central}
+
+El análisis de la literatura permite identificar que el problema no es la arquitectura del clasificador sino la calidad de la representación que este recibe. Los modelos de deep learning operan en el espacio de píxeles o en espacios de features aprendidos mediante backpropagation, cuya geometría está determinada por la función de pérdida de clasificación y el conjunto de entrenamiento disponible. Esta representación puede ser altamente efectiva dentro del dominio de entrenamiento pero frágil ante cambios de distribución. La pregunta que motiva el presente trabajo es si la proyección de estas características al espacio de Hilbert mediante transformaciones cuánticas variacionales puede generar representaciones con mayor separabilidad intrínseca de clases, abordando el problema desde la etapa de codificación y no desde la arquitectura del clasificador.
+
+% -----------------------------------------------------------
+% 2.1.3 Fundamentos de QML y codificación cuántica de datos
+% -----------------------------------------------------------

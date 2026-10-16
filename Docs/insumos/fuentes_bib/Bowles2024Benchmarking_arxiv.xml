@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/CJnOJCQjFChe4ZMPDeciJ5Ucrrs</id>
+  <title>arXiv Query: search_query=&amp;id_list=2403.07059&amp;start=0&amp;max_results=10</title>
+  <updated>2026-10-14T06:58:10Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2403.07059" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2403.07059v2</id>
+    <title>Better than classical? The subtle art of benchmarking quantum machine learning models</title>
+    <updated>2024-03-14T11:02:26Z</updated>
+    <link href="https://arxiv.org/abs/2403.07059v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2403.07059v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Benchmarking models via classical simulations is one of the main ways to judge ideas in quantum machine learning before noise-free hardware is available. However, the huge impact of the experimental design on the results, the small scales within reach today, as well as narratives influenced by the commercialisation of quantum technologies make it difficult to gain robust insights. To facilitate better decision-making we develop an open-source package based on the PennyLane software framework and use it to conduct a large-scale study that systematically tests 12 popular quantum machine learning models on 6 binary classification tasks used to create 160 individual datasets. We find that overall, out-of-the-box classical machine learning models outperform the quantum classifiers. Moreover, removing entanglement from a quantum model often results in as good or better performance, suggesting that "quantumness" may not be the crucial ingredient for the small learning tasks considered here. Our benchmarks also unlock investigations beyond simplistic leaderboard comparisons, and we identify five important questions for quantum model design that follow from our results.</summary>
+    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-03-11T18:00:06Z</published>
+    <arxiv:primary_category term="quant-ph"/>
+    <author>
+      <name>Joseph Bowles</name>
+    </author>
+    <author>
+      <name>Shahnawaz Ahmed</name>
+    </author>
+    <author>
+      <name>Maria Schuld</name>
+    </author>
+  </entry>
+</feed>

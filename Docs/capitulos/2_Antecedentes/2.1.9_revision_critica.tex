@@ -1,0 +1,94 @@
+% ---
+% Subsección 2.1.9 de Docs/Technical_Report.tex.
+% Decisiones y hallazgos que lo respaldan: H-046, H-047, D-019.
+% ---
+
+\subsubsection{Revisión crítica de los trabajos que reportan ventaja}
+\label{sec:revision_critica}
+
+Varios trabajos de aprendizaje automático cuántico aplicado a oncología reportan mejoras de rendimiento frente a clasificadores clásicos. Para valorar esas afirmaciones con el mismo criterio que este trabajo aplica a sus propios resultados, se plantean cuatro preguntas de control metodológico:
+
+\begin{enumerate}
+  \item \textbf{Paridad de optimización y características}: ¿El clasificador clásico de referencia recibió el mismo ajuste de hiperparámetros, el mismo preprocesamiento y el mismo conjunto de variables de entrada que el modelo cuántico?
+  \item \textbf{Significación estadística frente a la incertidumbre}: ¿La diferencia reportada supera la variabilidad experimental y se sustenta en desviaciones estándar, intervalos de confianza o pruebas formales de significación?
+  \item \textbf{Uso único e íntegro de la partición de prueba}: ¿El conjunto de prueba (\textit{test}) se utilizó una sola vez para la evaluación final, libre de fuga de información (\textit{data leakage}) o selección retrospectiva de modelos?
+  \item \textbf{Intratabilidad de la simulación clásica}: ¿El circuito o kernel cuántico evaluado es computacionalmente difícil de simular en computadoras clásicas convencionales?
+\end{enumerate}
+
+\textbf{Evaluación del modelo QCCNN (Xiang et al., 2024)}
+
+% respaldo: «In this work, we present a quantum hybrid classical convolutional neural network (QCCNN) based breast cancer diagnosis approach with the goal of utilizing quantum computing’s high-dimensional data processing power and parallelism to increase diagnosis efficiency and accuracy.» (Xiang2024QuantumCNN, p. 1)
+Xiang et al. propusieron la arquitectura QCCNN (\textit{Quantum Classical Hybrid Convolutional Neural Network}) con el objetivo de aprovechar el procesamiento en alta dimensión de la computación cuántica para el diagnóstico del cáncer de mama \cite{Xiang2024QuantumCNN}.
+
+Al someter este trabajo al marco de las cuatro preguntas se obtienen las siguientes observaciones:
+\begin{itemize}
+  \item \textit{Pregunta 1 (Paridad)}: Parcial. 
+% respaldo: «The Kaggle website (a machine learning repository) provided the breast cancer diagnosis GBSG dataset, SEER dataset, and WDBC dataset used in this study.» (Xiang2024QuantumCNN, p. 3)
+A pesar de ubicarse temáticamente en el ámbito del cáncer de mama, el estudio no evaluó mamografías sino tres conjuntos tabulares descargados de Kaggle (GBSG, SEER y WDBC) \cite{Xiang2024QuantumCNN}.
+% respaldo: «70% of each dataset was used as the training set and the remaining 30% as the validation set, and accuracy was chosen as the key metric to measure the diagnostic performance of the model.» (Xiang2024QuantumCNN, p. 9)
+Los modelos se entrenaron con un 70\% de los datos y se evaluaron en un 30\% de validación \cite{Xiang2024QuantumCNN}; no obstante, los comparadores clásicos se restringieron a una red convolucional 1D genérica y una regresión logística simple, prescindiendo de clasificadores estándar para datos tabulares clínicos como XGBoost o SVM con RBF.
+  \item \textit{Pregunta 2 (Incertidumbre)}: No. 
+% respaldo: «The results show that QCCNN performs the best in terms of classification accuracy in all cases, significantly outperforming both the logistic regression model and CNN, confirming its superior performance in breast cancer diagnosis.» (Xiang2024QuantumCNN, p. 11)
+El artículo declara que QCCNN superó significativamente a los modelos clásicos en exactitud diagnóstica en todos los casos \cite{Xiang2024QuantumCNN}; sin embargo, ninguna tabla reporta desviaciones estándar, intervalos de confianza ni valores $p$.
+% respaldo: «The results show that QCCNN has the best performance among all models with an average accuracy of 89.544% and 90.088% on the training and validation sets, respectively.» (Xiang2024QuantumCNN, p. 9)
+En el conjunto SEER, QCCNN alcanzó una exactitud media de 90.088\% en validación frente al 89.125\% de la regresión logística \cite{Xiang2024QuantumCNN}, lo que representa una diferencia marginal de 0.963 puntos porcentuales carente de significación comprobada frente al ruido muestral.
+  \item \textit{Pregunta 3 (Partición de prueba)}: No. El artículo solo describe la partición de 70\,\% de entrenamiento y 30\,\% de validación, y para cada conjunto reporta la exactitud más alta alcanzada sobre la validación a lo largo del entrenamiento \cite{Xiang2024QuantumCNN}. Tomar el máximo sobre la misma partición que se reporta da una estimación optimista, y no hay un conjunto de prueba independiente.
+% respaldo: «The highest accuracies of the QCCNN on the training and validation sets are 80.833% and 75.728%, respectively» (Xiang2024QuantumCNN, p. 9)
+  \item \textit{Pregunta 4 (Intratabilidad clásica)}: No. 
+% respaldo: «In addition, the experiments in this study were conducted on a conventional computer, and although GPUs are able to accelerate some of the computations, their computational speed for quantum circuits is not yet comparable to that of a real quantum computer (QPU), and the use of QPUs will be further explored in future studies to fully evaluate the performance of the QCCNN in practical applications.» (Xiang2024QuantumCNN, p. 11)
+Los experimentos se ejecutaron íntegramente en computadores convencionales clásicos mediante el simulador PennyLane acoplado a PyTorch, reconociendo los autores que no utilizaron procesadores cuánticos físicos (QPU) \cite{Xiang2024QuantumCNN}. Con circuitos de escasos qubits y compuertas $R_x, R_y, CR_z$, el modelo es trivialmente simulable de forma exacta en computación clásica.
+\end{itemize}
+
+\textbf{Evaluación de QSVM en cáncer de pulmón (El Hafidi et al., 2025)}
+
+% respaldo: «QSVM models were implemented using Qiskit and executed on the qasm simulator, employing three distinct quantum feature maps: ZFeatureMap, ZZFeatureMap, and PauliFeatureMap.» (ElHafidi2025, p. 1)
+El Hafidi et al. implementaron modelos de máquinas de soporte vectorial cuánticas (QSVM) en Qiskit ejecutados en el simulador \texttt{qasm\_simulator}, contrastando tres mapas de características: ZFeatureMap, ZZFeatureMap y PauliFeatureMap para clasificación de cáncer de pulmón \cite{ElHafidi2025}.
+
+La aplicación de las cuatro preguntas evidencia lo siguiente:
+\begin{itemize}
+  \item \textit{Pregunta 1 (Paridad)}: Sí. 
+% respaldo: «Using a real-world dataset of 309 patient records with significant class imbalance (39 non-cancer vs. 270 cancer cases), we constructed six balanced subsets for robust evaluation.» (ElHafidi2025, p. 1)
+Para tratar el desbalance en un conjunto clínico de 309 registros de pacientes con 15 variables, los autores construyeron seis subconjuntos balanceados de 78 muestras cada uno \cite{ElHafidi2025}.
+% respaldo: «Each quantum model was evaluated on the same six balanced subsets to ensure a fair comparison with its classical counterpart.» (ElHafidi2025, p. 9)
+Cada modelo cuántico fue evaluado exactamente sobre los mismos seis subconjuntos balanceados con las mismas características normalizadas, garantizando paridad de entrada con los clasificadores clásicos \cite{ElHafidi2025}.
+  \item \textit{Pregunta 2 (Incertidumbre)}: No. 
+% respaldo: «for ZZFeatureMap, the results were an accuracy of 0.91, precision of 0.87, recall of 0.96, specificity of 0.85, and F1-score of 0.91; and for PauliFeatureMap, the model achieved a consistent performance of 0.96 across all metrics, including accuracy, precision, recall, specificity, and F1-score.» (ElHafidi2025, p. 9)
+El modelo QSVM con ZZFeatureMap obtuvo una exactitud de 0.91, mientras que con PauliFeatureMap alcanzó un valor de 0.96 en todas las métricas \cite{ElHafidi2025}.
+% respaldo: «The radial basis function (RBF) kernel provided the best results, with an accuracy of 0.95, precision of 0.98, recall of 0.92, specificity of 0.98, and F1-score of 0.95.» (ElHafidi2025, p. 9)
+Sin embargo, el SVM clásico con kernel RBF alcanzó una exactitud de 0.95 y un F1-score de 0.95 \cite{ElHafidi2025}. La discrepancia de 0.01 (un punto porcentual) entre el mejor modelo cuántico y el mejor modelo clásico no cuenta con intervalos de confianza ni desviaciones reportadas, y con subconjuntos de 78 pacientes una diferencia de un punto porcentual difícilmente supera la variabilidad entre particiones. Por su parte, ZZFeatureMap (0.91) fue inferior a los kernels clásicos polinomial (0.94) y RBF (0.95).
+  \item \textit{Pregunta 3 (Partición de prueba)}: No lo dice. El estudio promedia las métricas sobre los seis subconjuntos balanceados, pero el artículo no describe cómo se separaron entrenamiento y evaluación dentro de cada uno.
+  \item \textit{Pregunta 4 (Intratabilidad clásica)}: No. La ejecución se llevó a cabo en simulación clásica mediante \texttt{qasm\_simulator} sobre 15 variables de entrada, lo que admite simulación exacta sin dificultad computacional. Además,
+% respaldo: «PauliFeatureMap is the most expressive in theory but suffers from high noise sensitivity, particularly bit flips, due to basis-altering operations.» (ElHafidi2025, p. 12)
+los propios autores advirtieron que PauliFeatureMap, a pesar de ser teóricamente el más expresivo, sufre de una elevada sensibilidad al ruido físico (especialmente a errores de volteo de bit) en hardware NISQ \cite{ElHafidi2025}.
+\end{itemize}
+
+\textbf{Evaluación de transferencia clásico-cuántica (Azevedo et al., 2022)}
+
+% respaldo: «Based on the work of Mari et al., we train a set of hybrid classical-quantum neural networks using transfer learning (TL).» (Azevedo2022QuantumTransfer, p. 1)
+Azevedo et al. implementaron un esquema de transferencia de aprendizaje clásico-a-cuántico (\textit{quantum transfer learning}) para clasificación binaria de mamografías completas \cite{Azevedo2022QuantumTransfer}.
+% respaldo: «Our task was to solve the problem of classifying full-image mammograms into malignant and benign, provided by BCDR.» (Azevedo2022QuantumTransfer, p. 1)
+La tarea experimental evaluada consistió en clasificar imágenes mamográficas en benignas y malignas utilizando el repositorio BCDR (\textit{Breast Cancer Data Repository}) \cite{Azevedo2022QuantumTransfer}.
+
+El contraste metodológico bajo las cuatro preguntas arroja los siguientes resultados:
+\begin{itemize}
+  \item \textit{Pregunta 1 (Paridad)}: Sí. 
+% respaldo: «These results were on the same dataset, same train-test split and with a fixed seed.» (Azevedo2022QuantumTransfer, p. 12)
+La comparación garantizó paridad experimental al evaluar los modelos sobre el mismo conjunto, la misma partición y una semilla aleatoria fija \cite{Azevedo2022QuantumTransfer}. Todos los modelos compartieron la misma base convolucional ResNet18 preentrenada en ImageNet que extrae 512 variables, variando únicamente si la capa downstream era lineal clásica o un circuito cuántico variacional.
+  \item \textit{Pregunta 2 (Incertidumbre)}: No. 
+% respaldo: «The classical residual neural network, without resourcing to TL, achieved a maximum of 67% accuracy while our other experiments» (Azevedo2022QuantumTransfer, p. 11)
+% respaldo: «using TL achieved 84%.» (Azevedo2022QuantumTransfer, p. 12)
+En exactitud diagnóstica en el conjunto de prueba no hubo diferencia alguna: tanto el modelo clásico con transfer learning (C+TL) como los modelos híbridos (CQ1 y CQ4) alcanzaron exactamente el mismo 84\% de exactitud \cite{Azevedo2022QuantumTransfer}.
+% respaldo: «The results for every metric are far more consistent between training and testing and between epochs when using the dressed quantum circuit, so much so that AUC value went from 58 to 77%, leading us to believe that a hybrid-quantum network does present some advantage as AUC measures how well the model separates two classes.» (Azevedo2022QuantumTransfer, p. 12)
+Aunque los autores reportan que el valor de AUC en simulación aumentó de 0.58 a 0.77 al emplear el circuito cuántico \cite{Azevedo2022QuantumTransfer}, no proporcionan intervalos de confianza ni pruebas estadísticas sobre esta métrica.
+% respaldo: «It is too soon to say whether or not QML can be an advantage. Our results only point to a good generalization of complex data which needs further testing.» (Azevedo2022QuantumTransfer, p. 11)
+Asimismo, en la evaluación física sobre el procesador cuántico superconductor \texttt{ibm\_lagos} la exactitud descendió al 81\%, concluyendo los autores de forma prudente que es prematuro determinar si el QML confiere una ventaja real \cite{Azevedo2022QuantumTransfer}.
+  \item \textit{Pregunta 3 (Partición de prueba)}: Parcial. 
+% respaldo: «Due to the waiting times, IBM Quantum experiments were done using the best model state that resulted from training in the simulator. This means that only the test part was done in the quantum machine.» (Azevedo2022QuantumTransfer, p. 10)
+La configuración del circuito se seleccionó inspeccionando las métricas sobre el conjunto de prueba en el simulador, y el mejor estado resultante se reutilizó posteriormente para ejecutar las pruebas en la máquina cuántica física a lo largo de 20 repeticiones con aumentación de datos \cite{Azevedo2022QuantumTransfer}.
+  \item \textit{Pregunta 4 (Intratabilidad clásica)}: No. 
+% respaldo: «whose variational quantum circuits have a depth of 1, 2, 3, and 4, respectively (using the simulator).» (Azevedo2022QuantumTransfer, p. 10)
+El circuito cuántico variacional implementado consta de apenas 4 qubits con una profundidad de 1 a 4 capas con codificación angular \cite{Azevedo2022QuantumTransfer}, siendo completamente gobernable y simulable en una computadora portátil estándar.
+\end{itemize}
+
+% PENDIENTE: sin PDF (Radhi2025QuantumDeepLearning no cuenta con texto completo verificado en Docs/fuentes/pdf/ ni análisis detallado de incertidumbre)
+% PENDIENTE: sin PDF (El trabajo sobre BreastMNIST de Rifat et al. 2024 no cuenta con PDF en el repositorio ni entrada \bibitem verificada)

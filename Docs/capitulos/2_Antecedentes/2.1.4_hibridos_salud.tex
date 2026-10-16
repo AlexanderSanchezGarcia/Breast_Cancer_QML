@@ -1,0 +1,21 @@
+% ---
+% Reemplaza líneas 799–814 de Docs/Technical_Report.tex.
+% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% ---
+
+\subsubsection{Modelos híbridos cuántico-clasico en el sector salud}
+
+La aplicación de arquitecturas híbridas cuántico-clásicas en diagnóstico médico por imagen es una línea de investigación activa. Una revisión sistemática de 28 estudios publicados entre 2018 y 2024 reporta el uso prevalente de QSVM, QCNN y modelos híbridos cuántico-clásicos en aplicaciones que incluyen clasificación de tumores cerebrales, lesiones cutáneas y detección de COVID-19, demostrando resultados prometedores en accuracy, sensibilidad y especificidad; sin embargo, se identifican retos constantes en la codificación de imágenes médicas para procesamiento cuántico, la escalabilidad limitada del hardware actual y la necesidad de modelos con una mejor interpretación. \cite {Radhi2025QuantumDeepLearning}
+
+\textbf{Aplicaciones específicas en cáncer de mama}
+
+En el dominio de la mamografía, Xiang et al. (2024) propusieron el modelo QCCNN evaluado sobre datasets tabulares (GBSG, SEER, WDBC), reportando mejoras de hasta 5\% en accuracy respecto a CNN y regresión logística clásicas. Un trabajo más reciente aplicó un modelo ResNet50 como extractor de características y una QNN downstream sobre el dataset BreastMNIST, alcanzando 69\% de accuracy frente a 67\% de métodos híbridos comparables, reconociendo explícitamente las restricciones del hardware cuántico actual como limitante de la precisión del modelo. Estos resultados son consistentes con la propuesta del presente trabajo, la ventaja cuántica en este dominio no debe medirse en precisión final sino en la calidad de la representación generada.
+
+\textbf{Limitaciones comunes reportadoos}
+
+La literatura identifica tres limitaciones en la mayor parte de  los trabajos revisados, los experimentos se ejecutan en simulación clásica sin ruido cuántico real; los datasets utilizados son tabulares o imágenes muy reducidas (28×28), lejos de las mamografías DICOM de alta resolución; y ninguno analiza explícitamente la separabilidad de clases en el espacio de Hilbert como métrica de evaluación intermedia. Estas tres brechas son precisamente las que el presente trabajo aborda.
+
+
+% -----------------------------------------------------------
+% 2.1.5 Trabajos específicos sobre el dataset CBIS-DDSM
+% -----------------------------------------------------------
