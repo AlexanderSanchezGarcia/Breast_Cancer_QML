@@ -1,0 +1,32 @@
+% ============================================================
+% preambulo_extra.tex — paquetes que los capítulos nuevos necesitan y que el preámbulo de
+% Technical_Report.tex todavía no carga. Al integrar, copiar estas líneas antes de \begin{document}.
+% ============================================================
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listado}
+\renewcommand{\lstlistlistingname}{Índice de listados}
+\lstdefinestyle{tt}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{green!40!black},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=6pt,
+  frame=single, rulecolor=\color{gray!50},
+  breaklines=true, breakatwhitespace=false, columns=fullflexible, keepspaces=true,
+  showstringspaces=false, tabsize=4, captionpos=t,
+  firstline=2,   % la línea 1 de cada archivo de Docs/codigo/ es la cabecera «# fuente: …»
+  inputencoding=utf8, extendedchars=true,
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1 {ö}{{\"o}}1
+    {¿}{{?`}}1 {¡}{{!`}}1 {«}{{\guillemotleft}}1 {»}{{\guillemotright}}1
+    {θ}{{$\theta$}}1 {π}{{$\pi$}}1 {γ}{{$\gamma$}}1 {λ}{{$\lambda$}}1 {ρ}{{$\rho$}}1
+    {σ}{{$\sigma$}}1 {μ}{{$\mu$}}1 {α}{{$\alpha$}}1 {β}{{$\beta$}}1 {ψ}{{$\psi$}}1 {φ}{{$\phi$}}1
+    {Δ}{{$\Delta$}}1 {Σ}{{$\Sigma$}}1 {Ψ}{{$\Psi$}}1
+    {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {≈}{{$\approx$}}1 {≠}{{$\ne$}}1
+    {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {×}{{$\times$}}1 {·}{{$\cdot$}}1 {±}{{$\pm$}}1 {√}{{$\surd$}}1
+    {∞}{{$\infty$}}1 {∈}{{$\in$}}1 {ᵢ}{{$_i$}}1 {ⱼ}{{$_j$}}1 {²}{{$^2$}}1 {³}{{$^3$}}1 {⁻}{{$^-$}}1 {¹}{{$^1$}}1
+    {—}{{---}}1 {–}{{--}}1 {’}{{'}}1 {‘}{{`}}1 {“}{{``}}1 {”}{{''}}1 {…}{{\ldots}}1 {°}{{$^\circ$}}1 {‖}{{$\|$}}1
+}

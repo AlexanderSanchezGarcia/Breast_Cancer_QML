@@ -5,8 +5,10 @@ Cada carpeta es un capítulo completo de `Docs/Technical_Report.tex`, en el orde
 | Carpeta | Estado |
 |---|---|
 | `3_Marco_Teorico/` | Completo. Las subsubsecciones sin cambios son copia literal del `.tex`; las demás se reescribieron con el paquete del miércoles, ya corregido. |
-| `4_Metodologia/` | Completo, con la numeración M1–M8 de D-030 y los paquetes del lunes y del martes. |
-| `5_EDA/` | El texto de TT1 sin cambios, salvo cuatro correcciones: las 84 series recuperadas por la API REST y el 97.6 % inicial; sin recortes de 224×224; `Manufacturer`, `PixelSpacing` e `ImagerPixelSpacing` ausentes en las 3,103 mamografías, en lugar de «UNKNOWN», y sin la figura `D2_manufacturers.png`, que graficaba ese valor de relleno; sin «normalización de intensidades». |
+| `5_Metodologia/` | (Antes `4_Metodologia/`; capítulo 5 desde el 2026-10-14.) Completo, con la numeración M1–M8 de D-030 y los paquetes del lunes y del martes. |
+| `4_EDA/` | (Antes `5_EDA/`; capítulo 4 desde el 2026-10-14, puente hacia la Metodología.) El texto de TT1 sin cambios, salvo cuatro correcciones: las 84 series recuperadas por la API REST y el 97.6 % inicial; sin recortes de 224×224; `Manufacturer`, `PixelSpacing` e `ImagerPixelSpacing` ausentes en las 3,103 mamografías, en lugar de «UNKNOWN», y sin la figura `D2_manufacturers.png`, que graficaba ese valor de relleno; sin «normalización de intensidades». |
+| `2_Antecedentes/` | Nuevo (2026-10-14): §2.1.7–§2.1.9 y la tabla ampliada; cada atribución lleva su `% respaldo:` verificable con `verificar_citas_fichas.py`. |
+| `A_Anexos/` | Nuevo (2026-10-14): anexos A–E; necesita `Docs/insumos/preambulo_extra.tex` (listings). |
 | `6_Resultados/` | Capítulo nuevo, escrito a partir de las entradas H-020 a H-054 de la bitácora y de las tablas de `Docs/tablas/`. Cada párrafo con cifras lleva un `% fuente:` con las entradas y los CSV de donde salen. |
 
 ## Cómo usarlo
@@ -14,8 +16,8 @@ Cada carpeta es un capítulo completo de `Docs/Technical_Report.tex`, en el orde
 - **Para comprobar las cifras de §6:** `python Code/tools/verificar_cifras_capitulos.py Docs/capitulos/6_Resultados` busca cada número en las fuentes que declara su párrafo. Las cifras marcadas `EN_CSV(revisar)` coinciden con algún valor del CSV citado, pero la coincidencia podría ser casual; se revisaron a mano el 2026-10-13.
 
 - **Para copiar una tabla o un párrafo:** abre el archivo de esa subsección y cópialo al `.tex`.
-- **Para sustituir un capítulo entero:** borra en el `.tex` el rango de líneas que indican las cabeceras y pon `\input{capitulos/4_Metodologia/4.0_introduccion}` y los demás, en orden.
-- **Para comprobar que compila** con el preámbulo y la bibliografía reales: `bash Docs/capitulos/compilar_prueba.sh`, o solo una carpeta, con `bash Docs/capitulos/compilar_prueba.sh 4_Metodologia`. El script no toca nada del repositorio: compila en un directorio temporal e informa de referencias sin resolver y de cajas desbordadas.
+- **Para sustituir un capítulo entero:** borra en el `.tex` el rango de líneas que indican las cabeceras y pon `\input{capitulos/5_Metodologia/5.0_introduccion}` y los demás, en orden.
+- **Para comprobar que compila** con el preámbulo y la bibliografía reales: `bash Docs/capitulos/compilar_prueba.sh`, o solo una carpeta, con `bash Docs/capitulos/compilar_prueba.sh 5_Metodologia`. El script no toca nada del repositorio: compila en un directorio temporal e informa de referencias sin resolver y de cajas desbordadas.
 
 ## Al integrarlo en el `.tex`
 
@@ -56,3 +58,39 @@ Hay cajas desbordadas en:
 - §3.2.3, en la ecuación con la nota al pie.
 
 No afectan al contenido.
+
+## Borradores por capítulo
+
+Se dispone de una infraestructura de compilación independiente por capítulo y de un borrador completo con todos los capítulos existentes (`borrador_completo.pdf`), diseñada para permitir la revisión y edición aislada desde VSCode (con LaTeX Workshop) o terminal.
+
+### Estructura de archivos generada
+
+- `Docs/capitulos/borrador_completo.tex` y `borrador_completo.pdf`: documento maestro con índice de contenidos (`\tableofcontents`), numeración canónica de secciones y la bibliografía completa.
+- `Docs/capitulos/<carpeta>/borrador_<carpeta>.tex` y `borrador_<carpeta>.pdf`: documento autónomo para cada capítulo con numeración de secciones idéntica a la del completo, su bibliografía específica (únicamente con las fuentes citadas) y resolución de referencias cruzadas a otros capítulos.
+- `Docs/capitulos/comun/`: piezas compartidas regeneradas dinámicamente (`preambulo.tex`, `bibliografia_completa.tex` y `bibliografia_<carpeta>.tex`).
+- `Docs/capitulos/_build/`: directorio donde se aíslan todos los archivos auxiliares de compilación (`.aux`, `.log`, `.fls`, `.fdb_latexmk`, `.toc`), manteniendo limpios los directorios de los capítulos.
+- `Docs/capitulos/.latexmkrc` y `.latexmkrc` en cada capítulo: configuración de `latexmk` para direccionar auxiliares a `_build/`, resolver rutas de `Figures/`, `tablas/`, `codigo/` y `Logos/` vía `TEXINPUTS`, y depositar el PDF resultante directamente en la carpeta del capítulo.
+
+### Instrucciones de uso
+
+1. **Compilar todos los borradores (completo y capítulos):**
+   ```bash
+   bash Docs/capitulos/compilar_borradores.sh
+   ```
+2. **Compilar solo capítulos específicos:**
+   ```bash
+   bash Docs/capitulos/compilar_borradores.sh 5_Metodologia 6_Resultados
+   ```
+   *(El script compila previamente `borrador_completo.tex` para actualizar las referencias cruzadas y numeración).*
+3. **Compilar un capítulo individual desde su carpeta (o VSCode con LaTeX Workshop):**
+   ```bash
+   cd Docs/capitulos/5_Metodologia && latexmk -pdf borrador_5_Metodologia.tex
+   ```
+   Los archivos auxiliares se almacenan automáticamente en `_build/5_Metodologia/` sin ensuciar la carpeta de trabajo.
+
+### Características técnicas
+
+- **Referencias cruzadas externas (`xr-hyper`):** Las referencias entre capítulos se resuelven mediante `_build/externo_<carpeta>.aux`, el cual filtra las etiquetas propias del capítulo para evitar avisos de etiquetas duplicadas (`multiply defined`).
+- **Numeración sincronizada:** Cada borrador de capítulo ajusta el contador de `section` (`\setcounter{section}{N-1}`) de forma que la primera sección coincide con la numeración canónica del reporte completo.
+- **Extensibilidad automática:** Cuando se incorporen nuevos capítulos (p. ej. `1_Panorama_General` o `7_Conclusiones`), `compilar_borradores.sh` los detecta en orden numérico natural, genera su `.latexmkrc` y borrador, y los inserta en la posición adecuada del borrador completo sin requerir modificaciones manuales.
+

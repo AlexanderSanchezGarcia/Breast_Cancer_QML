@@ -25,3 +25,14 @@ CLAUDE.md
 
 # Python
 __pycache__/
+
+# PDF de referencias (derechos de autor) y su texto extraído
+Docs/fuentes/
+
+# Auxiliares de los borradores por capítulo
+Docs/capitulos/_build/
+
+# PDF de los borradores: se regeneran con compilar_borradores.sh
+Docs/capitulos/borrador_completo.pdf
+Docs/capitulos/*/borrador_*.pdf
+Docs/insumos/noche/*.pdf
