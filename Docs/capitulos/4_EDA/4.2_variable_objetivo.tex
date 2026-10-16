@@ -1,22 +1,17 @@
 % ---
 % Reemplaza líneas 2997–3096 de Docs/Technical_Report.tex.
 % Decisiones que lo respaldan: D-005, H-050.
+% Capítulo 4 desde el 2026-10-14 (antes §5).
 % ---
 
 \subsection{Análisis de la variable objetivo}
 
 \subsubsection{Distribución de clases y balance}
 
-La Figura~\ref{fig:class_distribution} presenta la
-distribución de la variable objetivo a nivel global,
-por tipo de hallazgo y por split.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/B1_class_distribution.png}
-  \caption{Distribución de clases global, por tipo de hallazgo y por split train/test.}
-  \label{fig:class_distribution}
-\end{figure}
+La distribución de la variable objetivo a nivel global, por tipo de
+hallazgo y por partición de entrenamiento y prueba (\textit{train/test})
+se ilustra en la Figura~\ref{fig:class_distribution} del
+Anexo~\ref{anx:figuras_eda}.
 
 % fuente: D-005; 1_EDA.ipynb
 El dataset presenta un desbalance global moderado de
@@ -47,16 +42,9 @@ especifica en el requerimiento RF-19.
 
 \subsubsection{Distribución BI-RADS}
 
-La Figura~\ref{fig:birads_distribution} muestra la
-distribución de la categoría BI-RADS por patología
-y tipo de hallazgo.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/B3_birads_distribution.png}
-  \caption{Distribución de categorías BI-RADS por patología y tipo de hallazgo.}
-  \label{fig:birads_distribution}
-\end{figure}
+La distribución detallada de la categoría BI-RADS por patología
+y tipo de hallazgo se presenta en la Figura~\ref{fig:birads_distribution}
+del Anexo~\ref{anx:figuras_eda}.
 
 % fuente: D-005; 1_EDA.ipynb
 Se observa una concentración de casos malignos en las
@@ -71,12 +59,9 @@ radiólogo.
 \subsubsection{Análisis de subtlety}
 
 % fuente: D-005; 1_EDA.ipynb
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/B4_subtlety_distribution.png}
-  \caption{Distribución de \textit{subtlety} por patología y tipo de hallazgo (1\,=\,muy sutil, 5\,=\,obvio).}
-  \label{fig:subtlety_distribution}
-\end{figure}
+La distribución de sutileza visual (\textit{subtlety}) por patología
+y tipo de hallazgo se recoge en la Figura~\ref{fig:subtlety_distribution}
+del Anexo~\ref{anx:figuras_eda}.
 
 % fuente: D-005; 1_EDA.ipynb
 La media de \textit{subtlety} en casos malignos

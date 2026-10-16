@@ -5,56 +5,57 @@
 % ---
 
 \subsection{Módulo 6: Análisis de separabilidad}
+\label{sec:modulo6}
 
 El análisis de separabilidad opera sobre dos objetos distintos, y conviene
 distinguirlos al interpretar los resultados. Todas las métricas se calculan sobre
 la misma submuestra: 200 lesiones del conjunto de entrenamiento por subconjunto,
 estratificadas por clase y elegidas con la semilla 42; el conjunto de prueba no interviene.
-Los núcleos cuánticos se evalúan de forma exacta a partir de los vectores de estado, y la
+Los kernels cuánticos se evalúan de forma exacta a partir de los vectores de estado, y la
 significancia de cada métrica que usa las etiquetas se estima con 1\,000 permutaciones de las etiquetas que
 conservan el número de lesiones de cada clase.
 
-\textbf{Métricas sobre núcleos.} El núcleo cuántico de fidelidad
+\textbf{Métricas sobre kernels.} El kernel cuántico de fidelidad
 $K_Q(\mathbf{x},\mathbf{x}') = |\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ se
 evalúa de forma exacta sobre el \textit{feature map} exclusivamente, sin \textit{ansatz}.
 Se calculan tres cantidades:
 \begin{itemize}
   \item El \textit{kernel-target alignment} centrado \cite{Cortes2012}, con la versión sin
-        centrar \cite{cristianini2002kernel} como complemento. Dado que para un núcleo cercano a la
+        centrar \cite{cristianini2002kernel} como complemento. Dado que para un kernel cercano a la
         identidad ambas valen aproximadamente $1/\sqrt{N}$ con independencia de las
         etiquetas, se compara el exceso sobre la media de una prueba de permutación.
   \item La dimensión efectiva $d$ del espacio que generan las lesiones \cite{huang2021power}
         (ecuación~\eqref{eq:dim_efectiva}, sección~\ref{sec:metricas}), que cuantifica en cuántas
-        direcciones independientes se reparten las lesiones dentro del espacio del núcleo: va de
+        direcciones independientes se reparten las lesiones dentro del espacio del kernel: va de
         1, si todas se parecen, a $N$, si cada lesión es ortogonal a las demás, calculada a partir
-        de los valores propios ordenados de la matriz del núcleo normalizada.
+        de los valores propios ordenados de la matriz del kernel normalizada.
   \item La \textit{geometric difference} regularizada $g_{\mathrm{gen}}$ \cite{huang2021power}
         (ecuaciones~\eqref{eq:g_gen} y~\eqref{eq:g_tra}, sección~\ref{sec:metricas}), sujeta a que
         el error de entrenamiento $g_{\mathrm{tra}}$ sea menor que 0.045.
 \end{itemize}
 
-El núcleo clásico de referencia $K_C$ es el RBF con el ancho de banda $\gamma$ fijado por la
+El kernel clásico de referencia $K_C$ es el RBF con el ancho de banda $\gamma$ fijado por la
 heurística de la mediana, el mismo de C3. Siguiendo el protocolo de Huang et al. \cite{huang2021power},
-se reporta el mínimo sobre una batería de núcleos clásicos (un núcleo lineal sobre los datos
-centrados y nueve núcleos gaussianos con $\gamma = m/(n\operatorname{Var}[\mathbf{x}])$, para
+se reporta el mínimo sobre una batería de kernels clásicos (un kernel lineal sobre los datos
+centrados y nueve kernels gaussianos con $\gamma = m/(n\operatorname{Var}[\mathbf{x}])$, para
 $m\in\{0.25,0.5,1,2,4,8,16,32,64\}$) y valores de regularización
 $\lambda\in\{10^{-5},10^{-4},10^{-3},10^{-2},0.025,0.05,0.1\}$, con $\operatorname{Tr}(K) = N$. Como
 sensibilidad se añaden tres gaussianos más estrechos, $m\in\{128,256,512\}$;
-para cada núcleo se toma el mayor $\lambda$ admisible que satisface la cota sobre $g_{\mathrm{tra}}$.
+para cada kernel se toma el mayor $\lambda$ admisible que satisface la cota sobre $g_{\mathrm{tra}}$.
 Sin regularización, la cantidad mide sobre todo el condicionamiento de $K_C$ y no la codificación.
 
-Como análisis de sensibilidad, los núcleos cuánticos se recalculan con los ángulos escalados,
+Como análisis de sensibilidad, los kernels cuánticos se recalculan con los ángulos escalados,
 $\mathbf{x}\to c\,\mathbf{x}$, para $c \in \{1, 0.5, 0.2, 0.1, 0.05, 0.02\}$. Así se mide cómo cambia la
 geometría cuando las rotaciones son menores.
 
 \textbf{Métricas sobre los \textit{embeddings}.} El índice de Davies-Bouldin, la razón de
-Fisher multivariante (ecuación~\eqref{eq:fisher_multivariate}) y el alineamiento del núcleo lineal se
+Fisher multivariante (ecuación~\eqref{eq:fisher_multivariate}) y el alineamiento del kernel lineal se
 calculan sobre los vectores de las cinco condiciones, que son los que recibe el
 clasificador; la visualización \textit{t-SNE} (perplejidad 30, inicialización por PCA,
 semilla 42) se usa solo como apoyo visual. Las tres métricas son invariantes ante la
 rotación de C2, que actúa así como control nulo.
 
-Ambas familias de métricas no son equivalentes: el núcleo de fidelidad compara estados
+Ambas familias de métricas no son equivalentes: el kernel de fidelidad compara estados
 completos, incluida su información de fase, mientras que los valores esperados en la
 base $Z$ solo ven la parte de esa información que el \textit{ansatz} convierte en probabilidades.
 Por eso las dos familias pueden ordenar las condiciones de forma distinta.

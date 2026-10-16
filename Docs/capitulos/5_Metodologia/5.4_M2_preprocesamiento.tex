@@ -5,6 +5,7 @@
 % ---
 
 \subsection{Módulo 2: Preprocesamiento de imagen}
+\label{sec:modulo2}
 
 El módulo de preprocesamiento transforma las imágenes DICOM en pares (imagen, máscara) alineados y
 centrados en la región de interés, que son la entrada del módulo de extracción.
@@ -39,11 +40,16 @@ y tamaño (\(|d|\) de Cohen entre 0.40 y 0.45). Redimensionar a una malla común
 las lesiones y eliminaría esa señal. La normalización a \(224\times224\) correspondía a la estrategia
 basada en un codificador convolucional, descartada en favor de la extracción radiómica.
 
+% respaldo: «Overall, the discretisation choice has a substantial impact on intensity distributions, feature values and reproducibility» (Zwanenburg2020IBSI, p. 25)
+% respaldo: «Histogram equalisation of the ROI imaging intensities can be performed before any other discretisation algorithm» (Zwanenburg2020IBSI, p. 25)
+% nota: el manual no menciona CLAHE ni ecualizaciones locales (búsqueda en todo el texto del manual, 2026-10-15).
 Por la misma razón, la ecualización adaptativa de histograma (CLAHE) \cite{reza2004realization} se excluye de la ruta de
-extracción: es una transformación local que depende del contenido y altera la reproducibilidad de las
-características de primer orden y de textura bajo el estándar IBSI%
-% FALTA CITA IBSI: Zwanenburg et al. (2020), Radiology 295(2)
-. Se genera además una variante con CLAHE, aplicada a la mamografía completa convertida a 8 bits, solo para
+extracción: es una transformación local que depende del contenido de cada región y cambia las intensidades
+de las que se calculan las características de primer orden y de textura. IBSI advierte que las decisiones
+sobre las intensidades, como la discretización, tienen un impacto sustancial en los valores de las
+características y en su reproducibilidad, y solo contempla la ecualización global del histograma de la ROI
+como variante de la discretización \cite{Zwanenburg2020IBSI}; la ecualización local adaptativa no figura
+entre los pasos que estandariza. Se genera además una variante con CLAHE, aplicada a la mamografía completa convertida a 8 bits, solo para
 cuantificar su efecto sobre las características extraídas.
 
 Las imágenes de masas y calcificaciones se procesan por

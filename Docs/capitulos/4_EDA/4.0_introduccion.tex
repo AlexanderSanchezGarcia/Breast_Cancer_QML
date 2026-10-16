@@ -1,0 +1,48 @@
+% ---
+% Reemplaza líneas 2924–2940 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: H-001, H-010, D-012.
+% Capítulo 4 desde el 2026-10-14 (antes §5).
+% ---
+
+\newpage
+\section{Análisis Exploratorio de Datos}
+\label{sec:eda}
+
+% fuente: H-001, H-010, D-012
+El presente capítulo aborda la caracterización cuantitativa y técnica
+del conjunto de datos CBIS-DDSM (\textit{Curated Breast Imaging Subset of
+DDSM}), procesando de manera unificada sus cuatro archivos de metadatos
+clínicos y enlazándolos con los 3\,568 estudios mamográficos en formato
+DICOM disponibles en disco (recuperados íntegramente tras solventar la
+omisión de 84 series mediante la API REST de TCIA).
+
+Lejos de constituir un ejercicio meramente descriptivo, este análisis
+exploratorio actúa como el puente empírico fundamental que justifica
+y condiciona de forma directa las decisiones de diseño del pipeline
+experimental desarrollado en el capítulo~\ref{sec:metodologia}. En
+particular, la exploración busca dar respuesta a tres interrogantes
+estructurales:
+\begin{enumerate}
+  \item \textbf{Estructura y balance de clases:} ¿Cuál es el grado de
+        asimetría diagnóstica entre benignidad y malignidad en cada
+        subconjunto, y qué esquemas de ponderación o métricas de
+        evaluación exige dicha distribución?
+  \item \textbf{Relevancia de los metadatos clínicos frente a la imagen:}
+        ¿Aportan las variables categóricas y ordinales registradas
+        (densidad mamaria, sutileza, lateralidad o evaluación BI-RADS)
+        señal predictiva utilizable, o debe extraerse la información
+        discriminativa directamente del tejido tisular en la imagen?
+  \item \textbf{Factibilidad y restricciones de la representación cuántica:}
+        ¿Qué características técnicas (resolución espacial, rango dinámico,
+        profundidad de bits, alineación de máscaras de contorno y
+        ausencia de espaciado físico de píxel) delimitan la viabilidad
+        de codificar la información en estados cuánticos de pocos qubits?
+\end{enumerate}
+
+El capítulo se estructura en cuatro bloques temáticos: saneamiento y
+validación del dataset, análisis de la variable patológica objetivo,
+evaluación de correlaciones en variables clínicas, e inspección técnica
+de las imágenes DICOM. Finalmente, se sintetizan las implicaciones
+directas que estos hallazgos imponen sobre cada módulo de la metodología.
+Todos los procedimientos y figuras analíticas descritos en este capítulo
+fueron ejecutados en el cuaderno \texttt{1\_EDA.ipynb} del repositorio.

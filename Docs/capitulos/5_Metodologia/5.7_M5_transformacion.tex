@@ -25,7 +25,7 @@ La Tabla~\ref{tab:condiciones} resume las cinco condiciones.
 C1 & Sin transformación & El vector $\mathbf{x}$ pasa directamente al clasificador. & Clásico \\
 C2 & PCA lineal & Proyección sobre las 12 componentes principales. Es una rotación,
      así que actúa como control nulo. & Clásico \\
-C3 & Kernel PCA (RBF) & Proyección no lineal a 12 dimensiones con núcleo gaussiano;
+C3 & Kernel PCA (RBF) & Proyección no lineal a 12 dimensiones con kernel gaussiano;
      $\gamma$ por la heurística de la mediana. & Clásico \\
 C4 & \texttt{zz\_feature\_map} & Primer orden en $Z$ y acoplamiento $ZZ$, seguidos de
      \texttt{real\_amplitudes} con $\boldsymbol\theta$ fijo. Salida:
@@ -45,6 +45,43 @@ y el perceptrón absorbe la rotación en su primera capa lineal. C2 se conserva
 deliberadamente como \textbf{control nulo}: si las métricas de separabilidad arrojaran
 valores distintos para C1 y C2, ello indicaría un defecto en su implementación. El
 comparador clásico sustantivo es C3.
+
+% fuente: H-045; X4_67_features.csv. Entrelazamiento completo verificado el 2026-10-15:
+% zz_feature_map(12, reps=1) y pauli_feature_map(12, reps=1, paulis=['Y','ZZ']) tienen 132 CNOT (66 pares).
+% respaldo: «We identify four sources that can lead to concentration including expressivity of data embedding, global measurements, entanglement and noise.» (Thanasilp2024, p. 1)
+% respaldo: «Repeating an encoding gate can help to increase the frequency spectrum, and thereby the expressivity of a quantum model.» (Schuld2021Encoding, p. 10)
+% respaldo: «We introduce a class of quantum kernels that can be used for data with a group structure.» (Glick2024Covariant, p. 1)
+\textbf{Por qué mapas con entrelazamiento.} Las dos condiciones cuánticas usan mapas de una
+misma familia, con acoplamiento $ZZ$ entre todos los pares de qubits: 66 pares con $k = 12$. Se
+descartaron las codificaciones sin entrelazamiento porque su kernel es, por construcción, un
+kernel clásico. En la codificación angular, cada característica gira su propio qubit y el estado
+es un producto, $|\phi(\mathbf{x})\rangle = \bigotimes_{i=1}^{k} R_Y(x_i)|0\rangle$. Su fidelidad
+se factoriza en
+\begin{equation}
+  K(\mathbf{x},\mathbf{x}') = \prod_{i=1}^{k} \cos^2\!\left(\frac{x_i - x'_i}{2}\right),
+  \label{eq:kernel_angular}
+\end{equation}
+que se calcula con $k$ operaciones clásicas y que, para diferencias pequeñas, se aproxima a un
+kernel gaussiano. En la codificación en amplitudes, el kernel es el cuadrado de la similitud
+coseno entre los vectores, un kernel polinomial clásico. Ambas equivalencias se comprobaron
+numéricamente en los experimentos complementarios
+(sección~\ref{sec:experimentos_complementarios}). Ninguna de las dos codificaciones podría, por
+tanto, mostrar una separabilidad que no ofrezcan ya los métodos clásicos.
+
+El entrelazamiento cambia esto. El acoplamiento $ZZ$ añade a cada par de qubits una fase que
+depende del producto $(\pi - x_i)(\pi - x_j)$, y el estado deja de ser un producto de estados
+de un qubit: la fidelidad ya no se descompone en contribuciones independientes por
+característica, y el kernel incorpora interacciones entre pares de características que la
+ecuación~\eqref{eq:kernel_angular} no puede expresar. Esa es la condición mínima para que la
+pregunta de investigación no tenga respuesta de antemano, no una garantía de mejora: el
+entrelazamiento figura también entre las fuentes de concentración de los kernels cuánticos que
+identifican Thanasilp et al. \cite{Thanasilp2024}, y la concentración observada en C4 y C5 se
+cuantifica en el capítulo~\ref{sec:resultados}. Otras familias con entrelazamiento quedaron fuera
+por el propio diseño. Los circuitos que repiten la codificación intercalada con capas
+entrenables, cuya expresividad estudian Schuld et al. \cite{Schuld2021Encoding}, requieren
+entrenar parámetros, y aquí $\boldsymbol\theta$ se mantiene fijo. Los kernels covariantes de Glick
+et al. \cite{Glick2024Covariant} están pensados para datos con estructura de grupo, que las
+características radiómicas no tienen.
 
 \textbf{Sobre la elección de C5.} La biblioteca Qiskit define \texttt{ZZFeatureMap} como un
 caso particular de \texttt{PauliFeatureMap} con operadores $(Z, ZZ)$; ambas construcciones
@@ -73,10 +110,10 @@ que las convierte en probabilidades medibles. En C5 el giro en $Y$ sí cambia la
 sin el \textit{ansatz} $\langle Z_i\rangle = -\sin(2x_i)$ dependería de una sola característica y las
 fases del acoplamiento $ZZ$ seguirían sin verse.
 
-Además de los \textit{embeddings}, para C4 y C5 se calcula el núcleo de fidelidad
+Además de los \textit{embeddings}, para C4 y C5 se calcula el kernel de fidelidad
 $K_Q(\mathbf{x},\mathbf{x}') = |\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ con el
 \textit{feature map} solo. El \textit{ansatz} no interviene, porque un mismo unitario aplicado a
-ambos estados no cambia su producto interno. Este núcleo es la entrada del análisis de
+ambos estados no cambia su producto interno. Este kernel es la entrada del análisis de
 separabilidad (M6).
 
 Ambos circuitos tienen 12 qubits y una repetición del \textit{feature map}, y comparten las mismas

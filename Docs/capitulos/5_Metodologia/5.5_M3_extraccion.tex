@@ -4,6 +4,7 @@
 % ---
 
 \subsection{Módulo 3: Extracción de características}
+\label{sec:modulo3}
 
 El módulo de extracción transforma cada par (imagen, máscara) producido por M2 en un vector
 numérico $\mathbf{x}\in\mathbb{R}^{67}$ que describe la morfología de la lesión. Se emplea
@@ -20,10 +21,14 @@ características:
         mismo nivel de gris.
 \end{itemize}
 
+% respaldo: «In the case that no re-segmentation range may be deﬁned due to arbitrary intensity units (e.g. raw MRI data and many spatial ﬁlters), the use of the ﬁxed bin size discretisation algorithm is not recommended.» (Zwanenburg2020IBSI, p. 24)
+% respaldo: «whereas grey level co-occurence matrix (GLCM) features may be better modeled with a higher number of grey levels (e.g. 32 or 64)» (Zwanenburg2020IBSI, p. 26)
 Las intensidades se discretizan en un número fijo de 32 niveles (\texttt{binCount}), no en un
-ancho fijo de nivel. El número fijo es lo recomendado para modalidades de intensidad arbitraria,
-como la película digitalizada del CBIS-DDSM, cuyos valores no tienen una escala física. Con un ancho
-fijo, los datos de 16 bits generaban más de mil niveles. Las matrices de textura usan distancia 1 y
+ancho fijo. IBSI recomienda el número fijo cuando las unidades de intensidad son arbitrarias, como
+en la película digitalizada del CBIS-DDSM, y desaconseja el ancho fijo cuando no puede definirse un
+rango absoluto \cite{Zwanenburg2020IBSI}. El manual no fija el número de niveles; 32 está entre los
+que menciona como ejemplo para la GLCM, y no se optimizó sobre los datos para no ajustar el
+preprocesamiento a las etiquetas. Con un ancho fijo, los datos de 16 bits generaban más de mil niveles. Las matrices de textura usan distancia 1 y
 promedian las cuatro direcciones del plano. Como las mamografías no traen espaciado de píxel, las
 características de forma se expresan en píxeles.
 

@@ -1,23 +1,16 @@
 % ---
 % Reemplaza líneas 3097–3252 de Docs/Technical_Report.tex.
 % Decisiones que lo respaldan: D-005, D-006, H-050.
+% Capítulo 4 desde el 2026-10-14 (antes §5).
 % ---
 
 \subsection{Análisis de variables clínicas}
 
 \subsubsection{Densidad mamaria}
 
-La Figura~\ref{fig:breast_density} muestra la
-distribución de densidad mamaria por patología y
-tipo de hallazgo.
-
-% fuente: D-005; 1_EDA.ipynb
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/C1_breast_density.png}
-  \caption{Distribución de densidad mamaria (1\,=\,grasa, 4\,=\,extremadamente densa) por patología y tipo de hallazgo.}
-  \label{fig:breast_density}
-\end{figure}
+La distribución de densidad mamaria clasificada por el radiólogo
+según patología y tipo de hallazgo se ilustra en la
+Figura~\ref{fig:breast_density} del Anexo~\ref{anx:figuras_eda}.
 
 % fuente: D-005; 1_EDA.ipynb
 La densidad mamaria más frecuente en el dataset es
@@ -35,16 +28,9 @@ el tejido glandular camufla las estructuras anómalas.
 
 \subsubsection{Lateralidad y vista mamográfica}
 
-La Figura~\ref{fig:laterality_view} presenta la
-distribución de lateralidad (izquierda / derecha)
-y vista mamográfica (CC / MLO).
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/C2_laterality_view.png}
-  \caption{Distribución de lateralidad y vista mamográfica en el dataset.}
-  \label{fig:laterality_view}
-\end{figure}
+La distribución de lateralidad anatómica y proyección mamográfica
+se presenta en la Figura~\ref{fig:laterality_view} del
+Anexo~\ref{anx:figuras_eda}.
 
 % fuente: D-005; 1_EDA.ipynb
 La distribución de lateralidad es prácticamente

@@ -7,6 +7,7 @@
 % ---
 
 \subsection{Requerimientos del sistema}
+\label{sec:requerimientos}
 
 El sistema desarrollado en el presente trabajo constituye un prototipo de 
 investigación cuyo diseño responde a restricciones tanto técnicas como 
@@ -286,9 +287,11 @@ Declarar los parámetros de cada módulo en su \textit{notebook}
 y guardar los parámetros ajustados junto a los datos procesados
 (\texttt{x\_\textless tipo\textgreater.json} en M4, \texttt{emb\_meta.json} en M5). \\
 
+% respaldo: «The data were split into a training set and a testing set based on the BI-RADS category.» (Lee2017CBISDDSM, p. 5)
 RNF-03 & Reproducibilidad &
-Usar la partición oficial train/test sin reordenarla, con la
-partición real de 2\,864 / 704 lesiones (80.3\,\% / 19.7\,\%);
+Usar la partición oficial train/test sin reordenarla, que los
+autores del CBIS-DDSM estratificaron por categoría BI-RADS
+\cite{Lee2017CBISDDSM}, con la partición real de 2\,864 / 704 lesiones (80.3\,\% / 19.7\,\%);
 el test se evalúa una sola vez por modelo y la validación
 cruzada usa 5 \textit{folds} agrupados por paciente dentro del
 train. \\

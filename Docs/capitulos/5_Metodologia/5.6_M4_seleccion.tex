@@ -5,10 +5,27 @@
 % ---
 
 \subsection{Módulo 4: Selección y escalado}
+\label{sec:modulo4}
 
 El módulo de selección y escalado prepara el vector de características para el circuito cuántico.
 Debe reducir la dimensión al número de qubits, $k = 12$, y convertir cada característica en un
 ángulo de rotación. Todos sus parámetros se ajustan solo con el conjunto de entrenamiento.
+
+% fuente: D-013, H-018, H-032, H-041, H-051; B1_benchmark_arquitectura.csv, B1_benchmark_kernel_proyeccion.csv, 8_oe6_qubits.csv
+\textbf{Número de qubits.} El valor $k = 12$ se fijó antes de los experimentos, con un estudio de
+costos del simulador. Con la implementación de entonces, que evaluaba cada valor del kernel de
+fidelidad con un circuito propio, la etapa cuántica completa costaba 0.29~h con 8 qubits, 2.95~h con
+12 y 41.25~h con 16: de 12 a 16 el costo se multiplicaba por 14, y el diseño requiere decenas de
+kernels, uno por mapa, subconjunto y factor de escala. Doce qubits eran el último escalón asumible.
+Hay además una razón de contenido: con menos qubits, la selección se concentra en una sola familia de
+características muy correlacionadas entre sí (con $k = 8$, la de masas pierde todas las de textura),
+mientras que con 12 caben familias distintas, cuyos productos codifica el acoplamiento $ZZ$. Más adelante, el cálculo del
+kernel a partir de los vectores de estado redujo ese costo en unas mil veces, y el límite físico de la
+máquina resultó mayor (sección~\ref{sec:resultados}). Aun así, el kernel por
+\textit{compute-uncompute}, la única vía disponible en un procesador real, costaría unas 9~h para los
+24 kernels del diseño con 16 qubits y más de cuatro días con 20. Aumentar $k$ tampoco prometía una
+mejor separabilidad, porque la concentración de los \textit{embeddings} crece con el número de qubits;
+la comparación con $k = 8$ se presenta en la sección~\ref{sec:experimentos_complementarios}.
 
 \textbf{Selección.} Las características se ordenan por el estadístico $F$ del ANOVA entre clases y
 se recorren en ese orden: una característica se acepta solo si su correlación absoluta de Pearson

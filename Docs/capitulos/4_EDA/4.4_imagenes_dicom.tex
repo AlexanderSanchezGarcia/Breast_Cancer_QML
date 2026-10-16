@@ -1,6 +1,7 @@
 % ---
 % Reemplaza líneas 3253–3394 de Docs/Technical_Report.tex.
 % Decisiones que lo respaldan: D-006, D-009, D-022, H-002.
+% Capítulo 4 desde el 2026-10-14 (antes §5).
 % ---
 
 \subsection{Análisis de imágenes DICOM}
@@ -26,8 +27,8 @@ es incompatible con la entrada directa a un circuito
 cuántico. Este hallazgo valida la decisión de diseño
 de trabajar con recortes de la región de interés a
 resolución original, de los que se extraen
-características radiómicas (sección de Metodología)
-en lugar de las mamografías completas.
+características radiómicas (capítulo~\ref{sec:metodologia},
+sección~\ref{sec:modulo3}) en lugar de las mamografías completas.
 
 % fuente: H-002; 1_metadatos_dicom.csv
 La inspección de los metadatos DICOM reveló que las
@@ -47,7 +48,8 @@ píxeles en el preprocesamiento.
 Ninguna de las 3\,103 mamografías distintas incluye las etiquetas
 \texttt{Manufacturer}, \texttt{PixelSpacing} ni
 \texttt{ImagerPixelSpacing}; las tres faltan en los archivos
-DICOM. Como consecuencia, no es posible un análisis de
+DICOM (véase la Figura~\ref{fig:manufacturers} del Anexo~\ref{anx:figuras_eda}).
+Como consecuencia, no es posible un análisis de
 variabilidad entre escáneres a partir de metadatos, y las
 características de forma quedan en píxeles sin escala física;
 como el DDSM original se digitalizó con escáneres de distinta
@@ -59,17 +61,10 @@ con profundidad de 16 bits y convención fotométrica
 
 \subsubsection{Distribución de intensidades de píxeles}
 
-La Figura~\ref{fig:pixel_intensities} compara las
-distribuciones de estadísticas de intensidad de
-píxeles entre casos benignos y malignos en las
-imágenes recortadas de ROI.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Figures/D3_pixel_intensities.png}
-  \caption{Distribución de estadísticas de intensidad de píxeles (media, desviación estándar y máximo) en imágenes recortadas de ROI, por patología.}
-  \label{fig:pixel_intensities}
-\end{figure}
+La comparación cuantitativa de las distribuciones estadísticas
+de intensidad de píxeles (media, desviación estándar y máximo)
+entre casos benignos y malignos en las imágenes de ROI se presenta
+en la Figura~\ref{fig:pixel_intensities} del Anexo~\ref{anx:figuras_eda}.
 
 % fuente: D-006, D-022; 1_EDA.ipynb
 Las imágenes recortadas presentan valores de
@@ -87,18 +82,10 @@ de PyRadiomics.
 
 \subsubsection{Galería de casos representativos}
 
-La Figura~\ref{fig:sample_gallery} presenta una
-galería de casos representativos del dataset,
-mostrando para cada caso la mamografía completa,
-la máscara binaria ROI y la imagen recortada
-centrada en la lesión.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.4\textwidth]{Figures/D4_sample_gallery.png}
-  \caption{Galería de casos representativos: mamografía completa, máscara ROI e imagen recortada, para masas y calcificaciones benignas y malignas.}
-  \label{fig:sample_gallery}
-\end{figure}
+Una galería visual de casos representativos que ilustra la
+mamografía completa, la máscara binaria ROI y la imagen recortada
+de la lesión se exhibe en la Figura~\ref{fig:sample_gallery} del
+Anexo~\ref{anx:figuras_eda}.
 
 La galería ilustra visualmente las diferencias
 morfológicas descritas en el análisis de variables

@@ -1,0 +1,96 @@
+% ---
+% Reemplaza líneas 3395–3449 de Docs/Technical_Report.tex.
+% Decisiones que lo respaldan: D-005, D-006, D-008, D-009, D-011, D-018, D-020, D-021, D-022, D-026, D-036, H-002, H-004, H-005, H-007, H-008, H-020, H-027, H-050, H-051.
+% Capítulo 4 desde el 2026-10-14 (antes §5).
+% ---
+
+\subsection{Implicaciones para el diseño}
+\label{sec:implicaciones_diseno}
+
+El análisis exploratorio de datos permite identificar un conjunto de
+hallazgos empíricos y restricciones técnicas que justifican de manera
+directa las decisiones de diseño metodológico del pipeline experimental.
+A continuación se detallan los hallazgos principales observados:
+
+\begin{enumerate}
+
+% fuente: D-005, RF-19; 1_EDA.ipynb
+\item \textbf{Desbalance de clases diferenciado.}
+El ratio benigno/maligno presenta un desbalance moderado en masas
+y marcadamente superior en calcificaciones. La ponderación de
+clases durante el entrenamiento del MLP es necesaria para
+calcificaciones pero opcional para masas. Los modelos se evalúan con
+AUC-ROC como métrica principal por su robustez ante este desbalance.
+
+% fuente: H-050
+\item \textbf{Asimetría de separabilidad esperada.}
+Las masas presentan patrones morfológicos claramente diferenciados
+entre clases (IRREGULAR/\allowbreak SPICULATED vs.\ OVAL/\allowbreak CIRCUMSCRIBED),
+prediciendo mayor separabilidad en el espacio de representación. Las
+calcificaciones comparten el tipo morfológico más frecuente (PLEOMORPHIC)
+entre ambas clases, prediciendo menor separabilidad y constituyendo el
+caso de prueba más exigente para los \textit{quantum embeddings}.
+
+% fuente: D-006
+\item \textbf{Variables clínicas no predictivas.}
+La densidad mamaria y el \textit{subtlety} tienen correlación
+prácticamente nula con la patología. La información discriminativa
+reside en los patrones morfológicos de la imagen, validando el uso de
+PyRadiomics como extractor de características.
+
+% fuente: D-009, H-051; 1_EDA.ipynb
+\item \textbf{Imágenes de alta dimensionalidad.}
+Las mamografías completas tienen dimensiones medianas de
+5\,037\,$\times$\,2\,960 píxeles, incompatibles con la entrada directa
+al circuito cuántico. El trabajo con recortes de la región de interés
+a resolución original, seguido de extracción de características
+radiómicas y selección de $k$ características, es la estrategia viable
+para la simulación cuántica disponible.
+
+% fuente: D-022, H-002; 1_metadatos_dicom.csv
+\item \textbf{Convención fotométrica uniforme.}
+La totalidad del dataset utiliza \texttt{MONOCHROME2}, eliminando la
+necesidad de inversión de píxeles en el preprocesamiento.
+
+\end{enumerate}
+
+En la Tabla~\ref{tab:eda_implicaciones_diseno} se sintetiza el puente
+entre cada hallazgo empírico del análisis exploratorio, la decisión de
+diseño adoptada y la subsección de la Metodología donde se materializa.
+
+% fuente: D-005, D-006, D-008, D-009, D-011, D-018, D-020, D-021, D-022, D-026, D-036, H-002, H-004, H-005, H-007, H-008, H-020, H-027, H-050, H-051; 1_EDA.ipynb
+\begin{table}[htbp]
+\centering
+\caption{Correspondencia entre hallazgos del EDA y decisiones de diseño del pipeline}
+\label{tab:eda_implicaciones_diseno}
+\begin{tabularx}{\textwidth}{@{}X X p{3cm}@{}}
+\toprule
+\textbf{Hallazgo del EDA} & \textbf{Decisión de diseño} & \textbf{Dónde se aplica} \\
+\midrule
+Masas y calcificaciones con morfología y desbalance distintos &
+Tratamiento como subproblemas totalmente independientes a lo largo de todo el pipeline experimental. &
+Sec.~\ref{sec:descripcion_general} y M1--M8 \\
+Desbalance 1.16:1 en masas y 1.78:1 en calcificaciones &
+Ponderación de clases (\texttt{class\_weight=balanced}) en la pérdida de entropía cruzada del MLP. &
+Sec.~\ref{sec:modulo7} (M7) \\
+\texttt{breast\_density} y \texttt{subtlety} sin correlación con patología &
+La señal reside en la imagen: extracción directa de features radiómicas (PyRadiomics), sin metadatos. &
+Sec.~\ref{sec:modulo3} (M3) \\
+Mamografías completas de $\sim$5\,037$\times$2\,960~px &
+Recorte centrado en la ROI a resolución nativa y extracción radiómica; no se ingresa la imagen al circuito. &
+Sec.~\ref{sec:modulo2} y~\ref{sec:modulo3} \\
+\texttt{PixelSpacing} ausente en todos los DICOM &
+Cálculo de features de forma en píxeles sin escala física dimensional (declarado como limitación). &
+Sec.~\ref{sec:modulo3} (M3) \\
+80 máscaras con dimensiones discrepantes &
+Alineación en M2 según tipo: remuestreo para 78 masas escaladas (factor 0.870) y anclaje para 2 casos. &
+Sec.~\ref{sec:modulo2} (M2) \\
+Todas \texttt{MONOCHROME2}, 16~bits de profundidad &
+Sin inversión fotométrica; discretización de histograma mediante \texttt{binCount=32} en PyRadiomics. &
+Sec.~\ref{sec:modulo2} y~\ref{sec:modulo3} \\
+Estructura agrupada por paciente &
+Partición de validación cruzada con folds agrupados por paciente (\texttt{StratifiedGroupKFold}). &
+Sec.~\ref{sec:modulo4} (M4) \\
+\bottomrule
+\end{tabularx}
+\end{table}
