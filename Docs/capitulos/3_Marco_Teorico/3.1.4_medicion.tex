@@ -43,7 +43,7 @@ La dispersión muestral es máxima cuando el estado es puramente ecuatorial
 ($\langle Z_i \rangle = 0$, varianza $1/n_{\text{shots}}$) y se anula si el qubit
 se halla en un autoestado de la base computacional ($\langle Z_i \rangle = \pm 1$).
 
-El núcleo de fidelidad cuántica, $K_Q(\mathbf{x}, \mathbf{x}') = |\langle \phi(\mathbf{x}) | \phi(\mathbf{x}') \rangle|^2$,
+El kernel de fidelidad cuántica, $K_Q(\mathbf{x}, \mathbf{x}') = |\langle \phi(\mathbf{x}) | \phi(\mathbf{x}') \rangle|^2$,
 se estima en hardware de otra forma: se implementa el circuito de
 \textit{compute-uncompute} $U^\dagger(\mathbf{x}') U(\mathbf{x})$ sobre el estado
 $|0\rangle^{\otimes n}$ y se cuenta la frecuencia con la que se registra

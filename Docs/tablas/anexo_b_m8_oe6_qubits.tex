@@ -1,0 +1,30 @@
+% Generado por Code/tools/tablas_anexos.py desde 8_oe6_qubits.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Escalamiento computacional con el número de qubits en simulación por vector de estado (OE-6).}
+\label{tab:anexo_m8_oe6_qubits}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{c c r r r r}
+\toprule
+$k$ (qubits) & Tipo de dato & Memoria estado & Tiempo/estado (s) & Tiempo embedding (h) & Entrenamiento (h/mapa) \\
+\midrule
+8 & Medido & 0.00 MiB & 0.0012 & 0.002 & 1.6 \\
+10 & Medido & 0.02 MiB & 0.0019 & 0.004 & 3.0 \\
+12 & Medido & 0.06 MiB & 0.0029 & 0.006 & 5.7 \\
+14 & Medido & 0.25 MiB & 0.0065 & 0.013 & 14.8 \\
+16 & Medido & 1.00 MiB & 0.0349 & 0.069 & 90.3 \\
+18 & Medido & 4.00 MiB & 0.1071 & 0.212 & 311 \\
+20 & Medido & 16.00 MiB & 0.3924 & 0.778 & 1264 \\
+22 & Medido & 64.00 MiB & 1.2 & 2.472 & 4415 \\
+24 & Medido & 256.00 MiB & 4.1 & 8.194 & 15950 \\
+26 & Medido & 1.00 GiB & 13.7 & 27.3 & 57421 \\
+28 & Medido & 4.00 GiB & 74.8 & 148.2 & 336114 \\
+30 & Extrapolado & 16.00 GiB & 221.0 & 438.0 & 1063514 \\
+32 & Extrapolado & 64.00 GiB & 802.7 & 1591.1 & 4118952 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Escalamiento del coste en simulación cuántica por vector de estado en función del número de qubits ($k$). Para $k \le 28$ las cifras corresponden a ejecuciones empíricas en el hardware de referencia (Apple M3); para $k \ge 30$ corresponden a la extrapolación exponencial teórica.}
+\end{table}

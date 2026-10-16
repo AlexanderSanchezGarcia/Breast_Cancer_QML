@@ -1,0 +1,24 @@
+% Generado por Code/tools/tablas_anexos.py desde 5a_, 5b_, 6_, 7_ y 8_verificaciones.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Resumen de la suite de verificaciones automáticas de consistencia y correctitud.}
+\label{tab:anexo_verificaciones}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l l c c p{6.5cm}}
+\toprule
+Módulo & Archivo de resultados & Pruebas & Superadas & Ámbito de verificación \\
+\midrule
+Módulo 5a & \texttt{5a\_verificaciones.csv} & 18 & 18 (100\%) & Recomputación exacta, dispersión positiva y validación con SparsePauliOp \\
+Módulo 5b & \texttt{5b\_verificaciones.csv} & 38 & 38 (100\%) & Simetría de matrices, diagonal unitaria y semidefinición positiva ($\lambda_{\min} \ge 0$) \\
+Módulo 6 & \texttt{6\_verificaciones.csv} & 20 & 20 (100\%) & Normalización de traza, identidades teóricas de $g$, KTA y control nulo C1=C2 \\
+Módulo 7 & \texttt{7\_verificaciones.csv} & 16 & 16 (100\%) & Cero fuga de pacientes, convergencia por parada temprana y estabilidad de probabilidades \\
+Módulo 8 & \texttt{8\_verificaciones.csv} & 22 & 22 (100\%) & Reproducción de AUC en test y CV, nula exacta de Spearman y muestreo de $\langle Z_i \rangle$ \\
+\midrule
+Total suite & 5 archivos CSV & 114 & 114 (100\%) & Suite completa de aserciones automáticas \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Todas las pruebas automáticas del pipeline ejecutan aserciones matemáticas estrictas sobre las estructuras de datos generadas. El 100\,\% de las verificaciones resultó exitoso, sin discrepancias numéricas tolerables más allá del error de redondeo de punto flotante.}
+\end{table}

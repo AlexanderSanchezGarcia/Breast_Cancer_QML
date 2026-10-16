@@ -1,6 +1,6 @@
 % ---
 % Reemplaza parte de la sección de resultados en Docs/Technical_Report.tex.
-% Entradas que lo respaldan: H-020, H-021, H-022, H-023, H-024, H-025, H-026, H-027, H-028, H-035, D-026.
+% Entradas que lo respaldan: H-005, H-020, H-021, H-022, H-023, H-024, H-025, H-026, H-027, H-028, H-030, H-035, D-026.
 % ---
 
 \subsection{Datos, características y selección}
@@ -26,13 +26,14 @@ En todos los casos de masas, la componente conexa de mayor tamaño retuvo al men
 La supresión de componentes menores descartó una mediana de 5 píxeles por máscara (con un valor máximo
 de 110 píxeles, equivalente al 0.45\,\% del área de la lesión). La distancia del píxel descartado más lejano
 al borde de la componente mayor presentó una mediana de 3.6 píxeles, un percentil 99 de 9.2 píxeles
-y un máximo de 14 píxeles, confirmando que las islas corresponden a artefactos inmediatos al contorno.
+y un máximo de 14 píxeles, lo que resulta consistente con la hipótesis de que las islas corresponden a artefactos periféricos inmediatos al contorno.
 
 % fuente: H-023, H-024; 3_tamano_efecto.csv
 En la etapa de extracción de características radiómicas sobre el conjunto de entrenamiento
 (637 lesiones malignas y 681 benignas en masas; 544 malignas y 1\,002 benignas en calcificaciones),
-la evaluación univariante mediante la distancia estandarizada de Cohen ($|d|$) evidenció que las
-calcificaciones constituyen el subconjunto con mayor separabilidad individual. En masas, la característica
+la evaluación univariante mediante la distancia estandarizada de Cohen ($|d|$) mostró que, en las
+características extraídas para este conjunto de entrenamiento, las calcificaciones alcanzan tamaños de efecto
+individual superiores a los de las masas. En masas, la característica
 con mayor tamaño de efecto fue \texttt{firstorder\_Maximum} con $|d| = 0.50$ (con un rango de 0.40 a 0.50
 en las doce primeras), seguida de descriptores morfológicos como
 \texttt{shape2D}\allowbreak\texttt{\_MinorAxisLength} ($|d| = 0.45$),
@@ -111,6 +112,18 @@ poblacional (desviación de 0.168). La selección mediante búsqueda sistemátic
 la semilla 125 en masas y la semilla 168 en calcificaciones, acotando la desviación máxima de malignidad
 a 0.011 en masas y a 0.019 en calcificaciones (proporciones entre 0.33 y 0.37 por pliegue).
 
+% fuente: H-005
+En cuanto a la división entre los conjuntos de entrenamiento y prueba, la auditoría de partición confirmó
+la ausencia de fuga de pacientes (\textit{data leakage}) dentro de cada subproblema analizado.
+En masas se contabilizaron 691 pacientes en entrenamiento y 201 en prueba sin solapamiento alguno (0 pacientes
+compartidos); análogamente, en calcificaciones se identificaron 602 pacientes en entrenamiento y 151 en prueba,
+igualmente con 0 solapes. A nivel global, considerando ambos hallazgos de forma conjunta, se registraron 1\,248
+pacientes en entrenamiento y 349 en prueba con 31 pacientes solapados, discrepancia que se origina
+porque la partición oficial del CBIS-DDSM se formuló de forma independiente para cada tipo de lesión, de modo que
+un mismo individuo puede presentar masas en entrenamiento y calcificaciones en prueba. Este comportamiento
+proporciona respaldo metodológico para procesar masas y calcificaciones como subproblemas
+independientes, eliminando por construcción la posibilidad de contaminación entre conjuntos.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{Figures/M4_selection_and_angles.png}
@@ -139,3 +152,16 @@ ilustrando que las variables con mayor puntuación univariante individual no nec
 \caption{Evolución del área bajo la curva ROC en función del número de características $k$ para modelos clásicos en entrenamiento.}
 \label{fig:x1_selection_auc_vs_k}
 \end{figure}
+
+% fuente: H-030, H-035
+Esta limitación intrínseca de la selección univariante introduce una consideración metodológica central que matiza la comparación:
+el criterio de \texttt{SelectKBest} evalúa cada variable de forma aislada mediante la prueba F de ANOVA, mientras que el filtro de
+redundancia examina correlaciones lineales dos a dos. Como consecuencia, aquellas características cuyo poder discriminativo dependa
+exclusivamente de interacciones de orden superior con otras variables (como en configuraciones de tipo o-exclusivo) resultan
+descartadas antes de alimentar el circuito cuántico. Esta dinámica genera una tensión conceptual con el diseño experimental, puesto que
+el bloque de acoplamiento $ZZ$ del mapa de características codifica precisamente productos de pares $(\pi - x_i)(\pi - x_j)$, que
+constituyen el mecanismo primario mediante el cual la transformación cuántica podría aportar ventajas frente a representaciones clásicas.
+Aunque la comparación entre las cinco condiciones se mantiene metodológicamente rigurosa al suministrar exactamente el mismo vector
+de 12 características a todos los modelos, la ausencia de una selección multivariante capaz de capturar interacciones complejas
+representa una restricción de diseño que contextualiza los resultados y explica por qué la selección guiada por F no supera de forma
+concluyente a selecciones aleatorias en el experimento X1.

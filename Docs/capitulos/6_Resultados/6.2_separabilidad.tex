@@ -1,19 +1,19 @@
 % ---
 % Reemplaza parte de la sección de resultados en Docs/Technical_Report.tex.
-% Entradas que lo respaldan: H-031, H-036, H-037, H-038, H-039, H-040, H-041, D-029, D-033.
+% Entradas que lo respaldan: H-018, H-019, H-031, H-036, H-037, H-038, H-039, H-040, H-041, D-029, D-033.
 % ---
 
 \subsection{Separabilidad de las representaciones}
 \label{sec:separabilidad_representaciones}
 
 % fuente: H-031, H-037; 5a_resumen.csv, 5b_concentracion_kernel.csv
-En la evaluación del núcleo cuántico de fidelidad a escala nominal ($c = 1$) sobre la submuestra
+En la evaluación del kernel cuántico de fidelidad a escala nominal ($c = 1$) sobre la submuestra
 estratificada de 200 lesiones de entrenamiento por subconjunto, las matrices de similitud resultaron
 cercanas a la identidad. En masas, la mediana fuera de la diagonal fue de 0.0022 en C4 (con percentil 95
 de 0.011 y 23\,\% de pares con fidelidad inferior a $10^{-3}$) y de 0.000032 en C5 (con 80\,\% de pares
 por debajo de $10^{-3}$ y 26\,\% por debajo de $10^{-6}$). En calcificaciones, la mediana fue de 0.0029
 en C4 (percentil 95 de 0.014 y 16\,\% bajo $10^{-3}$) y de 0.000031 en C5 (76\,\% bajo $10^{-3}$ y 28\,\%
-bajo $10^{-6}$). En contraste, el núcleo clásico gaussiano RBF con parámetro $\gamma$ determinado por la
+bajo $10^{-6}$). En contraste, el kernel clásico gaussiano RBF con parámetro $\gamma$ determinado por la
 heurística de la mediana registró una mediana fuera de la diagonal de 0.607 en ambos subconjuntos.
 
 % fuente: H-037; 5a_resumen.csv
@@ -26,16 +26,29 @@ En C5, la rotación no diagonal en el eje $Y$ modifica directamente las amplitud
 los términos $ZZ$, dispersando los valores esperados locales pero acentuando la ortogonalidad mutua en el
 espacio de estados cuánticos y concentrando la fidelidad unas setenta veces más que en C4 \cite{Thanasilp2024}.
 
+% fuente: H-018, H-019; B3_concentracion_embedding.csv
+Esta concentración del \textit{embedding} reproduce el comportamiento caracterizado en el estudio B3
+sobre la dispersión de los valores esperados $\langle Z_i \rangle$ (evaluada sobre 100 entradas y 10 sorteos de $\boldsymbol\theta$
+con cálculo analítico exacto tras corregir la inyección de ruido en la referencia). Dicho análisis evidenció tres
+patrones fundamentales: en primer lugar, la concentración con el número de qubits es sistemática, reduciéndose la dispersión media
+a \texttt{reps} = 1 de $0.0837 \pm 0.0131$ con $k = 8$ a $0.0417 \pm 0.0068$ con $k = 12$ y a $0.0363 \pm 0.0090$ con $k = 16$,
+comportamiento característico del crecimiento exponencial del espacio de Hilbert y precursor de las mesetas áridas (\textit{barren plateaus}).
+En segundo lugar, la concentración con la profundidad del circuito no es monótona en el rango analizado: para $k = 12$, la dispersión
+se incrementa en un 30\,\% al pasar de \texttt{reps} = 1 a \texttt{reps} = 2 ($0.0417 \pm 0.0068$ frente a $0.0544 \pm 0.0036$),
+descendiendo a $0.0305 \pm 0.0044$ con \texttt{reps} = 3. En tercer lugar, la variabilidad entre distintos sorteos del vector $\boldsymbol\theta$
+colapsa con la profundidad: a $k = 16$, la desviación entre sorteos se reduce de 0.0090 a 0.0043 y finalmente a 0.0023, reflejando
+una pérdida progresiva de sensibilidad respecto a los parámetros del circuito que es indicativa del régimen de meseta árida.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{Figures/M5_kernel_concentration.png}
 % fuente: H-031, H-037; 5b_concentracion_kernel.csv
-\caption{Distribución de los valores fuera de la diagonal en las matrices de núcleo cuántico para C4 y C5 frente al núcleo clásico RBF.}
+\caption{Distribución de los valores fuera de la diagonal en las matrices de kernel cuántico para C4 y C5 frente al kernel clásico RBF.}
 \label{fig:m5_kernel_concentration}
 \end{figure}
 
 % fuente: H-038, H-039; 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv
-Los resultados de separabilidad formal en la familia de núcleos se resumen en la
+Los resultados de separabilidad formal en la familia de kernels se resumen en la
 Tabla~\ref{tab:m6_kernels}, calculados sobre la submuestra de entrenamiento con $c = 1$.
 
 % fuente: H-038, H-039; 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv
@@ -43,24 +56,24 @@ Tabla~\ref{tab:m6_kernels}, calculados sobre la submuestra de entrenamiento con 
 
 % fuente: H-038, H-039; 6_alineamiento_kernel.csv
 El exceso de alineamiento centrado (\textit{kernel-target alignment}, KTA) sobre la media de 1\,000
-permutaciones de etiquetas fue en masas de 0.049 ($p < 0.001$) para el núcleo clásico RBF, frente a 0.003
-($p = 0.002$) en C4 y 0.005 ($p = 0.003$) en C5. En calcificaciones, el exceso del núcleo RBF fue de 0.151
+permutaciones de etiquetas fue en masas de 0.049 ($p < 0.001$) para el kernel clásico RBF, frente a 0.003
+($p = 0.002$) en C4 y 0.005 ($p = 0.003$) en C5. En calcificaciones, el exceso del kernel RBF fue de 0.151
 ($p < 0.001$), frente a 0.006 ($p < 0.001$) en C4 y 0.007 ($p = 0.003$) en C5. Aunque el exceso en los
-núcleos cuánticos resultó estadísticamente significativo, representó únicamente entre el 4\,\% y el 10\,\%
+kernels cuánticos resultó estadísticamente significativo, representó únicamente entre el 4\,\% y el 10\,\%
 del exceso clásico. Los valores absolutos de KTA centrada en C4 y C5 ($0.073$ a $0.077$) se encuentran
 acotados por el valor base de $1/\sqrt{N-1} \approx 0.071$ inherente a matrices cercanas a la identidad
 para muestras de $N = 200$ \cite{Cortes2012}.
 
 % fuente: H-038, H-039; 6_dimension_efectiva.csv
 La dimensión efectiva normalizada ($d_{\mathrm{eff}}$ de 200) arrojó 2.8 en masas y 2.6 en
-calcificaciones para el núcleo clásico RBF. Para los núcleos cuánticos, los valores fueron de 184.0 en C4
+calcificaciones para el kernel clásico RBF. Para los kernels cuánticos, los valores fueron de 184.0 en C4
 y 171.3 en C5 para masas, y de 187.7 en C4 y 167.6 en C5 para calcificaciones. Las representaciones
 cuánticas ocupan casi la totalidad de las dimensiones del espacio disponible ($d_{\mathrm{eff}} \approx N$),
 régimen en el cual las cotas teóricas de error de generalización derivadas por Huang et al. \cite{huang2021power}
 se aproximan a su valor máximo al escalar con $\sqrt{\min(d_{\mathrm{eff}}, \operatorname{Tr}(O^2))/N}$.
 
 % fuente: H-038, H-039; 6_diferencia_geometrica_resumen.csv
-En la métrica de diferencia geométrica regularizada frente a la batería de núcleos clásicos,
+En la métrica de diferencia geométrica regularizada frente a la batería de kernels clásicos,
 los valores mínimos obtenidos fueron $g = 1.433$ en C4 y $1.511$ en C5 para masas, y $g = 1.400$ en C4
 y $1.701$ en C5 para calcificaciones. En comparación con la cota de referencia $\sqrt{N} \approx 14.1$,
 se cumple de forma consistente la condición $g \ll \sqrt{N}$, bajo la cual el marco teórico de Huang et al.
@@ -74,7 +87,7 @@ $1/\sqrt{\lambda_{\min}(K_C)} \approx 410$), producto del condicionamiento numé
 \centering
 \includegraphics[width=\textwidth]{Figures/M6_kernel_metrics.png}
 % fuente: H-038, H-039; 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv
-\caption{Métricas de separabilidad en la familia de núcleos: alineamiento KTA y dimensión efectiva normalizada.}
+\caption{Métricas de separabilidad en la familia de kernels: alineamiento KTA y dimensión efectiva normalizada.}
 \label{fig:m6_kernel_metrics}
 \end{figure}
 
@@ -101,7 +114,8 @@ frente a 0.449 en C4 ($p = 0.05$) y 0.668 en C5; y el alineamiento lineal fue de
 y 0.012 en C5 ($p = 0.41$). En calcificaciones, Davies--Bouldin fue de 2.387 en C1 y C2 frente a 6.890 en C4 y 6.247
 en C5; Fisher $J$ fue de 1.284 en C1 y C2 (y 1.390 en C3) frente a 0.399 en C4 ($p = 0.15$) y 0.753 en C5; y el
 alineamiento lineal fue de 0.181 en C1 y C2 frente a 0.031 en C4 y 0.041 en C5. Las métricas de C1 y C2 coincidieron
-con discrepancias menores a $10^{-14}$, confirmando la validez del control nulo ante rotaciones ortogonales.
+con discrepancias numéricas del orden del límite de precisión ($< 10^{-14}$), lo cual concuerda con la invarianza
+teórica de las distancias y dispersiones ante rotaciones ortogonales bajo la condición de control nulo.
 Al evaluar la razón de Fisher sobre la totalidad del conjunto de entrenamiento, la ventaja clásica se mantuvo:
 C1 obtuvo 0.45 en masas y 1.06 en calcificaciones, frente a 0.13 y 0.42 en C4, y 0.21 y 0.31 en C5.
 
@@ -122,11 +136,11 @@ C1 obtuvo 0.45 en masas y 1.06 en calcificaciones, frente a 0.13 y 0.42 en C4, y
 \end{figure}
 
 % fuente: H-036; X2_auc_pares.csv
-En el análisis por pares sobre la submuestra de entrenamiento, el núcleo clásico RBF obtuvo un
+En el análisis por pares sobre la submuestra de entrenamiento, el kernel clásico RBF obtuvo un
 AUC de pares de 0.523 ($p = 0.002$) en masas y de 0.575 ($p = 0.001$) en calcificaciones. A escala $c = 1$,
 C4 registró 0.510 ($p = 0.012$) en masas y 0.520 ($p = 0.021$) en calcificaciones, mientras que C5 obtuvo
 0.508 ($p = 0.047$) en masas y 0.547 ($p = 0.001$) en calcificaciones. En calcificaciones, C5 superó a C4
-en 0.027, aunque ambos núcleos permanecieron por debajo del RBF. Al excluir los pares con fidelidad inferior
+en 0.027, aunque ambos kernels permanecieron por debajo del RBF. Al excluir los pares con fidelidad inferior
 a $10^{-6}$, el AUC de pares de C5 se mantuvo en 0.510 en masas y 0.570 en calcificaciones, descartando que
 la discriminación dependa de valores numéricamente irresolubles en hardware. La evolución del AUC de pares
 se ilustra en la Figura~\ref{fig:x2_pair_auc_sweep}.
@@ -135,7 +149,7 @@ se ilustra en la Figura~\ref{fig:x2_pair_auc_sweep}.
 \centering
 \includegraphics[width=\textwidth]{Figures/X2_pair_auc_sweep.png}
 % fuente: H-036; X2_auc_pares.csv
-\caption{Evolución del AUC de pares en función del factor de escala angular $c$ para núcleos cuánticos y clásico.}
+\caption{Evolución del AUC de pares en función del factor de escala angular $c$ para kernels cuánticos y clásico.}
 \label{fig:x2_pair_auc_sweep}
 \end{figure}
 
@@ -147,10 +161,10 @@ la mediana fuera de la diagonal sube a 0.55 (C4) y 0.54 (C5) en masas, y a 0.59 
 aproximadamente 4 y $g$ se ubica entre 2.1 y 2.5 (con un valor máximo de 3.1 en todo el barrido para C5 con $c = 0.5$).
 Este incremento en alineamiento no representa información cuántica novedosa: la fase acumulada en el bloque $ZZ$
 corresponde a $2\pi^2 - 2\pi c(x_i + x_j) + 2c^2 x_i x_j$, donde la fase constante es invariante y el producto
-cruzado $x_i x_j$ decae con $c^2$. A escala $c = 0.02$, la correlación entre el núcleo cuántico completo y una
+cruzado $x_i x_j$ decae con $c^2$. A escala $c = 0.02$, la correlación entre el kernel cuántico completo y una
 versión idéntica que prescinde del producto entre características es de 0.99997 en masas y 0.99999 en calcificaciones.
-La concentración del núcleo solo se disipa cuando el término de interacción de segundo orden deja de tener efecto,
-recuperando la estructura de similitud suave que un núcleo clásico modela de forma directa.
+La concentración del kernel solo se disipa cuando el término de interacción de segundo orden deja de tener efecto,
+recuperando la estructura de similitud suave que un kernel clásico modela de forma directa.
 
 % fuente: H-041; X3_comparacion_k8_k12.csv, X3_alineamiento_kernel.csv, X3_dimension_efectiva.csv, X3_diferencia_geometrica_resumen.csv
 El experimento con un registro reducido a 8 qubits ($k = 8$) evaluó las ocho primeras características
@@ -176,7 +190,7 @@ Figura~\ref{fig:x3_kernel_metrics_k8_k12}.
 \toprule
 Métrica & Masas, $k = 12$ & Masas, $k = 8$ & Calcif., $k = 12$ & Calcif., $k = 8$ \\
 \midrule
-Mediana del núcleo (C4 / C5) & 0.002 / 0.00003 & 0.010 / 0.0015 & 0.003 / 0.00003 & 0.008 / 0.0008 \\
+Mediana del kernel (C4 / C5) & 0.002 / 0.00003 & 0.010 / 0.0015 & 0.003 / 0.00003 & 0.008 / 0.0008 \\
 Dimensión efectiva (C4 / C5 de 200) & 184.0 / 171.3 & 139.6 / 103.3 & 187.7 / 167.6 & 169.7 / 131.0 \\
 Exceso de KTA (C4 / C5) & 0.003 / 0.005 & 0.012 / 0.023 & 0.006 / 0.007 & 0.011 / 0.024 \\
 Exceso de KTA del RBF & 0.049 & 0.049 & 0.151 & 0.150 \\
@@ -192,13 +206,13 @@ Fisher $J$ en todo el train (C1 / C4 / C5) & 0.45 / 0.13 / 0.21 & 0.37 / 0.09 / 
 \centering
 \includegraphics[width=\textwidth]{Figures/X3_kernel_metrics_k8_k12.png}
 % fuente: H-041; X3_comparacion_k8_k12.csv
-\caption{Comparación de métricas de separabilidad en núcleos cuánticos entre configuraciones con 12 y 8 qubits.}
+\caption{Comparación de métricas de separabilidad en kernels cuánticos entre configuraciones con 12 y 8 qubits.}
 \label{fig:x3_kernel_metrics_k8_k12}
 \end{figure}
 
 % fuente: H-039
 En conjunto, estos hallazgos proporcionan respuesta al objetivo específico OE-3: bajo la configuración
 metodológica predefinida ($k = 12$, $c = 1$), las transformaciones cuánticas evaluadas no muestran una
-separabilidad geométrica superior a la obtenida mediante representaciones y núcleos clásicos, ni en la formulación
+separabilidad geométrica superior a la obtenida mediante representaciones y kernels clásicos, ni en la formulación
 basada en fidelidades ni en la basada en valores esperados. Esta evidencia empírica describe la viabilidad y las
 propiedades de separabilidad del espacio de estados cuánticos generado en el contexto del problema radiómico abordado.

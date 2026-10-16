@@ -1,0 +1,20 @@
+% Generado por Code/tools/tablas_anexos.py desde X8_costo_gradiente.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Coste computacional del cálculo de gradientes variacionales (Experimento X8).}
+\label{tab:anexo_x8_gradiente}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l l r r}
+\toprule
+Método de cálculo & Naturaleza del gradiente & Tiempo/lesión (s) & Coste estimado (50 épocas, h) \\
+\midrule
+parameter shift (EstimatorQNN, exact) & Jacobian 12 $\times$ 24 (also needed for a scalar loss) & 5.1589 & 205.21 \\
+automatic differentiation (state vector) & Jacobian 12 $\times$ 24 & 0.2369 & 9.42 \\
+automatic differentiation (state vector) & scalar loss, one backward pass & 0.0014 & 0.06 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Comparación de costes entre diferenciación exacta por \textit{parameter-shift rule} y diferenciación automática directa sobre vector de estado en simulación (Experimento X8).}
+\end{table}

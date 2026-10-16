@@ -1,0 +1,25 @@
+% Generado por Code/tools/tablas_anexos.py desde 5b_tiempos.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Costes computacionales de evaluación de kernels cuánticos (Módulo 5).}
+\label{tab:anexo_m5_tiempos}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l l c r}
+\toprule
+Subconjunto & Kernel cuántico evaluado & Dimensión & Tiempo total (s) \\
+\midrule
+Masas & \texttt{FidelityStatevectorKernel\_C4} & 200x200 & 1.468 \\
+Masas & \texttt{FidelityStatevectorKernel\_C5} & 200x200 & 1.590 \\
+Calcificaciones & \texttt{FidelityStatevectorKernel\_C4} & 200x200 & 1.569 \\
+Calcificaciones & \texttt{FidelityStatevectorKernel\_C5} & 200x200 & 1.574 \\
+Masas & \texttt{FidelityQuantumKernel\_C4} & 10x10 & 4.970 \\
+Masas & \texttt{FidelityQuantumKernel\_C5} & 10x10 & 4.985 \\
+Calcificaciones & \texttt{FidelityQuantumKernel\_C4} & 10x10 & 4.948 \\
+Calcificaciones & \texttt{FidelityQuantumKernel\_C5} & 10x10 & 5.041 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Tiempos medidos en simulación exacta. \texttt{FidelityStatevectorKernel} calcula la matriz $200\times 200$ en $\sim$1.5\,s aprovechando vectores de estado precomputados. \texttt{FidelityQuantumKernel} evalúa el circuito cuántico directo requiriendo $\sim$5.0\,s para una matriz reducida de solo $10\times 10$.}
+\end{table}

@@ -1,0 +1,30 @@
+% Generado por Code/tools/tablas_anexos.py desde 4_seleccion.csv y 3_tamano_efecto.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Conjunto completo de características radiómicas seleccionadas por subconjunto (Módulo 4).}
+\label{tab:anexo_m4_seleccion}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{r l l r r r l l r r r}
+\toprule
+ & \multicolumn{5}{c}{Masas} & \multicolumn{5}{c}{Calcificaciones} \\ \cmidrule(lr){2-6}\cmidrule(lr){7-11}
+\# & Característica & Familia & $F$ & $p$ & $|d|$ & Característica & Familia & $F$ & $p$ & $|d|$ \\
+\midrule
+1 & firstorder\_Maximum & firstorder & 83.1 & $<$0.001 & 0.502 & shape2D\_MinorAxisLength & shape2D & 235.4 & $<$0.001 & 0.817 \\
+2 & firstorder\_90Percentile & firstorder & 82.6 & $<$0.001 & 0.501 & glrlm\_RunEntropy & glrlm & 200.9 & $<$0.001 & 0.755 \\
+3 & firstorder\_Energy & firstorder & 74.7 & $<$0.001 & 0.476 & shape2D\_Perimeter & shape2D & 177.0 & $<$0.001 & 0.709 \\
+4 & shape2D\_MinorAxisLength & shape2D & 66.7 & $<$0.001 & 0.450 & firstorder\_Skewness & firstorder & 174.6 & $<$0.001 & 0.704 \\
+5 & shape2D\_MaximumDiameter & shape2D & 62.3 & $<$0.001 & 0.435 & glrlm\_ShortRunLowGrayLevelEmphasis & glrlm & 166.2 & $<$0.001 & 0.687 \\
+6 & shape2D\_Perimeter & shape2D & 53.1 & $<$0.001 & 0.402 & glrlm\_ShortRunEmphasis & glrlm & 161.5 & $<$0.001 & 0.677 \\
+7 & shape2D\_MeshSurface & shape2D & 52.8 & $<$0.001 & 0.400 & glcm\_JointAverage & glcm & 150.9 & $<$0.001 & 0.654 \\
+8 & shape2D\_PerimeterSurfaceRatio & shape2D & 51.3 & $<$0.001 & 0.395 & glcm\_InverseVariance & glcm & 142.8 & $<$0.001 & 0.636 \\
+9 & glrlm\_GrayLevelNonUniformity & glrlm & 37.8 & $<$0.001 & 0.339 & glcm\_DifferenceEntropy & glcm & 135.6 & $<$0.001 & 0.620 \\
+10 & firstorder\_10Percentile & firstorder & 31.7 & $<$0.001 & 0.311 & firstorder\_Energy & firstorder & 135.1 & $<$0.001 & 0.619 \\
+11 & glcm\_Correlation & glcm & 31.0 & $<$0.001 & 0.307 & glcm\_ClusterShade & glcm & 133.9 & $<$0.001 & 0.616 \\
+12 & glrlm\_RunLengthNonUniformity & glrlm & 28.8 & $<$0.001 & 0.296 & shape2D\_PixelSurface & shape2D & 129.1 & $<$0.001 & 0.605 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Selección de las 12 características en cada subconjunto mediante ANOVA univariado ($F$-test) sobre el conjunto de entrenamiento con restricción de redundancia lineal $|r| \le 0.95$. $p$ reporta el nivel de significación estadística; $|d|$ es el tamaño del efecto (d de Cohen sobre intensidades crudas).}
+\end{table}

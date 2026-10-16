@@ -1,0 +1,13 @@
+% ============================================================
+% ANEXOS DEL REPORTE TÉCNICO
+% Apertura formal del entorno de apéndices.
+% ============================================================
+
+\appendix
+
+% Fallback para compilación aislada de A_Anexos sin 4_EDA
+\makeatletter
+\ifcsname r@sec:eda\endcsname\else
+  \expandafter\gdef\csname r@sec:eda\endcsname{{4}{1}}
+\fi
+\makeatother

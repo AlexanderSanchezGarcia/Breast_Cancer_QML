@@ -1,0 +1,31 @@
+% Generado por Code/tools/tablas_anexos.py desde conda_list_radiomics.txt y conda_list_qml_cancer.txt. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Versiones de los paquetes de software fundamentales en los entornos de ejecución.}
+\label{tab:anexo_d_paquetes}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l p{6.5cm} l l}
+\toprule
+Paquete de software & Función en el pipeline & Entorno \texttt{radiomics} & Entorno \texttt{qml\_cancer} \\
+\midrule
+\texttt{python} & Lenguaje base del entorno & \texttt{3.10.20} & \texttt{3.10.19} \\
+\texttt{numpy} & Cómputo matricial y vectores & \texttt{2.2.6} & \texttt{2.2.6} \\
+\texttt{scipy} & Rutinas científicas y optimización & \texttt{—} & \texttt{1.15.3} \\
+\texttt{pandas} & Estructuras de datos tabulares & \texttt{2.3.3} & \texttt{2.3.3} \\
+\texttt{scikit-learn} & Modelos clásicos y métricas ML & \texttt{—} & \texttt{1.7.2} \\
+\texttt{pyradiomics} & Extracción de características radiómicas & \texttt{0.1.dev1+g8ed579383} & \texttt{3.1.1.dev111+g8ed579383} \\
+\texttt{pydicom} & Lectura de mamografías DICOM crudas & \texttt{3.0.2} & \texttt{3.0.1} \\
+\texttt{SimpleITK} & Conversión y exportación espacial NRRD & \texttt{2.5.6} & \texttt{2.5.3} \\
+\texttt{opencv-python} & Alineación de máscaras y CLAHE & \texttt{4.11.0.86} & \texttt{4.13.0.92} \\
+\texttt{matplotlib} & Generación de gráficos y figuras & \texttt{3.10.9} & \texttt{3.10.8} \\
+\texttt{torch} & Redes neuronales y optimización MLP & \texttt{—} & \texttt{2.10.0} \\
+\texttt{qiskit} & Definición de circuitos cuánticos & \texttt{—} & \texttt{2.3.0} \\
+\texttt{qiskit-aer} & Simulación cuántica de alto rendimiento & \texttt{—} & \texttt{0.17.2} \\
+\texttt{qiskit-machine-learning} & Kernels y algoritmos cuánticos de aprendizaje & \texttt{—} & \texttt{0.9.0} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Versiones exactas de librerías en los dos entornos de ejecución reproducible gestionados con Conda. \texttt{pyradiomics} se encuentra anclado en ambos entornos al commit \texttt{8ed579383b44806651c463d5e691f3b2b57522ab}.}
+\end{table}

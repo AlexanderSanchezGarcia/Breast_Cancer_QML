@@ -1,0 +1,87 @@
+% ---
+% Síntesis global por objetivo específico (OE-1 a OE-6) y evaluación por dimensiones.
+% Sección 6.8 del reporte técnico.
+% Entradas que lo respaldan: H-001, H-005, H-020, H-023, H-024, H-026, H-035, H-038, H-039, H-040, H-041, H-042, H-043, H-049, H-051, H-052, H-032, D-012, D-014, D-016, D-031, D-036.
+% ---
+
+\subsection{Síntesis por objetivo específico}
+\label{sec:sintesis_objetivos}
+
+A fin de articular los hallazgos empíricos obtenidos a lo largo del protocolo experimental con los compromisos
+planteados al inicio de la investigación, la Tabla~\ref{tab:sintesis_objetivos_especificos} presenta una síntesis
+estructurada por cada uno de los seis objetivos específicos (OE-1 a OE-6) formulados en el planteamiento del trabajo.
+Para cada objetivo se resume el alcance establecido, la evidencia cuantitativa central generada, la sección del
+reporte donde se desarrolla el análisis detallado y la respuesta concreta alcanzada en función de los datos.
+
+% fuente: H-001, H-005, H-020, H-023, H-024, H-026, H-035, H-038, H-039, H-040, H-041, H-042, H-043, H-049, H-051, H-052, H-032, D-012, D-014, D-016, D-031, D-036; 2_preprocesamiento_qa.csv, X1_varianza_retenida.csv, B1_benchmark_arquitectura.csv, 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv, 7_cv_por_fold.csv, 7_test.csv, 7_test_diferencias.csv, 8_spearman.csv, 8_oe6_qubits.csv, 8_oe6_shots_kernel.csv, 8_oe6_shots_embedding.csv, 8_oe6_resumen.csv
+\begin{table}[htbp]
+\centering
+\small
+\caption{Síntesis de resultados y evidencia empírica por objetivo específico.}
+\label{tab:sintesis_objetivos_especificos}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{p{0.07\linewidth} p{0.24\linewidth} p{0.31\linewidth} p{0.14\linewidth} p{0.24\linewidth}}
+\toprule
+\textbf{Objetivo} & \textbf{Objetivo resumido} & \textbf{Evidencia principal} & \textbf{Sección} & \textbf{Resultado} \\
+\midrule
+OE-1 & Construir pipeline sobre CBIS-DDSM (DICOM, ROI, 67 variables radiómicas, selección a $k = 12$ y escalado angular $[0, \pi]$ en subproblemas independientes). & 3\,568 registros con cobertura DICOM 100\,\%; 67 variables extraídas; 12 seleccionadas retienen 86.8\,\% (masas) y 90.2\,\% (calcificaciones) de varianza; 0 solapes entre train y test. & Sección~\ref{sec:datos_caracteristicas_seleccion} & Pipeline validado sin fuga de pacientes; selección por prueba F con filtro de redundancia ($|r| \le 0.95$) y escalado por cuantiles con IQR de $\pi/2$. \\
+\midrule
+OE-2 & Implementar cinco condiciones experimentales de dimensión $k = 12$ (C1 crudo, C2 PCA lineal, C3 Kernel PCA RBF, C4 ZZFeatureMap, C5 PauliFeatureMap). & 5 condiciones simétricas sobre el mismo vector; $\boldsymbol\theta$ fijo (semilla 42) en Arquitectura~B; C5 diferenciado con compuertas $Y$ y $ZZ$; extracción analítica en 0.20\,h frente a 381.7\,h de Arquitectura~A. & Secciones~\ref{sec:modulo5}, \ref{sec:lecciones_implementacion} & Condiciones implementadas; control nulo C2 preservado; Arquitectura~B desacopla codificación de clasificación favoreciendo la reproducibilidad. \\
+\midrule
+OE-3 & Analizar y comparar separabilidad de clases en las cinco condiciones mediante KTA, diferencia geométrica $g$, Davies--Bouldin y distancia de Fisher. & A $c = 1$, exceso de KTA de 0.003 a 0.007 en C4/C5 frente a 0.049 y 0.151 en RBF; $d_{\mathrm{eff}}$ cuántica de 167.6 a 187.7; $g$ mínima de 1.40 a 1.70 ($\sqrt{N} \approx 14.1$); condiciones clásicas superan a cuánticas en Fisher. & Sección~\ref{sec:separabilidad_representaciones} & Las transformaciones cuánticas a $c = 1$ no muestran mayor separabilidad que las clásicas en ninguna familia métrica; matrices de kernel concentradas próximas a la identidad. \\
+\midrule
+OE-4 & Entrenar un mismo clasificador MLP sobre las cinco representaciones bajo idéntica arquitectura, hiperparámetros y validación cruzada 5-fold por paciente. & Red $12 \to 32 \to 16 \to 1$, optimizador Adam, parada temprana; variación máxima por semilla de 0.039 en CV; 200 épocas sin parada temprana no mejora C4/C5 (AUC 0.533 y 0.557 en masas; 0.596 y 0.631 en calcificaciones). & Sección~\ref{sec:rendimiento_clasificacion} & Protocolo simétrico validado; convergencia uniforme; el déficit cuántico no es atribuible a subentrenamiento ni a sensibilidad de hiperparámetros. \\
+\midrule
+OE-5 & Evaluar si la separabilidad se traslada a clasificación binaria (AUC-ROC, F1, Accuracy, Precision, Recall) y correlación de Spearman entre rankings. & En test, AUC masas: C1 0.651, C3 0.646, C4 0.530, C5 0.581; calcificaciones: C1 0.769, C3 0.758, C4 0.633, C5 0.652. Diferencias frente a C1 entre $-0.07$ y $-0.14$. Coeficiente $\rho_s$ descriptivo en el rango de 0.67 a 0.97. & Secciones~\ref{sec:rendimiento_clasificacion}, \ref{sec:comparacion_global} & El MLP clasifica peor sobre C4/C5; separabilidad y clasificación coinciden en su ordenamiento (C1--C3 delante de C4--C5), pero sin ganancia previa en separabilidad que trasladar. \\
+\midrule
+OE-6 & Evaluar restricciones prácticas y del simulador cuántico (recursos, escalabilidad en qubits, gradientes y shots) para determinar viabilidad en salud. & Simulación exacta viable hasta $k \approx 25$ en 24\,h; gradiente por \textit{parameter-shift} requiere 5.16\,s/muestra ($\sim 205$\,h a $k = 12$); a 1\,024 disparos, entre 15.7\,\% y 74.5\,\% de pares del kernel leen cero; MLP tolera disparos perdiendo $< 0.02$ de AUC. & Secciones~\ref{sec:restricciones_simulador}, \ref{sec:lecciones_implementacion} & Techo práctico impuesto por gradientes físicos y concentración del kernel; fidelidad experimentalmente inmedible con disparos realistas en NISQ; atajos de simulación no trasladables a hardware. \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+A partir de esta correspondencia empírica, la respuesta integral a la pregunta de investigación se estructura
+en torno a las tres dimensiones de análisis que fundamentaron el planteamiento del problema:
+
+% fuente: H-038, H-039, H-040, H-041; 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv
+\textbf{Dimensión de representación (OE-3).} Respecto a la capacidad de las transformaciones cuánticas
+variacionales para generar espacios de características con mayor separabilidad de clases, la evidencia empírica
+indica de forma consistente que los mapas cuánticos evaluados a escala nominal ($c = 1$) no superan a las
+representaciones clásicas de referencia en ninguna de las familias métricas analizadas. En el espacio de kernels,
+el exceso de alineamiento centrado (\textit{kernel-target alignment}, KTA) de C4 y C5 se sitúa entre 0.003 y 0.007,
+abarcando menos del 10\,\% del exceso registrado por el kernel gaussiano RBF clásico (0.049 en masas y 0.151 en
+calcificaciones); las matrices cuánticas resultan cercanas a la identidad con una dimensión efectiva que satura
+el espacio disponible ($d_{\mathrm{eff}} \approx 168$--$188$ sobre 200), y la diferencia geométrica regularizada
+($g \approx 1.40$--$1.70$) permanece muy alejada de la cota teórica de ventaja cuántica potencial ($\sqrt{N} \approx 14.1$).
+Asimismo, en las representaciones locales $\langle Z_i \rangle$, los índices de Fisher y Davies--Bouldin sitúan a
+las condiciones clásicas C1 y C3 sistemáticamente por delante de las condiciones cuánticas. Aunque la contracción
+angular ($c \to 0.02$) o la reducción a 8 qubits (X3) atenúan la concentración, dicha recuperación no introduce
+estructura cuántica genuina: el alineamiento solo se aproxima al clásico en el régimen en que el producto cruzado
+entre características deja de influir, emulando la geometría de un kernel clásico.
+
+% fuente: H-042, H-043, H-049; 7_test.csv, 7_test_diferencias.csv, 8_spearman.csv
+\textbf{Dimensión de clasificación (OE-5).} En lo concerniente a si la transformación cuántica se traduce en una
+mejora en la clasificación binaria de lesiones mamográficas, los resultados sobre el clasificador perceptrón multicapa
+muestran que el mismo modelo clasifica de manera desfavorable sobre las representaciones cuánticas C4 y C5 en comparación
+con las condiciones clásicas. En el conjunto de prueba independiente, las condiciones cuánticas exhiben un déficit de
+0.07 a 0.14 de AUC-ROC frente al vector de características crudas C1 (alcanzando 0.530 en C4 masas y 0.633 en C4 calcificaciones,
+frente a 0.651 y 0.769 en C1), brecha estadísticamente significativa respaldada por intervalos de confianza por remuestreo
+que excluyen el cero. Este menoscabo no responde a artefactos de optimización, pues los análisis de sensibilidad sugieren
+que ni la variación de semillas, ni arquitecturas alternativas, ni el entrenamiento prolongado a 200 épocas sin parada temprana
+logran revertir la diferencia. El análisis de correlación de rangos de Spearman ($\rho_s \in [0.67, 0.97]$) muestra una coincidencia
+descriptiva en el ordenamiento relativo de ambas etapas (con el bloque clásico C1--C3 situado por delante de C4 y C5); no obstante, debido a que
+las condiciones cuánticas no alcanzaron mayor separabilidad en OE-3, no existió una ganancia representacional que pudiera
+trasladarse al desempeño diagnóstico.
+
+% fuente: H-051, H-052, H-054, H-019, H-032; 8_oe6_qubits.csv, 8_oe6_shots_kernel.csv, 8_oe6_resumen.csv, X8_costo_gradiente.csv
+\textbf{Dimensión de viabilidad práctica (OE-6).} En relación con la factibilidad computacional y operacional de trasladar
+estos esquemas a un contexto clínico real, las mediciones revelan restricciones fundamentales impuestas por el formalismo
+físico de la medición cuántica. Si bien el clasificador de red neuronal tolera el ruido estocástico inducido por un régimen
+realista de 1\,024 disparos por muestra sobre las expectativas locales $\langle Z_i \rangle$ (reteniendo el AUC exacto a menos
+de 0.02), la estimación de matrices de kernel de fidelidad en procesadores cuánticos físicos resulta experimentalmente inviable
+a escala nominal ($c = 1$): debido a la concentración exponencial de la fidelidad cuántica, entre el 15.7\,\% y el 74.5\,\%
+de los pares de lesiones registrarían lecturas idénticamente nulas a 1\,024 disparos, y acotar el error relativo al 10\,\% exigiría una mediana de decenas de miles de
+mediciones por par en C4 y de millones en C5. Asimismo, el coste computacional del gradiente exacto por \textit{parameter-shift}
+(5.16\,s por muestra a $k = 12$, equivalente a unas 205~h de cálculo para 50 épocas) restringe de forma severa el entrenamiento
+variacional en ausencia de los atajos de vector de estado analítico, los cuales solo existen en simulación clásica y son
+inaplicables en dispositivos cuánticos físicos.

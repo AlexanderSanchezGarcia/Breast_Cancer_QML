@@ -1,0 +1,20 @@
+% Generado por Code/tools/tablas_anexos.py desde 2_preprocesamiento_resumen.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Resumen del preprocesamiento, alineación de máscaras y control de calidad (Módulo 2).}
+\label{tab:anexo_m2_resumen}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l r r r r r c r}
+\toprule
+Subconjunto & Lesiones & Desalineadas & Máscaras & Recortes & Recortes oficiales & Dimensión mediana & Recortes \\
+ & analizadas & (escal./offset) & depuradas & coincidentes & con discrepancia/sin & de lesión (px) & en borde \\
+\midrule
+Calcificaciones & 1872 & 2 & 0 & 1663 & 209 & 273$\times$289 & 120 \\
+Masas & 1696 & 78 & 1464 & 1543 & 75 & 302$\times$304 & 67 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Auditoría y control de calidad de M2. Desalineadas: 78 por escala ($0.870$) en masas y 2 por traslación en calcificaciones. Depuradas: reducción a la componente conexa mayor eliminando artefactos menores aislados. Recortes coincidentes: concordancia exacta al píxel con los recortes oficiales del CBIS-DDSM.}
+\end{table}

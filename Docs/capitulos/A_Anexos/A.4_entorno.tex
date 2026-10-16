@@ -1,0 +1,68 @@
+% ============================================================
+% ANEXO D · ENTORNO DE EJECUCIÓN Y REPRODUCIBILIDAD
+% Especificaciones de software, compilación nativa, hardware y semillas.
+% Decisiones que lo respaldan: D-007, D-014, D-026.
+% ============================================================
+
+\section{Entorno de ejecución y reproducibilidad}\label{anx:entorno}
+
+La reproducibilidad computacional del pipeline depende del control estricto de las versiones
+de software, la compilación determinista de extensiones nativas en C y la fijación de semillas
+pseudoaleatorias en todas las etapas del procesamiento.
+
+% ------------------------------------------------------------
+\subsection{Paquetes y dependencias del sistema}
+
+El desarrollo se articuló en dos entornos independientes de Conda: el entorno \texttt{radiomics},
+destinado al preprocesamiento espacial y la extracción de características morfo-texturales
+(Módulos 2 y 3), y el entorno \texttt{qml\_cancer}, orientado a la selección estadística,
+transformaciones cuánticas variacionales, separabilidad y modelado supervisado (Módulos 4 a 8).
+La Tabla~\ref{tab:anexo_d_paquetes} especifica las versiones instaladas de los paquetes fundamentales.
+
+\input{tablas/anexo_d_paquetes}
+
+% ------------------------------------------------------------
+\subsection{Procedimiento de compilación de PyRadiomics}
+
+% fuente: D-007
+La librería PyRadiomics no admite instalación directa desde los repositorios de PyPI debido a que
+la distribución fuente de la versión 3.1.0 declara inconsistencias de versión en sus metadatos y omite
+en su manifiesto los archivos de cabecera \texttt{cmatrices.h} y \texttt{cshape.h}, impidiendo la compilación.
+Tampoco existe un paquete de PyRadiomics en conda-forge.
+
+Por ello, la biblioteca se compiló directamente a partir del código fuente del repositorio oficial
+de AIM-Harvard fijado en el commit \texttt{8ed579383b44806651c463d5e691f3b2b57522ab}. La compilación
+se efectuó empleando \texttt{scikit-build-core} y \texttt{setuptools\_scm}, enlazando las extensiones
+nativas en C directamente contra el entorno local sin aislamiento de construcción
+(\texttt{-\allowbreak-no-\allowbreak build-\allowbreak isolation}) para prevenir actualizaciones accidentales de NumPy que pudiesen comprometer la interoperabilidad con Qiskit.
+
+% ------------------------------------------------------------
+\subsection{Especificaciones de hardware y plataforma}
+
+Todas las mediciones temporales, consumos de memoria y ejecuciones de simulación exacta reportados
+fueron llevados a cabo en una estación de trabajo homogénea con las siguientes especificaciones:
+
+\begin{itemize}
+  \item \textbf{Procesador:} Apple M3 con microarquitectura ARM64 de 8 núcleos (4 núcleos de rendimiento y 4 de eficiencia energética).
+  \item \textbf{Memoria principal:} 16\,GB de memoria unificada LPDDR5 (\texttt{hw.memsize}: 17\,179\,869\,184 bytes).
+  \item \textbf{Sistema operativo:} macOS Sonoma versión 26.6.2 (Darwin Kernel versión 25G83).
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Semillas aleatorias y verificación de reproducción determinista}
+
+% fuente: D-014, D-026
+Para asegurar la reproducibilidad bit a bit de todos los experimentos se definieron semillas deterministas:
+\begin{itemize}
+  \item \textbf{Semilla global 42:} empleada para la inicialización pseudoaleatoria del vector de parámetros
+    variacionales $\theta$ del \textit{ansatz} (D-014), el sorteo de submuestras estratificadas de 200 lesiones
+    para análisis geométrico y el generador de números aleatorios en pruebas de permutación.
+  \item \textbf{Semillas de pliegues:} semilla 125 para el subconjunto de masas y semilla 168 para el de
+    calcificaciones (D-026), seleccionadas tras una búsqueda exhaustiva entre candidatos para minimizar
+    la discrepancia máxima en la prevalencia de malignidad entre pliegues.
+\end{itemize}
+
+La totalidad del pipeline experimental (Módulos 2 al 8 y experimentos complementarios X1 al X6) fue objeto de
+un protocolo de re-ejecución completa y verificación independiente entre el 8 y el 10 de octubre de 2026 sobre
+un clon limpio del repositorio, constatándose la reproducción exacta e invariable de todas las predicciones,
+métricas y tablas numéricas obtenidas.

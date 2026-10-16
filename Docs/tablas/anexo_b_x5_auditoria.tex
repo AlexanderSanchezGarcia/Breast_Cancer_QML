@@ -1,0 +1,48 @@
+% Generado por Code/tools/tablas_anexos.py desde X5_auditoria.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Auditoría metodológica independiente de consistencia, datos y modelos (Experimento X5).}
+\label{tab:anexo_x5_auditoria}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{p{11.5cm} r c}
+\toprule
+Propiedad auditada & Discrepancia máxima & Veredicto \\
+\midrule
+\multicolumn{3}{l}{\textbf{Integridad de etiquetas y particiones}} \\
+\quad mass: every lesion of Module 4 exists in the original CSV files & 0.0 & Superada \\
+\quad mass: labels equal MALIGNANT = 1 from the CSV files & 0.0 & Superada \\
+\quad mass: train/test split equals the file of origin & 0.0 & Superada \\
+\quad calcification: every lesion of Module 4 exists in the original CSV files & 0.0 & Superada \\
+\quad calcification: labels equal MALIGNANT = 1 from the CSV files & 0.0 & Superada \\
+\quad calcification: train/test split equals the file of origin & 0.0 & Superada \\
+\quad mass: class counts equal the EDA (912 benign, 784 malignant) & 0.0 & Superada \\
+\quad calcification: class counts equal the EDA (1199 benign, 673 malignant) & 0.0 & Superada \\
+\multicolumn{3}{l}{\textbf{Ausencia de fuga de datos (escalado y folds)}} \\
+\quad mass: angles refitted on train only equal Module 4, test included & 0.0 & Superada \\
+\quad mass: every angle lies in [0, $\pi$], test included & 0.0 & Superada \\
+\quad mass: no patient split across folds nor across train and test & 0.0 & Superada \\
+\quad calcification: angles refitted on train only equal Module 4, test included & 0.0 & Superada \\
+\quad calcification: every angle lies in [0, $\pi$], test included & 0.0 & Superada \\
+\quad calcification: no patient split across folds nor across train and test & 0.0 & Superada \\
+\multicolumn{3}{l}{\textbf{Equivalencia física de kernels cuánticos}} \\
+\quad mass: C4 compute-uncompute kernel equals statevector kernel (12 x 12) & 0.0 & Superada \\
+\quad mass: C5 compute-uncompute kernel equals statevector kernel (12 x 12) & 0.0 & Superada \\
+\quad calcification: C4 compute-uncompute kernel equals statevector kernel (12 x 12) & 0.0 & Superada \\
+\quad calcification: C5 compute-uncompute kernel equals statevector kernel (12 x 12) & 0.0 & Superada \\
+\multicolumn{3}{l}{\textbf{Equivalencia de formulación QSVM (Qiskit vs dual)}} \\
+\quad mass: QSVC of qiskit-machine-learning equals the precomputed-kernel SVM of X4 & 0.0 & Superada \\
+\quad calcification: QSVC of qiskit-machine-learning equals the precomputed-kernel SVM of X4 & 0.0 & Superada \\
+\multicolumn{3}{l}{\textbf{Invarianza de rotación y transformaciones}} \\
+\quad changing x\_i changes only <Z\_i> of C5, to -sin(2 x\_i) & 0.0 & Superada \\
+\quad C4: the kernel is invariant under a reordering of the features & 0.0 & Superada \\
+\quad C5: the kernel is invariant under a reordering of the features & 0.0 & Superada \\
+\multicolumn{3}{l}{\textbf{Consistencia de modelos de referencia clásicos}} \\
+\quad mass: three classical models agree within one fold standard deviation & 2.39e-02 & Superada \\
+\quad calcification: three classical models agree within one fold standard deviation & 1.63e-02 & Superada \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Auditoría metodológica independiente de extremo a extremo (Experimento X5). Comprueba rigurosamente la ausencia de fugas de datos entre particiones de pacientes, la correspondencia exacta de etiquetas patológicas con los metadatos clínicos de CBIS-DDSM y la consistencia matemática de los componentes cuánticos.}
+\end{table}

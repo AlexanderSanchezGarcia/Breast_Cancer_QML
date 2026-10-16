@@ -1,0 +1,73 @@
+% ============================================================
+% ANEXO B · SALIDAS Y RESULTADOS COMPLEMENTARIOS
+% Tablas generadas automáticamente a partir de los datos en Code/results/.
+% ============================================================
+
+\section{Salidas y resultados complementarios}\label{anx:salidas}
+
+En este anexo se presentan las tablas cuantitativas complementarias que respaldan las
+etapas de preprocesamiento, selección de variables, validación cruzada, coste computacional
+y verificación de consistencia interna del sistema. Todas las tablas han sido generadas
+directamente a partir de los registros estructurados en archivos CSV del repositorio
+mediante el script \texttt{tablas\_anexos.py} de \texttt{Code/tools/}, garantizando trazabilidad completa.
+
+% ------------------------------------------------------------
+\subsection{Preprocesamiento y auditoría de máscaras (Módulo 2)}
+
+La Tabla~\ref{tab:anexo_m2_resumen} sintetiza el control de calidad aplicado sobre las 3\,568
+mamografías, documentando los casos con desajuste dimensional corregidos y la concordancia con
+los recortes oficiales.
+
+\input{tablas/anexo_b_m2_resumen}
+
+% ------------------------------------------------------------
+\subsection{Selección y redundancia de características (Módulo 4)}
+
+La Tabla~\ref{tab:anexo_m4_seleccion} reporta las 12 características radiómicas seleccionadas
+en cada subconjunto clínico, acompañadas de sus estadísticos univariados de significación y tamaño del efecto.
+
+\input{tablas/anexo_b_m4_seleccion}
+
+La Tabla~\ref{tab:anexo_m4_redundancia} documenta las características candidatas que, a pesar de su
+relevancia individual, fueron descartadas del conjunto final por exceder el límite de redundancia lineal.
+
+\input{tablas/anexo_b_m4_redundancia}
+
+% ------------------------------------------------------------
+\subsection{Estratificación de pliegues en validación cruzada (Módulo 4)}
+
+La Tabla~\ref{tab:anexo_m4_folds} detalla el reparto de lesiones, el número de pacientes únicos y
+la proporción de malignidad en cada uno de los cinco pliegues de validación cruzada generados.
+
+\input{tablas/anexo_b_m4_folds}
+
+% ------------------------------------------------------------
+\subsection{Costes computacionales de simulación cuántica (Módulos 5, 8 y X8)}
+
+La Tabla~\ref{tab:anexo_m5_tiempos} presenta la comparativa de tiempos de ejecución empíricos entre
+el cálculo matricial por vector de estado y la simulación individual por circuito.
+
+\input{tablas/anexo_b_m5_tiempos}
+
+La Tabla~\ref{tab:anexo_m8_oe6_qubits} reporta el escalamiento de los requerimientos de memoria y tiempo
+de simulación en función del número de qubits del sistema, contrastando mediciones directas y extrapolaciones.
+
+\input{tablas/anexo_b_m8_oe6_qubits}
+
+La Tabla~\ref{tab:anexo_x8_gradiente} expone la evaluación comparativa del coste por muestra para el
+cálculo de gradientes cuánticos mediante la regla analítica de desplazamiento de parámetros frente a diferenciación automática.
+
+\input{tablas/anexo_b_x8_gradiente}
+
+% ------------------------------------------------------------
+\subsection{Verificaciones automáticas y control metodológico (Módulos 5 a 8 y X5)}
+
+La Tabla~\ref{tab:anexo_verificaciones} resume el catálogo de verificaciones automáticas integradas
+en los módulos de transformación, separabilidad y clasificación supervisada.
+
+\input{tablas/anexo_b_verificaciones}
+
+La Tabla~\ref{tab:anexo_x5_auditoria} reúne los resultados de la auditoría independiente de consistencia
+metodológica, verificando la ausencia de fugas de datos y la integridad de las etiquetas clínicas.
+
+\input{tablas/anexo_b_x5_auditoria}

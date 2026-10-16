@@ -24,7 +24,7 @@ espectral:
 con truncamiento a cero de posibles autovalores residuales negativos por precisión de punto
 flotante. En la ecuación~\eqref{eq:geometric_diff}, el kernel cuántico $K_Q$ figura en los
 factores externos mientras que el kernel clásico $K_C$ es la matriz invertida.
-Con núcleos de diagonal unitaria y $\operatorname{Tr}K=N$, $g_{CQ}\ge1$: basta evaluar el cociente de Rayleigh $v^\top K_Q v / v^\top K_C v$ en un vector canónico.
+Con kernels de diagonal unitaria y $\operatorname{Tr}K=N$, $g_{CQ}\ge1$: basta evaluar el cociente de Rayleigh $v^\top K_Q v / v^\top K_C v$ en un vector canónico.
 
 En conjuntos de datos reales, la evaluación directa de la ecuación~\eqref{eq:geometric_diff}
 resulta numéricamente inestable debido a que las matrices de kernel clásicas suelen presentar
@@ -43,8 +43,8 @@ Cuando $\lambda \to 0$, $g_{\text{gen}}$ recupera la distancia de la ecuación~\
 
 Siguiendo el protocolo de Huang et al. (Apéndice L, ec. (L9)–(L11)), se evalúa una malla de
 regularización $\lambda \in \{10^{-5}, 10^{-4}, 10^{-3}, 10^{-2}, 0.025, 0.05, 0.1\}$ y una
-batería de núcleos clásicos que comprende un núcleo lineal sobre los datos centrados
-y núcleos gaussianos (RBF) con parámetro $\gamma = m / (n\,\operatorname{Var}[\mathbf{x}])$,
+batería de kernels clásicos que comprende un kernel lineal sobre los datos centrados
+y kernels gaussianos (RBF) con parámetro $\gamma = m / (n\,\operatorname{Var}[\mathbf{x}])$,
 para multiplicadores $m \in \{0.25, 0.5, 1, 2, 4, 8, 16, 32, 64\}$, con $n = 12$ el número de
 características y $\operatorname{Var}[\mathbf{x}]$ la varianza de todas las coordenadas de la submuestra.
 Como análisis de sensibilidad se añaden gaussianos más estrechos, $m \in \{128, 256, 512\}$.
@@ -75,7 +75,7 @@ figura~\ref{fig:huang_geometria} ilustra el marco geométrico conceptual propues
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.7\textwidth]{Figures/Huang2021_Fig2.png}
-  \caption{Geometría (función núcleo) definida por modelos clásicos y cuánticos. Las letras
+  \caption{Geometría (función kernel) definida por modelos clásicos y cuánticos. Las letras
   representan datos y las flechas, la similitud entre ellos; la \textit{geometric difference}
   \(g\) mide cuánto difieren esas similitudes entre modelos, y \(d\) es la dimensión efectiva
   del conjunto de entrenamiento en el espacio de Hilbert. Reproducida de Huang et al. (2021),
@@ -88,7 +88,7 @@ Un obstáculo para escalar de clasificadores cuánticos basados en producto inte
 es el fenómeno de concentración, advertido por Huang et al. (``\textit{all inputs are too far apart}'')
 y formalizado por Thanasilp et al. \cite{Thanasilp2024}. A medida que el número de qubits $n$
 crece, las fidelidades cuánticas fuera de la diagonal
-$|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ se concentran exponencialmente en $n$ alrededor de un valor fijo, que para el núcleo de fidelidad
+$|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ se concentran exponencialmente en $n$ alrededor de un valor fijo, que para el kernel de fidelidad
 es cercano a cero. El kernel se acerca entonces a la matriz identidad, $K_Q \approx I$: todas las
 muestras parecen casi ortogonales entre sí y se pierde la noción de vecindad.
 Thanasilp et al. identifican cuatro fuentes de concentración: la expresividad del \textit{embedding},

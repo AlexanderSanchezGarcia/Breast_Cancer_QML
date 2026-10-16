@@ -1,0 +1,34 @@
+% Generado por Code/tools/tablas_anexos.py desde 4_descartadas_redundancia.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Características radiómicas descartadas por restricción de redundancia (Módulo 4).}
+\label{tab:anexo_m4_redundancia}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l l r l}
+\toprule
+Característica candidata & Redundante con & $|r|$ & Estado \\
+\midrule
+\multicolumn{4}{l}{\textit{Masas}} \\
+\quad firstorder\_TotalEnergy & firstorder\_Energy & 1.000 & Descartada ($|r| > 0.95$) \\
+\quad firstorder\_Median & firstorder\_90Percentile & 0.959 & Descartada ($|r| > 0.95$) \\
+\quad firstorder\_RootMeanSquared & firstorder\_90Percentile & 0.966 & Descartada ($|r| > 0.95$) \\
+\quad firstorder\_Mean & firstorder\_90Percentile & 0.955 & Descartada ($|r| > 0.95$) \\
+\quad shape2D\_MajorAxisLength & shape2D\_MaximumDiameter & 0.993 & Descartada ($|r| > 0.95$) \\
+\quad shape2D\_PixelSurface & shape2D\_MeshSurface & 1.000 & Descartada ($|r| > 0.95$) \\
+\quad glcm\_MCC & glcm\_Correlation & 0.986 & Descartada ($|r| > 0.95$) \\
+\multicolumn{4}{l}{\textit{Calcificaciones}} \\
+\quad glcm\_Imc1 & glrlm\_RunEntropy & 0.961 & Descartada ($|r| > 0.95$) \\
+\quad glcm\_SumAverage & glcm\_JointAverage & 1.000 & Descartada ($|r| > 0.95$) \\
+\quad glrlm\_RunPercentage & glrlm\_ShortRunEmphasis & 0.975 & Descartada ($|r| > 0.95$) \\
+\quad glrlm\_RunLengthNonUniformityNormalized & glrlm\_ShortRunEmphasis & 0.980 & Descartada ($|r| > 0.95$) \\
+\quad shape2D\_MaximumDiameter & shape2D\_Perimeter & 0.980 & Descartada ($|r| > 0.95$) \\
+\quad firstorder\_TotalEnergy & firstorder\_Energy & 1.000 & Descartada ($|r| > 0.95$) \\
+\quad glrlm\_HighGrayLevelRunEmphasis & glcm\_JointAverage & 0.972 & Descartada ($|r| > 0.95$) \\
+\quad glcm\_Autocorrelation & glcm\_JointAverage & 0.981 & Descartada ($|r| > 0.95$) \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Características candidatas con alto valor de $F$ que fueron omitidas de la selección final para evitar colinealidad extrema ($|r| > 0.95$). En masas se descartaron 7 variables y en calcificaciones 8.}
+\end{table}

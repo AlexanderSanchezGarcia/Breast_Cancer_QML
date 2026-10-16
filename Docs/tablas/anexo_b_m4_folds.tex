@@ -1,0 +1,25 @@
+% Generado por Code/tools/tablas_anexos.py desde 4_folds.csv. No editar a mano.
+\begin{table}[H]
+\centering
+\small
+\caption{Balance de lesiones, pacientes y proporción de malignidad por fold (Módulo 4).}
+\label{tab:anexo_m4_folds}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{c r r r r r r}
+\toprule
+ & \multicolumn{3}{c}{Masas (semilla elegida: 125)} & \multicolumn{3}{c}{Calcificaciones (semilla elegida: 168)} \\ \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Fold & Lesiones & Pacientes & Malignas (\%) & Lesiones & Pacientes & Malignas (\%) \\
+\midrule
+0 & 255 & 139 & 48.6\% & 315 & 120 & 33.3\% \\
+1 & 258 & 134 & 47.3\% & 271 & 119 & 35.4\% \\
+2 & 268 & 138 & 48.9\% & 322 & 121 & 36.6\% \\
+3 & 257 & 140 & 49.4\% & 314 & 121 & 35.7\% \\
+4 & 280 & 140 & 47.5\% & 324 & 121 & 34.9\% \\
+\midrule
+Total / media & 1318 & 691 & 48.3\% & 1546 & 602 & 35.2\% \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Partición de validación cruzada 5-fold estratificada por paciente (\texttt{StratifiedGroupKFold}). Garantiza cero fuga de pacientes entre folds y balance de clases óptimo entre candidatos de semillas.}
+\end{table}

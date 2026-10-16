@@ -1,0 +1,92 @@
+% ---
+% Hallazgos de implementación y lecciones técnicas aprendidas (OE-6).
+% Sección 6.7 del reporte técnico.
+% Entradas que lo respaldan: H-012, H-013, H-014, H-019, H-032, H-034, D-002, D-014, D-015, D-017, D-031.
+% ---
+
+\subsection{Hallazgos de implementación}
+\label{sec:lecciones_implementacion}
+
+La materialización práctica del pipeline experimental de aprendizaje automático cuántico en simulación clásica
+condujo al descubrimiento de un conjunto de limitaciones, ambigüedades de especificación y particularidades numéricas
+tanto del formalismo cuántico como de la biblioteca de desarrollo. Estos hallazgos constituyen una contribución técnica
+directa a la respuesta del objetivo específico OE-6, al documentar los factores que determinan la reproducibilidad y
+la viabilidad operacional del cómputo cuántico simulado. Para cada caso se distingue explícitamente entre propiedades
+fundamentales del formalismo cuántico y particularidades de implementación de la biblioteca Qiskit.
+
+% fuente: H-012, D-002; B1_benchmark_complejidad.csv
+\textbf{Identidad estructural entre circuitos en mapas de Pauli.} Al comparar la fidelidad cuántica entre los
+estados generados por el mapa \texttt{zz\_feature\_map} (condición C4) y el mapa general \texttt{pauli\_feature\_map}
+configurado con $\text{paulis} = [\text{'Z'},\text{'ZZ'}]$ (especificación inicial de C5), se obtuvo un valor
+de fidelidad idéntico a $1.000000000000$ tanto para $k = 4$ como para $k = 8$. De manera concurrente, las 18 filas del análisis
+de complejidad de circuitos en B1 resultaron exactamente idénticas en profundidad cruda (50 a 112), profundidad transpilada
+(58 a 126), compuertas CX (63 a 285) y conteo total de compuertas (187 a 725). Este comportamiento obedece a un
+\textbf{detalle de implementación de Qiskit}: en la biblioteca, la función \texttt{zz\_feature\_map} está definida de
+forma literal como una invocación a \texttt{pauli\_feature\_map} con el conjunto $[\text{'Z'},\text{'ZZ'}]$. Por tanto,
+ambas opciones representaban el mismo circuito y no constituían condiciones experimentales independientes. Ante esta evidencia,
+se descartó esa especificación y se evaluaron configuraciones alternativas con idéntico coste de compuertas
+entrelazadoras ($n_{cx} = 12$) promediando sobre 200 entradas aleatorias en $[0, \pi]^4$.
+
+% fuente: H-034, D-015, D-031
+\textbf{Inoperancia del operador Pauli X tras la capa de Hadamard.} Al formular la condición C5 mediante
+$\text{paulis} = [\text{'X'},\text{'ZZ'}]$ con el propósito de alternar el eje de rotación de primer orden,
+la fidelidad respecto a un circuito que omite por completo los términos lineales en $X$ (un mapa puramente $ZZ$) arrojó
+un valor mínimo de $0.99999999999999$ para 20 entradas al azar con $reps = 1$, y sobre las lesiones reales de masas la
+discrepancia máxima en las matrices de kernel fue de $5.9 \times 10^{-15}$. Este fenómeno corresponde a una
+\textbf{propiedad del formalismo cuántico}: la capa inicial de compuertas Hadamard prepara a cada qubit en el estado
+$|+\rangle$, el cual es autoestado de la compuerta de Pauli $X$ con autovalor $+1$. La rotación $R_X(2x_i) = H P(2x_i) H$
+actúa sobre su propio autoestado multiplicando al qubit únicamente por una fase compleja escalar. Sobre el estado producto
+global, estas fases individuales se agregan en una fase global indetectable que no afecta ninguna medición ni producto
+interno. Como consecuencia, se redefinió la condición
+C5 utilizando $\text{paulis} = [\text{'Y'},\text{'ZZ'}]$, donde la rotación en $Y$ no preserva el autoestado ecuatorial
+y modifica sustantivamente la codificación previa al entrelazamiento $ZZ$.
+
+% fuente: H-013, D-014
+\textbf{Nulidad idéntica del vector de expectativas sin capa variacional.} Al evaluar el vector de valores
+esperados $\langle Z_i \rangle$ directamente a la salida del mapa de características $ZZ$ prescindiendo del \textit{ansatz}
+variacional, el resultado fue $\langle Z_i \rangle = 0$ de forma exacta para todo qubit y cualquier vector de entrada $x$.
+Este resultado responde a una \textbf{propiedad del formalismo cuántico}: partiendo del estado de superposición uniforme
+$H^{\otimes k}|0\rangle$ (en el cual todas las amplitudes poseen módulo $2^{-k/2}$), todas las compuertas que componen el
+mapa $ZZ$ (rotaciones de fase $R_Z$ y bloques $CX-R_Z-CX$) son operadores diagonales en la base computacional. Las matrices
+diagonales multiplican cada amplitud por factores de fase compleja pero preservan de forma estricta sus magnitudes originales.
+Por lo tanto, la probabilidad marginal de medir cero satisface $P(\text{qubit}_i = 0) = 1/2$, lo que impone $\langle Z_i \rangle = 0$.
+Toda la información inyectada por el mapa reside en las fases relativas, respecto a las cuales la medición en $Z$ es ciega.
+En respuesta, se concluyó que bajo la Arquitectura~B el \textit{ansatz} variacional es metodológicamente indispensable:
+sus parámetros $\boldsymbol\theta$ deben fijarse con una semilla declarada (semilla 42) para que las rotaciones $R_Y(\boldsymbol\theta)$
+proyecten las diferencias de fase a poblaciones medibles. Asimismo, se clarificó que el kernel de fidelidad no sufre esta
+limitación al operar sobre los vectores de estado completos en el espacio de Hilbert.
+
+% fuente: H-019, H-014, H-016; B3_origen_suelo_h016.csv, B3_shots_muestreo_real.csv
+\textbf{Valores por defecto en estimadores y modelado de disparos en Aer.} En las evaluaciones iniciales
+de sensibilidad al número de disparos (*shots*), el error frente a la supuesta referencia analítica se estancaba en un suelo
+constante de $\approx 0.013$ hasta un millón de disparos, y el error parecía insensible entre 512 y 8\,192 disparos.
+Este comportamiento combinó una \textbf{propiedad del formalismo cuántico} con dos \textbf{detalles de implementación de Qiskit}.
+En el formalismo, la dispersión por disparos decae como $1/\sqrt{n}$ con varianza $(1 - \langle Z_i \rangle^2)/n$. En la biblioteca,
+la clase \texttt{EstimatorQNN} se construye con una precisión por defecto de $0.015625$ ($= 1/\sqrt{4096}$) y sobrescribe cualquier
+precisión fijada en el estimador subyacente; al transferir dicho valor a \texttt{StatevectorEstimator}, este último suma ruido
+gaussiano $\mathcal{N}(0, \text{precisión})$ incluso en simulación de vector de estado, generando un error medio analítico de
+$0.015625 \sqrt{2/\pi} = 0.01247$ en la referencia teórica. Además, el estimador \texttt{EstimatorV2} de Aer no simula disparos
+discretos, sino que calcula la expectativa analítica y le adiciona ruido gaussiano continuo, generando una dependencia circular
+con pendiente log-log de $-0.5065$. En consecuencia, se invalidó aquel hallazgo preliminar y la sección de disparos de B1; para el Módulo 5 se fijó
+que toda expectativa exacta debe evaluarse con \texttt{Statevector} directo o primitivas con precisión cero explícita (\texttt{default\_precision = 0.0});
+y para modelar disparos reales en B3 y OE-6 se adoptó exclusivamente el muestreador \texttt{SamplerV2} de Aer a partir de cadenas
+de bits, verificando pendientes de $-0.4986$ en dispersión y $-0.4983$ en MAE sin suelo espurio hasta $2^{20}$ disparos.
+
+% fuente: H-032, D-017
+\textbf{Aceleración analítica mediante productos internos matriciales.} La estimación inicial de tiempo de cálculo
+en B1 proyectaba aproximadamente 41 minutos por matriz de kernel cuántico de $200 \times 200$ mediante \texttt{FidelityQuantumKernel}
+(superando las 2.75~h para las cuatro matrices del protocolo), mientras que la implementación con \texttt{FidelityStatevectorKernel}
+evaluó la misma matriz exacta en 1.5\,s. Este hallazgo constituye un \textbf{detalle de implementación del simulador clásico}:
+\texttt{FidelityQuantumKernel} construye y ejecuta circuitos cuánticos independientes de tipo \textit{compute-uncompute} por cada
+par de muestras ($O(N^2)$ ejecuciones de circuito), mientras que \texttt{FidelityStatevectorKernel} aprovecha la disponibilidad
+simultánea de los $N$ vectores de estado en memoria clásica ($O(N)$ simulaciones) y calcula la matriz completa mediante productos
+internos vectoriales directos. Se adoptó \texttt{FidelityStatevectorKernel} para agilizar los módulos M6 y derivados en más de
+tres órdenes de magnitud ($\sim 1\,000\times$), explicitando en el reporte que dicho atajo computacional es una ventaja
+exclusiva de la simulación clásica que no existe en procesadores cuánticos físicos.
+
+% fuente: D-031
+\textbf{Obsolescencia de \texttt{PauliFeatureMap} en Qiskit~2.x.} A partir de Qiskit~2.1, la clase
+\texttt{PauliFeatureMap} está marcada como obsoleta en favor de la función \texttt{pauli\_feature\_map()}, que devuelve un
+\texttt{QuantumCircuit} estándar. Se trata de un \textbf{detalle de implementación de la API de Qiskit}, sin consecuencia
+sobre el circuito que se construye. El código del proyecto emplea las funciones \texttt{pauli\_feature\_map()} y
+\texttt{zz\_feature\_map()}.
