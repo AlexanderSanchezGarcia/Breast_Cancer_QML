@@ -7,7 +7,7 @@ Para cada número con decimales del párrafo se busca:
 Lo que no aparece en ninguna fuente se reporta como NO_ENCONTRADO: puede ser derivado, venir de otra entrada o ser una
 invención. Los párrafos con cifras y sin comentario de fuente se reportan como SIN_FUENTE.
 
-Uso: python Code/tools/verificar_cifras_capitulos.py Docs/capitulos/6_Resultados [Docs/capitulos/5_EDA ...]
+Uso: python Code/tools/verificar_cifras_capitulos.py Docs/capitulos/6_Resultados [Docs/capitulos/4_EDA ...]
 """
 import re
 import sys
