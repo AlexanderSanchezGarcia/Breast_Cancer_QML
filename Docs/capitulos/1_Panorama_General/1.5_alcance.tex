@@ -1,0 +1,76 @@
+% ---
+% §1.5 Alcance y limitaciones. Reemplaza las líneas 662–688 de Docs/Technical_Report.tex.
+% Cambios respecto a TT1:
+%   - propósito y pregunta alineados con la pregunta reformulada (§1.2, D-041);
+%   - se añaden las codificaciones evaluadas y excluidas (decidido con el autor el 2026-10-15)
+%     y las limitaciones de datos y de diseño;
+%   - se quitan la analogía del ENIAC y el párrafo de Grover (auditoría T3: fuera de tema y sin
+%     cita; la afirmación sobre NISQ y Grover no tenía fuente). El texto original sigue en el .tex.
+% Decisiones y hallazgos que lo respaldan: D-005, D-013, D-014, D-031; H-002, H-035, H-045, H-051,
+% H-052, H-054.
+% ---
+
+\subsection{Alcance y limitaciones}
+\label{sec:alcance}
+
+El presente trabajo tiene como propósito central evaluar la viabilidad de las transformaciones
+cuánticas variacionales como mecanismo de codificación de características radiómicas extraídas de
+imágenes mamográficas, determinando en qué medida modifican la separabilidad de clases
+benigno/maligno frente a representaciones clásicas construidas a partir del mismo vector de
+características. El sistema desarrollado constituye un prototipo de investigación académica, no un
+sistema de diagnóstico clínico, y su alcance está delimitado por los criterios siguientes.
+
+\textbf{Datos y tarea}
+
+El sistema opera exclusivamente sobre las lesiones del dataset CBIS-DDSM que corresponden a masas y
+calcificaciones con diagnóstico patológico confirmado, a partir de la región de interés que delimita
+la máscara de cada lesión. Masas y calcificaciones se tratan como subproblemas independientes en
+todo el \textit{pipeline}. El problema abordado es la clasificación binaria benigno/maligno; la
+detección de lesiones, su localización espacial y la segmentación quedan fuera del alcance.
+
+\textbf{Simulación clásica}
+
+% respaldo: «“Noisy” emphasizes that we’ll have imperfect control over those qubits; the noise will place serious limitations on what quantum devices can achieve in the near term.» (Preskill2018NISQ, p. 5)
+La totalidad de los experimentos cuánticos se ejecuta en simulación clásica con Qiskit Aer, sin
+acceso a \textit{hardware} cuántico. Los resultados corresponden, por tanto, a condiciones ideales,
+libres del ruido de los dispositivos físicos, lo cual es una condición deliberada del diseño
+experimental y no una deficiencia metodológica: permite atribuir lo observado a la codificación y no
+al ruido. Los dispositivos actuales, de escala intermedia y con ruido (NISQ), tienen un control
+imperfecto de sus qubits, y ese ruido limita lo que pueden lograr a corto plazo
+\cite{Preskill2018NISQ}. Lo que este trabajo dice sobre la ejecución en un procesador real se basa en
+proyecciones: el número de mediciones se estudia con un muestreo ideal de las probabilidades
+exactas, sin modelar el ruido del dispositivo.
+
+\textbf{Codificaciones evaluadas}
+
+El estudio se limita a dos mapas de características con entrelazamiento entre todos los pares de
+qubits, \textit{ZZFeatureMap} y \textit{PauliFeatureMap} con los términos Y y ZZ, con una repetición
+y $k = 12$ qubits. El número de qubits se fijó por el costo de simulación y por la diversidad de
+familias de características que conserva la selección, y obliga a descartar parte de la información
+de las 67 características extraídas. Quedan fuera las codificaciones sin entrelazamiento, como la
+angular producto o la codificación en amplitudes, porque su kernel es por construcción un kernel
+clásico (sección~\ref{sec:modulo5}). Los parámetros de la capa variacional se fijan con una semilla
+y no se entrenan, para que la separabilidad se mida sobre una representación no supervisada;
+entrenarlos se explora solo como experimento complementario.
+
+\textbf{Datos de imagen}
+
+Las mamografías del CBIS-DDSM son películas digitalizadas sin escala física de intensidad ni
+espaciado de píxel en sus metadatos, de modo que las características de primer orden se calculan
+sobre intensidades no calibradas y las de forma se expresan en píxeles. Todos los resultados
+provienen de un único conjunto de datos, sin validación externa, y el conjunto de prueba oficial se
+usa una sola vez por modelo.
+
+\textbf{El objetivo no es superar lo existente, sino explorar lo posible}
+
+Un error frecuente en la evaluación de trabajos de aprendizaje automático cuántico aplicado consiste
+en juzgar su validez en función de si el modelo cuántico supera en precisión a los mejores modelos
+clásicos disponibles. Este criterio, pertinente para tecnologías maduras, resulta inapropiado para el
+estado actual de la computación cuántica. El objetivo del presente trabajo no es demostrar que las
+representaciones cuánticas superan a una CNN de última generación en AUC-ROC, sino responder la
+pregunta planteada en la sección~\ref{sec:planteamiento}: en qué medida estas transformaciones
+modifican la separabilidad intrínseca de las clases sobre datos mamográficos reales, y si esa
+diferencia se refleja en la clasificación. Una mejora en separabilidad sin mejora en la clasificación
+constituiría evidencia válida sobre el comportamiento de estos circuitos, y también lo es una
+separabilidad igual o menor que la clásica, siempre que esté medida con el mismo rigor y que se
+documenten las restricciones que la explican.

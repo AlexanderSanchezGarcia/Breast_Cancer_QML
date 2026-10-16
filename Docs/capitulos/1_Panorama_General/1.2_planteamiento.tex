@@ -1,0 +1,110 @@
+% ---
+% §1.2 Planteamiento del problema. Reemplaza las líneas 573–603 de Docs/Technical_Report.tex.
+% Pregunta de investigación reformulada con el autor el 2026-10-15 (D-041): neutral («modifican»,
+% «hasta qué punto»), «características radiómicas» en lugar de «morfológicas» y comparación
+% anclada en el mismo vector de características, no en la dimensión.
+% Corrige de la auditoría (Docs/insumos/auditoria_s1_s2.md): paráfrasis sin cita de
+% Álvarez-Estévez (l. 587 y 591), «geometría euclidiana insuficiente» (refutado por los
+% resultados), «caídas de AUC de hasta 0.44 puntos» (Wang et al. reportan AUC de 0.44–0.65,
+% no una caída de 0.44) y la presuposición de mejora en la pregunta.
+% Decisiones y hallazgos que lo respaldan: D-019, D-031, D-032; H-031, H-039, H-042.
+% ---
+
+\subsection{Planteamiento del problema}
+\label{sec:planteamiento}
+
+\textbf{La representación como problema}
+
+En el prediagnóstico asistido por computadora, el clasificador no trabaja con la mamografía, sino
+con una representación de cada lesión: un vector de descriptores cuantitativos de intensidad,
+textura y forma extraídos de la región de interés. La calidad de esa representación limita lo que
+cualquier clasificador puede aprender de ella. En el CBIS-DDSM, además, las clases no se distinguen
+con la misma facilidad en los dos tipos de hallazgo: en las masas, los descriptores del radiólogo
+separan bien las formas irregulares y espiculadas de las ovaladas y circunscritas, mientras que en
+las calcificaciones el tipo más frecuente, el pleomórfico, aparece en ambas clases
+(capítulo~\ref{sec:eda}). Cabe preguntarse, entonces, si una transformación de esos descriptores
+puede reorganizarlos de modo que las lesiones benignas y malignas queden mejor separadas, y si esa
+reorganización ayuda a clasificarlas.
+
+\textbf{La propuesta de las codificaciones cuánticas}
+
+Un circuito de codificación $U(\mathbf{x})$ asocia a cada vector de características $\mathbf{x}$ un
+estado $|\phi(\mathbf{x})\rangle$ en un espacio de Hilbert de dimensión $2^n$ para $n$ qubits, y la
+similitud entre dos lesiones pasa a medirse por la fidelidad
+$|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ entre sus estados
+(sección~\ref{sec:feature_map}). Los mapas que incluyen compuertas de entrelazamiento, como el
+mapa ZZ introducido por Havlíček et al. \cite{havlicek2019supervised}, generan términos que dependen
+de pares de características y se han propuesto bajo la conjetura de una posible ventaja cuántica a
+corto plazo \cite{AlvarezEstevez2024QuantumKernelBench}. Esa es la motivación de emplearlos como
+transformación de los descriptores: no buscar un espacio más grande por sí mismo, sino una geometría
+de similitud distinta de la que inducen las transformaciones clásicas.
+
+% respaldo: «If the geometric difference is small, then a classical ML method is guaranteed to provide similar or better performance in prediction on the dataset, independent of the function values or labels.» (huang2021power, p. 2)
+% respaldo: «The small geometric difference is a consequence of the exponentially large Hilbert space employed by existing quantum models, where all inputs are too far apart.» (huang2021power, p. 2)
+% respaldo: «We show that, under certain conditions, values of quantum kernels over different input data can be exponentially concentrated (in the number of qubits) towards some fixed value.» (Thanasilp2024, p. 1)
+% respaldo: «Thus on training with a polynomial number of measurements, one ends up with a trivial model where the predictions on unseen inputs are independent of the input data.» (Thanasilp2024, p. 1)
+% respaldo (resumen de arXiv, sin PDF; Docs/fuentes/meta/AlvarezEstevez2024.xml): "However, the practical applicability of these methods remains an open question, particularly beyond the context of specifically-crafted toy problems, and given the current limitations of quantum hardware."
+La teoría, sin embargo, no garantiza que esa geometría sea más útil. Huang et al.
+\cite{huang2021power} muestran que, si la diferencia geométrica entre un kernel cuántico y los
+clásicos es pequeña, un método clásico ofrece un desempeño similar o mejor con cualquier
+etiquetado, y observan que en los modelos cuánticos habituales esa diferencia es pequeña porque,
+en un espacio de Hilbert exponencialmente grande, todas las entradas quedan demasiado lejos entre
+sí. Thanasilp et al. \cite{Thanasilp2024} demuestran que, bajo ciertas condiciones, los valores de
+un kernel cuántico se concentran exponencialmente en el número de qubits, de modo que estimarlos
+con un número polinomial de mediciones produce un modelo cuyas predicciones no dependen de los
+datos. Que una codificación cuántica separe mejor las clases sobre datos clínicos reales es, por
+tanto, una pregunta empírica: la aplicabilidad práctica de estos métodos más allá de problemas de
+prueba construidos a propósito, y con las limitaciones actuales del \textit{hardware}, sigue
+abierta \cite{AlvarezEstevez2024QuantumKernelBench}.
+
+\textbf{La brecha en mamografía}
+
+% respaldo: «In addition, in this research we conduct the experiments using the angle embedding technique since with this method the features can be learned.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «As future work, an interesting approach could be to separate the dataset into masses and calcifications and only then perform classification.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «Lastly, the best way to know how well this model performs would be to see how the data appears in our Hilbert space. Ideally, both classes would appear very separately in it, as tight clusters.» (Azevedo2022QuantumTransfer, p. 12)
+En mamografía, el antecedente más cercano con circuitos cuánticos es el trabajo de Azevedo et al.
+\cite{Azevedo2022QuantumTransfer}, que emplean una red híbrida con codificación angular sobre el
+BCDR. Sus autores dejan como trabajo futuro dos líneas que este trabajo retoma: separar masas y
+calcificaciones antes de clasificar, y observar cómo se distribuyen los datos en el espacio de
+Hilbert, idealmente como conglomerados compactos y separados. La revisión del
+capítulo~\ref{sec:antecedentes} no identificó trabajos que evalúen ninguna de las dos sobre el
+CBIS-DDSM.
+
+\textbf{La elección del mapa de características}
+
+% respaldo (resumen de arXiv, sin PDF): "Despite outperforming classical methods in ad-hoc datasets, mixed results are obtained for the general case among standard classical benchmarks." / "Instead, it is suggested that a careful choice of the quantum feature map in connection with proper hyperparameterization may prove more effective."
+% fuente: D-031
+El desempeño de los métodos de kernel cuánticos depende del mapa de características. En una
+comparación sobre conjuntos de datos de referencia, Álvarez-Estévez obtiene resultados mixtos
+frente a los métodos clásicos y sugiere que una elección cuidadosa del mapa, con una
+hiperparametrización adecuada, puede ser más efectiva que optimizar el kernel
+\cite{AlvarezEstevez2024QuantumKernelBench}. Este trabajo compara dos mapas que comparten el
+acoplamiento ZZ entre pares de características y difieren solo en el eje de la codificación de
+primer orden: \textit{ZZFeatureMap}, que gira cada qubit alrededor del eje Z, y
+\textit{PauliFeatureMap} con los términos Y y ZZ, que lo gira alrededor del eje Y
+(sección~\ref{sec:modulo5}).
+
+\textbf{Formulación del problema de investigación}
+
+A partir de lo anterior, el problema de investigación del presente trabajo se formula de la
+siguiente manera:
+
+\begin{quote}
+  ¿En qué medida las transformaciones cuánticas variacionales implementadas mediante
+  \textit{ZZFeatureMap} y \textit{PauliFeatureMap} en Qiskit modifican la separabilidad de clases
+  benigno/maligno de características radiómicas extraídas de mamografías del CBIS-DDSM, y hasta qué
+  punto esa diferencia se refleja en la capacidad de clasificación de una misma red neuronal
+  clásica, en comparación con representaciones clásicas construidas a partir del mismo vector de
+  características?
+\end{quote}
+
+La pregunta tiene tres dimensiones, que se abordan de forma integrada. La primera es la de la
+representación: si la separabilidad de clases cambia al pasar de las representaciones clásicas a
+las cuánticas, medida con métricas geométricas y de kernel (objetivo específico 3). La segunda es
+la de la clasificación: si las diferencias de separabilidad se reflejan en el desempeño de un mismo
+clasificador y en el orden en que quedan las condiciones (objetivo específico 5). La tercera
+acompaña a las dos anteriores y es la de la viabilidad: qué restricciones impone simular estos
+circuitos en una computadora clásica y qué implicarían en un procesador cuántico (objetivo
+específico 6). La pregunta no presupone el sentido de la respuesta: una separabilidad igual o menor
+que la de las representaciones clásicas es también un resultado válido. Los criterios con que se
+responde cada dimensión se fijan en el capítulo~\ref{sec:metodologia}.

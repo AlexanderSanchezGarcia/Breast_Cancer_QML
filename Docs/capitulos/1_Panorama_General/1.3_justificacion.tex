@@ -1,0 +1,89 @@
+% ---
+% §1.3 Justificación. Reemplaza las líneas 607–631 de Docs/Technical_Report.tex.
+% Cambios respecto a TT1 (auditoría T3, §1.3):
+%   - \cite de Azevedo et al. (estaba nombrado sin cita) y de Lee et al. / Clark et al. para el CBIS-DDSM;
+%   - «circuitos de hasta 16 qubits» → capacidad medida en este trabajo (H-051);
+%   - fuera «si demuestran mejorar … clasificadores más generalizables» (presupone el resultado)
+%     y «que la literatura menciona pero no sistematiza» (sin fuente);
+%   - la relevancia social remite a §1.1 en lugar de repetir cifras;
+%   - «datasets predominantes en la literatura» → remite a la tabla comparativa de §2.
+% Decisiones y hallazgos que lo respaldan: D-012, D-014, D-019, D-032, D-033; H-051.
+% ---
+
+\subsection{Justificación}
+\label{sec:justificacion}
+
+\textbf{Relevancia científica}
+
+% respaldo: «Furthermore, results on small datasets cannot be used to reason about larger datasets» (Bowles2024Benchmarking, p. 21)
+% respaldo: «There is hence a need to study how results scale to larger datasets, which typically pushes the number of qubits to the limits of what is possible today.» (Bowles2024Benchmarking, p. 22)
+El aprendizaje automático cuántico necesita evidencia empírica sobre datos reales. Una parte
+importante de su evaluación se ha hecho sobre problemas de prueba construidos para ilustrar
+propiedades teóricas \cite{AlvarezEstevez2024QuantumKernelBench}, y los resultados obtenidos con
+conjuntos de datos pequeños no permiten razonar sobre conjuntos mayores \cite{Bowles2024Benchmarking}.
+Llevar estas técnicas a un dominio de imagen médica, con miles de lesiones y la variabilidad propia de
+las mamografías digitalizadas, es la forma de saber cómo se comportan fuera de esas condiciones.
+
+% respaldo: «As future work, an interesting approach could be to separate the dataset into masses and calcifications and only then perform classification.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «Lastly, the best way to know how well this model performs would be to see how the data appears in our Hilbert space.» (Azevedo2022QuantumTransfer, p. 12)
+El presente trabajo contribuye a esa evidencia de tres formas. Primero, documenta el comportamiento
+de \textit{ZZFeatureMap} y \textit{PauliFeatureMap} de Qiskit aplicados a características radiómicas
+extraídas de mamografías reales en formato DICOM. Segundo, evalúa las representaciones por su
+separabilidad de clases, y no solo por el desempeño del clasificador final, con métricas definidas
+sobre los kernels y sobre los propios vectores de representación: el alineamiento kernel-objetivo, la
+diferencia geométrica, el índice de Davies-Bouldin y la razón de Fisher (sección~\ref{sec:metricas}).
+Tercero, retoma las dos líneas de trabajo futuro que dejan Azevedo et al.
+\cite{Azevedo2022QuantumTransfer}: analizar por separado masas y calcificaciones, y observar cómo se
+distribuyen los datos en el espacio de Hilbert. Así, los resultados se sitúan en una línea de
+investigación acumulativa en aprendizaje automático cuántico para el diagnóstico médico.
+
+\textbf{Relevancia social}
+
+El cáncer de mama es la principal causa de muerte por tumores malignos en las mujeres de México, y su
+detección temprana determina en gran medida el desenlace clínico (sección~\ref{sec:introduccion}).
+Las herramientas de prediagnóstico asistido pueden ampliar la capacidad de un sistema de salud en el
+que la disponibilidad de mastógrafos y de especialistas en radiología mamaria no cubre la demanda. Para
+orientar ese desarrollo es necesario saber qué técnicas aportan y cuáles no: si las representaciones
+cuánticas no mejoran la separabilidad de las lesiones, ese resultado, medido con rigor, también indica
+dónde no conviene invertir el esfuerzo de investigación. Aunque el presente trabajo es un prototipo
+académico y no un dispositivo clínico, sus resultados se suman al conocimiento que eventualmente
+informará el desarrollo de herramientas diagnósticas para sistemas de salud con recursos limitados,
+como el mexicano.
+
+\textbf{Viabilidad técnica}
+
+% respaldo: «The data were split into a training set and a testing set based on the BI-RADS category.» (Lee2017CBISDDSM, p. 5)
+% fuente: D-013, H-032, H-051; B1_benchmark_arquitectura.csv, B1_benchmark_kernel_proyeccion.csv, 8_oe6_qubits.csv, 8_oe6_resumen.csv
+% VERIFICAR: licencia CC BY 3.0 del CBIS-DDSM en TCIA (la ficha de Lee no la respalda con cita literal).
+La viabilidad del trabajo descansa en tres recursos. El primero es el dataset CBIS-DDSM, una versión
+curada del DDSM con diagnóstico confirmado por patología, disponible públicamente en The Cancer
+Imaging Archive \cite{Lee2017CBISDDSM, Clark2013TCIA}. Reúne 3\,568 lesiones de 1\,566 pacientes, con
+una partición oficial de entrenamiento y prueba estratificada por categoría BI-RADS y metadatos
+clínicos estructurados, lo que evita procesos propios de adquisición, anonimización o validación
+clínica. El segundo es la simulación clásica de los circuitos en el equipo de desarrollo, un
+procesador Apple M3 con 16 GiB de memoria. El número de qubits se fijó en 12 tras un estudio de
+costos: con la implementación inicial, que evaluaba cada valor del kernel con un circuito propio, la
+etapa cuántica completa pasaba de unas 3~h con 12 qubits a unas 41~h con 16, y el diseño requiere
+decenas de kernels. Después se adoptó una implementación que calcula el vector de estado de cada
+lesión una sola vez y obtiene el kernel de sus productos internos; con ella se comprobó que el límite
+físico de la máquina está más arriba, pues se simularon estados de hasta 28 qubits
+(sección~\ref{sec:resultados}). Estas cifras corresponden a la simulación ideal del vector de estado,
+sin ruido, que además permite aislar el efecto de la transformación cuántica sin la interferencia del
+ruido de los dispositivos físicos. El tercero es un ecosistema de
+programación de código abierto, documentado y mantenido (Qiskit, PyTorch, PyRadiomics, scikit-learn),
+que permite a otros investigadores reproducir el trabajo.
+
+\textbf{Novedad y posicionamiento frente a trabajos previos}
+
+La aportación del trabajo se define por tres diferenciadores. El primero es el dominio de datos:
+opera sobre mamografías DICOM del CBIS-DDSM y no sobre datos clínicos tabulares, como Wisconsin, SEER o
+GBSG, empleados en otros trabajos de aprendizaje automático cuántico en oncología
+(cuadro~\ref{tab:estado_arte_v2}). El segundo es el papel del componente cuántico: el circuito se usa
+exclusivamente como transformación de la representación, con parámetros fijos, y no como una capa que
+se entrena dentro de una red, lo que permite analizar de forma aislada su efecto sobre la
+separabilidad de las clases. El tercero es el análisis de viabilidad: las restricciones prácticas del
+simulador se convierten en un objetivo de investigación explícito y medible, con datos cuantitativos
+sobre el tiempo de ejecución, el número de qubits simulables, el número de mediciones que requeriría
+un procesador real y el costo de entrenar el circuito. En conjunto, estos diferenciadores sitúan el
+trabajo como una contribución experimental a una línea de investigación activa y como una referencia
+metodológica para aplicar codificaciones cuánticas a la imagen médica.

@@ -63,6 +63,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-038 | 2026-10-07 | Análisis exploratorios X4 a X6: QSVM, auditoría y búsqueda de ventaja, con protocolo simétrico | X4–X6 | Firme | §6.x, §7 |
 | D-039 | 2026-10-07 | El Spearman del M8 se reporta como descriptivo: por subconjunto, con su distribución exacta para n = 5 | M8 | Firme | §3.4, §4.10, §6.x |
 | D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Firme (validada por el autor el 2026-10-12) | §4.10, §6.x, §7, OE-6 |
+| D-041 | 2026-10-15 | Pregunta de investigación y objetivos reformulados en el reporte final, con cambio mínimo | reporte | **Provisional**: pendiente de confirmar con los directores | §1.2, §1.4, §1.5 |
 
 ### Hallazgos
 
@@ -828,6 +829,43 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 **Evidencia.** 84/84 series en 21.4 min, 0 fallidas. Cobertura verificada: **3,568 / 3,568 = 100.0 %**. Los DICOM nuevos leen con `pydicom` como MG de 16 bits en MONOCHROME2, consistentes con el resto.
 
 **Consecuencias.** El endpoint `v2/getImage` devuelve HTTP 500 y no sirve. El procedimiento queda como la forma reproducible de obtener el dataset y debe documentarse en §8.x, ya que el reporte no describe hoy cómo se obtuvieron los datos.
+
+---
+
+### D-041 · Pregunta de investigación y objetivos reformulados en el reporte final
+**Fecha:** 2026-10-15 · **Módulo:** reporte · **Estado:** Provisional (decidido por el autor; pendiente de confirmar con los directores si los objetivos registrados en TT1 pueden reformularse) · **→ Reporte:** §1.2, §1.4, §1.5
+
+**Contexto.**
+- La pregunta y los objetivos de TT1 presuponen una mejora: «qué impacto tiene dicha mejora» y «si la mejora en separabilidad observada en OE-3 se traduce en una mejora» (auditoría T3, `Docs/insumos/auditoria_s1_s2.md`, corrección prioritaria 8).
+- Con los resultados de TT2 (H-039, H-042) no hubo mejora. La pregunta, tal como estaba, no se podía responder.
+- Además, varios objetivos describían un diseño que cambió: «características morfológicas», «normalización», «encoder CNN preentrenado», *g* solo frente al RBF y C5 sin términos fijados.
+
+**Alternativas.**
+- Conservar el texto de TT1 y matizarlo en el texto que sigue.
+- Descomponer la pregunta en hipótesis o en subpreguntas PI-1 a PI-3. El autor lo descartó: prefiere una sola pregunta de investigación.
+- Reformular la pregunta y aplicar a los objetivos un cambio mínimo.
+
+**Decisión.**
+- Se reformula la pregunta y se aplica a los objetivos un cambio mínimo, sin tocar su alcance. El texto lo fijó el autor en sesión el 2026-10-15.
+- Pregunta de TT1: «¿En qué medida las transformaciones cuánticas variacionales implementadas mediante ZZFeatureMap y PauliFeatureMap en Qiskit mejoran la separabilidad de características morfológicas extraídas de imágenes mamográficas del dataset CBIS-DDSM, y qué impacto tiene dicha mejora en la capacidad de clasificación binaria (benigno/maligno) de una red neuronal clásica entrenada con estos quantum embeddings, en comparación con una red entrenada con representaciones clásicas equivalentes?»
+- Pregunta nueva: «¿En qué medida las transformaciones cuánticas variacionales implementadas mediante ZZFeatureMap y PauliFeatureMap en Qiskit modifican la separabilidad de clases benigno/maligno de características radiómicas extraídas de mamografías del CBIS-DDSM, y hasta qué punto esa diferencia se refleja en la capacidad de clasificación de una misma red neuronal clásica, en comparación con representaciones clásicas construidas a partir del mismo vector de características?»
+- Por qué cada cambio:
+  - «mejoran» → «modifican» y «qué impacto tiene dicha mejora» → «hasta qué punto esa diferencia se refleja»: la pregunta queda neutral y las dos partes son preguntas de grado.
+  - «morfológicas» → «radiómicas»: las 67 features incluyen primer orden y textura, no solo forma.
+  - «representaciones clásicas equivalentes» → «construidas a partir del mismo vector de características»: lo que hace justa la comparación es el punto de partida común (M4) y el mismo clasificador, no la dimensión, que es consecuencia del límite de qubits (D-013).
+- Objetivos, cambio mínimo:
+  - **OG:** «capacidad … para generar espacios con mayor separabilidad» → «efecto … en la separabilidad»; «morfológicas» → «radiómicas»; «respecto al kernel RBF clásico» → «respecto a kernels clásicos de referencia» (D-032); «la mejora en separabilidad se traduce en una mejora» → «las diferencias en separabilidad se reflejan»; «distancia Fisher» → «razón de Fisher» (D-033).
+  - **OE-1:** sin «normalización» ni «encoder CNN preentrenado» (D-006, D-009, D-010); recorte de la ROI a resolución original.
+  - **OE-2:** capa RealAmplitudes «de parámetros fijos» (D-014); C5 «con los términos Y y ZZ» (D-031).
+  - **OE-3:** *g* frente a «un conjunto de kernels clásicos de referencia, como indicador de si el espacio cuántico induce una geometría que los métodos clásicos no reproducen», en lugar de «para cuantificar si el espacio cuántico captura estructura inaccesible para métodos clásicos».
+  - **OE-4:** sin cambios de contenido.
+  - **OE-5:** «si la mejora en separabilidad observada en OE-3 se traduce en una mejora» → «si las diferencias de separabilidad observadas … se reflejan»; «ranking» → «ordenamiento».
+  - **OE-6:** «Evaluar o analizar … para determinar la viabilidad real» → «Analizar … para valorar la viabilidad», con el número de mediciones de un procesador real (D-040).
+
+**Consecuencias.**
+- El texto está en `Docs/capitulos/1_Panorama_General/1.2_planteamiento.tex` y `1.4_objetivos.tex`. La cabecera de `1.4_objetivos.tex` resume los cambios.
+- Si los directores piden conservar los objetivos registrados, se restaura el texto de TT1 (`Technical_Report.tex`, l. 635–658) y se añade una nota con lo que cambió en la ejecución. La pregunta reformulada puede mantenerse en cualquier caso.
+- §1.5 se alinea con la nueva pregunta. Además declara las codificaciones evaluadas y las excluidas: sin entrelazamiento, su kernel es clásico por construcción (H-045, §5.7).
 
 ---
 

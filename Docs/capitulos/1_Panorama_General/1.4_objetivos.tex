@@ -1,0 +1,68 @@
+% ---
+% §1.4 Objetivos. Reemplaza las líneas 635–658 de Docs/Technical_Report.tex.
+% Cambio mínimo respecto al protocolo de TT1, registrado en D-041 (Other/bitacora_decisiones.md),
+% pendiente de confirmar con los directores. Cambios:
+%   OG   «capacidad … para generar espacios con mayor separabilidad» → «efecto … en la separabilidad»;
+%        «morfológicas» → «radiómicas»; «kernel RBF clásico» → «kernels clásicos de referencia» (D-032);
+%        «la mejora … se traduce en una mejora» → «las diferencias … se reflejan»;
+%        «distancia Fisher» → «razón de Fisher» (D-033).
+%   OE-1 sin «normalización» ni «encoder CNN preentrenado» (D-006, D-009, D-010); recorte a resolución original.
+%   OE-2 C4 y C5 con capa variacional de parámetros fijos (D-014); C5 con términos Y y ZZ (D-031).
+%   OE-3 geometric difference frente a kernels clásicos de referencia, sin «estructura inaccesible» (D-032).
+%   OE-5 «la mejora … se traduce» → «las diferencias … se reflejan»; «ranking» → «ordenamiento».
+%   OE-6 redacción («Evaluar o analizar» → «Analizar») y número de mediciones en un procesador real (D-040).
+% ---
+
+\subsection{Objetivos}
+\label{sec:objetivos}
+
+\subsubsection{Objetivo general}
+
+Analizar el efecto de las transformaciones cuánticas variacionales implementadas mediante
+\textit{ZZFeatureMap} y \textit{PauliFeatureMap} en Qiskit, sobre características radiómicas
+extraídas de imágenes mamográficas del dataset CBIS-DDSM, en la separabilidad de clases
+benigno/maligno, cuantificando dicha separabilidad mediante \textit{kernel-target alignment},
+\textit{geometric difference} respecto a kernels clásicos de referencia, índice de Davies-Bouldin y
+razón de Fisher, comparando contra representaciones clásicas de referencia (sin transformación, PCA
+lineal y Kernel PCA con kernel RBF) construidas a partir del mismo vector de características
+seleccionadas y escaladas, e integrando todas las representaciones resultantes como entrada de un
+mismo clasificador MLP para determinar si las diferencias en separabilidad se reflejan en la
+capacidad de clasificación binaria.
+
+\subsubsection{Objetivos específicos}
+
+\begin{enumerate}
+  \item Construir un \textit{pipeline} de preprocesamiento sobre el dataset CBIS-DDSM que comprenda
+  la lectura de imágenes en formato DICOM, el recorte de la región de interés (ROI) a resolución
+  original, la extracción de un vector de características radiómicas mediante PyRadiomics y la
+  selección de las $k$ características más discriminativas mediante SelectKBest con escalado
+  angular al rango $[0,\pi]$, diferenciando el procesamiento de casos de masas y calcificaciones
+  como subproblemas independientes.
+  \item Implementar las cinco condiciones de transformación del experimento sobre el mismo vector
+  de entrada: (a) sin transformación, como referencia sin procesar; (b) PCA lineal, como referencia
+  lineal; (c) Kernel PCA con kernel RBF, como referencia no lineal; (d) circuito cuántico
+  variacional con \textit{ZZFeatureMap}, implementado en Qiskit Aer con una capa variacional
+  RealAmplitudes de parámetros fijos; y (e) circuito cuántico variacional con
+  \textit{PauliFeatureMap} con los términos Y y ZZ, con la misma capa variacional, asegurando que
+  todas las condiciones produzcan vectores de representación de dimensión $k$ como entrada al
+  clasificador MLP.
+  \item Analizar y comparar la separabilidad de clases benigno/maligno en los espacios de
+  representación generados por las cinco condiciones experimentales mediante: \textit{kernel-target
+  alignment} (KTA) respecto al kernel ideal de clasificación; \textit{geometric difference} entre el
+  kernel cuántico y un conjunto de kernels clásicos de referencia, como indicador de si el espacio
+  cuántico induce una geometría que los métodos clásicos no reproducen; índice de Davies-Bouldin,
+  como medida de compacidad y separación de los grupos; y razón de Fisher, como cociente de la
+  dispersión entre clases sobre la dispersión dentro de cada clase; aplicando el análisis de forma
+  independiente para masas y calcificaciones.
+  \item Entrenar un mismo clasificador MLP sobre cada uno de los cinco vectores de representación
+  generados en el objetivo específico 2, manteniendo idéntica arquitectura, hiperparámetros y
+  protocolo de entrenamiento en todas las condiciones.
+  \item Evaluar si las diferencias de separabilidad observadas en el objetivo específico 3 se
+  reflejan en la capacidad de clasificación binaria, comparando las métricas AUC-ROC, F1-Score,
+  Accuracy, Precision y Recall obtenidas por el MLP en las cinco condiciones y analizando la
+  correlación entre el ordenamiento de separabilidad y el de clasificación, con todos los resultados
+  reportados por separado para masas y calcificaciones del CBIS-DDSM.
+  \item Analizar los beneficios y las limitaciones prácticas, incluidas las restricciones
+  computacionales del simulador cuántico y el número de mediciones que requeriría un procesador
+  real, para valorar la viabilidad de aplicar estas técnicas en un contexto de salud.
+\end{enumerate}
