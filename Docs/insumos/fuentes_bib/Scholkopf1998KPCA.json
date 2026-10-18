@@ -1,0 +1,229 @@
+{
+ "indexed": {
+  "date-parts": [
+   [
+    2026,
+    10,
+    16
+   ]
+  ],
+  "date-time": "2026-10-16T21:12:54Z",
+  "timestamp": 1792185174908,
+  "version": "4.4.0"
+ },
+ "reference-count": 7,
+ "publisher": "MIT Press - Journals",
+ "issue": "5",
+ "content-domain": {
+  "domain": [],
+  "crossmark-restriction": false
+ },
+ "short-container-title": [
+  "Neural Computation"
+ ],
+ "published-print": {
+  "date-parts": [
+   [
+    1998,
+    7,
+    1
+   ]
+  ]
+ },
+ "abstract": "<jats:p> A new method for performing a nonlinear form of principal component analysis is proposed. By the use of integral operator kernel functions, one can efficiently compute principal components in high-dimensional feature spaces, related to input space by some nonlinear map—for instance, the space of all possible five-pixel products in 16 × 16 images. We give the derivation of the method and present experimental results on polynomial feature extraction for pattern recognition. </jats:p>",
+ "DOI": "10.1162/089976698300017467",
+ "type": "journal-article",
+ "created": {
+  "date-parts": [
+   [
+    2002,
+    7,
+    27
+   ]
+  ],
+  "date-time": "2002-07-27T11:55:01Z",
+  "timestamp": 1027770901000
+ },
+ "page": "1299-1319",
+ "source": "Crossref",
+ "is-referenced-by-count": 6337,
+ "title": [
+  "Nonlinear Component Analysis as a Kernel Eigenvalue Problem"
+ ],
+ "prefix": "10.1162",
+ "volume": "10",
+ "author": [
+  {
+   "given": "Bernhard",
+   "family": "Schölkopf",
+   "sequence": "first",
+   "affiliation": [
+    {
+     "name": "Max-Planck-Institut für biologische Kybernetik, 72076 Tübingen, Germany"
+    }
+   ],
+   "role": [
+    {
+     "vocabulary": "crossref",
+     "role": "author"
+    }
+   ]
+  },
+  {
+   "given": "Alexander",
+   "family": "Smola",
+   "sequence": "additional",
+   "affiliation": [
+    {
+     "name": "GMD First (Forschungszentrum Informationstechnik), 12489 Berlin, Germany"
+    }
+   ],
+   "role": [
+    {
+     "vocabulary": "crossref",
+     "role": "author"
+    }
+   ]
+  },
+  {
+   "given": "Klaus-Robert",
+   "family": "Müller",
+   "sequence": "additional",
+   "affiliation": [
+    {
+     "name": "GMD First (Forschungszentrum Informationstechnik), 12489 Berlin, Germany"
+    }
+   ],
+   "role": [
+    {
+     "vocabulary": "crossref",
+     "role": "author"
+    }
+   ]
+  }
+ ],
+ "member": "281",
+ "reference": [
+  {
+   "key": "p_1",
+   "first-page": "821",
+   "volume": "25",
+   "author": "Aizerman M.",
+   "year": "1964",
+   "journal-title": "Automation and Remote Control"
+  },
+  {
+   "key": "p_5",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/BF00994018"
+  },
+  {
+   "key": "p_9",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.2307/2289936"
+  },
+  {
+   "key": "p_11",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1109/34.41390"
+  },
+  {
+   "key": "p_12",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1162/neco.1989.1.4.541"
+  },
+  {
+   "key": "p_13",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/BF00275687"
+  },
+  {
+   "key": "p_14",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/BF02281970"
+  }
+ ],
+ "container-title": [
+  "Neural Computation"
+ ],
+ "original-title": [],
+ "language": "en",
+ "link": [
+  {
+   "URL": "https://www.mitpressjournals.org/doi/pdf/10.1162/089976698300017467",
+   "content-type": "unspecified",
+   "content-version": "vor",
+   "intended-application": "similarity-checking"
+  }
+ ],
+ "deposited": {
+  "date-parts": [
+   [
+    2021,
+    3,
+    12
+   ]
+  ],
+  "date-time": "2021-03-12T21:52:09Z",
+  "timestamp": 1615585929000
+ },
+ "score": 1,
+ "resource": {
+  "primary": {
+   "URL": "https://direct.mit.edu/neco/article/10/5/1299-1319/6193"
+  }
+ },
+ "subtitle": [],
+ "short-title": [],
+ "issued": {
+  "date-parts": [
+   [
+    1998,
+    7,
+    1
+   ]
+  ]
+ },
+ "references-count": 7,
+ "journal-issue": {
+  "issue": "5",
+  "published-print": {
+   "date-parts": [
+    [
+     1998,
+     7,
+     1
+    ]
+   ]
+  }
+ },
+ "alternative-id": [
+  "10.1162/089976698300017467"
+ ],
+ "URL": "https://doi.org/10.1162/089976698300017467",
+ "relation": {},
+ "ISSN": [
+  "0899-7667",
+  "1530-888X"
+ ],
+ "issn-type": [
+  {
+   "value": "0899-7667",
+   "type": "print"
+  },
+  {
+   "value": "1530-888X",
+   "type": "electronic"
+  }
+ ],
+ "subject": [],
+ "published": {
+  "date-parts": [
+   [
+    1998,
+    7,
+    1
+   ]
+  ]
+ }
+}

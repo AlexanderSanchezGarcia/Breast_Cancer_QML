@@ -1,0 +1,15 @@
+% ---
+% Subsubsección 3.5.4 (nueva, 2026-10-18), breve por decisión del autor. Se usa en X4 y X6 (D-038).
+% Implementación: sklearn.svm.SVC(kernel='precomputed', C=1, class_weight='balanced').
+% ---
+
+\subsubsection{Máquina de vectores de soporte (SVM)}
+\label{sec:svm}
+
+La máquina de vectores de soporte (SVM) separa dos clases con el hiperplano de margen máximo, admitiendo errores con una penalización $C$ \cite{CortesVapnik1995}. En su forma dual, la función de decisión solo depende de los datos a través de un kernel:
+\begin{equation}
+  f(\mathbf{x}) = \sum_{i=1}^{n} \alpha_i\, y_i\, k(\mathbf{x}_i, \mathbf{x}) + b,
+  \qquad 0 \le \alpha_i \le C_{y_i},
+  \label{eq:svm_dual}
+\end{equation}
+con $y_i \in \{-1, +1\}$. Los $\mathbf{x}_i$ con $\alpha_i > 0$ son los vectores de soporte. Como el modelo solo necesita la matriz de kernel, puede entrenarse con cualquier kernel semidefinido positivo, clásico o cuántico, sin cambiar el algoritmo. En los experimentos complementarios se usa con $C = 1$ y con $C_{y}$ ponderado de forma inversa a la frecuencia de cada clase.

@@ -1,0 +1,581 @@
+{
+ "indexed": {
+  "date-parts": [
+   [
+    2026,
+    10,
+    18
+   ]
+  ],
+  "date-time": "2026-10-18T10:51:14Z",
+  "timestamp": 1792320674866,
+  "version": "4.4.0"
+ },
+ "reference-count": 73,
+ "publisher": "Radiological Society of North America (RSNA)",
+ "issue": "2",
+ "content-domain": {
+  "domain": [],
+  "crossmark-restriction": false
+ },
+ "short-container-title": [
+  "Radiology"
+ ],
+ "published-print": {
+  "date-parts": [
+   [
+    2016,
+    2
+   ]
+  ]
+ },
+ "DOI": "10.1148/radiol.2015151169",
+ "type": "journal-article",
+ "created": {
+  "date-parts": [
+   [
+    2015,
+    11,
+    18
+   ]
+  ],
+  "date-time": "2015-11-18T17:36:25Z",
+  "timestamp": 1447868185000
+ },
+ "page": "563-577",
+ "source": "Crossref",
+ "is-referenced-by-count": 7719,
+ "title": [
+  "Radiomics: Images Are More than Pictures, They Are Data"
+ ],
+ "prefix": "10.1148",
+ "volume": "278",
+ "author": [
+  {
+   "given": "Robert J.",
+   "family": "Gillies",
+   "sequence": "first",
+   "affiliation": [],
+   "role": [
+    {
+     "vocabulary": "crossref",
+     "role": "author"
+    }
+   ]
+  },
+  {
+   "given": "Paul E.",
+   "family": "Kinahan",
+   "sequence": "additional",
+   "affiliation": [],
+   "role": [
+    {
+     "vocabulary": "crossref",
+     "role": "author"
+    }
+   ]
+  },
+  {
+   "given": "Hedvig",
+   "family": "Hricak",
+   "sequence": "additional",
+   "affiliation": [],
+   "role": [
+    {
+     "vocabulary": "crossref",
+     "role": "author"
+    }
+   ]
+  }
+ ],
+ "member": "1577",
+ "reference": [
+  {
+   "key": "r1",
+   "volume-title": "Lessons learned and the path forward",
+   "author": "Institute of Medicine I",
+   "year": "2012"
+  },
+  {
+   "key": "r2",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.2217/fon.09.154"
+  },
+  {
+   "key": "r3",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.compmedimag.2007.02.002"
+  },
+  {
+   "key": "r4",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1093/carcin/bgv007"
+  },
+  {
+   "key": "r5",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1186/gm268"
+  },
+  {
+   "key": "r6",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s00330-015-3701-8"
+  },
+  {
+   "key": "r7",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.radonc.2015.02.015"
+  },
+  {
+   "key": "r9",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1158/1078-0432.CCR-14-0223"
+  },
+  {
+   "key": "r10",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1056/NEJMp1500523"
+  },
+  {
+   "key": "r11",
+   "author": "Office of the Press Secretary",
+   "journal-title": "The White House Web site"
+  },
+  {
+   "key": "r12",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.3322/caac.21208"
+  },
+  {
+   "key": "r13",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1038/nature09515"
+  },
+  {
+   "key": "r14",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1056/NEJMoa1113205"
+  },
+  {
+   "key": "r15",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1073/pnas.1219747110"
+  },
+  {
+   "key": "r16",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1200/JCO.2007.14.8494"
+  },
+  {
+   "key": "r17",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1200/JCO.2003.02.018"
+  },
+  {
+   "key": "r18",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1200/JCO.2010.33.2312"
+  },
+  {
+   "key": "r19",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1126/scitranslmed.3002003"
+  },
+  {
+   "key": "r20",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1002/cncr.10318"
+  },
+  {
+   "key": "r21",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/S1078-1439(03)00236-9"
+  },
+  {
+   "key": "r22",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/BF02574516"
+  },
+  {
+   "key": "r23",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1002/(SICI)1097-0142(19991201)86:11<2426::AID-CNCR34>3.0.CO;2-3"
+  },
+  {
+   "key": "r24",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.mri.2012.06.010"
+  },
+  {
+   "key": "r25",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.ejca.2011.11.036"
+  },
+  {
+   "key": "r26",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.acra.2007.10.021"
+  },
+  {
+   "issue": "6",
+   "key": "r27",
+   "first-page": "1059",
+   "volume": "47",
+   "author": "Shankar LK",
+   "year": "2006",
+   "journal-title": "J Nucl Med"
+  },
+  {
+   "key": "r28",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1593/tlo.13832"
+  },
+  {
+   "key": "r29",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1148/radiol.10100799"
+  },
+  {
+   "issue": "1",
+   "key": "r30",
+   "first-page": "1520",
+   "volume": "55",
+   "author": "Kinahan P",
+   "year": "2014",
+   "journal-title": "J Nucl Med"
+  },
+  {
+   "key": "r32",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s00330-009-1685-y"
+  },
+  {
+   "key": "r33",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.jacr.2009.07.023"
+  },
+  {
+   "key": "r34",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1155/2014/431680"
+  },
+  {
+   "key": "r35",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.jacr.2014.10.002"
+  },
+  {
+   "key": "r36",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1148/radiol.13122697"
+  },
+  {
+   "key": "r37",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1593/tlo.13730"
+  },
+  {
+   "key": "r38",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.radonc.2012.09.023"
+  },
+  {
+   "key": "r39",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.radonc.2010.05.003"
+  },
+  {
+   "key": "r40",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1038/nbt1306"
+  },
+  {
+   "key": "r41",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1109/TSMC.1973.4309314"
+  },
+  {
+   "key": "r42",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s13244-012-0196-6"
+  },
+  {
+   "key": "r43",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1158/1078-0432.CCR-14-0990"
+  },
+  {
+   "key": "r44",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1002/mrm.22003"
+  },
+  {
+   "key": "r45",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1002/mrm.24644"
+  },
+  {
+   "key": "r46",
+   "author": "Grossmann P",
+   "journal-title": "Sci Transl Med"
+  },
+  {
+   "key": "r47",
+   "doi-asserted-by": "crossref",
+   "first-page": "4006",
+   "DOI": "10.1038/ncomms5006",
+   "volume": "5",
+   "author": "Aerts HJ",
+   "year": "2014",
+   "journal-title": "Nat Commun"
+  },
+  {
+   "key": "r48",
+   "first-page": "SSM06",
+   "volume-title": "Radiological Society of North America Scientific Assembly and Annual Meeting Program",
+   "author": "Pickup L",
+   "year": "2015"
+  },
+  {
+   "key": "r50",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s10278-014-9716-x"
+  },
+  {
+   "key": "r51",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.2307/2532051"
+  },
+  {
+   "key": "r52",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1080/10543400802527890"
+  },
+  {
+   "key": "r53",
+   "author": "Fehr D",
+   "journal-title": "Proc Natl Acad Sci USA"
+  },
+  {
+   "key": "r54",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1073/pnas.0801279105"
+  },
+  {
+   "key": "r55",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.jvir.2007.04.031"
+  },
+  {
+   "key": "r56",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1371/journal.pone.0118261"
+  },
+  {
+   "key": "r57",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1148/radiol.14131731"
+  },
+  {
+   "key": "r58",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1088/0031-9155/60/7/2685"
+  },
+  {
+   "key": "r59",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1002/nbm.3132"
+  },
+  {
+   "key": "r60",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s00259-010-1524-z"
+  },
+  {
+   "key": "r61",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1148/radiol.10090931"
+  },
+  {
+   "key": "r62",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1093/jnci/djp335"
+  },
+  {
+   "key": "r63",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1093/jnci/88.20.1456"
+  },
+  {
+   "key": "r64",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/S0140-6736(09)60329-9"
+  },
+  {
+   "key": "r65",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1186/1741-7015-8-24"
+  },
+  {
+   "key": "r66",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1038/nrd3439-c1"
+  },
+  {
+   "key": "r67",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1038/483531a"
+  },
+  {
+   "issue": "7525",
+   "key": "r68",
+   "first-page": "7",
+   "volume": "515",
+   "year": "2014",
+   "journal-title": "Nature"
+  },
+  {
+   "key": "r69",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1126/science.aaa1724"
+  },
+  {
+   "key": "r70",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1038/nature11556"
+  },
+  {
+   "key": "r72",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1038/461160a"
+  },
+  {
+   "key": "r73",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1053/j.seminoncol.2009.12.007"
+  },
+  {
+   "key": "r74",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.acra.2013.09.011"
+  },
+  {
+   "key": "r75",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1016/j.acra.2013.11.007"
+  },
+  {
+   "key": "r76",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s10278-013-9663-y"
+  },
+  {
+   "key": "r77",
+   "doi-asserted-by": "publisher",
+   "DOI": "10.1007/s10278-013-9622-7"
+  }
+ ],
+ "container-title": [
+  "Radiology"
+ ],
+ "original-title": [],
+ "language": "en",
+ "link": [
+  {
+   "URL": "http://pubs.rsna.org/doi/pdf/10.1148/radiol.2015151169",
+   "content-type": "unspecified",
+   "content-version": "vor",
+   "intended-application": "similarity-checking"
+  }
+ ],
+ "deposited": {
+  "date-parts": [
+   [
+    2019,
+    9,
+    1
+   ]
+  ],
+  "date-time": "2019-09-01T13:44:52Z",
+  "timestamp": 1567345492000
+ },
+ "score": 1,
+ "resource": {
+  "primary": {
+   "URL": "http://pubs.rsna.org/doi/10.1148/radiol.2015151169"
+  }
+ },
+ "subtitle": [],
+ "short-title": [],
+ "issued": {
+  "date-parts": [
+   [
+    2016,
+    2
+   ]
+  ]
+ },
+ "references-count": 73,
+ "journal-issue": {
+  "issue": "2",
+  "published-print": {
+   "date-parts": [
+    [
+     2016,
+     2
+    ]
+   ]
+  }
+ },
+ "alternative-id": [
+  "10.1148/radiol.2015151169"
+ ],
+ "URL": "https://doi.org/10.1148/radiol.2015151169",
+ "relation": {
+  "is-referenced-by": [
+   {
+    "id-type": "doi",
+    "id": "10.1007/s00261-025-04965-1",
+    "asserted-by": "object"
+   },
+   {
+    "id-type": "doi",
+    "id": "10.1007/s00261-024-04598-w",
+    "asserted-by": "object"
+   },
+   {
+    "id-type": "doi",
+    "id": "10.1007/s12672-025-03627-4",
+    "asserted-by": "object"
+   },
+   {
+    "id-type": "doi",
+    "id": "10.1186/s12880-025-01951-3",
+    "asserted-by": "object"
+   }
+  ]
+ },
+ "ISSN": [
+  "0033-8419",
+  "1527-1315"
+ ],
+ "issn-type": [
+  {
+   "value": "0033-8419",
+   "type": "print"
+  },
+  {
+   "value": "1527-1315",
+   "type": "electronic"
+  }
+ ],
+ "subject": [],
+ "published": {
+  "date-parts": [
+   [
+    2016,
+    2
+   ]
+  ]
+ }
+}

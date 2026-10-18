@@ -1,0 +1,54 @@
+% ---
+% Subsubsección 3.5.1 (nueva, 2026-10-18). Base teórica del Módulo 3 (D-008, D-023).
+% La ecuación de discretización es la del manual IBSI (Zwanenburg2020IBSI, p. 23).
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
+% ---
+
+\subsubsection{Características radiómicas}
+\label{sec:radiomica}
+
+% respaldo: «These advances have facilitated the development of processes for high-throughput extraction of quantitative features that result in the conversion of images into mineable data and the subsequent analysis of these data for decision support; this practice is termed radiomics.» (Gillies2016Radiomics, p. 1)
+La radiómica es la extracción, a gran escala, de características cuantitativas de las imágenes médicas, que convierte las imágenes en datos analizables y permite usarlos como apoyo a la decisión \cite{Gillies2016Radiomics}. En este trabajo, cada lesión se describe con 67 características calculadas con PyRadiomics \cite{vanGriethuysen2017} sobre la región de interés, agrupadas en cuatro familias: primer orden, forma, matriz de co-ocurrencia de niveles de gris (GLCM) y matriz de longitudes de secuencia (GLRLM). Su configuración se detalla en la sección~\ref{sec:modulo3}.
+
+\textbf{Discretización de intensidades}
+
+% respaldo: «In the ﬁxed bin number method, intensities Xgl are discretised to a ﬁxed number of Ng bins.» (Zwanenburg2020IBSI, p. 23)
+Las familias de textura no trabajan con las intensidades originales, sino con niveles de gris discretos. Con el método de número fijo de niveles que define el manual de la \textit{Image Biomarker Standardisation Initiative} (IBSI), la intensidad $X_k$ de cada píxel de la región se lleva a uno de $N_g$ niveles \cite{Zwanenburg2020IBSI}:
+\begin{equation}
+  X_{d,k} =
+  \begin{cases}
+    \left\lfloor N_g \dfrac{X_k - X_{\min}}{X_{\max} - X_{\min}} \right\rfloor + 1, & X_k < X_{\max},\\[8pt]
+    N_g, & X_k = X_{\max},
+  \end{cases}
+  \label{eq:discretizacion}
+\end{equation}
+donde $X_{\min}$ y $X_{\max}$ son la menor y la mayor intensidad dentro de la región. En este trabajo $N_g = 32$. Como el rango se toma de cada lesión, el método no depende de la escala absoluta de las intensidades, que en el CBIS-DDSM no está calibrada.
+
+\textbf{Primer orden y forma}
+
+Las características de primer orden son estadísticas de la distribución de intensidades dentro de la región, sin información espacial: la media, los percentiles, la asimetría o la entropía,
+\begin{equation}
+  H = -\sum_{i=1}^{N_g} p(i)\,\log_2 p(i),
+  \label{eq:entropia_radiomica}
+\end{equation}
+donde $p(i)$ es la fracción de píxeles de la región con nivel de gris $i$. Las de forma describen la geometría del contorno de la máscara: área, perímetro, ejes mayor y menor, elongación. Como los DICOM del CBIS-DDSM no traen el espaciado de píxel, las medidas de forma quedan en píxeles.
+
+\textbf{Matriz de co-ocurrencia (GLCM)}
+
+% respaldo: «The grey level co-occurrence matrix (GLCM) is a matrix that expresses how combinations of discretised intensities (grey levels) of neighbouring pixels, or voxels in a 3D volume, are distributed along one of the image directions.» (Zwanenburg2020IBSI, p. 69)
+La GLCM describe cómo se combinan los niveles de gris de píxeles vecinos a lo largo de una dirección de la imagen \cite{Zwanenburg2020IBSI}. Para una distancia $\delta$ y una dirección $\theta$, su elemento $P(i,j \mid \delta,\theta)$ cuenta cuántos pares de píxeles separados por $\delta$ en la dirección $\theta$ tienen los niveles $i$ y $j$. Normalizada, $p(i,j) = P(i,j)/\sum_{i,j}P(i,j)$, es una distribución conjunta de la que se derivan las características; por ejemplo, el contraste,
+\begin{equation}
+  \text{Contraste} = \sum_{i=1}^{N_g}\sum_{j=1}^{N_g} (i-j)^2\, p(i,j),
+  \label{eq:glcm_contraste}
+\end{equation}
+que crece cuando los vecinos tienen niveles muy distintos. En este trabajo, $\delta = 1$ y las características se promedian sobre las cuatro direcciones del plano.
+
+\textbf{Matriz de longitudes de secuencia (GLRLM)}
+
+% respaldo: «whereas GLCM assesses co-occurrence of grey levels within neighbouring pixels or voxels, GLRLM assesses run lengths. A run length is deﬁned as the length of a consecutive sequence of pixels or voxels with the same grey level along direction m, which was previously deﬁned in Section 3.6.» (Zwanenburg2020IBSI, p. 92)
+La GLRLM evalúa secuencias: una secuencia es un tramo de píxeles consecutivos con el mismo nivel de gris a lo largo de una dirección \cite{Zwanenburg2020IBSI}. Su elemento $R(i,j \mid \theta)$ cuenta cuántas secuencias de nivel $i$ y longitud $j$ hay en la dirección $\theta$. Con $N_r$ el número total de secuencias, el énfasis en secuencias cortas,
+\begin{equation}
+  \text{SRE} = \frac{1}{N_r}\sum_{i=1}^{N_g}\sum_{j} \frac{R(i,j)}{j^2},
+  \label{eq:glrlm_sre}
+\end{equation}
+es alto en texturas finas, donde el nivel de gris cambia de un píxel al siguiente, y bajo en regiones homogéneas.

@@ -1,0 +1,32 @@
+% ---
+% Subsubsección 3.5.3 (nueva, 2026-10-18). Condición C3 (D-027: γ por la heurística de la mediana).
+% Implementación: sklearn.decomposition.KernelPCA(n_components=12, kernel='rbf', gamma=γ), ajustada
+% solo en train (5a_Embeddings). La normalización de la ec. de proyección es la de scikit-learn: sobre
+% los puntos de entrenamiento, la componente ℓ vale sqrt(μ_ℓ) veces el vector propio.
+% ---
+
+\subsubsection{Análisis de componentes principales con kernel (Kernel PCA)}
+\label{sec:kernel_pca}
+
+El Kernel PCA aplica el análisis de componentes principales en el espacio de características de un kernel, sin calcular ese espacio de forma explícita \cite{Scholkopf1998KPCA}. Es la contraparte clásica no lineal de un \textit{feature map}: como el kernel cuántico de fidelidad (ecuación~\eqref{eq:quantum_kernel}), un kernel $k(\mathbf{x},\mathbf{x}')$ define implícitamente un mapa $\phi$ con $k(\mathbf{x},\mathbf{x}') = \langle \phi(\mathbf{x}), \phi(\mathbf{x}') \rangle$, y todo el cálculo se hace a través de $k$.
+
+Con los $n$ vectores de entrenamiento se forma la matriz $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$ y se centra en el espacio de características:
+\begin{equation}
+  \tilde{K} = K - \mathbf{1}_n K - K \mathbf{1}_n + \mathbf{1}_n K \mathbf{1}_n,
+  \label{eq:kpca_centrado}
+\end{equation}
+donde $\mathbf{1}_n$ es la matriz de $n \times n$ con todas sus entradas iguales a $1/n$. Si $\mu_\ell$ y $\mathbf{a}^{\ell}$ son los valores y vectores propios unitarios de $\tilde{K}$, la componente $\ell$ de una lesión $\mathbf{x}$ es
+\begin{equation}
+  z_\ell(\mathbf{x}) = \frac{1}{\sqrt{\mu_\ell}} \sum_{i=1}^{n} a^{\ell}_i\, \tilde{k}(\mathbf{x}_i, \mathbf{x}),
+  \label{eq:kpca_proyeccion}
+\end{equation}
+donde $\tilde{k}$ es el kernel centrado con las medias de entrenamiento. Sobre los puntos de entrenamiento, $z_\ell(\mathbf{x}_j) = \sqrt{\mu_\ell}\, a^{\ell}_j$.
+
+En la condición C3 se usa el kernel gaussiano (RBF),
+\begin{equation}
+  k(\mathbf{x}, \mathbf{x}') = \exp\!\left(-\gamma \lVert \mathbf{x} - \mathbf{x}' \rVert^2\right),
+  \qquad
+  \gamma = \frac{1}{2\,\operatorname{med}_{i<j}\lVert \mathbf{x}_i - \mathbf{x}_j \rVert^2},
+  \label{eq:rbf_mediana}
+\end{equation}
+con $\gamma$ fijado por la heurística de la mediana sobre las distancias de entrenamiento, y se conservan 12 componentes, la misma dimensión que las demás condiciones. A diferencia de C2, C3 es no lineal: deforma la geometría de los datos, como lo hacen los mapas cuánticos, pero con un kernel clásico. Por eso es la comparación clásica más directa para C4 y C5. Los kernels gaussianos forman también parte de la batería de kernels clásicos de referencia con la que se calcula la \textit{geometric difference} (sección~\ref{sec:metricas}).

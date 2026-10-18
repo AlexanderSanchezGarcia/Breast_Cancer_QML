@@ -1,0 +1,31 @@
+% ---
+% Subsubsección 3.5.6 (nueva, 2026-10-18). Experimento X6 (D-038, H-047, H-048).
+% La identidad de la ec. eq:kpq_pauli se comprobó numéricamente con Qiskit (estados aleatorios de 3
+% qubits, partial_trace frente a valores esperados de Pauli): diferencia de 1e-16.
+% Implementación en X6: valores esperados <X_k>, <Y_k>, <Z_k> de los 12 qubits del ZZFeatureMap con
+% c = 1 y kernel gaussiano sobre ellos, con cinco anchos de banda.
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
+% ---
+
+\subsubsection{Kernel cuántico proyectado}
+\label{sec:kernel_proyectado}
+
+% respaldo: «To circumvent this setback, we propose a family of projected quantum kernels as a solution. These kernels work by projecting the quantum states to an approximate classical representation, e.g., using reduced physical observables or classical shadows25,27,42–44.» (huang2021power, p. 6)
+El kernel de fidelidad compara estados en el espacio de Hilbert completo, de dimensión $2^n$, donde, como se vio en la sección~\ref{sec:limites_ventaja}, las entradas tienden a quedar demasiado lejos entre sí. Huang et al. propusieron los kernels cuánticos proyectados, que primero proyectan cada estado a una representación clásica aproximada, por ejemplo mediante observables reducidos, y después comparan esas representaciones \cite{huang2021power}.
+
+% respaldo: «One of the simplest forms of projected quantum kernel is to measure the one-particle reduced density matrix (1-RDM) on all qubits for the encoded state» (huang2021power, p. 6)
+La forma más simple usa la matriz de densidad reducida de cada qubit \cite{huang2021power}. Si $\rho(\mathbf{x}) = |\phi(\mathbf{x})\rangle\langle\phi(\mathbf{x})|$ es el estado codificado y $\rho_k(\mathbf{x}) = \operatorname{Tr}_{j \neq k}[\rho(\mathbf{x})]$ el del qubit $k$, que se obtiene trazando los demás, el kernel es
+\begin{equation}
+  k^{\mathrm{PQ}}(\mathbf{x}, \mathbf{x}') = \exp\!\left(-\gamma \sum_{k=1}^{n} \bigl\lVert \rho_k(\mathbf{x}) - \rho_k(\mathbf{x}') \bigr\rVert_F^2\right).
+  \label{eq:kpq}
+\end{equation}
+
+Esta expresión tiene una lectura directa en términos de mediciones. El estado de un qubit se escribe como $\rho_k = \tfrac{1}{2}\bigl(I + \sum_{P} \langle P_k \rangle\, P\bigr)$, con $P \in \{X, Y, Z\}$, y como $\operatorname{Tr}(PQ) = 2\,\delta_{PQ}$ para las matrices de Pauli,
+\begin{equation}
+  \bigl\lVert \rho_k(\mathbf{x}) - \rho_k(\mathbf{x}') \bigr\rVert_F^2 = \frac{1}{2} \sum_{P \in \{X,Y,Z\}} \bigl(\langle P_k \rangle_{\mathbf{x}} - \langle P_k \rangle_{\mathbf{x}'}\bigr)^2 .
+  \label{eq:kpq_pauli}
+\end{equation}
+El kernel proyectado es, por tanto, un kernel gaussiano con parámetro $\gamma/2$ sobre el vector de $3n$ valores esperados $\langle X_k \rangle$, $\langle Y_k \rangle$, $\langle Z_k \rangle$ de cada qubit. Se parece al \textit{quantum embedding} de la sección~\ref{sec:quantum_embedding}, con dos diferencias: aquí se leen los tres ejes de cada qubit, y se leen directamente sobre el estado del \textit{feature map}, sin \textit{ansatz}. Su parámetro $\gamma$ es un ancho de banda que se elige como en un kernel clásico.
+
+% respaldo: «In numerical experiments, we ﬁnd that the classical projection increases rather than decreases the geometric difference with classical ML models.» (huang2021power, p. 6)
+En los experimentos numéricos de Huang et al., esta proyección aumentó, en lugar de reducir, la \textit{geometric difference} con los modelos clásicos \cite{huang2021power}. En este trabajo se evalúa en un experimento complementario, sobre los estados del ZZFeatureMap con el factor de escala del diseño (sección~\ref{sec:qsvm_ventaja}).

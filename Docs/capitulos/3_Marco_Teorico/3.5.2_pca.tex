@@ -1,0 +1,27 @@
+% ---
+% Subsubsección 3.5.2 (nueva, 2026-10-18). Condición C2 (D-016: control nulo).
+% Implementación: sklearn.decomposition.PCA(n_components=12), ajustada solo en train (5a_Embeddings).
+% Que la rotación completa conserva las distancias se comprobó numéricamente: diferencia máxima
+% de 6e-15 entre distancias euclidianas antes y después del PCA con 12 de 12 componentes.
+% ---
+
+\subsubsection{Análisis de componentes principales (PCA)}
+\label{sec:pca}
+
+El análisis de componentes principales (PCA) busca las direcciones de máxima varianza de los datos \cite{goodfellow2016deep}. Sea $\boldsymbol{\mu}$ la media de los vectores de entrenamiento y $\tilde{X}$ la matriz de entrenamiento centrada, con una lesión por fila. La matriz de covarianza se descompone como
+\begin{equation}
+  \Sigma = \frac{1}{n-1}\,\tilde{X}^{\top}\tilde{X} = V \Lambda V^{\top},
+  \label{eq:pca_covarianza}
+\end{equation}
+donde las columnas de $V$ son los vectores propios ortonormales y $\Lambda$ es la matriz diagonal de varianzas, en orden decreciente. La representación de una lesión $\mathbf{x}$ es su proyección sobre esas direcciones:
+\begin{equation}
+  \mathbf{z} = V^{\top}(\mathbf{x} - \boldsymbol{\mu}).
+  \label{eq:pca_proyeccion}
+\end{equation}
+
+Cuando se conservan menos componentes que variables, PCA reduce la dimensión. En la condición C2 se conservan las $k = 12$, de modo que $V$ es una matriz ortogonal de $12 \times 12$ y la transformación es una traslación seguida de una rotación. Una rotación conserva las distancias y los productos internos de los datos centrados:
+\begin{equation}
+  \lVert \mathbf{z} - \mathbf{z}' \rVert = \lVert V^{\top}(\mathbf{x} - \mathbf{x}') \rVert = \lVert \mathbf{x} - \mathbf{x}' \rVert.
+  \label{eq:pca_isometria}
+\end{equation}
+Por eso C2 es un control nulo: toda métrica de separabilidad que dependa solo de distancias o de productos internos centrados da el mismo valor en C1 y en C2. Si una métrica distinguiera ambas condiciones, la diferencia vendría de la implementación y no de la geometría. El clasificador, en cambio, no es invariante ante rotaciones, porque estandariza cada coordenada por separado, y puede dar resultados ligeramente distintos en C1 y C2.

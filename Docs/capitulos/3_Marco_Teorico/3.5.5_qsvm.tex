@@ -1,0 +1,13 @@
+% ---
+% Subsubsección 3.5.5 (nueva, 2026-10-18), breve por decisión del autor. Experimento X4 (D-038, H-044).
+% Implementación: kernel de fidelidad exacto por vector de estado (sin ansatz) y SVC precomputada.
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
+% ---
+
+\subsubsection{Máquina de vectores de soporte cuántica (QSVM)}
+\label{sec:qsvm}
+
+% respaldo: «In the second, a quantum kernel estimator, we estimate the kernel function and optimize the classiﬁer directly.» (havlicek2019supervised, p. 1)
+Una QSVM es una SVM cuyo kernel se estima con un circuito cuántico \cite{havlicek2019supervised}: en la ecuación~\eqref{eq:svm_dual} se usa el kernel de fidelidad $k(\mathbf{x},\mathbf{x}') = |\langle \phi(\mathbf{x}) | \phi(\mathbf{x}') \rangle|^2$ de la ecuación~\eqref{eq:quantum_kernel}. El computador cuántico solo calcula la matriz de kernel; el entrenamiento de la SVM es clásico. En un procesador real, cada entrada se estima midiendo el circuito $U^{\dagger}(\mathbf{x}')\,U(\mathbf{x})$ sobre $|0\rangle^{\otimes n}$ y contando la fracción de veces que el resultado es la cadena de ceros, por lo que su precisión depende del número de mediciones. En simulación de vector de estado se calcula de forma exacta.
+
+En este trabajo, la QSVM se usa en un experimento complementario, con los mapas de C4 y C5 y el mismo protocolo que una SVM con kernel RBF (sección~\ref{sec:qsvm_ventaja}). Su interés es metodológico: como el kernel de fidelidad usa solo el \textit{feature map}, sin \textit{ansatz} ni medición de $\langle Z_i \rangle$, permite separar lo que la codificación cuántica conserva de lo que se pierde al leer los valores esperados.
