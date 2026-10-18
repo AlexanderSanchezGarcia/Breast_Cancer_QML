@@ -1,0 +1,21 @@
+# Baccouche2022ResidualNN · An integrated framework for breast mass classification and diagnosis using stacked ensemble of residual neural networks
+
+- Autores y año: Baccouche et al. (2022)
+- DOI comprobado en la página 1: Sí
+- Versión leída: Docs/fuentes/pdf/Baccouche2022ResidualNN.pdf · publicada · 17 páginas
+- Tipo: experimental
+
+## Respuestas a las preguntas
+1. Accuracy en patología y en forma sobre qué conjuntos — Alcanzaron 95.13 % de exactitud en patología sobre CBIS-DDSM (y 99.20 % en INbreast), y 90.02 % en clasificación de forma sobre CBIS-DDSM — «Table 14 shows that we achieved the highest pathology classification performance on the two public datasets: CBIS-DDSM with an accuracy of 95.13% and an AUC score of 0.95, and INbreast with an accuracy of 99.20 and an AUC score of 0.99.» (p. 13) y «We also reported the highest results on the shape classification for the CBIS-DDSM dataset with an accuracy of 90.02% and an AUC score of 0.98.» (p. 13)
+2. Reporte de AUC y cifras exactas — Sí, reportan AUC explícitamente: 0.95 en patología para CBIS-DDSM (0.99 en INbreast), 0.94 en BI-RADS para CBIS-DDSM (1.0 en INbreast) y 0.98 en forma para CBIS-DDSM — «Table 14 shows that we achieved the highest pathology classification performance on the two public datasets: CBIS-DDSM with an accuracy of 95.13% and an AUC score of 0.95, and INbreast with an accuracy of 99.20 and an AUC score of 0.99.» (p. 13)
+3. Masas o también calcificaciones — En la fase inicial de detección/localización se usaron mamografías con masas y calcificaciones, pero para la segmentación y clasificación subsiguiente se retuvieron exclusivamente lesiones de tipo masa — «As the datasets were explored continuously during the previous studies, the original mammograms that included mass and calcification cases were used during the first step of detection and localization; therefore detected ROIs of only mass cases were retained for the second step of segmentation.» (p. 6)
+4. Modelos del ensemble — El ensamble apilado combina tres arquitecturas ResNet: ResNet50V2, ResNet101V2 y ResNet152V2 — «The proposed model uses three different architectures of the ResNet model, ResNet50V2, ResNet101V2, and ResNet152V2 that are transferred and fine-tuned on our mammography datasets.» (p. 3)
+
+## Qué concluye la obra
+- Implementa un ensamble apilado de modelos ResNet para clasificar masas mamarias en malignas o benignas, determinar su categoría BI-RADS y clasificar su forma: «In this study, we have implemented a stacked ensemble of ResNet models to classify breast masses as malignant or benign and diagnose their BI-RADS category assessment with a score from 2 to 6 and their shape as oval, round, lobulated or irregular.» (p. 13)
+- La técnica de ensamble apilado permitió combinar eficazmente modelos de diferentes profundidades en un clasificador conjunto: «As a result, the stacking model technique provided an efficient way to learn from various depths of neural networks and combine them in another neural network classifier model to benefit from the different weights that were trained individually.» (p. 14)
+- El empleo de ROI segmentadas confirma la ventaja de enmascarar el tejido de fondo para reducir falsos positivos y negativos: «Indeed, an increase in performance using the segmented ROIs, as shown in Table 13, indicates the advantage of masking the background tissues from the tumors’ boundaries to help improve the overall classification and diagnosis, and decrease the false positive and negative rates.» (p. 14)
+
+## Qué deja como trabajo futuro o limitación declarada
+- Señala como limitación el tiempo prolongado de entrenamiento (0.74 s por época) derivado del elevado número de parámetros entrenables de los modelos ResNetV2: «Limitations of the proposed methodology can occur on the long training time of 0.74 s per epoch, which is due to the high number of trainable parameters and computations of the ResNetV2 model.» (p. 14)
+- Propone como trabajo futuro combinar diferentes conjuntos de datos de mamografía y optimizar el entrenamiento de los modelos profundos: «Future works can include combining different mammography datasets and improving the long training of deep learning models for the classification task.» (p. 14)
