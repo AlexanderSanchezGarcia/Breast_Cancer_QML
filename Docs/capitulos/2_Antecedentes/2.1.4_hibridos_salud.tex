@@ -1,21 +1,36 @@
 % ---
 % Reemplaza líneas 799–814 de Docs/Technical_Report.tex.
-% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% Reescrito en TT2 con Docs/insumos/auditoria_s1_s2.md y las fichas de T10:
+% - sin la revisión de Radhi et al. (texto no accesible; decisión del autor del 2026-10-16);
+% - Xiang et al. trabajan con datos tabulares, no con mamografías, y sus mejoras van de 1 a 10 puntos;
+% - BreastMNIST es ultrasonido, no mamografía (MedMNIST v2), aunque el resumen de Rifat et al. diga lo
+%   contrario; sin el «frente a 67 %» (decisión del autor del 2026-10-16);
+% - la simulación sin ruido no es una brecha que este trabajo cierre: también simula.
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
 % ---
 
-\subsubsection{Modelos híbridos cuántico-clasico en el sector salud}
+\subsubsection{Modelos híbridos cuántico-clásicos en el sector salud}
 
-La aplicación de arquitecturas híbridas cuántico-clásicas en diagnóstico médico por imagen es una línea de investigación activa. Una revisión sistemática de 28 estudios publicados entre 2018 y 2024 reporta el uso prevalente de QSVM, QCNN y modelos híbridos cuántico-clásicos en aplicaciones que incluyen clasificación de tumores cerebrales, lesiones cutáneas y detección de COVID-19, demostrando resultados prometedores en accuracy, sensibilidad y especificidad; sin embargo, se identifican retos constantes en la codificación de imágenes médicas para procesamiento cuántico, la escalabilidad limitada del hardware actual y la necesidad de modelos con una mejor interpretación. \cite {Radhi2025QuantumDeepLearning}
+Las arquitecturas híbridas, en las que una parte clásica extrae o reduce las características y un circuito cuántico participa en la clasificación, son una línea de investigación activa en diagnóstico médico. En cáncer de mama, los trabajos revisados presentan dos rasgos comunes: evalúan sobre datos tabulares o imágenes muy reducidas, y reportan la mejora en exactitud final.
 
-\textbf{Aplicaciones específicas en cáncer de mama}
+\textbf{Aplicaciones en cáncer de mama}
 
-En el dominio de la mamografía, Xiang et al. (2024) propusieron el modelo QCCNN evaluado sobre datasets tabulares (GBSG, SEER, WDBC), reportando mejoras de hasta 5\% en accuracy respecto a CNN y regresión logística clásicas. Un trabajo más reciente aplicó un modelo ResNet50 como extractor de características y una QNN downstream sobre el dataset BreastMNIST, alcanzando 69\% de accuracy frente a 67\% de métodos híbridos comparables, reconociendo explícitamente las restricciones del hardware cuántico actual como limitante de la precisión del modelo. Estos resultados son consistentes con la propuesta del presente trabajo, la ventaja cuántica en este dominio no debe medirse en precisión final sino en la calidad de la representación generada.
+% respaldo: «The Kaggle website (a machine learning repository) provided the breast cancer diagnosis GBSG dataset, SEER dataset, and WDBC dataset used in this study.» (Xiang2024QuantumCNN, p. 3)
+% respaldo: «Model Training accuracy (%) Validation accuracy (%) QCCNN 74.375 70.498 CNN 59.708 58.944 Logistic regression 61.927 60.583 Table 2.» (Xiang2024QuantumCNN, p. 9)
+% respaldo: «Model Training Accuracy (%) Validation Accuracy (%) QCCNN 89.544 90.088 CNN 88.708 89.091 Logistic Regression 89.513 89.125 Table 3.» (Xiang2024QuantumCNN, p. 9)
+Xiang et al. propusieron una red convolucional híbrida (QCCNN) y la evaluaron sobre tres conjuntos tabulares de cáncer de mama, GBSG, SEER y WDBC, no sobre imágenes. Frente a una CNN y una regresión logística, la exactitud media en validación mejoró entre 1 y 10 puntos porcentuales según el conjunto \cite{Xiang2024QuantumCNN}. Su diseño experimental se examina en la sección~\ref{sec:revision_critica}.
 
-\textbf{Limitaciones comunes reportadoos}
+% respaldo: «The proposed method employs a modified ResNet50 as a feature extractor and a Quantum Neural Network to train on that feature and generate desired predictions.» (Rifat2024, p. 1)
+% respaldo: «Our architecture proved superior to other state-of-the-art hybrid methods, achieving an accuracy of 69% against 67%.» (Rifat2024, p. 1)
+Rifat et al. combinaron una ResNet50 modificada como extractor de características con una red neuronal cuántica, y reportan una exactitud del 69~\% sobre BreastMNIST \cite{Rifat2024}.
+% respaldo: «We collected the BreastMNIST dataset of 780 benign and malignant full-image mammogram samples.» (Rifat2024, p. 1)
+% respaldo: «The BreastMNIST is based on a dataset25 of 780 breast ultrasound images.» (Yang2023MedMNIST, p. 4)
+Aunque el resumen del trabajo describe ese conjunto como mamografías, BreastMNIST procede de 780 imágenes de ultrasonido de mama, reducidas a $28 \times 28$ píxeles \cite{Rifat2024, Yang2023MedMNIST}.
+% respaldo: «Although quantum computing has yet to show any significant improvement in machine learning due to its limited resources and complexity, it may reduce the computational complexity of machine learning in the future.» (Rifat2024, p. 1)
+Los propios autores reconocen que la computación cuántica aún no ha mostrado una mejora significativa en aprendizaje automático, por lo limitado de sus recursos y su complejidad \cite{Rifat2024}.
 
-La literatura identifica tres limitaciones en la mayor parte de  los trabajos revisados, los experimentos se ejecutan en simulación clásica sin ruido cuántico real; los datasets utilizados son tabulares o imágenes muy reducidas (28×28), lejos de las mamografías DICOM de alta resolución; y ninguno analiza explícitamente la separabilidad de clases en el espacio de Hilbert como métrica de evaluación intermedia. Estas tres brechas son precisamente las que el presente trabajo aborda.
+\textbf{Limitaciones comunes}
 
+Los trabajos revisados comparten tres limitaciones. Primero, los experimentos se ejecutan en simulación clásica o en procesadores de pocos qubits. Segundo, los datos son tabulares o imágenes muy reducidas, lejos de las mamografías de alta resolución. Tercero, ninguno de los trabajos aplicados a cáncer de mama analiza explícitamente la separabilidad de clases en el espacio inducido por el circuito; la miden por su efecto en la exactitud final.
 
-% -----------------------------------------------------------
-% 2.1.5 Trabajos específicos sobre el dataset CBIS-DDSM
-% -----------------------------------------------------------
+El presente trabajo aborda las dos últimas: extrae las características de las regiones de interés a la resolución original del CBIS-DDSM y mide la separabilidad antes de la clasificación. La primera no la resuelve, porque también trabaja en simulación; en su lugar, cuantifica lo que la simulación exacta oculta, como el número de mediciones que haría falta en un procesador real.

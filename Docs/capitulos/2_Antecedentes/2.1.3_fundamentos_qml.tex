@@ -1,53 +1,63 @@
 % ---
 % Reemplaza líneas 751–798 de Docs/Technical_Report.tex.
-% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% Reescrito en TT2 con Docs/insumos/auditoria_s1_s2.md: sin TorchConnector ni entrenamiento de θ por
+% parameter-shift (D-014); C5 con Y y ZZ (D-031); barren plateau conectado con la concentración del
+% kernel (H-031); la fórmula de parameter-shift y los componentes de Qiskit quedan en §3.2.7 y §3.3.4.
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
 % ---
 
-\subsubsection{Fundamentos de quantum machine learning y codificación cuántica de datos}
+\subsubsection{Fundamentos de \textit{quantum machine learning} y codificación cuántica de datos}
 
-\textbf{El origen teórico, QML como extensión de kernerls}
+\textbf{El origen teórico: QML y métodos kernel}
 
-El quantum machine learning (QML) surge de una observación fundamental establecida por Schuld y Killoran en 2019, la idea básica de la computación cuántica es sorprendentemente similar a la de los métodos kernel en machine learning, es decir, realizar eficientemente cómputos en un espacio de Hilbert de tamaño intratable. El proceso de codificar entradas en un estado cuántico se interpreta como un mapa de características no lineal que mapea datos al espacio de Hilbert cuántico; en este espacio de características, el dispositivo cuántico puede estimar productos internos de estados cuánticos para computar un kernel clásicamente intratable, el cual puede alimentar cualquier modelo clásico como una máquina de vectores de soporte.
-Esta formalización sentó las bases teóricas de todo el campo del QML moderno y es la justificación fundamental del presente trabajo: si el espacio de Hilbert de $2^n$ dimensiones generado por $n$ qubits ofrece una geometría más favorable para la separación de clases morfológicas mamográficas, entonces la proyección cuántica aporta valor real al pipeline de clasificación. \cite{Schuld2019QuantumML}
+% respaldo: «The basic idea of quantum computing is surprisingly similar to that of kernel methods in machine learning, namely to efficiently perform computations in an intractably large Hilbert space.» (Schuld2019QuantumML, p. 1)
+% respaldo: «We interpret the process of encoding inputs in a quantum state as a nonlinear feature map that maps data to quantum Hilbert space.» (Schuld2019QuantumML, p. 1)
+Schuld y Killoran observaron que la idea básica de la computación cuántica se parece a la de los métodos kernel en aprendizaje automático: hacer cálculos de forma eficiente en un espacio de Hilbert de tamaño intratable. Interpretan la codificación de las entradas en un estado cuántico como un mapa de características (\textit{feature map}) no lineal que lleva los datos al espacio de Hilbert \cite{Schuld2019QuantumML}.
+% respaldo: «In the first approach, the quantum device estimates inner products of quantum states to compute a classically intractable kernel. This kernel can be fed into any classical kernel method such as a support vector machine.» (Schuld2019QuantumML, p. 1)
+En una de las dos estrategias que proponen, el dispositivo cuántico estima productos internos entre estados para calcular un kernel clásicamente intratable, que puede usarse en cualquier método kernel clásico, como una máquina de vectores de soporte \cite{Schuld2019QuantumML}.
+Esta lectura es el punto de partida del presente trabajo: si el espacio de Hilbert de $2^n$ dimensiones que generan $n$ qubits ofreciera una geometría más favorable para separar las clases, la codificación cuántica aportaría algo al clasificador. Que lo haga o no es una pregunta empírica, y la sección~\ref{sec:limites_ventaja} recoge las razones teóricas para no darlo por supuesto.
 
-El trabajo de Havlíček et al. (2019) en IBM Nature formalizó esta idea operacionalmente, demostrando dos algoritmos de clasificación que usan el espacio de estados cuánticos para producir mapas de características, probados en procesadores superconductores. Esto estableció el ZZFeatureMap como referencia estándar en la comunidad y demostró la posibilidad de ventaja cuántica cuando el espacio de características es grande y las funciones kernel son computacionalmente costosas de estimar clásicamente.
+% respaldo: «Here, we propose and experimentally implement two novel methods on a superconducting processor.» (havlicek2019supervised, p. 1)
+% respaldo: «The experiment was performed on qubits Q0 and Q1, highlighted in the image.» (havlicek2019supervised, p. 3)
+Havlíček et al. llevaron la idea a la práctica: propusieron dos métodos de clasificación, un clasificador variacional y un estimador de kernel cuántico, y los ejecutaron en un procesador superconductor, usando dos de sus qubits \cite{havlicek2019supervised}. El circuito de codificación que propusieron es la base del ZZFeatureMap de Qiskit (sección~\ref{sec:zzfeaturemap}).
+% respaldo: «For example, a classifier that uses a feature map that only generates product states can immediately be implement classically. To obtain an advantage over classical approaches we need to implement a map based on circuits that are hard to simulate classically.» (havlicek2019supervised, p. 2)
+% respaldo: «We conjecture that the evaluation of inner products generated from circuits with two basis changes and diagonal gates up to additive error to be hard» (havlicek2019supervised, p. 2)
+Sobre la ventaja cuántica, los autores no la afirman: la plantean como una condición. Un mapa que solo genera estados producto puede implementarse clásicamente de inmediato, y para obtener una ventaja haría falta un mapa basado en circuitos difíciles de simular; conjeturan que los de su construcción lo son \cite{havlicek2019supervised}.
 
 \textbf{Circuitos cuánticos variacionales}
 
-Los circuitos cuánticos variacionales (VQC) son la arquitectura predominante en QML para el régimen NISQ actual. Los VQC son un tipo específico de circuito cuántico parametrizado (PQC) que combina circuitos cuánticos con optimizadores clásicos; son ampliamente utilizados en algoritmos cuánticos y, entre los distintos tipos de PQC, son el enfoque que típicamente optimiza sus parámetros mediante métodos variacionales, minimizando una función de costo mediante optimización híbrida cuántico-clásica. \cite{Long2025HybridQCQ}
+% respaldo: «are a specific type of PQC, typically combining quantum circuits with classical optimizers, and are widely use in quantum algorithms.» (Long2025HybridQCQ, p. 1)
+Los circuitos cuánticos variacionales (VQC) son un tipo de circuito cuántico parametrizado (PQC) que suele combinarse con optimizadores clásicos y que se usa ampliamente en algoritmos cuánticos \cite{Long2025HybridQCQ}.
+Un modelo de este tipo tiene tres bloques. El primero es el mapa de características $U(\mathbf{x})$, que codifica el vector clásico $\mathbf{x}$ en el estado $|\phi(\mathbf{x})\rangle = U(\mathbf{x})|0\rangle^{\otimes n}$. El segundo es el \textit{ansatz} $W(\boldsymbol{\theta})$, con rotaciones parametrizadas y compuertas de entrelazamiento, que produce $|\psi(\mathbf{x},\boldsymbol{\theta})\rangle = W(\boldsymbol{\theta})|\phi(\mathbf{x})\rangle$. El tercero es la medición, que extrae los valores esperados $\langle Z_i \rangle$ de cada qubit como salida clásica.
 
-Un VQC está estructurado en tres bloques consecutivos que corresponden directamente a la arquitectura a implementar en el presente trabajo. El primero es el mapa de características $U(x)$, que codifica el vector clásico $x$ en el estado cuántico inicial $|\phi(x)\rangle = U(x)|0\rangle^{\otimes n}$. El segundo es el ansatz variacional $W(\theta)$, que aplica rotaciones parametrizadas y compuertas de entrelazamiento entrenables, generando el estado final $|\psi(x,\theta)\rangle = W(\theta)|\phi(x)\rangle$. El tercero es la medición, que extrae el vector de valores de expectativa $\langle Z_i \rangle$ de cada qubit como salida clásica del circuito.
+Lo habitual es entrenar $\boldsymbol{\theta}$ junto con el resto del modelo, con gradientes que en hardware se obtienen con la regla de desplazamiento de parámetros (\textit{parameter-shift}, sección~\ref{sec:parameter_shift}). En el presente trabajo, $\boldsymbol{\theta}$ se fija con una semilla y no se entrena: los vectores $\langle Z_i \rangle$ se calculan una sola vez y el clasificador clásico se entrena sobre ellos (sección~\ref{sec:quantum_embedding}). Así las cinco condiciones experimentales son transformaciones que no ven las etiquetas, y la comparación aísla el efecto de la codificación.
 
-Los parámetros $\theta$ se optimizan mediante el método de
-parameter-shift, que calcula el gradiente exacto del circuito evaluándolo en dos puntos desplazados: $\nabla_\theta \langle O \rangle = \frac{1}{2}[\langle O \rangle_{\theta+\pi/2} - \langle O \rangle_{\theta-\pi/2}]$.
-Este método es diferenciable durante el proceso de entrenamiento y compatible con backpropagation clásico, lo que habilita el entrenamiento conjunto del circuito cuántico y la red neuronal clásica downstream mediante optimizadores estándar de PyTorch.
+\textbf{Métodos de codificación}
 
-\textbf{Los métodos de codificación cuántica}
-
-La elección del método de codificación es la decisión de diseño más importante en un sistema QML, ya que determina la geometría del espacio de Hilbert donde los datos quedan representados. La integración de técnicas de codificación cuántica de datos en algoritmos de machine learning clásicos contribuye a mejorar la precisión de clasificación y los valores F1, de manera particularmente notable en modelos que se benefician intrínsecamente de una representación de características enriquecida.
-
-Los tres tipos de codifiacación más utilizados en la literatura son:
+La codificación determina el espacio en el que quedan representados los datos.
+% respaldo: «We show that one can naturally write a quantum model as a partial Fourier series in the data, where the accessible frequencies are determined by the nature of the data encoding gates in the circuit.» (Schuld2021Encoding, p. 1)
+% respaldo: «As a consequence, a quantum model’s frequency spectrum is solely determined by the eigenvalues of the data encoding gates, while its Fourier coeﬃcients depend on the entire circuit, as was claimed in Fig. 1.» (Schuld2021Encoding, p. 4)
+Schuld et al. mostraron que un modelo cuántico variacional puede escribirse como una serie de Fourier parcial en los datos: las frecuencias accesibles dependen solo de las compuertas de codificación, y el resto del circuito fija los coeficientes \cite{Schuld2021Encoding}. Las tres familias de codificación relevantes para este trabajo son las siguientes.
 
 \begin{itemize}
-  \item \textbf{Angle encoding}: codifica cada componente del vector de características como un ángulo de rotación en un qubit, por ejemplo, $x_i$ se codifica como una rotación $R_y(x_i)$ en el qubit $i$. Es simple pero puede requerir muchos qubits para vectores de alta dimensionalidad. Su principal ventaja es la simplicidad y la diferenciabilidad directa; su limitación es que las relaciones entre características solo se pueden expresar a través de las capas variacionales posteriores, no en la etapa de codificación.
-  \item \textbf{ZZFeatureMap}: construido sobre el mapa angular, agrega compuertas de entrelazamiento entre pares de qubits que codifican productos de features: $e^{i x_i x_j Z_i Z_j}$. El ZZFeatureMap captura interacciones de features por pares, pero algunos datasets requieren interacciones de orden superior.
-  \item \textbf{PauliFeatureMap}: generaliza el ZZFeatureMap agregando rotaciones alrededor de los tres ejes de Pauli $(X, Y, Z)$ y operaciones de entrelazamiento más complejas. El PauliFeatureMap extiende la codificación utilizando rotaciones multi-eje y entrelazamiento cuántico complejo para codificar dependencias de características más profundas; es altamente expresivo, capaz de capturar interacciones de orden superior y patrones ocultos dentro de los datos, siendo particularmente poderoso para datasets donde las relaciones entre características son complejas y no lineales. Su mayor expresividad tiene como contrapartida una mayor sensibilidad al ruido cuántico, relevante incluso en simulación cuando el número de shots es limitado.
-
+  \item \textbf{Codificación angular} (\textit{angle encoding}): cada componente del vector se codifica como el ángulo de una rotación en un qubit, por ejemplo $R_Y(x_i)$ en el qubit $i$. Es simple, pero las relaciones entre variables solo pueden aparecer en las capas posteriores, no en la codificación. Como produce estados producto, su kernel puede calcularse clásicamente \cite{havlicek2019supervised}.
+% respaldo: «We use the map for n = d = 2 - qubits in Fig. 1(b) with φ{i}(⃗x) = xi and φ{1,2}(⃗x) = (π −x1)(π −x2).» (havlicek2019supervised, p. 2)
+  \item \textbf{ZZFeatureMap}: añade a la codificación angular fases que dependen de pares de variables, mediante términos $Z_iZ_j$ que entrelazan los qubits. La fase de cada par, $(\pi-x_i)(\pi-x_j)$, es la que usaron Havlíček et al. \cite{havlicek2019supervised} y la que implementa Qiskit por defecto (sección~\ref{sec:zzfeaturemap}).
+  \item \textbf{PauliFeatureMap}: es una familia de circuitos definida por una lista de cadenas de Pauli, que fija sobre qué ejes actúan los términos de primer orden y de interacción. Con la lista por defecto de Qiskit, $Z$ y $ZZ$, coincide con el ZZFeatureMap. En este trabajo se usa la lista $Y$, $ZZ$: mismo acoplamiento que el ZZFeatureMap, pero con la codificación de primer orden en el eje $Y$ (sección~\ref{sec:paulifeaturemap}). Con interacciones de dos cuerpos como máximo, ninguno de los dos mapas codifica interacciones de orden superior.
 \end{itemize}
 
-La elección entre estos métodos de codificación no es trivial y depende de la estructura de correlación de los datos de entrada. Un estudio reciente aplicó los tres métodos a la clasificación de cáncer de pulmón con QSVM, obteniendo que ZZFeatureMap alcanzó una accuracy de 0.91 y F1-score de 0.91, mientras que PauliFeatureMap logró un rendimiento consistente de 0.96 en todas las métricas incluyendo accuracy, precisión, recall y F1-score; la elección del mapa apropiado depende de dos factores principales, la naturaleza de los datos y la resiliencia al ruido del dispositivo cuántico. Estos resultados motivan la estrategia del presente trabajo de comparar ambos métodos de codifiación sobre características morfológicas mamográficas.
+% respaldo: «QSVM models were implemented using Qiskit and executed on the qasm simulator, employing three distinct quantum feature maps: ZFeatureMap, ZZFeatureMap, and PauliFeatureMap.» (ElHafidi2025, p. 1)
+% respaldo: «The choice of an appropriate feature map depends on two major factors: the nature of the data and the noise resilience of the quantum device.» (ElHafidi2025, p. 6)
+El Hafidi et al. compararon ZFeatureMap, ZZFeatureMap y PauliFeatureMap en una QSVM para cáncer de pulmón, y concluyen que la elección del mapa depende de la naturaleza de los datos y de la resistencia al ruido del dispositivo \cite{ElHafidi2025}. Sus resultados y sus límites se discuten en la sección~\ref{sec:revision_critica}.
 
+\textbf{Mesetas estériles y concentración del kernel}
 
-\textbf{El problema "barren plateau"}
+% respaldo: «Speciﬁcally, we show that for a wide class of reasonable parameterized quantum circuits, the probability that the gradient along any reasonable direction is non-zero to some ﬁxed precision is exponentially small as a function of the number of qubits.» (McClean2018Barren, p. 1)
+McClean et al. demostraron que, para una clase amplia de circuitos parametrizados, la probabilidad de que el gradiente en cualquier dirección razonable sea distinto de cero, con una precisión fija, decrece exponencialmente con el número de qubits \cite{McClean2018Barren}. Este fenómeno, la meseta estéril (\textit{barren plateau}), vuelve impracticable entrenar circuitos grandes inicializados al azar.
+% respaldo: «Here we show that, indeed, gradient-free optimizers do not solve the barren plateau problem.» (Arrasmith2021, p. 1)
+Arrasmith et al. mostraron que los optimizadores sin gradiente tampoco resuelven el problema \cite{Arrasmith2021}.
 
-Una limitación teórica importante de los VQC profundos es el fenómeno del *barren plateau*. A medida que el circuito aumenta en número de qubits y capas, la optimización se vuelve exponencialmente plana, con gradientes que convergen a cero. Esto hace el entrenamiento prácticamente imposible para circuitos de gran profundidad con una inicialización aleatoria de parámetros. 
-Esta limitación tiene implicaciones directas para el diseño del experimento, justifica el uso de circuitos de profundidad moderada y la estrategia de inicialización cuidadosa de los parámetros $\theta$.
-
-\textbf{El uso de Qiskit como plataforma de desarrollo}
-
-Qiskit, es el framework de código abierto de IBM para computación cuántica, provee la infraestructura completa para implementar el pipeline descrito. Su ecosistema de machine learning (qiskit-machine-learning) ofrece EstimatorQNN, que encapsula un VQC y devuelve vectores de valores de expectativa diferenciables; TorchConnector, que envuelve el QNN como una capa nn.Module de PyTorch habilitando backpropagation a través del circuito; y el simulador Qiskit Aer con backend AerSimulator, que permite ejecutar circuitos de hasta 20--30 qubits con simulación de alta fidelidad en hardware estándar. La disponibilidad de estos componentes maduros y bien documentados, combinados con el acceso a los servidores del CIC del IPN, garantiza la viabilidad técnica del prototipo experimental.
-
-
-% -----------------------------------------------------------
-% 2.1.4 Modelos híbridos cuántico.clasico en el sector salud
-% -----------------------------------------------------------
+Como en el presente trabajo $\boldsymbol{\theta}$ no se entrena, la meseta estéril no es el obstáculo principal. El fenómeno que sí lo afecta es su equivalente para los métodos kernel.
+% respaldo: «We show that, under certain conditions, values of quantum kernels over different input data can be exponentially concentrated (in the number of qubits) towards some fixed value.» (Thanasilp2024, p. 1)
+% respaldo: «As summarized in Table 1 each of these theorems has an analog for QNN.» (Thanasilp2024, p. 6)
+Thanasilp et al. demostraron que los valores de un kernel cuántico pueden concentrarse exponencialmente en torno a un valor fijo, y señalan que cada una de sus cotas de concentración tiene un análogo para las redes neuronales cuánticas \cite{Thanasilp2024}. Un kernel concentrado no distingue entre entradas, y lo que en un circuito entrenable es un gradiente nulo, en un kernel es una matriz casi igual a la identidad (sección~\ref{sec:limites_ventaja}).

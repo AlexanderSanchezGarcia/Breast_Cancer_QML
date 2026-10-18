@@ -1,21 +1,42 @@
 % ---
 % Reemplaza líneas 815–830 de Docs/Technical_Report.tex.
-% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% Reescrito en TT2 con Docs/insumos/auditoria_s1_s2.md: citas que faltaban (Lee, Shen, Baccouche,
+% Azevedo); BCDR es el Breast Cancer Digital Repository; el 84 % de Azevedo empata con el modelo
+% clásico con transferencia; las líneas de trabajo futuro, con su cita literal (D-019).
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
 % ---
 
-\subsubsection{Trabajos específicos sobre el dataset CBIS-DDSM}
+\subsubsection{Trabajos específicos sobre el CBIS-DDSM}
+\label{sec:trabajos_cbis_ddsm}
 
-El CBIS-DDSM se ha convertido como el dataset de referencia más utilizado en investigación de CADx mamográfico, precisamente por su partición train-test previamente definida, sus máscaras ROI validadas patológicamente y su licencia pública CC BY 3.0. 
+% respaldo: «We seek to resolve this substantial challenge by releasing an updated and standardized version of the Digital Database for Screening Mammography (DDSM) for evaluation of future CADx and CADe systems (sometimes referred to generally as CAD) research in mammography.» (Lee2017CBISDDSM, p. 1)
+% respaldo: «It contains normal, benign, and malignant cases with veriﬁed pathology information.» (Lee2017CBISDDSM, p. 2)
+% respaldo: «The data were split into a training set and a testing set based on the BI-RADS category.» (Lee2017CBISDDSM, p. 5)
+El CBIS-DDSM es una versión actualizada y estandarizada del DDSM, publicada para que los sistemas de detección y diagnóstico asistidos puedan evaluarse y compararse sobre los mismos datos \cite{Lee2017CBISDDSM}. Hereda del DDSM la patología verificada de cada caso, y su partición en entrenamiento y prueba se hizo según la categoría BI-RADS \cite{Lee2017CBISDDSM}.
+% respaldo: «we applied a lesion segmentation algorithm (described below) that is initialized by the general original DDSM contours but is able to supply much more accurate ROIs.» (Lee2017CBISDDSM, p. 4)
+Las regiones de interés de las masas se obtuvieron con un algoritmo de segmentación inicializado con los contornos originales del DDSM, más precisos que estos \cite{Lee2017CBISDDSM}.
 
-\textbf{Trabajos clásicos en CBIS-DDSM}
+\textbf{Trabajos clásicos sobre el CBIS-DDSM}
 
-El trabajo de Shen et al. (2019) estableció una línea base de rendimiento con CNN sobre este dataset, alcanzando AUC de 0.91 con un ensemble de modelos ResNet y VGG. Baccouche et al. (2022) propusieron un ensemble de modelos ResNet (ResNet50V2, ResNet101V2, ResNet152V2) que alcanzó una accuracy de 95.13\% en clasificación de patología y 90.02\% en clasificación de forma sobre CBIS-DDSM, demostrando la ventaja del aprendizaje por ensemble para superar las metodologías de deep learning individuales más recientes.
+% respaldo: «the best single model achieved a per-image AUC of 0.88, and four-model averaging improved the AUC to 0.91 (sensitivity: 86.1%, specificity: 80.1%).» (Shen2019DeepLearning, p. 1)
+Shen et al. entrenaron redes convolucionales de extremo a extremo sobre mamografías completas: en el conjunto de prueba del CBIS-DDSM, el mejor modelo individual alcanzó un AUC por imagen de 0.88, y el promedio de cuatro modelos, de 0.91, con una sensibilidad del 86.1~\% y una especificidad del 80.1~\% \cite{Shen2019DeepLearning}.
+% respaldo: «An integrated framework for breast mass classification and diagnosis using stacked ensemble of residual neural networks» (Baccouche2022ResidualNN, p. 1)
+% respaldo: «the proposed model achieved better performance for (1) Pathology classification with an accuracy of 95.13%, 99.20%, and 95.88%; (2) BI-RADS category classification with an accuracy of 85.38%, 99%, and 96.08% respectively on CBIS-DDSM, INbreast, and the private dataset; and (3) shape classification with 90.02% on the CBIS-DDSM dataset.» (Baccouche2022ResidualNN, p. 1)
+Baccouche et al. propusieron, para masas, un \textit{ensemble} apilado de redes residuales, con una exactitud del 95.13~\% en la clasificación de patología y del 90.02~\% en la de forma sobre el CBIS-DDSM \cite{Baccouche2022ResidualNN}.
+Estos resultados se obtienen con redes profundas entrenadas sobre los píxeles y no son directamente comparables con los del presente trabajo, que clasifica lesiones a partir de 12 características radiómicas y no busca superar a una red convolucional (sección~\ref{sec:limites_ventaja}).
 
-\textbf{Trabajos de QML en CBIS-DDSM}
+\textbf{Aprendizaje automático cuántico en mamografía}
 
-La revisión de la literatura no ha identificado ningún trabajo publicado que aplique circuitos cuánticos variacionales reales (con codificación de datos en estados cuánticos mediante compuertas cuánticas) directamente sobre imágenes del dataset CBIS-DDSM. El trabajo más cercano en el dominio del QML aplicado a mamografías es el de Azevedo et al. (2022), que implementa quantum transfer learning mediante redes neuronales híbridas clásico-cuánticas con angle embedding sobre el dataset BCDR (Barcelona Digital Breast Cancer Dataset), obteniendo 84\% de accuracy y señalando como trabajo futuro explícito la necesidad de evaluar la distribución de los datos en el espacio de Hilbert resultante para verificar la separabilidad de clases. Este trabajo, aunque no usa CBIS-DDSM, establece el único precedente de QML con circuitos reales en imagen mamográfica y define las brechas metodológicas que el presente trabajo aborda.
+Entre los trabajos revisados no se encontró ninguno que aplique circuitos cuánticos de codificación de datos a imágenes o características del CBIS-DDSM.
+% respaldo: «Our task was to solve the problem of classifying full-image mammograms into malignant and benign, provided by BCDR.» (Azevedo2022QuantumTransfer, p. 1)
+% respaldo: «BCDR: a breast cancer digital repository» (Azevedo2022QuantumTransfer, p. 14)
+% respaldo: «The 4 real variables obtained from» (Azevedo2022QuantumTransfer, p. 6)
+El más cercano en mamografía es el de Azevedo et al., que clasifica mamografías completas del BCDR (\textit{Breast Cancer Digital Repository}) como benignas o malignas con redes híbridas: una ResNet18 preentrenada extrae las características, una capa clásica las reduce a cuatro y un circuito variacional de cuatro qubits con codificación angular hace la clasificación \cite{Azevedo2022QuantumTransfer}.
+% respaldo: «Accuracy 0.67 0.84 0.84 0.83 0.83 0.84» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «AUC 0.70 0.58 0.77 0.77 0.74 0.69» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «It is too soon to say whether or not QML can be an advantage.» (Azevedo2022QuantumTransfer, p. 11)
+En el conjunto de prueba, el modelo híbrido alcanzó una exactitud del 84~\%, la misma que el modelo clásico con transferencia de aprendizaje; la diferencia estuvo en el AUC, de 0.77 frente a 0.58. Los autores consideran prematuro decir si el QML puede ser una ventaja \cite{Azevedo2022QuantumTransfer}. Su diseño experimental se examina en la sección~\ref{sec:revision_critica}.
 
-
-% -----------------------------------------------------------
-% 2.1.6 Tabla comparativa y brechaa identificadas
-% -----------------------------------------------------------
+% respaldo: «As future work, an interesting approach could be to separate the dataset into masses and calcifications and only then perform classification.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «Lastly, the best way to know how well this model performs would be to see how the data appears in our Hilbert space. Ideally, both classes would appear very separately in it, as tight clusters.» (Azevedo2022QuantumTransfer, p. 12)
+Como trabajo futuro, Azevedo et al. proponen dos líneas: separar el conjunto de datos en masas y calcificaciones antes de clasificar, y examinar cómo se distribuyen los datos en el espacio de Hilbert, donde idealmente las dos clases aparecerían como grupos compactos y separados \cite{Azevedo2022QuantumTransfer}. El presente trabajo retoma ambas: trata masas y calcificaciones como subproblemas independientes y mide la separabilidad de clases en los espacios inducidos por los circuitos, sobre el CBIS-DDSM.

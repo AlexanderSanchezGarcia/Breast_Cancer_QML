@@ -1,44 +1,45 @@
 % ---
-% Versión ampliada de la tabla tab:estado_arte (líneas 839–974 de Docs/Technical_Report.tex).
-% Reemplaza la tabla original integrando la columna de Comparación justa y nuevas obras de QML.
-% Decisiones y hallazgos que la respaldan: D-007, D-019, D-028, D-032; H-042, H-046.
+% Subsección 2.1.9 de los Antecedentes: versión ampliada de la tabla tab:estado_arte
+% (líneas 831–974 de Docs/Technical_Report.tex). Va al final del capítulo porque resume los trabajos
+% de 2.1.1–2.1.8 y usa las cuatro preguntas de la sección 2.1.8.
+% Cambios respecto a TT1: sin las filas de Bilal, Singh y Ajlouni (sin fuente verificable; decisión del
+% autor del 2026-10-16); columnas P1–P4 en lugar de una valoración agregada; resultados del presente
+% trabajo (H-042) en lugar de «Por det.».
 % ---
 
 \subsubsection{Tabla comparativa y brechas identificadas}
 
-La tabla \ref{tab:estado_arte} resume los trabajos revisados en las secciones 2.1.1 a 2.1.5 a lo largo de ocho caractericticas relevantes para el presente trabajo.
-La intersección de tres condiciones simultáneas (circuito cuántico variacional real, dataset CBIS-DDSM con imágenes DICOM, y análisis explícito de separabilidad diferenciado por tipo de hallazgo) no está cubierta por ningún trabajo publicado en la literatura revisada. Esta triple intersección define la contribución del presente trabajo.
-Adicionalmente, el presente trabajo introduce una cuarta característica no presente en ninguno de los trabajos anteriores, el uso de Qiskit con ZZFeatureMap y PauliFeatureMap como componente de embedding, en contraste con el uso exclusivo de PennyLane con angle embedding en los únicos trabajos de QML real en imagen médica disponibles. Esto aporta evidencia comparativa sobre el comportamiento de distintos frameworks y feature maps en este dominio clínico específico.
+La tabla~\ref{tab:estado_arte} resume los trabajos revisados en este capítulo. Las columnas P1 a P4 recogen la respuesta de cada trabajo a las cuatro preguntas de control de la sección~\ref{sec:revision_critica} (paridad, incertidumbre, partición de prueba y simulabilidad); no se agregan en una sola valoración, porque responden a cuestiones distintas y la cuarta no la satisface ningún experimento a esta escala.
 
-
-
+Entre los trabajos revisados, ninguno reúne a la vez un circuito cuántico de codificación, el CBIS-DDSM como conjunto de datos, un análisis explícito de la separabilidad de clases en el espacio inducido por el circuito y el tratamiento de masas y calcificaciones como subproblemas separados. Esa combinación define el lugar del presente trabajo. Las dos últimas condiciones corresponden a las líneas de trabajo futuro que señalan Azevedo et al. (sección~\ref{sec:trabajos_cbis_ddsm}).
 
 \begin{landscape}
 \begin{table}[htbp]
 \centering
-\caption{Comparativa de trabajos relacionados en el estado del arte (versión ampliada)}
+\caption{Comparativa de trabajos relacionados en el estado del arte}
 \label{tab:estado_arte_v2}
 \label{tab:estado_arte}
 \renewcommand{\arraystretch}{1.08}
 \setlength{\tabcolsep}{3pt}
 \scriptsize
 
-\begin{tabularx}{\linewidth}{@{}p{2.3cm}p{2.6cm}p{1.5cm}p{2.2cm}p{2.4cm}p{1.2cm}p{1.5cm}p{1.5cm}p{1.3cm}p{2.5cm}@{}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}L{2.5cm}L{1.4cm}L{2.3cm}L{2.3cm}L{1.1cm}L{1.2cm}L{1.3cm}*{4}{L{0.7cm}}>{\raggedright\arraybackslash}X@{}}
 
 \toprule
 \textbf{Trabajo} &
-\textbf{Dataset} &
+\textbf{Datos} &
 \textbf{Circuito cuántico} &
-\textbf{Framework QML} &
+\textbf{Modelo / framework} &
 \textbf{Feature map} &
 \textbf{CBIS-DDSM} &
 \textbf{Análisis separab.} &
-\textbf{Masas/calcs. sep.} &
-\textbf{Comp. justa} &
-\textbf{AUC-ROC / Desempeño} \\
+\textbf{Masas/ calcs. sep.} &
+\textbf{P1} & \textbf{P2} & \textbf{P3} & \textbf{P4} &
+\textbf{Desempeño reportado} \\
 \midrule
 
-\multicolumn{10}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{ML clásico en mamografía}} \\[1pt]
+\multicolumn{13}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{Aprendizaje profundo en mamografía}} \\[1pt]
 
 Shen et al. (2019) \cite{Shen2019DeepLearning}
 & CBIS-DDSM
@@ -48,10 +49,10 @@ Shen et al. (2019) \cite{Shen2019DeepLearning}
 & \cmark
 & \xmark
 & \xmark
-& ND
-& 0.91 \\
+& --- & --- & --- & ---
+& AUC: 0.91 \\
 
-Wang et al. (2020)
+Wang et al. (2020) \cite{Wang2020DeepLearning}
 & DDSM / INbreast / MIAS / UKy
 & \xmark
 & CNN (6 modelos)
@@ -59,9 +60,10 @@ Wang et al. (2020)
 & Parcial
 & \xmark
 & \xmark
-& ND
-& 0.44--0.95 \\
+& --- & --- & --- & ---
+& AUC: 0.88--0.95 (valid.), 0.44--0.65 (externos) \\
 
+% VERIFICAR con la ficha de T10: conjuntos de datos y si 0.95 es accuracy en patología (95.13 % en TT1).
 Baccouche et al. (2022) \cite{Baccouche2022ResidualNN}
 & CBIS-DDSM / INbreast
 & \xmark
@@ -70,47 +72,13 @@ Baccouche et al. (2022) \cite{Baccouche2022ResidualNN}
 & \cmark
 & \xmark
 & \xmark
-& ND
-& 0.95 \\
+& --- & --- & --- & ---
+& Acc.: 0.95 (patología) \\
 
-\multicolumn{10}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{Optimización cuántico-inspirada en mamografía}} \\[1pt]
+\multicolumn{13}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{Aprendizaje automático cuántico fuera de la mamografía}} \\[1pt]
 
-Bilal et al. (2025)
-& CBIS-DDSM / MIAS / INbreast / DDSM
-& Inspirado
-& Q-BGWO + SqueezeNet + SVM
-& ---
-& \cmark
-& \xmark
-& \xmark
-& ND
-& --- \\
-
-Singh et al. (2025)
-& CBIS-DDSM
-& Inspirado
-& SeQTLBOGA + SVM
-& ---
-& \cmark
-& \xmark
-& \xmark
-& ND
-& --- \\
-
-\multicolumn{10}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{QML en imagen médica y representaciones}} \\[1pt]
-
-Ajlouni et al. (2023)
-& Kaggle Brain MRI
-& \cmark
-& Hybrid QCNN
-& PQC
-& \xmark
-& \xmark
-& ---
-& ND
-& --- \\
-
-% respaldo: «The results show that QCCNN has the best performance among all models with an average accuracy of 89.544% and 90.088% on the training and validation sets, respectively.» (Xiang2024QuantumCNN, p. 9)
+% respaldo: «Model Training accuracy (%) Validation accuracy (%) QCCNN 74.375 70.498 CNN 59.708 58.944 Logistic regression 61.927 60.583 Table 2.» (Xiang2024QuantumCNN, p. 9)
+% respaldo: «Model Training accuracy (%) Validation accuracy (%) QCCNN 97.099 96.155 CNN 92.932 92.822 Logistic regression 91.354 91.184 Table 4.» (Xiang2024QuantumCNN, p. 10)
 Xiang et al. (2024) \cite{Xiang2024QuantumCNN}
 & GBSG / SEER / WDBC (tabulares)
 & \cmark\ (sim.)
@@ -119,21 +87,23 @@ Xiang et al. (2024) \cite{Xiang2024QuantumCNN}
 & \xmark
 & \xmark
 & ---
-& No
-& Acc.: 0.70--0.96 (SEER: 0.90) \\
+& Parc. & No & No & No
+& Acc. valid.: 0.70--0.96 (clás.: 0.61--0.93) \\
 
 % respaldo: «for ZZFeatureMap, the results were an accuracy of 0.91, precision of 0.87, recall of 0.96, specificity of 0.85, and F1-score of 0.91; and for PauliFeatureMap, the model achieved a consistent performance of 0.96 across all metrics, including accuracy, precision, recall, specificity, and F1-score.» (ElHafidi2025, p. 9)
+% respaldo: «The radial basis function (RBF) kernel provided the best results, with an accuracy of 0.95, precision of 0.98, recall of 0.92, specificity of 0.98, and F1-score of 0.95.» (ElHafidi2025, p. 9)
 El Hafidi et al. (2025) \cite{ElHafidi2025}
 & Cáncer de pulmón (tabular)
 & \cmark\ (sim.)
 & QSVM (Qiskit)
-& Z / ZZ / PauliFeatureMap
+& Z / ZZ / Pauli (sin cadenas)
 & \xmark
 & \xmark
 & ---
-& Parcial
-& Acc.: 0.91--0.96 (RBF clás.: 0.95) \\
+& Sí & No & ND & No
+& Acc.: 0.91--0.96 (RBF: 0.95) \\
 
+% respaldo: «Model: Support Vector Machine (SVM) with a precomputed kernel, implemented using the scikit-learn library with default parameters.» (Parigi2026QImR, p. 6)
 % respaldo: «Quantum kernels on average perform binary classification with the same accuracy as the classical linear kernel, but with exponentially lower storage cost.» (Parigi2026QImR, p. 7)
 Parigi et al. (2026) \cite{Parigi2026QImR}
 & MNIST / F-MNIST (16$\times$16)
@@ -143,12 +113,13 @@ Parigi et al. (2026) \cite{Parigi2026QImR}
 & \xmark
 & \cmark\ (Gram)
 & ---
-& Sí
+& Sí & Sí & Sí & No
 & Acc.: 0.94--0.99 (lineal: 0.96--0.99) \\
 
-\multicolumn{10}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{QML real en mamografía}} \\[1pt]
+\multicolumn{13}{@{}l}{\cellcolor{gray!12}\scriptsize\textit{Aprendizaje automático cuántico en mamografía}} \\[1pt]
 
-% respaldo: «The results for every metric are far more consistent between training and testing and between epochs when using the dressed quantum circuit, so much so that AUC value went from 58 to 77%, leading us to believe that a hybrid-quantum network does present some advantage as AUC measures how well the model separates two classes.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «AUC 0.70 0.58 0.77 0.77 0.74 0.69» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «Accuracy 0.67 0.84 0.84 0.83 0.83 0.84» (Azevedo2022QuantumTransfer, p. 12)
 Azevedo et al. (2022) \cite{Azevedo2022QuantumTransfer}
 & BCDR
 & \cmark\ (sim. + QPU)
@@ -157,25 +128,24 @@ Azevedo et al. (2022) \cite{Azevedo2022QuantumTransfer}
 & \xmark
 & \xmark
 & \xmark
-& Parcial
-& AUC: 0.77 \newline (Acc. test: 0.84) \\
+& Parc. & No & No & No
+& AUC: 0.77 (clás. TL: 0.58); acc.: 0.84 en ambos \\
 
 \midrule
-\multicolumn{10}{@{}l}{\cellcolor{blue!8}\scriptsize\textit{Presente trabajo}} \\[1pt]
+\multicolumn{13}{@{}l}{\cellcolor{blue!8}\scriptsize\textit{Presente trabajo}} \\[1pt]
 
 \rowcolor{blue!8}
-\textbf{Sánchez García (2026)}
+\textbf{Presente trabajo}
 & \textbf{CBIS-DDSM}
 & \cmark\ (\textbf{sim. statevector})
-& \textbf{VQC / QSVM (Qiskit)}
-& \textbf{C4: ZZFeatureMap /} \newline \textbf{C5: PauliFeatureMap(['Y','ZZ'])}
+& \textbf{MLP sobre $\langle Z_i\rangle$ (Qiskit)}
+& \textbf{C4: ZZ / C5: Pauli (Y, ZZ)}
 & \cmark
 & \cmark
 & \cmark
-& \textbf{Sí}
-& % fuente: H-042; 7_test.csv
-  Masas: 0.530 (C4) / 0.581 (C5) \newline
-  Calcs.: 0.633 (C4) / 0.652 (C5) \\
+& Sí & Sí & Sí & No
+& % fuente: H-042; Code/results/7_test.csv (análisis main)
+  AUC masas: 0.530 / 0.581 (C1: 0.651); calcs.: 0.633 / 0.652 (C1: 0.769) \\
 
 \bottomrule
 \end{tabularx}
@@ -184,10 +154,11 @@ Azevedo et al. (2022) \cite{Azevedo2022QuantumTransfer}
 \scriptsize
 \textbf{Notas:}
 \cmark\ = cumple la condición;\quad
-\xmark\ = no cumple;\quad
-Inspirado = optimización heurística cuántico-inspirada sin circuitos cuánticos reales;\quad
---- = no reportado o no aplica;\quad
-ND = no determinado / no aplica a modelos puramente clásicos;\quad
-Comp. justa: evaluación bajo las cuatro preguntas metodológicas de la Sección~\ref{sec:revision_critica} (Sí = paridad de ajuste y datos, control de incertidumbre, test ciego y evaluación de tractabilidad; Parcial = paridad de datos pero omite significación estadística o test ciego; No = asimetría en datos o modelos, o sin conjunto de prueba independiente).
+\xmark\ = no la cumple;\quad
+--- = no aplica;\quad
+ND = el trabajo no lo dice;\quad
+Parc. = parcialmente.
+P1--P4: paridad, incertidumbre, partición de prueba y simulabilidad (sección~\ref{sec:revision_critica}); no aplican a los trabajos sin componente cuántica.
+En el presente trabajo, los valores de C4 y C5 van separados por una barra; C1 es la condición sin transformación, con el mismo clasificador.
 \end{table}
 \end{landscape}

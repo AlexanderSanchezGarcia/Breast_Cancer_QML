@@ -79,12 +79,7 @@ for chap in $CHAPS; do
 done
 
 echo "============================================================"
-echo "5. Verificación de literalidad de §2..."
-echo "============================================================"
-"$PYTHON" "$COMUN/verificar_literal_s2.py"
-
-echo "============================================================"
-echo "6. Resumen de compilación y aceptación de documentos..."
+echo "5. Resumen de compilación y aceptación de documentos..."
 echo "============================================================"
 "$PYTHON" "$COMUN/analizar_logs.py"
 

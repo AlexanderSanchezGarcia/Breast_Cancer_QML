@@ -1,30 +1,43 @@
 % ---
 % Reemplaza líneas 726–750 de Docs/Technical_Report.tex.
-% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% Reescrito en TT2 con Docs/insumos/auditoria_s1_s2.md y las fichas de T10: cita de Wang (faltaba);
+% sin la frase atribuida a Kim et al., que no está en esa fuente (informe T9); la diferencia de Shia
+% entre EfficientNet y ResNet no resulta significativa con la prueba de Wilcoxon; sin presuponer que
+% la codificación cuántica mejora la separabilidad.
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
 % ---
 
-\subsubsection{Deep Learning en el diagnóstico mamográfico}
+\subsubsection{Aprendizaje profundo en el diagnóstico mamográfico}
 
-\textbf{El avance de las CNN en mamografías}
+\textbf{El avance de las redes convolucionales}
 
-La aplicación de redes neuronales convolucionales (CNN) en el análisis de mamografías marcó un nuevo paradignma respecto a los sistemas CAD clásicos. A diferencia de los enfoques basados en features manuales, las CNN aprenden representaciones jerárquicas directamente desde los píxeles de la imagen, eliminando la dependencia de descriptores diseñados por expertos. Las CNN poco profundas fueron utilizadas para investigar el cáncer de mama desde 1995; sin embargo, fue a partir de 2012, con el surgimiento de Alex-Net y el aumento de la capacidad computacional, la disponibilidad de hardware de menor costo, los algoritmos de código abierto y el auge del big data, cuando las CNN se volvieron predominantes en el procesamiento de imágenes médicas. Arquitecturas como VGG, ResNet, DenseNet e InceptionV3 se convirtieron en la base de la mayoría de los sistemas CAD modernos para mamografía. \cite{Abdelhafiz2019DeepCNN}
+Las redes neuronales convolucionales (CNN) cambiaron el enfoque de los sistemas CAD clásicos: en lugar de clasificar descriptores diseñados por expertos, aprenden representaciones jerárquicas directamente de los píxeles.
+% respaldo: «Shallow layer CNNs were used to investigate breast cancer in 1995 [40, 76].» (Abdelhafiz2019DeepCNN, p. 4)
+% respaldo: «Since 2012, CNNs have become more popular and have attracted more attention because of the increasing computing power, availability of lower cost hardware, open source algorithms, and the rise of big data [16].» (Abdelhafiz2019DeepCNN, p. 4)
+Ya en 1995 se usaron CNN poco profundas para estudiar el cáncer de mama, pero fue a partir de 2012 cuando ganaron popularidad, por el aumento de la capacidad de cómputo, el abaratamiento del hardware, los algoritmos de código abierto y el auge de los grandes volúmenes de datos \cite{Abdelhafiz2019DeepCNN}.
+% respaldo: «Famous CNNs such as Alex-Net [16], ZF-Net [77], GoogLeNet [78], VGG-Net [79] and ResNet [80] have brought about breakthroughs in processing images. Alex-Net architecture is extensively used in medical imaging for breast cancer detection.» (Abdelhafiz2019DeepCNN, p. 4)
+Arquitecturas como AlexNet, ZF-Net, GoogLeNet, VGG y ResNet marcaron avances en el procesamiento de imágenes, y AlexNet se ha usado ampliamente en la detección de cáncer de mama \cite{Abdelhafiz2019DeepCNN}.
 
-\textbf{Resultados reportados en distintos datasets}
+\textbf{Resultados reportados}
 
-Los modelos de deep learning han alcanzado resultados notables en condiciones controladas sobre los datasets más utilizados en la comunidad. Shen et. al \cite{Shen2019DeepLearning} desarrollaron un sistema de CNN de extremo a extremo sobre CBIS-DDSM con un enfoque que aprovecha tanto anotaciones de lesiones como etiquetas de imagen completa, el mejor modelo individual alcanzó un AUC por imagen de 0.88 sobre el conjunto de prueba del CBIS-DDSM, y el promedio de cuatro modelos mejoró este resultado a un AUC de 0.91, con una especificidad de 80.1\% a una sensibilidad de 86.1\%, comparable al promedio estimado de radiólogos en Estados Unidos.
+% respaldo: «the best single model achieved a per-image AUC of 0.88, and four-model averaging improved the AUC to 0.91 (sensitivity: 86.1%, specificity: 80.1%).» (Shen2019DeepLearning, p. 1)
+Sobre el CBIS-DDSM, Shen et al., con redes entrenadas de extremo a extremo sobre mamografías completas alcanzaron un AUC por imagen de 0.91 \cite{Shen2019DeepLearning} (sección~\ref{sec:trabajos_cbis_ddsm}).
 
-En el dominio específico de las calcificaciones, la comparación entre arquitecturas evidencia diferencias significativas según el tipo de lesión. Al evaluar modelos ResNet-50, ResNet-101 y cinco variantes de EfficientNet (B0 a B4) para clasificación de microcalcificaciones benignas y malignas usando validación cruzada de cinco pliegues sobre imágenes mamográficas con etiquetas BI-RADS confirmadas, todos los modelos EfficientNet superaron significativamente a las variantes ResNet en F1-score; adicionalmente, bajo validación externa con CBIS-DDSM, EfficientNet-B3 mantuvo su superioridad con mayor recall tanto para clases benignas como malignas. Este hallazgo nos muestra que el performace de un modelo es sensible no solo al dataset de entrenamiento sino al tipo de hallazgo mamográfico analizado, lo que refuerza la necesidad de evaluar masas y calcificaciones de forma separada. \cite{Shia2025MicrocalcClassification}
+% respaldo: «Each cell represents the p-value of the test between the model listed on the row and the model on the column, based on five-fold cross-validation results.» (Shia2025MicrocalcClassification, p. 8)
+% respaldo: «For model training, 869 benign cases (BI-RADS 1–2) and 660 malignant cases (BI-RADS 5–6) were randomly selected from the calcification-positive group.» (Shia2025MicrocalcClassification, p. 4)
+En calcificaciones, Shia comparó ResNet-50, ResNet-101 y cinco variantes de EfficientNet (B0 a B4) con validación cruzada de cinco pliegues, sobre mamografías de un hospital con 869 casos benignos y 660 malignos \cite{Shia2025MicrocalcClassification}.
+% respaldo: «t-test suggests that there is a significant difference between the F1-score of all EfficientNet variants (from B0 to B4) used in this study and ResNet50/101, but the Wilcoxon test did not confirm its significance (p > 0.05).» (Shia2025MicrocalcClassification, p. 8)
+La prueba $t$ indica una diferencia significativa en F1 a favor de todas las EfficientNet, pero la prueba de Wilcoxon no la confirma ($p > 0.05$) \cite{Shia2025MicrocalcClassification}.
+% respaldo: «As illustrated in Fig. 8, EfficientNet-B3 maintained its superiority in classification performance compared to ResNet-50 and ResNet-101, achieving the highest recall for both benign and malignant classes.» (Shia2025MicrocalcClassification, p. 9)
+En una validación externa con el CBIS-DDSM, EfficientNet-B3 obtuvo la mayor sensibilidad en ambas clases \cite{Shia2025MicrocalcClassification}. El ejemplo ilustra, además, una práctica que este trabajo comparte: estudiar las calcificaciones como un problema propio.
 
 \textbf{El problema de la generalización}
 
-A pesar de los resultados prometedores reportados en validación interna, existe un problema estructural que la literatura ha mencionado de manera consistente, los modelos de deep learning no generalizan entre datasets con distribuciones distintas. Wang et al. (2020) realizaron el análisis más sistemático de este fenómeno, evaluando seis modelos sobre cuatro datasets diferentes. Como se señaló en la sección 1.1.2, los modelos que reportaron AUC de validación entre 0.88 y 0.95 mostraron caídas hasta el rango de 0.44--0.65 al evaluarse sobre datos externos. La variabilidad entre lectores y la dificultad intrínseca de interpretar características radiográficas sutiles limitan frecuentemente la precisión del diagnóstico; el impacto del cambio de dominio queda evidenciado en pruebas de generalización, que marcan la necesidad de conjuntos de datos diversos durante el entrenamiento para construir herramientas de tamizaje confiables y ampliamente aplicables.
+% respaldo: «Six deep learning models (three published models with high performance and three models designed by us) were evaluated on four different mammogram data sets, including three public (Digital Database for Screening Mammography, INbreast, and Mammographic Image Analysis Society) and one private data set (UKy).» (Wang2020DeepLearning, p. 1)
+% respaldo: «The three published models reported validation auROC scores between 0.88 and 0.95 on the validation data set.» (Wang2020DeepLearning, p. 1)
+% respaldo: «However, the same evaluation criteria of all six models on the three external test data sets were significantly decreased, only between 0.44 (95% CI: 0.43-0.45) and 0.65 (95% CI: 0.64-0.66).» (Wang2020DeepLearning, p. 1)
+Los buenos resultados en validación interna no garantizan el mismo desempeño con datos de otra procedencia. Wang et al. evaluaron seis modelos sobre cuatro conjuntos de mamografías (DDSM, INbreast, MIAS y uno privado): los tres modelos publicados reportaban un AUC de validación entre 0.88 y 0.95, pero sobre los conjuntos externos el AUC de los seis modelos bajó a valores de entre 0.44 y 0.65 \cite{Wang2020DeepLearning}.
 
-Este problema tiene raíces más profundas que la simple escasez de datos. La investigación futura debe enfocarse en enriquecer los algoritmos de deep learning, garantizar la privacidad de los datos, mejorar la interpretabilidad de los modelos y establecer la generalización para integrar exitosamente el diagnóstico asistido por deep learning en programas rutinarios de tamizaje de cáncer de mama.
+\textbf{La representación como objeto de estudio}
 
-\textbf{La representación como problema central}
-
-El análisis de la literatura permite identificar que el problema no es la arquitectura del clasificador sino la calidad de la representación que este recibe. Los modelos de deep learning operan en el espacio de píxeles o en espacios de features aprendidos mediante backpropagation, cuya geometría está determinada por la función de pérdida de clasificación y el conjunto de entrenamiento disponible. Esta representación puede ser altamente efectiva dentro del dominio de entrenamiento pero frágil ante cambios de distribución. La pregunta que motiva el presente trabajo es si la proyección de estas características al espacio de Hilbert mediante transformaciones cuánticas variacionales puede generar representaciones con mayor separabilidad intrínseca de clases, abordando el problema desde la etapa de codificación y no desde la arquitectura del clasificador.
-
-% -----------------------------------------------------------
-% 2.1.3 Fundamentos de QML y codificación cuántica de datos
-% -----------------------------------------------------------
+Estos antecedentes sitúan una parte del problema en la representación con la que trabaja el clasificador, además de en su arquitectura. El presente trabajo aborda esa cuestión desde otra etapa: no propone un nuevo clasificador, sino que compara, con un mismo clasificador, representaciones clásicas y cuánticas construidas a partir del mismo vector de características radiómicas, y mide si las transformaciones cuánticas modifican la separabilidad de las clases. Si lo hacen o no es la pregunta empírica del trabajo; las razones teóricas para no darlo por supuesto se recogen en la sección~\ref{sec:limites_ventaja}.

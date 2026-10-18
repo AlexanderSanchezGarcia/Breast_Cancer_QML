@@ -1,30 +1,45 @@
 % ---
 % Reemplaza líneas 701–725 de Docs/Technical_Report.tex.
-% Copia literal de TT1; pendiente de corrección con Docs/insumos/auditoria_s1_s2.md.
+% Reescrito en TT2 con Docs/insumos/auditoria_s1_s2.md y las fichas de T10:
+% - las razones de la preferencia por SVM no están en Mashekova et al.; se quitan de la atribución;
+% - en Añez et al., SVM y XGBoost reciben solo cuatro rasgos globales de la imagen completa;
+% - sin presuponer que las características diseñadas por expertos son insuficientes (las radiómicas
+%   con un clasificador clásico son la referencia más fuerte del proyecto, H-042, H-044).
+% PENDIENTE: el párrafo sobre GLCM y descriptores de forma depende de Zebari et al. (TandFOnline2021),
+% que es de acceso abierto pero no se pudo descargar de forma automática (informe T10).
+% Cada atribución lleva su respaldo verificable con Code/tools/verificar_citas_fichas.py.
 % ---
 
-\subsubsection{Machine Learning clásico en el diagnóstico mamográfico}
+\subsubsection{Aprendizaje automático clásico en el diagnóstico mamográfico}
 
-El diagnóstico asistido por computadora en mamografía tiene sus orígenes en los sistemas CAD (Computer-Aided Detection/Diagnosis) desarrollados desde la década de 1990, cuyo objetivo era reducir la variabilidad inter-observador en la interpretación radiológica y apoyar la detección temprana de lesiones. Estos sistemas clásicos se estructuran en dos etapas fundamentales: la extracción manual de características y la clasificación mediante algoritmos de aprendizaje supervisado.
+Los sistemas de detección y diagnóstico asistidos por computadora (CAD, \textit{Computer-Aided Detection/Diagnosis}) en mamografía buscan apoyar la interpretación radiológica y la detección temprana de lesiones. Los sistemas clásicos se organizan en dos etapas: la extracción de características diseñadas a partir de la imagen y su clasificación con un algoritmo de aprendizaje supervisado.
 
-\textbf{Extracción de características en mamografía}
+\textbf{Extracción de características}
 
-La extracción de características ha constituido históricamente el núcleo de los sistemas CAD clásicos. Las características derivadas de la Matriz de Co-ocurrencia de Niveles de Grises (GLCM, por sus siglas en inglés) han sido las más ampliamente utilizadas en la literatura. La técnica GLCM presenta la tasa superior de uso en extracción de características según los trabajos revisados en la literatura de sistemas CAD para detección de cáncer de mama. En clasificación, tanto los métodos de machine learning tradicionales como de deep learning se emplean para clasificar las características extraídas en diferentes clases. Ademas, se han utilizado descriptores de forma y margen para masas (como la excentricidad, el área y el perímetro del contorno de la lesión) y características de distribución espacial para calcificaciones, como la densidad del cluster y la varianza morfológica entre puntos. \cite{TandFOnline2021}
+% VERIFICAR con Zebari et al. (TandFOnline2021) cuando se tenga el PDF: que GLCM es la técnica de
+% extracción más usada en los trabajos que revisan, y los descriptores de forma, margen y distribución.
+Entre las características más usadas están las de textura derivadas de la matriz de co-ocurrencia de niveles de gris (GLCM) \cite{TandFOnline2021}, junto con descriptores de forma y margen para las masas y de distribución espacial para las calcificaciones.
+% respaldo: «In this study, Gray Level Co-occurrence Matrix (GLCM) and Gray Level Run Length Matrix (GLRLM) features, which are widely used in texture analysis, were extracted from each ROI sample.» (Avci2023MammographyEnhancement, p. 6)
+Las matrices GLCM y GLRLM (\textit{Gray Level Run Length Matrix}) son de uso extendido en el análisis de textura \cite{Avci2023MammographyEnhancement}, y son dos de las familias de características que este trabajo extrae con PyRadiomics.
 
-\textbf{Clasificadores clásicos predominantes}
+\textbf{Clasificadores}
 
-El clasificador de mayor uso en este dominio ha sido la Máquina de Vectores de Soporte (SVM). Aproximadamente el 44\% de los estudios publicados entre 2020 y 2025 emplearon SVM como clasificador para la detección de cáncer de mama; SVM fue el mas frecuente con imágenes de mamografía, aunque algunos estudios también lo utilizaron con ultrasonido y termografía. La preferencia por SVM se explica por su capacidad para manejar datos de alta dimensionalidad, encontrar hiperplanos de separación óptimos en espacios de características transformados mediante funciones kernel, y su robustez frente al sobreajuste en conjuntos de entrenamiento pequeños. \cite{Mashekova2025AIBreastCancer}
+% respaldo: «The analysis of the abovementioned databases demonstrates that approximately 44% of the studies published between 2020 and 2025 employed support vector machine (SVM) as a classifier for breast cancer detection.» (Mashekova2025AIBreastCancer, p. 14)
+% respaldo: «SVM was most frequently associated with mammogram images, although some studies also utilized ultrasound and, to a lesser extent, thermography images.» (Mashekova2025AIBreastCancer, p. 14)
+La máquina de vectores de soporte (SVM) es el clasificador clásico más usado en este dominio: según la revisión de Mashekova et al., cerca del 44~\% de los estudios publicados entre 2020 y 2025 sobre detección de cáncer de mama la emplearon, sobre todo con mamografías \cite{Mashekova2025AIBreastCancer}.
+% respaldo: «These approaches heavily rely on handcrafted features, which limit generalizability but allow transparency and interpretability.» (Mashekova2025AIBreastCancer, p. 26)
+Los mismos autores señalan que estos métodos dependen de características diseñadas a mano, lo que limita su generalización pero los hace transparentes e interpretables \cite{Mashekova2025AIBreastCancer}.
 
-El Random Forest (RF) ha constituido la segunda alternativa más frecuente, seguido de redes neuronales artificiales poco profundas (ANN/MLP), k-Nearest Neighbors (k-NN) y Naive Bayes. Al comparar el desempeño de SVM, RF, ANN, NB y DT para clasificación benigno/maligno en imágenes mamográficas con características GLCM y GLRLM, los métodos SVM, RF y ANN mostraron el mejor desempeño en métricas de accuracy, sensibilidad y AUC; el rendimiento de los modelos fue sensible a la combinación de algoritmos de preprocesamiento aplicados antes de la extracción de características. \cite{Avci2023MammographyEnhancement}
+% respaldo: «In our study, SVM, RF, and ANN methods generally performed better than k-NN, NB, and DT especially in CLAHE&USM, and MF&CLAHE&USM pre-processing combinations.» (Avci2023MammographyEnhancement, p. 11)
+% respaldo: «When the CLAHE algorithm is used alone as a pre-processing method, it has been observed that it has a lower classiﬁcation performance than other pre-processing combinations.» (Avci2023MammographyEnhancement, p. 12)
+% respaldo: «The open-access mini-MIAS database was used in the study [16].» (Avci2023MammographyEnhancement, p. 4)
+Avcı y Karakaya compararon SVM, bosques aleatorios (RF), redes neuronales (ANN), $k$ vecinos más cercanos, Naive Bayes y árboles de decisión sobre características GLCM y GLRLM de la base mini-MIAS. SVM, RF y ANN rindieron en general mejor que el resto, y el desempeño dependió de la combinación de preprocesamiento aplicada antes de extraer las características \cite{Avci2023MammographyEnhancement}.
 
+\textbf{Alcances y limitaciones}
 
-\textbf{Alcances y limitaciones del enfoque clásico}
+% respaldo: «The best CNN (ResNet-50) achieved an AUC-ROC of 0.95 with a Recall of 89%, while the XGBoost model reached an AUC-ROC of 0.90 with a Recall of 74%,» (Anez2025AIPipeline, p. 27)
+% respaldo: «followed by XGBoost (AUC-ROC 0.90; sensitivity 74%) and SVM (AUC-ROC 0.84; sensitivity 66%)» (Anez2025AIPipeline, p. 1)
+% respaldo: «These models were trained on handcrafted features extracted directly from full mammographic images, including mean intensity, standard deviation, width, and height.» (Anez2025AIPipeline, p. 10)
+Las comparaciones entre enfoques dependen de lo que recibe cada clasificador. En la evaluación de Añez et al. sobre el CBIS-DDSM, una ResNet-50 alcanzó un AUC-ROC de 0.95, frente a 0.90 de XGBoost y 0.84 de una SVM \cite{Anez2025AIPipeline}; pero los dos modelos clásicos recibieron solo rasgos globales de la mamografía completa, como la intensidad media, su desviación, el ancho y el alto \cite{Anez2025AIPipeline}. La diferencia mide, sobre todo, la distancia entre esos rasgos y lo que la red aprende de los píxeles.
 
-El ML clásico en mamografía ha alcanzado resultados notables en condiciones controladas. Una evaluación sistemática de pipelines CNN, SVM y XGBoost sobre el dataset CBIS-DDSM reportó que una CNN (ResNet-50) alcanzó el mejor desempeño con AUC-ROC de 0.95 y sensibilidad de 89\%, seguido de XGBoost con AUC-ROC de 0.90, mientras que SVM obtuvo AUC-ROC de 0.84. \cite{Anez2025AIPipeline}
-
-Sin embargo, la limitación de estos métodos se encuentra en que la capacidad discriminativa del clasificador está completamente delimitada por la riqueza de las características extraídas manualmente. Las relaciones no lineales y de alto orden entre características morfológicas (que son precisamente las que distinguen lesiones malignas de bordes sutiles de lesiones benignas similares) resultan difícilmente capturables mediante descriptores diseñados por expertos. Esta limitación fue la que dio lugar a enfoques basados en deep learning, que aprenden representaciones directamente desde los píxeles de la imagen, y posteriormente el interés en representaciones cuánticas, que proyectan estas características en espacios de Hilbert de dimensionalidad aun mayor. El ML se ha convertido en una herramienta de impresindible para el análisis de patrones en datos clínicos de cáncer, permitiendo identificar relaciones difícilmente detectables por métodos estadísticos convencionales; sin embargo, la eficacia de los modelos depende directamente de la calidad de la representación de los datos de entrada.
-
-
-% -----------------------------------------------------------
-% 2.1.2 Deep Learning en diagnóstico de cáncer de mama
-% -----------------------------------------------------------
+La capacidad discriminativa de un clasificador clásico está acotada por la información que contienen las características que recibe. Esa limitación motivó los enfoques de aprendizaje profundo, que aprenden la representación desde los píxeles (sección siguiente), y más tarde el interés por las representaciones cuánticas. Pero las características radiómicas siguen siendo una referencia exigente: en el presente trabajo, las mismas características con un clasificador clásico son la condición contra la que se comparan las transformaciones cuánticas.
