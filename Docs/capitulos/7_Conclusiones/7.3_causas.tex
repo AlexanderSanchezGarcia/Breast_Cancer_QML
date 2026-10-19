@@ -1,0 +1,52 @@
+% ---
+% §7.3 Por qué la codificación cuántica no aumentó la separabilidad.
+% Entradas que lo respaldan: D-029, D-035, H-013, H-031, H-036, H-037, H-041, H-043, H-044,
+% H-047, H-048, H-053, H-054, H-055.
+% ---
+
+\subsection{Por qué la codificación cuántica no aumentó la separabilidad}
+\label{sec:causas_separabilidad}
+
+Los resultados apuntan a tres causas, que actúan en etapas distintas del \textit{pipeline}.
+
+% fuente: H-031, H-037, H-039, D-029; 5b_concentracion_kernel.csv, 6_dimension_efectiva.csv
+% respaldo: «The small geometric difference is a consequence of the exponentially large Hilbert space employed by existing quantum models, where all inputs are too far apart.» (huang2021power, p. 2)
+\textbf{La codificación coloca a las lesiones casi ortogonales entre sí.} Con 12 qubits y ángulos en
+$[0,\pi]$, la fidelidad mediana entre dos lesiones distintas fue de 0.002 a 0.003 en C4 y del orden
+de $3 \times 10^{-5}$ en C5, frente a 0.61 del kernel RBF, y la dimensión efectiva de los kernels
+cuánticos ocupó entre 168 y 188 de las 200 posibles. Cada lesión se parece a sí misma y a casi ninguna
+otra: es el régimen que Huang et al. \cite{huang2021power} identifican como causa de una diferencia
+geométrica pequeña, en el que todas las entradas quedan demasiado lejos entre sí dentro de un espacio
+de Hilbert exponencialmente grande. Reducir la escala angular disipa la concentración, pero solo cuando
+el término de interacción $x_i x_j$ deja de influir: a $c = 0.02$ el kernel cuántico es prácticamente
+idéntico al de un mapa sin ese término, y el alineamiento que recupera es el que un kernel clásico ya
+veía. Con 8 qubits la concentración disminuye y la conclusión se mantiene.
+
+% fuente: H-044, H-053, H-054; X4_test.csv, X4_test_diferencias.csv, X7_resumen.csv, X8_test.csv
+\textbf{La lectura de 12 valores esperados pierde información que el kernel conserva.} Un clasificador
+de vectores de soporte sobre el kernel de C4 alcanzó en el conjunto de prueba 0.628 en masas y 0.759 en
+calcificaciones, estadísticamente indistinguible del SVM con kernel RBF (0.649 y 0.769) y entre 0.10 y
+0.13 por encima del perceptrón sobre los valores esperados $\langle Z_i\rangle$ de la misma condición.
+El estado codificado retiene, por tanto, una información diagnóstica comparable a la clásica, y la
+pérdida del Módulo 7 ocurre al reducir 4\,096 amplitudes a 12 observables locales. Esa pérdida no se
+explica por el sorteo de los parámetros de la capa variacional, que en diez sorteos dejó a C4 y C5
+entre 0.03 y 0.18 por debajo de C1, ni por no entrenarlos: entrenarlos junto con el perceptrón ganó a lo
+sumo 0.05 de AUC, sin significancia.
+
+% fuente: H-047, H-048; X6_anidada.csv, X6_etiquetas_construidas.csv
+% respaldo: «When g is large, there is a potential for improvement over classical ML.» (huang2021power, p. 7)
+% respaldo: «The engineered dataset is constructed via a simple eigenvalue problem with the exact procedure described in Supplementary Section 7 and the results are shown in Fig. 4.» (huang2021power, p. 8)
+\textbf{Las etiquetas clínicas no se alinean con la geometría de los kernels cuánticos evaluados.} Una
+búsqueda anidada con el mismo protocolo para ambos lados, sesgada a favor de lo cuántico en el número de
+candidatos, no encontró ningún kernel cuántico que superara a los clásicos con las etiquetas reales.
+Con un etiquetado diseñado según el procedimiento de Huang et al. \cite{huang2021power}, que asigna a las
+mismas lesiones las clases que mejor se ajustan a la geometría del kernel cuántico y peor a la del clásico,
+el kernel proyectado alcanzó en validación cruzada un AUC de 0.998 en masas y 0.994 en calcificaciones frente a
+0.800 y 0.824 del mejor clásico. El protocolo, por tanto, sí detecta una ventaja cuando el etiquetado la
+permite; su ausencia es una propiedad de estas etiquetas y de las familias de kernels probadas, no del
+método de evaluación.
+
+% fuente: H-041, H-043, H-053, H-055; X3_comparacion_k8_k12.csv, X9_resumen_familia_a.csv
+Ninguna de las elecciones de diseño que podían haber producido el resultado lo explica por sí sola: la
+conclusión se mantuvo con 8 qubits, con dos repeticiones de la capa variacional, con diez sorteos de sus
+parámetros, con esos parámetros entrenados, con otras submuestras y con todo el conjunto de entrenamiento.

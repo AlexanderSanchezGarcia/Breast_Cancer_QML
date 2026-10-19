@@ -1,0 +1,17 @@
+check,value,passed
+mass: the Module 6 rows of the full K_C equal the matrix of Module 5,1.887379141862766e-15,True
+mass: the Module 6 rows of the full C4 equal the matrix of Module 5,0.0,True
+mass: the Module 6 rows of the full C5 equal the matrix of Module 5,0.0,True
+calcification: the Module 6 rows of the full K_C equal the matrix of Module 5,1.2212453270876722e-15,True
+calcification: the Module 6 rows of the full C4 equal the matrix of Module 5,0.0,True
+calcification: the Module 6 rows of the full C5 equal the matrix of Module 5,0.0,True
+mass: design subsample reproduces the alignment of Module 6,8.153200337090993e-17,True
+mass: design subsample reproduces the effective dimension of Module 6,2.930988785010413e-14,True
+mass: design subsample reproduces the minimum g of Module 6,2.220446049250313e-16,True
+calcification: design subsample reproduces the alignment of Module 6,1.1102230246251565e-16,True
+calcification: design subsample reproduces the effective dimension of Module 6,1.7319479184152442e-14,True
+calcification: design subsample reproduces the minimum g of Module 6,0.0,True
+mass: design reproduces the embedding metrics of Module 6,6.938893903907228e-17,True
+mass: full train reproduces the embedding metrics of Module 6,1.5265566588595902e-16,True
+calcification: design reproduces the embedding metrics of Module 6,4.163336342344337e-16,True
+calcification: full train reproduces the embedding metrics of Module 6,2.220446049250313e-16,True

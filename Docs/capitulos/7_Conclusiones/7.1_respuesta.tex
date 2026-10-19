@@ -1,0 +1,36 @@
+% ---
+% §7.1 Respuesta a la pregunta de investigación.
+% Entradas que lo respaldan: H-039, H-040, H-042, H-049, H-055, D-041.
+% ---
+
+\subsection{Respuesta a la pregunta de investigación}
+\label{sec:respuesta_pregunta}
+
+% fuente: H-039, H-040, H-055; 6_alineamiento_kernel.csv, 6_diferencia_geometrica_resumen.csv, X9_resumen_familia_a.csv
+La pregunta de investigación era en qué medida las transformaciones cuánticas variacionales
+implementadas con \textit{ZZFeatureMap} y \textit{PauliFeatureMap} modifican la separabilidad de
+clases benigno/maligno de características radiómicas del CBIS-DDSM, y hasta qué punto esa diferencia
+se refleja en la clasificación. Con el diseño fijado de antemano ($k = 12$ qubits, una repetición y
+escala angular $c = 1$), la respuesta es que \textbf{las transformaciones cuánticas no aumentaron la
+separabilidad; la redujeron}. En el espacio del kernel, el alineamiento explicado por las etiquetas de
+C4 y C5 fue de 0.003 a 0.007, frente a 0.049 (masas) y 0.151 (calcificaciones) del kernel RBF clásico,
+y la diferencia geométrica respecto al modelo clásico más cercano quedó entre 1.40 y 1.70, muy por
+debajo de $\sqrt{N} \approx 14.1$. En las representaciones que recibe el clasificador, las condiciones
+clásicas C1 a C3 superaron a C4 y C5 en el índice de Davies-Bouldin, en la razón de Fisher y en el
+alineamiento lineal, en ambos subconjuntos. La conclusión se mantuvo en 20 submuestras distintas de
+200 lesiones y sobre todo el conjunto de entrenamiento.
+
+% fuente: H-042, H-049; 7_test.csv, 7_test_diferencias.csv, 8_spearman.csv
+La diferencia sí se reflejó en la clasificación, en la misma dirección. El mismo perceptrón
+multicapa, con idéntica arquitectura, hiperparámetros y protocolo, obtuvo en el conjunto de prueba un
+AUC-ROC de 0.530 (C4) y 0.581 (C5) en masas frente a 0.651 sin transformación, y de 0.633 y 0.652 en
+calcificaciones frente a 0.769: entre 0.07 y 0.14 menos. El ordenamiento de las condiciones por
+separabilidad y por clasificación coincidió en lo esencial ($\rho_s$ entre 0.67 y 0.97, de carácter
+descriptivo con cinco condiciones): las representaciones clásicas van delante en ambas etapas. Lo que se
+trasladó a la clasificación no fue una ganancia de separabilidad, que no existió, sino su pérdida.
+
+Bajo el marco del proyecto, este resultado es una respuesta válida a una pregunta de viabilidad, no un
+fracaso del sistema. El trabajo no buscaba superar a un clasificador clásico, sino medir con el mismo
+rigor si la codificación cuántica reorganiza las lesiones de forma más separable, y documentar las
+restricciones que lo explican. Las secciones siguientes muestran que la respuesta negativa tiene una
+causa identificable y que no depende de las elecciones de diseño que podrían haberla producido.

@@ -1,0 +1,30 @@
+% ---
+% §7.4 Viabilidad práctica (OE-6).
+% Entradas que lo respaldan: D-040, D-042, H-019, H-032, H-051, H-052, H-054, H-055.
+% ---
+
+\subsection{Viabilidad práctica}
+\label{sec:conclusion_viabilidad}
+
+% fuente: H-051, H-054; 8_oe6_qubits.csv, X8_costo_gradiente.csv
+En simulación, el número de qubits no fue la restricción que condicionó el diseño. En la máquina
+empleada, con 16\,GiB de memoria, el \textit{embedding} de todas las lesiones cabe en 24\,h hasta unos
+25 qubits y el kernel de $200 \times 200$ por \textit{compute-uncompute} hasta unos 22. El límite lo
+impuso el gradiente: entrenar los parámetros variacionales por \textit{parameter-shift}, la regla que
+funciona en \textit{hardware}, cuesta 5.16\,s por lesión a $k = 12$, unas 205\,h para 50 épocas,
+y deja de caber en un día a partir de unos 15 qubits.
+
+% fuente: H-032, H-052, H-054, H-055; 8_oe6_shots_kernel.csv, 8_oe6_shots_embedding.csv, X9_costo_hardware.csv
+% respaldo: «Thus on training with a polynomial number of measurements, one ends up with a trivial model where the predictions on unseen inputs are independent of the input data.» (Thanasilp2024, p. 1)
+Varios de los atajos que hicieron viable el estudio solo existen en simulación. El kernel de
+$200 \times 200$ se calculó en 1.5\,s a partir de los vectores de estado, y el gradiente por
+retropropagación costó unas 3\,600 veces menos que por \textit{parameter-shift}; ninguno de los dos es
+realizable en un procesador cuántico, porque medir colapsa el estado. En \textit{hardware}, cada entrada
+del kernel es un circuito distinto que se repite con múltiples disparos: 19\,900 circuitos por matriz
+con 200 lesiones y más de un millón con todas las calcificaciones de entrenamiento. Con 1\,024
+disparos, el perceptrón sobre los $\langle Z_i\rangle$ queda a menos de 0.02 del AUC exacto, pero el
+kernel no es medible: a $c = 1$, entre el 16 y el 74\,\% de sus valores leería exactamente cero. Es la
+situación que describen Thanasilp et al. \cite{Thanasilp2024}, en la que con un número polinomial de
+mediciones las predicciones dejan de depender de los datos. La viabilidad de estas codificaciones en un
+contexto de salud queda condicionada, antes que al número de qubits, a evitar la concentración del kernel
+y a disponer de gradientes que un procesador real pueda estimar.

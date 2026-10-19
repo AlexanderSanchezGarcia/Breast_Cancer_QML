@@ -30,19 +30,20 @@ Ninguna de las 3\,103 mamografías incluye las etiquetas \texttt{PixelSpacing},
 \texttt{ImagerPixelSpacing} ni \texttt{Manufacturer}. Sin un espaciado físico, las características de
 forma se expresan en píxeles, y no es posible distinguir el digitalizador de origen.
 
-Los cuatro archivos CSV del dataset
-(\texttt{mass\_case\_description\_train\_set},
-\texttt{mass\_case\_description\_test\_set},
-\texttt{calc\_case\_description\_train\_set},
-\texttt{calc\_case\_description\_test\_set})
-se unifican en un DataFrame mediante
-\texttt{pandas}, agregando las columnas
+Los cuatro archivos CSV del dataset se unifican en un
+DataFrame mediante \texttt{pandas}:
+\begin{itemize}
+  \item \texttt{mass\_case\_description\_train\_set},
+  \item \texttt{mass\_case\_description\_test\_set},
+  \item \texttt{calc\_case\_description\_train\_set},
+  \item \texttt{calc\_case\_description\_test\_set}.
+\end{itemize}
+Al unificarlos se agregan las columnas
 \texttt{finding\_type} (masa / calcificación) y
 \texttt{split} (train / test). La etiqueta objetivo
-\texttt{pathology} se normaliza a una variable binaria:
-\texttt{BENIGN\_WITHOUT\_CALLBACK} se trata equivalente
-a \texttt{BENIGN}, resultando en la codificación
-0\,=\,benigno y 1\,=\,maligno.
+\texttt{pathology} se normaliza a una variable binaria con la
+codificación 0\,=\,benigno y 1\,=\,maligno; los casos
+\texttt{BENIGN\_WITHOUT\_CALLBACK} se tratan como \texttt{BENIGN}.
 
 El enlace entre los registros CSV y los archivos DICOM
 en disco se resuelve mediante un índice construido
@@ -63,6 +64,6 @@ Estos corresponden a 3\,103 mamografías distintas, porque varias lesiones
 comparten la misma imagen.
 
 La salida de este módulo es un DataFrame unificado con
-3,568 registros, con rutas resueltas a los archivos DICOM
+3\,568 registros, con rutas resueltas a los archivos DICOM
 correspondientes y etiquetas binarias validadas, que sirve
 como base para todos los módulos posteriores.

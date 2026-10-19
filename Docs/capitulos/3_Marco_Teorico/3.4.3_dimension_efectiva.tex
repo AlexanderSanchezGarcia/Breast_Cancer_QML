@@ -23,7 +23,9 @@ En la ecuación~\eqref{eq:dim_efectiva}, el término interior $\sum_{l=k}^{N} t_
 la suma de la cola espectral a partir del $k$-ésimo autovalor, y el denominador
 la promedia entre las $N-k+1$ direcciones restantes.
 
-\textbf{Nota sobre errata en la literatura:} La ecuación (F12) del apéndice suplementario de Huang et al. \cite{huang2021power} imprime el factor normalizador como $\frac{1}{N - k}$, formulación que incurre en una indeterminación por división entre cero en el último sumando ($k = N$). La corrección consiste en emplear el denominador $N - k + 1$. Con esta formulación, la métrica satisface las cotas que enuncian los autores:
+% respaldo: «In the numerical experiment, we choose the following measure as the approximate dimension» (huang2021powerSupp, p. 12)
+% La errata está igual en la versión publicada (S64) y en la de arXiv (F12), sección 6 B = Apéndice F.2.
+\textbf{Nota sobre errata en la literatura:} La ecuación (S64) de la información suplementaria de Huang et al. \cite{huang2021power} (sección~6\,B) imprime el factor normalizador como $\frac{1}{N - k}$, formulación que incurre en una indeterminación por división entre cero en el último sumando ($k = N$). La corrección consiste en emplear el denominador $N - k + 1$. Con esta formulación, la métrica satisface las cotas que enuncian los autores:
 \begin{equation}
   1 \le d(K) \le N.
   \label{eq:effective_dim_bounds}

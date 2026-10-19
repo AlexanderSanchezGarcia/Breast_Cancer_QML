@@ -1,0 +1,36 @@
+% ---
+% §7.6 Limitaciones de las conclusiones.
+% Entradas que lo respaldan: H-002, H-024, H-025, H-035, D-013, D-014, D-026, D-039, D-042, H-048, H-055.
+% ---
+
+\subsection{Limitaciones}
+\label{sec:limitaciones_conclusiones}
+
+Las conclusiones anteriores están acotadas por las siguientes condiciones:
+
+\begin{itemize}
+  % fuente: H-002, H-025
+  \item \textbf{Un solo conjunto de datos, sin calibración física.} Todos los resultados provienen del
+  CBIS-DDSM, sin validación externa. Sus mamografías son películas digitalizadas sin espaciado de píxel
+  ni escala de intensidad; las características de primer orden, que lideran en masas, podrían reflejar
+  en parte el digitalizador de origen.
+  % fuente: D-013, H-035
+  \item \textbf{Doce características.} Pasar de 67 a 12 características cuesta entre 2 y 4 puntos de AUC
+  con clasificadores clásicos. La comparación es justa porque todas las condiciones parten del mismo
+  vector, pero ese vector ya contiene menos información que el conjunto completo.
+  % fuente: D-014, D-031, H-048
+  \item \textbf{Dos codificaciones con una repetición.} Las conclusiones se refieren a los mapas ZZ y de
+  Pauli con los términos Y y ZZ, con entrelazamiento completo y una repetición, y a una capa variacional
+  de parámetros fijos. Otras codificaciones, en particular las diseñadas a partir de la estructura del
+  problema, podrían comportarse de otro modo.
+  \item \textbf{Simulación ideal.} No se modeló el ruido de los dispositivos. Todo lo que se afirma sobre
+  la ejecución en un procesador real son proyecciones a partir de un muestreo ideal de las probabilidades
+  exactas.
+  % fuente: D-026, D-039, D-042, H-055
+  \item \textbf{Alcance estadístico.} Las métricas de separabilidad del análisis principal se calcularon
+  sobre 200 lesiones de entrenamiento por subconjunto; la robustez con otras submuestras y con todo el
+  entrenamiento confirma la conclusión, pero la significancia de los efectos más pequeños y el orden entre
+  C4 y C5 dependen de la muestra. Los valores $p$ son indicativos, porque se prueban muchas estadísticas;
+  los pliegues de validación cruzada se fijaron una sola vez sobre el entrenamiento, y la correlación de
+  Spearman, con cinco condiciones, es descriptiva.
+\end{itemize}

@@ -1,0 +1,94 @@
+% ---
+% §8.1 Líneas de trabajo futuro.
+% ---
+
+\subsection{Codificaciones que eviten la concentración}
+\label{sec:futuro_codificacion}
+
+% fuente: D-029, H-031, H-044; 6_alineamiento_kernel.csv, X4_test.csv
+% respaldo: «Furthermore, we show that optimizing the bandwidth can help mitigate the exponential decay of kernel values with qubit count, which is the cause behind recent observations that the performance of quantum kernel methods decreases with qubit count.» (Shaydulin2022Bandwidth, p. 1)
+% respaldo: «Specifically, we show that changing the value of the bandwidth can take a model from provably not being able to generalize to any target function to good generalization for well-aligned targets.» (Canatar2023Bandwidth, p. 1)
+El factor de escala angular $c$ funcionó en este trabajo como un análisis de sensibilidad fijado de
+antemano. En la literatura, ese mismo factor se estudia como el ancho de banda del kernel cuántico:
+Shaydulin y Wild \cite{Shaydulin2022Bandwidth} muestran que optimizarlo ayuda a mitigar el decaimiento
+exponencial de los valores del kernel con el número de qubits, y Canatar et al.
+\cite{Canatar2023Bandwidth}, que cambiarlo puede llevar a un modelo de no poder generalizar ninguna
+función objetivo a generalizar bien las que están alineadas con el kernel.
+En este trabajo, el QSVM con $c$ elegido por validación cruzada igualó al mejor kernel clásico, pero en
+un régimen en que el término de interacción entre características apenas influye. Queda por estudiar si
+existe un intervalo intermedio de $c$, o un ancho de banda distinto por característica, en el que el
+kernel deje de estar concentrado sin perder el término de interacción, y cómo cambia ese intervalo al
+aumentar el número de qubits.
+
+% fuente: H-048; X6_etiquetas_construidas.csv
+% respaldo: «In conclusion, our message is a somewhat sobering one: we conjecture that quantum machine learning models can offer speed-ups only if we manage to encode knowledge about the problem at hand into quantum circuits, while encoding the same bias into a classical model would be hard.» (Kubler2021Inductive, p. 1)
+% respaldo: «We introduce a class of quantum kernels that can be used for data with a group structure. The kernel is defined in terms of a unitary representation of the group and a fiducial state that can be optimized using a technique called kernel alignment.» (Glick2024Covariant, p. 1)
+El control con el etiquetado diseñado mostró que el protocolo detecta una ventaja cuando las etiquetas
+se alinean con la geometría del circuito. Los mapas ZZ y de Pauli, en cambio, no se diseñaron a partir de
+ningún conocimiento de la mamografía. Kübler et al. \cite{Kubler2021Inductive} conjeturan que los modelos
+cuánticos solo pueden ofrecer ventajas si se codifica en el circuito un conocimiento del problema que
+sería difícil codificar en un modelo clásico, y Glick et al. \cite{Glick2024Covariant} construyen kernels
+a partir de la estructura de grupo de los datos. Una línea natural es diseñar codificaciones que
+incorporen propiedades conocidas de las lesiones, como la invariancia de la textura ante rotaciones, en
+lugar de mapas genéricos.
+
+% respaldo: «These variational parameters are optimized for a given dataset by increasing the kernel-target alignment, a heuristic connected to the achievable classification accuracy.» (Hubregtsen2022, p. 1)
+% respaldo: «Lastly, we show that when dealing with classical data, training a parametrized data embedding with a kernel alignment method is also susceptible to exponential concentration.» (Thanasilp2024, p. 1)
+Otra opción es entrenar los parámetros de la propia codificación maximizando el alineamiento con las
+etiquetas, como proponen Hubregtsen et al. \cite{Hubregtsen2022}. Thanasilp et al.
+\cite{Thanasilp2024} advierten que este entrenamiento también es susceptible a la concentración
+exponencial cuando los datos son clásicos, de modo que habría que vigilar la concentración durante el
+entrenamiento y no solo al final.
+
+\subsection{Lecturas más ricas del estado codificado}
+\label{sec:futuro_lectura}
+
+% fuente: H-044, H-054; X4_test_diferencias.csv, X8_test.csv
+La pérdida de la clasificación ocurrió en la lectura: el kernel de C4 conserva una información comparable
+a la clásica, pero los 12 valores esperados locales no, ni siquiera con la capa variacional entrenada. Un
+paso intermedio entre ambos extremos sería leer más observables, como las correlaciones entre pares de
+qubits $\langle Z_i Z_j\rangle$, que añaden 66 valores con 12 qubits, y medir cuánta de la información del
+kernel recuperan y cuántos disparos exigen. Esta línea conserva la ventaja práctica de la Arquitectura~B,
+que calcula la representación una sola vez, y en \textit{hardware} evita estimar un kernel cuyas entradas
+se concentran cerca de cero.
+
+\subsection{Ejecución en procesadores cuánticos}
+\label{sec:futuro_hardware}
+
+% fuente: H-052, H-055, D-042; X9_costo_hardware.csv, 8_oe6_shots_kernel.csv
+% respaldo: «We also would like to explore other gate-based quantum devices with smaller associated errors.» (Azevedo2022QuantumTransfer, p. 12)
+La línea de Azevedo et al. \cite{Azevedo2022QuantumTransfer} que este trabajo no abordó es la ejecución
+en dispositivos reales. Los resultados permiten planearla con cifras: con 200 lesiones, una matriz de
+kernel exige 19\,900 circuitos, del orden de 20 millones de ejecuciones con 1\,024 disparos, y a $c = 1$
+una parte de sus entradas leería cero con cualquier presupuesto razonable. Un primer paso sería simular
+el mismo protocolo con modelos de ruido de dispositivos concretos, para separar el efecto del ruido del de
+la concentración; después, ejecutar sobre un procesador real los valores esperados de una muestra
+reducida, que toleran el muestreo, y el kernel solo en el intervalo de $c$ en el que sea medible. El
+entrenamiento de parámetros variacionales en \textit{hardware} exigiría gradientes que un procesador
+pueda estimar, cuyo coste por \textit{parameter-shift} se midió en este trabajo.
+
+\subsection{Datos y características}
+\label{sec:futuro_datos}
+
+% fuente: H-002, H-035, H-050
+% respaldo: «It would also be interesting to test different datasets.» (Azevedo2022QuantumTransfer, p. 12)
+Todas las conclusiones dependen de un solo conjunto de datos de películas digitalizadas. Repetir el
+estudio sobre mamografía digital con espaciado de píxel y escala de intensidad conocidos permitiría
+expresar las características de forma en unidades físicas, descartar la influencia del digitalizador en
+las de primer orden y validar los resultados de forma externa. En el lado de las características, dos
+resultados señalan dónde buscar: la selección de 12 de las 67 cuesta entre 2 y 4 puntos de AUC, y en
+masas las características radiómicas recuperan mucho menos que los descriptores del radiólogo. Las
+características específicas del margen de la lesión, o las extraídas por una red convolucional
+preentrenada, que el diseño dejó como alternativa documentada, son candidatas para cerrar esa brecha antes
+de cualquier codificación cuántica.
+
+\subsection{Refinamientos metodológicos}
+\label{sec:futuro_metodologia}
+
+% fuente: D-026, D-039, D-042, H-047, H-053, H-055
+Tres refinamientos harían más precisas las estimaciones de este trabajo sin cambiar su diseño. Primero,
+ajustar los pliegues y toda selección dentro de una validación cruzada anidada, en lugar de fijarlos una
+sola vez sobre el entrenamiento. Segundo, incorporar al análisis principal la variabilidad de los
+parámetros variacionales y de la submuestra, que en este trabajo se midieron como análisis de robustez, y
+corregir los valores $p$ por comparaciones múltiples. Tercero, extender la búsqueda anidada de ventaja al
+mapa de Pauli con los términos Y y ZZ, que no formó parte de ese barrido.

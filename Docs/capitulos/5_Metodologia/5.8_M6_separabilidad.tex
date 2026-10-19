@@ -1,7 +1,7 @@
 % ---
 % Reemplaza líneas 2881–2890 de Docs/Technical_Report.tex (y crea sección propia M6).
-% Decisiones que lo respaldan: D-016, D-017, D-027, D-028, D-030, D-032, D-033,
-% H-013, H-032, H-033, H-037, H-038, H-046.
+% Decisiones que lo respaldan: D-016, D-017, D-027, D-028, D-030, D-032, D-033, D-042,
+% H-013, H-032, H-033, H-037, H-038, H-046, H-055.
 % ---
 
 \subsection{Módulo 6: Análisis de separabilidad}
@@ -11,6 +11,12 @@ El análisis de separabilidad opera sobre dos objetos distintos, y conviene
 distinguirlos al interpretar los resultados. Todas las métricas se calculan sobre
 la misma submuestra: 200 lesiones del conjunto de entrenamiento por subconjunto,
 estratificadas por clase y elegidas con la semilla 42; el conjunto de prueba no interviene.
+El tamaño se fijó antes de ver los datos por el coste del protocolo físico: en un equipo cuántico,
+cada entrada del kernel es un circuito \textit{compute-uncompute} distinto, de modo que una matriz de
+200 lesiones requiere 19\,900 circuitos, frente a cerca de 0.87 y 1.19 millones con todas las masas y
+todas las calcificaciones de entrenamiento. En simulación, el cálculo a partir de los vectores de estado
+hace viable el conjunto completo; por ello, el experimento X9 (sección~\ref{sec:experimentos_complementarios})
+repite las métricas sobre otras 19 submuestras y sobre todo el entrenamiento como análisis de robustez.
 Los kernels cuánticos se evalúan de forma exacta a partir de los vectores de estado, y la
 significancia de cada métrica que usa las etiquetas se estima con 1\,000 permutaciones de las etiquetas que
 conservan el número de lesiones de cada clase.

@@ -1,0 +1,40 @@
+% ---
+% §7.2 Cumplimiento de los objetivos específicos. Complementa la Tabla de §6.8 sin repetirla.
+% Entradas que lo respaldan: D-012, D-014, D-016, D-024, D-025, D-031, D-036, D-039, D-040,
+% H-020, H-021, H-035, H-042, H-043, H-049, H-051, H-052.
+% ---
+
+\subsection{Cumplimiento de los objetivos}
+\label{sec:cumplimiento_objetivos}
+
+La Tabla~\ref{tab:sintesis_objetivos_especificos} resume la evidencia de cada objetivo específico.
+En síntesis, los seis se cumplieron:
+
+\begin{enumerate}
+  % fuente: D-012, D-020, D-021, D-024, D-025, H-020, H-021; 2_preprocesamiento_qa.csv, 4_seleccion.csv
+  \item \textbf{OE-1.} El \textit{pipeline} procesa las 3\,568 lesiones con cobertura DICOM completa,
+  recorta la región de interés a resolución original, corrige las máscaras desalineadas según su tipo,
+  extrae 67 características radiómicas y selecciona 12 por prueba F con restricción de redundancia,
+  escaladas a $[0,\pi]$ por cuantiles y ajustadas solo con el entrenamiento, por separado para masas y
+  calcificaciones.
+  % fuente: D-014, D-016, D-031
+  \item \textbf{OE-2.} Las cinco condiciones parten del mismo vector y producen representaciones de
+  dimensión 12. C2 funciona como control nulo: coincide con C1 en toda métrica de separabilidad hasta
+  el límite de precisión numérica, lo que muestra que los instrumentos no reaccionan a una rotación.
+  % fuente: D-032, D-033, H-039, H-040, H-055
+  \item \textbf{OE-3.} La separabilidad se midió con dos familias de métricas, sobre el kernel y sobre
+  las representaciones, con pruebas de permutación y con la diferencia geométrica regularizada según el
+  protocolo de Huang et al. \cite{huang2021power}. Ninguna transformación cuántica superó a las
+  clásicas.
+  % fuente: D-036, H-042, H-043
+  \item \textbf{OE-4.} Un mismo perceptrón multicapa se entrenó sobre las cinco representaciones con
+  validación cruzada por paciente; la conclusión resiste cambios de semilla, de arquitectura, de
+  escalado y de duración del entrenamiento.
+  % fuente: D-039, H-049
+  \item \textbf{OE-5.} Las diferencias de separabilidad se reflejaron en la clasificación en el mismo
+  sentido, con las cinco métricas de clasificación reportadas por subconjunto.
+  % fuente: D-040, H-051, H-052
+  \item \textbf{OE-6.} Se midieron las restricciones del simulador y se proyectó el número de
+  mediciones que exigiría un procesador real. Su conclusión se desarrolla en la
+  sección~\ref{sec:conclusion_viabilidad}.
+\end{enumerate}

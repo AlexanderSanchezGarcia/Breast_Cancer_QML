@@ -31,7 +31,7 @@ código RF-XX y vinculado al objetivo específico que lo origina.
 
 \begingroup
 \renewcommand{\arraystretch}{1.35}
-\begin{longtable}{@{}lp{9.8cm}cc@{}}
+\begin{longtable}{@{}lp{11cm}c@{}}
 
 \caption{Requerimientos funcionales del sistema}
 \label{tab:req_funcionales} \\
@@ -39,22 +39,22 @@ código RF-XX y vinculado al objetivo específico que lo origina.
 % ── Encabezado de la PRIMERA página
 \toprule
 \textbf{ID} & \textbf{Descripción} &
-\textbf{OE} & \textbf{Prior.} \\
+\textbf{OE} \\
 \midrule
 \endfirsthead
 
 % ── Encabezado de páginas SIGUIENTES
-\multicolumn{4}{c}{%
+\multicolumn{3}{c}{%
   \small\textit{Tabla \thetable{} -- continuación}} \\[4pt]
 \toprule
 \textbf{ID} & \textbf{Descripción} &
-\textbf{OE} & \textbf{Prior.} \\
+\textbf{OE} \\
 \midrule
 \endhead
 
 % ── Pie de páginas intermedias
 \midrule
-\multicolumn{4}{r}{%
+\multicolumn{3}{r}{%
   \small\textit{Continúa en la siguiente página}} \\
 \endfoot
 
@@ -62,7 +62,7 @@ código RF-XX y vinculado al objetivo específico que lo origina.
 \bottomrule
 \endlastfoot
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 1 -- Lectura de datos}} \\[2pt]
 
@@ -70,20 +70,20 @@ RF-01 &
 Leer archivos DICOM del dataset CBIS-DDSM mediante
 \texttt{pydicom}, extrayendo el arreglo de píxeles en
 16 bits y los metadatos clínicos.
-& OE-1 & Alta \\
+& OE-1 \\
 
 RF-02 &
 Unificar los cuatro archivos CSV del dataset en un
 DataFrame consolidado con etiqueta binaria
 (BENIGN\,=\,0 / MALIGNANT\,=\,1).
-& OE-1 & Alta \\
+& OE-1 \\
 
 RF-03 &
 Tratar de forma independiente masas y calcificaciones
 como subproblemas de clasificación independientes.
-& OE-1, OE-3 & Alta \\
+& OE-1, OE-3 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 2 -- Preprocesamiento}} \\[2pt]
 
@@ -91,21 +91,21 @@ RF-04 &
 Alinear cada máscara ROI con su mamografía según el tipo
 de desajuste (remuestreo por vecino más cercano o anclaje
 sin escalar) y reducirla a su componente conexa mayor.
-& OE-1 & Alta \\
+& OE-1 \\
 
 RF-05 &
 Generar una variante con CLAHE sobre la mamografía completa
 convertida a 8 bits, solo para cuantificar su efecto sobre las
 características; la ruta de extracción usa la imagen sin CLAHE.
-& OE-1 & Alta \\
+& OE-1 \\
 
 RF-06 &
 Recortar la ROI con la caja de la máscara ampliada en 20
 píxeles por lado, a resolución original y con las
 intensidades originales de 16 bits.
-& OE-1 & Alta \\
+& OE-1 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 3 -- Extracción de características}} \\[2pt]
 
@@ -113,9 +113,9 @@ RF-07 &
 Extraer 67 características radiómicas con PyRadiomics
 (primer orden, forma 2D, GLCM y GLRLM) sobre la imagen
 original, con \texttt{binCount} = 32.
-& OE-1 & Alta \\
+& OE-1 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 4 -- Selección y escalado}} \\[2pt]
 
@@ -124,37 +124,37 @@ Seleccionar $k = 12$ características por F-test ANOVA,
 aceptando una solo si su correlación absoluta con las ya
 elegidas es $\le 0.95$, con el selector ajustado
 únicamente sobre el conjunto de entrenamiento.
-& OE-1, OE-2 & Alta \\
+& OE-1, OE-2 \\
 
 RF-09 &
 Transformar cada característica en un ángulo
 $\pi\,\hat F(r) \in [0,\pi]$, con $\hat F$ su distribución empírica, mediante una
 transformación por cuantiles ajustada sobre el conjunto
 de entrenamiento.
-& OE-1, OE-2 & Alta \\
+& OE-1, OE-2 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 5 -- Transformación (5 condiciones)}} \\[2pt]
 
 RF-10 &
 \textit{Baseline} crudo: vector seleccionado y escalado
 directo al MLP sin transformación adicional.
-& OE-2 & Alta \\
+& OE-2 \\
 
 RF-11 &
 \textit{Baseline} lineal: PCA sobre el vector
 seleccionado y escalado, conservando $k$ componentes.
 Actúa como control nulo: una PCA de $k$ a $k$ dimensiones
 es una rotación.
-& OE-2 & Alta \\
+& OE-2 \\
 
 RF-12 &
 \textit{Baseline} no lineal: Kernel PCA con kernel RBF
 sobre el vector seleccionado, con el ancho de banda
 $\gamma$ fijado por la heurística de la mediana sobre
 el entrenamiento.
-& OE-2 & Alta \\
+& OE-2 \\
 
 RF-13 &
 Condición C4: \texttt{zz\_feature\_map} de segundo orden
@@ -162,40 +162,41 @@ seguido de \texttt{real\_amplitudes} con parámetros
 $\boldsymbol\theta$ fijos (semilla 42, sin entrenar),
 devolviendo los valores esperados exactos
 $\langle Z_i\rangle \in [-1,1]^k$.
-& OE-2 & Alta \\
+& OE-2 \\
 
 RF-14 &
 Condición C5: \texttt{pauli\_feature\_map} con operadores
 $(Y, ZZ)$, con el mismo \textit{ansatz} y los mismos
 $\boldsymbol\theta$ que C4.
-& OE-2 & Alta \\
+& OE-2 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 6 -- Análisis de separabilidad}} \\[2pt]
 
 RF-15 &
 Calcular el kernel cuántico de fidelidad, solo con el
 \textit{feature map}, sobre 200 lesiones de entrenamiento por
-subconjunto, y su alineamiento centrado con las etiquetas,
-comparado contra una prueba de permutación.
-& OE-3 & Alta \\
+subconjunto (y, como robustez, sobre todo el entrenamiento), y su
+alineamiento centrado con las etiquetas, comparado contra una
+prueba de permutación.
+& OE-3 \\
 
 RF-16 &
 Calcular la \textit{geometric difference} regularizada entre
 el kernel cuántico y una batería de kernels clásicos, con el
 protocolo de Huang et al., junto con la dimensión efectiva:
 $g_{CQ}=\sqrt{\bigl\|\sqrt{K_Q}\,\sqrt{K_C}\,(K_C+\lambda I)^{-2}\sqrt{K_C}\,\sqrt{K_Q}\bigr\|_\infty}$.
-& OE-3 & Alta \\
+& OE-3 \\
 
 RF-17 &
 Medir el índice de Davies-Bouldin, la razón de Fisher
 multivariante y el alineamiento del kernel lineal sobre la
 representación de cada condición, separado para masas y
 calcificaciones.
-& OE-3 & Alta \\
+& OE-3 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 7 -- Clasificación}} \\[2pt]
 
@@ -203,16 +204,16 @@ RF-18 &
 Entrenar el mismo MLP ($k \to 32 \to 16 \to 1$) en las
 5 condiciones, con idéntica arquitectura, hiperparámetros,
 protocolo y semilla.
-& OE-4 & Alta \\
+& OE-4 \\
 
 RF-19 &
 Entrenar con ponderación de clases, con pesos
 $w_c = N/(C\,N_c)$ (ecuación~\eqref{eq:class_weights}) en la
 entropía cruzada binaria para compensar el desbalance
 observado.
-& OE-4 & Alta \\
+& OE-4 \\
 
-\multicolumn{4}{@{}l}{%
+\multicolumn{3}{@{}l}{%
   \cellcolor{gray!10}\small\textit{%
   Módulo 8 -- Evaluación comparativa}} \\[2pt]
 
@@ -220,20 +221,20 @@ RF-20 &
 Reportar AUC-ROC, F1-Score, Accuracy, Precision y
 Recall por condición, separado para masas y
 calcificaciones.
-& OE-5 & Alta \\
+& OE-5 \\
 
 RF-21 &
 Analizar la correlación entre ranking de separabilidad
 (OE-3) y ranking de clasificación (OE-5) de forma
 descriptiva, con la distribución exacta de $\rho_s$
 para $n = 5$.
-& OE-5 & Alta \\
+& OE-5 \\
 
 RF-22 &
 Documentar restricciones del simulador: tiempo por
 muestra, qubits máximos, impacto de \textit{shots} y
 costo del \textit{parameter-shift}.
-& OE-6 & Alta \\
+& OE-6 \\
 
 \end{longtable}
 \endgroup
@@ -308,10 +309,11 @@ experimento, y cuantificar aparte el efecto de los
 exactas (de 64 a 65\,536, incluido 1\,024). \\
 
 RNF-06 & Rendimiento &
-Calcular la matriz de kernel cuántico sobre submuestra de
-200 lesiones de entrenamiento por subconjunto para viabilidad
-computacional del cálculo $O(N^2)$ de \textit{geometric difference}
-y KTA. \\
+Calcular la matriz de kernel cuántico sobre una submuestra de
+200 lesiones de entrenamiento por subconjunto, un tamaño que el
+protocolo \textit{compute-uncompute} de un equipo cuántico
+admite ($N(N-1)/2$ circuitos por matriz), y repetir las métricas
+sobre todo el entrenamiento como análisis de robustez. \\
 
 RNF-07 & Escalabilidad &
 Circuito parametrizable en $k$, \textit{feature map} y

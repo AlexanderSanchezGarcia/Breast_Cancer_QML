@@ -29,7 +29,9 @@ Con kernels de diagonal unitaria y $\operatorname{Tr}K=N$, $g_{CQ}\ge1$: basta e
 En conjuntos de datos reales, la evaluación directa de la ecuación~\eqref{eq:geometric_diff}
 resulta numéricamente inestable debido a que las matrices de kernel clásicas suelen presentar
 valores propios muy pequeños, que disparan $g_{CQ}$ y hacen que mida el condicionamiento de $K_C$ y no la codificación. Para subsanar esto, Huang et al. \cite{huang2021power} definieron
-la formulación regularizada mediante un parámetro de penalización $\lambda > 0$ (Apéndice F, ec. (F19) y (F20)):
+% respaldo: «When we only have a finite number N of training samples, we can use the fact that k(x, y) = φ(x)†φ(y) and the definition that Kij = k(xi, xj) to obtain» (huang2021powerSupp, p. 12)
+% Equivalencias con la versión de arXiv (2011.01938): sección 6 C = Apéndice F.3; (S71) = (F19); (S72) = (F20).
+la formulación regularizada mediante un parámetro de penalización $\lambda > 0$ (información suplementaria, sección~6\,C, ecs.~(S71) y~(S72)):
 \begin{equation}
   g_{\text{gen}}(K_C, K_Q; \lambda) = \sqrt{\left\| \sqrt{K_Q}\sqrt{K_C}\,(K_C + \lambda I)^{-2}\,\sqrt{K_C}\sqrt{K_Q} \right\|_\infty},
   \label{eq:g_gen}
@@ -41,11 +43,14 @@ junto con la cota del error de entrenamiento admisible para el predictor clásic
 \end{equation}
 Cuando $\lambda \to 0$, $g_{\text{gen}}$ recupera la distancia de la ecuación~\eqref{eq:geometric_diff}.
 
-Siguiendo el protocolo de Huang et al. (Apéndice L, ec. (L9)–(L11)), se evalúa una malla de
+% respaldo: «We consider the following list of λ λ ∈{0.00001, 0.0001, 0.001, 0.01, 0.025, 0.05, 0.1},» (huang2021powerSupp, p. 20)
+% Equivalencias con arXiv: sección 12 C = Apéndice L.3; (S113)–(S115) = (L9)–(L11).
+Se sigue el protocolo de Huang et al. (información suplementaria, sección~12\,C,
+ecs.~(S113)--(S115)): se evalúa una malla de
 regularización $\lambda \in \{10^{-5}, 10^{-4}, 10^{-3}, 10^{-2}, 0.025, 0.05, 0.1\}$ y una
 batería de kernels clásicos que comprende un kernel lineal sobre los datos centrados
 y kernels gaussianos (RBF) con parámetro $\gamma = m / (n\,\operatorname{Var}[\mathbf{x}])$,
-para multiplicadores $m \in \{0.25, 0.5, 1, 2, 4, 8, 16, 32, 64\}$, con $n = 12$ el número de
+para multiplicadores $m \in \{0.25,\allowbreak 0.5,\allowbreak 1,\allowbreak 2,\allowbreak 4,\allowbreak 8,\allowbreak 16,\allowbreak 32,\allowbreak 64\}$, con $n = 12$ el número de
 características y $\operatorname{Var}[\mathbf{x}]$ la varianza de todas las coordenadas de la submuestra.
 Como análisis de sensibilidad se añaden gaussianos más estrechos, $m \in \{128, 256, 512\}$.
 Para cada kernel clásico, se identifica el mayor valor de $\lambda$ admisible que satisface la

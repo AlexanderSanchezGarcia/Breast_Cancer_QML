@@ -10,6 +10,8 @@ Cada carpeta es un capítulo completo de `Docs/Technical_Report.tex`, en el orde
 | `2_Antecedentes/` | Reescrito el 2026-10-16. Orden: §2.1.1–§2.1.5 (corregidas con la auditoría y las fichas de T10), §2.1.6 límites de la ventaja, §2.1.7 imágenes cuánticas, §2.1.8 revisión crítica y §2.1.9 tabla comparativa (al final, con columnas P1–P4). Cada atribución lleva su `% respaldo:` verificable con `verificar_citas_fichas.py`; ya no hay copia literal de TT1, así que la prueba de literalidad se retiró. Queda un `% VERIFICAR` en §2.1.1: Zebari et al. es de acceso abierto, pero hay que descargarlo a mano (Taylor & Francis bloquea la descarga automática). |
 | `A_Anexos/` | Nuevo (2026-10-14): anexos A–E; necesita `Docs/insumos/preambulo_extra.tex` (listings). |
 | `6_Resultados/` | Capítulo nuevo, escrito a partir de las entradas H-020 a H-054 de la bitácora y de las tablas de `Docs/tablas/`. Cada párrafo con cifras lleva un `% fuente:` con las entradas y los CSV de donde salen. |
+| `7_Conclusiones/` | Nuevo (2026-10-18), borrador para revisión del autor. Respuesta a la pregunta, cumplimiento de objetivos, causas (concentración, lectura, etiquetas), viabilidad (OE-6), aportaciones y limitaciones. Reemplaza las conclusiones de TT1 (l. 3468–3521). |
+| `8_Trabajo_Futuro/` | Nuevo (2026-10-18), borrador para revisión del autor. Cada línea parte de un resultado o una limitación de §7; las citas de respaldo pasan `verificar_citas_fichas.py`. Reemplaza el trabajo a futuro de TT1 (l. 3525–3583), con su cronograma. |
 
 ## Cómo usarlo
 
@@ -49,6 +51,19 @@ Cada carpeta es un capítulo completo de `Docs/Technical_Report.tex`, en el orde
 - **§6.4:** decía «auditoría independiente» a la vez que «la formuló el propio equipo»; se quitó «independiente».
 - **§5:** se restauraron los anchos originales de tres figuras, entre ellas la galería D4, que con `\textwidth` desbordaba la página.
 - **Tablas:** los pies de `Docs/tablas/*.tex` ya no muestran identificadores D-xxx ni H-xxx (`tablas_latex.py`).
+
+## Numeración del material suplementario de Huang et al. (2026-10-18)
+
+La bibliografía cita la versión de *Nature Communications*, cuyo material suplementario numera por secciones (1–13) y ecuaciones (S1–S133). La versión de arXiv (2011.01938) usa apéndices A–M con ecuaciones por letra. El texto visible usa ahora la numeración publicada; las equivalencias se comprobaron por contenido y están en los comentarios de cada archivo:
+
+| arXiv | Publicada |
+|---|---|
+| Apéndice F.2, ec. (F12) | Sección 6 B, ec. (S64); la errata 1/(N−k) está en ambas |
+| Apéndice F.3, ecs. (F19)–(F20) | Sección 6 C, ecs. (S71)–(S72) |
+| Apéndice G, ecs. (G1)–(G4) | Sección 7, ecs. (S73)–(S76) |
+| Apéndice L.3, ecs. (L9)–(L11) | Sección 12 C, ecs. (S113)–(S115) |
+
+El suplemento está en `Docs/fuentes/pdf/huang2021powerSupp.pdf`, con su texto en `Docs/fuentes/txt/huang2021powerSupp/` (clave para los `% respaldo:`). La binarización por la mediana del etiquetado diseñado es parte del procedimiento de la sección 7, no una elección de este trabajo.
 
 ## Pendiente cosmético
 

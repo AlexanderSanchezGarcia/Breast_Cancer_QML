@@ -1,6 +1,6 @@
 % ---
 % Reemplaza parte de la sección de resultados en Docs/Technical_Report.tex.
-% Entradas que lo respaldan: H-018, H-019, H-031, H-036, H-037, H-038, H-039, H-040, H-041, D-029, D-033.
+% Entradas que lo respaldan: H-018, H-019, H-031, H-036, H-037, H-038, H-039, H-040, H-041, H-055, D-029, D-033, D-042.
 % ---
 
 \subsection{Separabilidad de las representaciones}
@@ -133,6 +133,33 @@ C1 obtuvo 0.45 en masas y 1.06 en calcificaciones, frente a 0.13 y 0.42 en C4, y
 % fuente: H-040; 6_metricas_embedding.csv
 \caption{Proyecciones bidimensionales mediante t-SNE para las representaciones generadas en las cinco condiciones.}
 \label{fig:m6_tsne}
+\end{figure}
+
+% fuente: H-055, D-042; X9_resumen_familia_a.csv, X9_orden_familia_b.csv, X9_familia_a.csv
+Para descartar que estas conclusiones dependan de la submuestra, las métricas a $c = 1$ se repitieron
+sobre otras 19 submuestras estratificadas de 200 lesiones de entrenamiento y sobre la totalidad del
+conjunto de entrenamiento, sin usar el conjunto de prueba (Figura~\ref{fig:x9_sample_size}). En las
+20 submuestras de ambos subconjuntos, el kernel RBF conservó un exceso de KTA mayor que el de los dos
+kernels cuánticos, sin traslape de rangos: el menor exceso clásico, 0.019 en masas y 0.055 en
+calcificaciones, superó al mayor exceso cuántico, 0.011 y 0.014. La diferencia geométrica mínima se
+mantuvo entre 1.31 y 2.87, a lo sumo 0.20 veces $\sqrt{N}$, y la dimensión efectiva de C4 y C5, entre
+0.82 y 0.95 veces $N$. En las representaciones vectoriales, la mejor condición clásica (C1 o C3) superó
+a las dos cuánticas en las 20 submuestras y en las tres métricas. Sobre todo el entrenamiento
+(1\,318 masas y 1\,546 calcificaciones), el exceso de KTA fue de 0.055 para el RBF frente a 0.006 (C4)
+y 0.009 (C5) en masas, y de 0.148 frente a 0.018 y 0.020 en calcificaciones, con $p = 0.001$ en todos
+los casos; $g$ se ubicó entre 2.95 y 3.25, frente a $\sqrt{N}$ de 36.3 y 39.3. El exceso cuántico
+crece con $N$ porque en un kernel concentrado la señal de clase reside en los $N(N-1)$ pares fuera de
+la diagonal, cada uno con un traslape mínimo; por ello los valores de alineamiento, $g$ y dimensión
+efectiva solo se comparan entre condiciones con el mismo $N$. Dos aspectos sí dependen de la muestra:
+la significancia de los efectos más pequeños, pues C5 en masas llegó a $p = 0.24$ en alguna submuestra,
+y el orden entre C4 y C5, que cambia con la métrica y con la submuestra.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{Figures/X9_sample_size.png}
+% fuente: H-055; X9_familia_a.csv
+\caption{Métricas de la familia de kernels a $c = 1$ en 20 submuestras de 200 lesiones (puntos), la submuestra del análisis principal (círculo) y todo el conjunto de entrenamiento (rombo).}
+\label{fig:x9_sample_size}
 \end{figure}
 
 % fuente: H-036; X2_auc_pares.csv

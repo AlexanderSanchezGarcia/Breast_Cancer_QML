@@ -1,15 +1,18 @@
 % ---
-% Experimentos complementarios (X1--X8) y estudios de caracterización del simulador (B1--B3).
+% Experimentos complementarios (X1--X9) y estudios de caracterización del simulador (B1--B3).
 % Sección metodológica previa al reporte de resultados.
-% Entradas que lo respaldan: H-018, H-019, H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-051, H-052, H-053, H-054, D-035, D-038.
+% Entradas que lo respaldan: H-018, H-019, H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-051, H-052, H-053, H-054, H-055, D-035, D-038, D-042.
 % ---
 
+% Las rutas en \texttt no se dividen: el estiramiento extra evita que desborden el margen.
+\begingroup
+\setlength{\emergencystretch}{3em}
 \subsection{Experimentos complementarios}
 \label{sec:experimentos_complementarios}
 
 Con el propósito de evaluar la solidez de las conclusiones obtenidas en el protocolo principal frente a hipótesis
-alternativas o variantes metodológicas que un lector u evaluador razonable plantearía, se diseñó una batería de ocho
-experimentos complementarios (denominados X1 a X8). Estos experimentos no alteran el diseño experimental básico ni
+alternativas o variantes metodológicas que un lector o evaluador razonable plantearía, se diseñó una batería de nueve
+experimentos complementarios (denominados X1 a X9). Estos experimentos no alteran el diseño experimental básico ni
 los puntos de decisión congelados para el pipeline principal ($k = 12$, $reps = 1$, Arquitectura~B con vector de
 parámetros $\boldsymbol\theta$ fijo con semilla 42 y particiones independientes por paciente), sino que someten a
 prueba la sensibilidad de los hallazgos ante variaciones controladas en la selección de características, la dimensionalidad
@@ -18,11 +21,11 @@ La Tabla~\ref{tab:resumen_experimentos_complementarios} resume las característi
 los párrafos siguientes detallan su formulación metodológica. Los resultados cuantitativos derivados de estas pruebas se
 reportan en el Capítulo~\ref{sec:resultados}.
 
-% fuente: H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-053, H-054, D-035, D-038
+% fuente: H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-053, H-054, H-055, D-035, D-038, D-042
 \begin{table}[htbp]
 \centering
 \small
-\caption{Resumen de diseño de los experimentos complementarios X1 a X8.}
+\caption{Resumen de diseño de los experimentos complementarios X1 a X9.}
 \label{tab:resumen_experimentos_complementarios}
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{p{0.06\linewidth} p{0.22\linewidth} p{0.28\linewidth} p{0.22\linewidth} p{0.18\linewidth} p{0.14\linewidth}}
@@ -34,9 +37,10 @@ X2 & \texttt{X2\_Kernel\_}\allowbreak\texttt{Class\_Structure} & ¿Conservan los
 X3 & \texttt{X3\_Fewer\_Qubits\_}\allowbreak\texttt{k8} & ¿Persiste la conclusión con un registro de $k = 8$ qubits? & Varía $k \in \{8, 12\}$; fijo protocolo de métricas. & Condiciones clásicas con 8 variables. & No en separabilidad; sensibilidad en M7. \\
 X4 & \texttt{X4\_QSVM\_and\_}\allowbreak\texttt{67\_Features} & ¿Se pierde información en la codificación o en la lectura? & Varía clasificador (QSVM vs MLP) y variables ($k=12$ vs 67). & SVM clásico RBF y MLP de M7. & Sí (una vez por configuración). \\
 X5 & \texttt{X5\_Pipeline\_}\allowbreak\texttt{Audit} & ¿Existe algún fallo de implementación o fuga de datos? & Varía implementación de componentes; fijos datos. & Implementaciones alternativas y código Qiskit. & Sí (solo verificación de partición). \\
-X6 & \texttt{X6\_Searching\_}\allowbreak\texttt{for\_Advantage} & ¿Supera algún kernel cuántico al clásico en etiquetas reales? & Búsqueda anidada sobre familias cuánticas y clásicas. & Mejores modelos clásicos y etiquetas de Huang. & Sí (una vez por mejor modelo). \\
+X6 & \texttt{X6\_Searching\_}\allowbreak\texttt{for\_Advantage} & ¿Supera algún kernel cuántico al clásico en etiquetas reales? & Búsqueda anidada sobre familias cuánticas y clásicas. & Mejores modelos clásicos y etiquetado diseñado según Huang. & Sí con etiquetas reales (una vez por contendiente global); no con el etiquetado diseñado. \\
 X7 & \texttt{X7\_Theta\_}\allowbreak\texttt{Draws} & ¿Introduce sesgo el sorteo único de $\boldsymbol\theta$? & Varía semilla de $\boldsymbol\theta$ (10 sorteos); fijo MLP. & Variabilidad de MLP y condiciones clásicas. & No (solo validación cruzada). \\
 X8 & \texttt{X8\_Trained\_}\allowbreak\texttt{Theta} & ¿Mejora la representación al entrenar $\boldsymbol\theta$? & Varía optimización de $\boldsymbol\theta$ (entrenado vs fijo); fijo MLP. & Modelo con $\boldsymbol\theta$ fijo de M7 y C1 crudo. & Sí (una vez por subconjunto y mapa). \\
+X9 & \texttt{X9\_Sample\_}\allowbreak\texttt{Size} & ¿Depende la separabilidad de la submuestra de 200 lesiones? & Varía la muestra (20 submuestras y todo el entrenamiento); fijas las métricas del M6. & Submuestra del M6 y kernel RBF. & No (solo entrenamiento). \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -57,7 +61,7 @@ Los resultados se analizan en la Sección~\ref{sec:datos_caracteristicas_selecci
 % fuente: H-036
 \textbf{Experimento X2: Estructura de clase en matrices de kernel.} Implementado en
 \texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X2\_Kernel\_Class\_Structure.ipynb}, evalúa si dos lesiones de la misma
-clase diagnóstica (benigna--benigna o maligna--maligna) exhiben mayor similitud de Hilbert que dos lesiones de clases opuestas,
+clase diagnóstica (benigna--benigna o maligna--maligna) exhiben mayor similitud en el kernel que dos lesiones de clases opuestas,
 y en qué medida dicha diferenciación depende del factor de contracción angular $c$. El diseño analiza la distribución de
 similitudes por pares de lesiones sobre la submuestra estratificada de 200 casos de entrenamiento, calculando el área
 bajo la curva ROC de pares frente a un barrido del parámetro de escala angular. Como control de referencia se utiliza el kernel
@@ -71,7 +75,7 @@ Sus resultados se presentan en la Sección~\ref{sec:separabilidad_representacion
 en separabilidad observada en M6 es atribuible a la concentración exponencial del espacio de Hilbert a $k = 12$ qubits. El diseño
 mantiene idénticos los protocolos de evaluación de KTA, dimensión efectiva, diferencia geométrica regularizada $g$ y razón de Fisher,
 variando la dimensión del registro cuántico a $k = 8$ qubits (lo que reduce los acoplamientos $ZZ$ de 66 a 28 bloques y los parámetros
-del circuito variacional de 24 a 16). Se toman de forma determinista las 8 primeras características del ordenamiento de M4. Como control,
+del circuito variacional de 24 a 16). Las 8 características se eligen con la misma regla de selección de M4; como la regla avanza en orden decreciente del estadístico $F$, coinciden con las 8 primeras de las 12. Como control,
 se evalúan las condiciones clásicas C1, C2 y C3 sobre las mismas 8 características de entrada. En la fase de separabilidad este
 experimento no accede al conjunto de prueba oficial, mientras que su traslación a clasificación se evalúa en el análisis de sensibilidad
 del Módulo~7. Los resultados se detallan en la Sección~\ref{sec:separabilidad_representaciones}.
@@ -82,32 +86,34 @@ del Módulo~7. Los resultados se detallan en la Sección~\ref{sec:separabilidad_
 desempeño observada en M7 reside intrínsecamente en la codificación cuántica en el espacio de Hilbert o en la etapa de lectura
 mediante expectativas locales $\langle Z_i \rangle$ bajo la Arquitectura~B. Para ello, se implementa una máquina de vectores de
 soporte con kernel cuántico (QSVM) evaluada directamente sobre las matrices completas de fidelidad de C4 y C5. Asimismo, se evalúa si
-la disponibilidad de las 67 características radiómicas completas permite formular kernels cuánticos con ventaja frente al límite
-clásico, analizando codificaciones en amplitud sobre 7 qubits y codificaciones angulares en producto tensorial sobre 67 qubits. Se
+codificar las 67 características radiómicas completas da lugar a kernels cuánticos con ventaja frente a los
+clásicos, analizando codificaciones en amplitud sobre 7 qubits y codificaciones angulares en producto tensorial sobre 67 qubits. Se
 contrasta directamente contra modelos SVM clásicos lineales y RBF, así como contra el clasificador MLP entrenado sobre las expectativas
-de M7. Los modelos se optimizan mediante validación cruzada y se evalúan una única vez sobre el conjunto de prueba oficial.
+de M7. Los modelos se comparan en validación cruzada con $C = 1$ (un barrido de $C$ mostró que apenas cambia el resultado) y se evalúan una única vez sobre el conjunto de prueba oficial.
 Los resultados se reportan en la Sección~\ref{sec:qsvm_ventaja}.
 
 % fuente: H-046
-\textbf{Experimento X5: Auditoría independiente del pipeline experimental.} Documentado en
+\textbf{Experimento X5: Auditoría del pipeline experimental.} Documentado en
 \texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X5\_Pipeline\_Audit.ipynb}, responde a la necesidad metodológica de
-descartar que la ausencia de ventaja cuántica provenga de anomalías de software, fugas de datos (*data leakage*) entre entrenamiento
-y prueba, asimetrías de preprocesamiento o discrepancias numéricas en el cómputo de fidelidades. La auditoría consta de 25 pruebas
-programadas independientes que reconstruyen particiones y diagnósticos directamente desde las fuentes maestras de metadatos,
-contrastan la simulación de kernels mediante circuitos físicos frente a la formulación por vectores de estado, y verifican la
+descartar que la ausencia de ventaja cuántica provenga de anomalías de software, fugas de datos (\textit{data leakage}) entre entrenamiento
+y prueba, asimetrías de preprocesamiento o discrepancias numéricas en el cómputo de fidelidades. La auditoría consta de 25 pruebas,
+programadas con implementaciones independientes de las de los módulos, que reconstruyen particiones y diagnósticos directamente desde las fuentes maestras de metadatos,
+contrastan el kernel calculado con circuitos \textit{compute-uncompute} frente al obtenido con vectores de estado, y verifican la
 equivalencia de las implementaciones clasificatorias frente a bibliotecas estándar de la comunidad. El conjunto de prueba se
 utiliza exclusivamente para verificar la integridad y aislamiento de las particiones, sin entrenamiento ni ajuste de parámetros.
 Su análisis se discute en la Sección~\ref{sec:qsvm_ventaja}.
 
 % fuente: H-047, H-048
-\textbf{Experimento X6: Búsqueda exhaustiva de ventaja cuántica y contraste con etiquetas sintéticas.} Desarrollado en
+\textbf{Experimento X6: Búsqueda de ventaja cuántica y control con un etiquetado diseñado.} Desarrollado en
 \texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X6\_Searching\_for\_Advantage.ipynb}, plantea una búsqueda anidada y
 simétrica de configuraciones óptimas en ambos paradigmas. En el lado cuántico se exploran mapas $ZZ$ con entrelazamiento lineal y
 completo, repeticiones $reps \in \{1, 2\}$, factores de escala angular y kernels proyectados; en el lado clásico se evalúan familias
 gaussianas, lineales y polinomiales. Para discernir si la ausencia de ventaja obedece al protocolo experimental o a la relación
-geométrica intrínseca de las etiquetas patológicas reales, se incorpora una prueba de contraste con etiquetas sintéticas generadas
-según la metodología de Huang et al., alineadas por construcción con la métrica del kernel cuántico. La selección de modelos se efectúa
-mediante validación cruzada anidada y la evaluación en el conjunto de prueba se restringe a una sola ejecución por contendiente global.
+geométrica intrínseca de las etiquetas patológicas reales, se incorpora un control con un etiquetado diseñado (\textit{engineered}) según Huang et al. \cite{huang2021power}
+(sección~7 de su información suplementaria): el etiquetado de las mismas lesiones que mejor se ajusta a la geometría del kernel
+cuántico y peor a la del clásico, evaluado solo mediante validación cruzada sobre el entrenamiento. Con las etiquetas reales, la selección
+de modelos se efectúa mediante validación cruzada anidada y la evaluación en el conjunto de prueba se restringe a una sola ejecución por
+contendiente global.
 Los resultados se exponen en la Sección~\ref{sec:qsvm_ventaja}.
 
 % fuente: H-053
@@ -124,23 +130,35 @@ en validación cruzada sin tocar el conjunto de prueba. Sus resultados se report
 \textbf{Experimento X8: Optimización variacional conjunta de $\boldsymbol\theta$.} Realizado en
 \texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X8\_Trained\_Theta.ipynb}, examina si el entrenamiento supervisado
 de los parámetros $\boldsymbol\theta$ en forma simultánea con los pesos del clasificador MLP permite cerrar la brecha de rendimiento
-observada frente a las condiciones clásicas. En este esquema, el vector de expectativas alimenta una capa diferencial que actualiza
+observada frente a las condiciones clásicas. En este esquema, el vector de expectativas se calcula con una capa diferenciable que actualiza
 $\boldsymbol\theta$ mediante retropropagación sobre el vector de estado simulado en PyTorch con una tasa de aprendizaje dedicada. Se
 analiza la sensibilidad ante la inicialización de $\boldsymbol\theta$ y se compara el modelo resultante frente a la condición fija
 de M7, frente a la condición clásica C1 y frente al clasificador QSVM de X4. El conjunto de prueba oficial se consulta exactamente
 una vez por modelo optimizado. Los resultados se analizan en las Secciones~\ref{sec:rendimiento_clasificacion} y~\ref{sec:restricciones_simulador}.
 
+% fuente: H-055, D-042
+\textbf{Experimento X9: Sensibilidad de la separabilidad a la muestra.} Implementado en
+\texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X9\_Sample\_Size.ipynb}, evalúa si las conclusiones del
+módulo de separabilidad dependen de las 200 lesiones elegidas o del tamaño de la muestra. Repite las métricas de ambas familias
+a $c = 1$ sobre 20 submuestras estratificadas de 200 lesiones de entrenamiento, la primera de las cuales coincide con la del
+análisis principal, y sobre la totalidad del conjunto de entrenamiento, cuyo kernel se obtiene en segundos a partir de los
+vectores de estado. Cuantifica además el número de circuitos y de disparos que exigiría cada tamaño con el protocolo
+\textit{compute-uncompute}. No utiliza el conjunto de prueba. Sus resultados se reportan en la
+Sección~\ref{sec:separabilidad_representaciones}.
+
 % fuente: H-018, H-019, H-051, H-052
 \textbf{Estudios de caracterización del simulador cuántico (B1--B3).} De forma complementaria a los experimentos sobre datos radiómicos,
-se llevaron a cabo tres estudios sistemáticos en \texttt{Code/benchmark/} para cuantificar las restricciones operacionales de la simulación
+se llevaron a cabo tres estudios sistemáticos en \texttt{Code/}\allowbreak\texttt{benchmark/} para cuantificar las restricciones operacionales de la simulación
 clásica de circuitos cuánticos en el contexto del proyecto. El estudio B1 (\texttt{B1\_Quantum\_Benchmark.ipynb}) midió la complejidad
 estructural de los circuitos (profundidad, número de compuertas CX y conteo total de compuertas en función de $k$ y $reps$) y proyectó
 el coste computacional del entrenamiento conjunto bajo la Arquitectura~A frente al esquema de precomputación de la Arquitectura~B.
-No obstante, la sección de sensibilidad al número de disparos (*shots*) de B1 quedó formalmente invalidada debido a que la referencia
+No obstante, la sección de sensibilidad al número de disparos (\textit{shots}) de B1 quedó formalmente invalidada debido a que la referencia
 analítica empleada incorporaba ruido gaussiano no nulo inyectado por omisión de precisión cero en el estimador de alto nivel.
 El estudio B2 (\texttt{B2\_Design\_Verifications.ipynb}) integró las comprobaciones empíricas que respaldaron las decisiones de diseño
-metodológico: número de qubits y profundidad, arquitectura del \textit{embedding}, condiciones experimentales, cálculo de la \textit{geometric difference} y validación cruzada. Finalmente, el estudio B3 (\texttt{B3\_Sampling\_and\_Concentration.ipynb}) sustituyó y rectificó la caracterización
+metodológico: número de qubits y profundidad, arquitectura del \textit{embedding}, condiciones experimentales, cálculo de la \textit{geometric difference} y validación cruzada. Finalmente, el estudio B3 (\texttt{B3\_Sampling\_}\allowbreak\texttt{and\_Concentration.ipynb}) sustituyó y rectificó la caracterización
 de disparos de B1 mediante un esquema de muestreo real con el estimador por muestreo de cadenas de bits de Aer, verificando el escalamiento
 estadístico de error teórico $1/\sqrt{n}$ sin suelo de dispersión espuria hasta $2^{20}$ disparos, además de cuantificar la concentración
 asintótica del vector de expectativas en función de la dimensionalidad $k$ y la profundidad del circuito. Sus hallazgos se integran en
 las Secciones~\ref{sec:restricciones_simulador} y~\ref{sec:lecciones_implementacion}.
+
+\endgroup

@@ -50,7 +50,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-025 | 2026-09-23 | Escalado angular por cuantiles (uniforme × π) en lugar de min-max | M4 | Firme | §4.6 |
 | D-026 | 2026-09-23 | Semilla de los folds elegida por balance de clases | M4, M6 | Firme | §4.9 |
 | D-027 | 2026-09-24 | γ del RBF por heurística de la mediana (C3 y kernel clásico de la *geometric difference*) | M5, M7 | Firme para C3; para *g*, enmendada por D-032 | §4.7, §4.9 |
-| D-028 | 2026-09-24 | Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas | M5, M7 | Firme | §4.9 |
+| D-028 | 2026-09-24 | Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas | M5, M7 | Firme; su justificación la enmienda D-042 | §4.9 |
 | D-029 | 2026-09-24 | Kernel concentrado: se mantiene el diseño fijado de antemano y se añade un barrido del factor de escala | M5, M7 | Firme | §4.9, §6.x, OE-6 |
 | D-030 | 2026-09-24 | La separabilidad pasa a ser el Módulo 6; la clasificación, el M7, y la evaluación comparativa, el M8 | todos | Firme | §4.1–§4.9, RF, CRISP-DM |
 | D-031 | 2026-10-05 | C5 pasa a `pauli_feature_map(paulis=['Y','ZZ'])` | M5 | Firme | §4.7, §6.x |
@@ -64,6 +64,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-039 | 2026-10-07 | El Spearman del M8 se reporta como descriptivo: por subconjunto, con su distribución exacta para n = 5 | M8 | Firme | §3.4, §4.10, §6.x |
 | D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Firme (validada por el autor el 2026-10-12) | §4.10, §6.x, §7, OE-6 |
 | D-041 | 2026-10-15 | Pregunta de investigación y objetivos reformulados en el reporte final, con cambio mínimo | reporte | **Provisional**: pendiente de confirmar con los directores | §1.2, §1.4, §1.5 |
+| D-042 | 2026-10-18 | Las 200 lesiones siguen como análisis principal del M6, justificadas por el protocolo físico; X9 se reporta como robustez | M6 | Firme (elegida por el autor) | §5.2, §5.8, §6.2, §7 |
 
 ### Hallazgos
 
@@ -123,6 +124,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-052 | 2026-10-07 | Con 1,024 shots el MLP recupera casi todo el AUC exacto, pero a c = 1 entre el 16 y el 74 % de los valores del kernel leería 0 | OE-6 (RF-22, RNF-05): la concentración hace al kernel inmedible en hardware |
 | H-053 | 2026-10-10 | El sorteo de θ mueve el AUC de C4 y C5 tanto o más que la semilla del MLP, pero ninguno de 40 sorteos alcanza a C1 | La conclusión del M7 no depende de θ; su magnitud sí (déficit de 0.03 a 0.18 frente a C1): reportar el rango |
 | H-054 | 2026-10-11 | Entrenar θ junto con el MLP gana a lo sumo 0.05 de AUC y no alcanza a C1; con gradientes del simulador cuesta minutos, no cientos de horas | La conclusión del M7 se mantiene con θ entrenado; matiza la razón de costo de D-014 y H-015 (vale para el hardware, no para el simulador) |
+| H-055 | 2026-10-18 | La conclusión del M6 no depende de qué 200 lesiones se tomen ni de N: se mantiene en 20 submuestras y en todo el train | Responde a «¿200 es poco?»; el orden C4/C5 y la significancia de los efectos pequeños sí dependen de la muestra |
 
 ### Preguntas abiertas
 
@@ -525,7 +527,7 @@ C2 además aporta algo: si las métricas de separabilidad dieran valores distint
 ---
 
 ### D-028 · Separabilidad sobre 200 lesiones de train por subconjunto
-**Fecha:** 2026-09-24 · **Módulo:** M5, M7 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §4.9
+**Fecha:** 2026-09-24 · **Módulo:** M5, M7 · **Estado:** Firme (elegida por el autor); **justificación enmendada por D-042** (2026-10-18): el coste de 41 min dejó de obligar en simulación con H-032, pero vale para el protocolo físico; X9 (H-055) muestra que la conclusión no depende de la muestra · **→ Reporte:** §4.9
 
 **Contexto.** RNF-06 limita los kernels de fidelidad a 150–200 casos por subconjunto por su coste O(N²): unos 41 min por matriz a k=12.
 
@@ -866,6 +868,39 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 - El texto está en `Docs/capitulos/1_Panorama_General/1.2_planteamiento.tex` y `1.4_objetivos.tex`. La cabecera de `1.4_objetivos.tex` resume los cambios.
 - Si los directores piden conservar los objetivos registrados, se restaura el texto de TT1 (`Technical_Report.tex`, l. 635–658) y se añade una nota con lo que cambió en la ejecución. La pregunta reformulada puede mantenerse en cualquier caso.
 - §1.5 se alinea con la nueva pregunta. Además declara las codificaciones evaluadas y las excluidas: sin entrelazamiento, su kernel es clásico por construcción (H-045, §5.7).
+
+---
+
+### D-042 · Las 200 lesiones siguen como análisis principal del M6, justificadas por el protocolo físico; X9 se reporta como robustez
+**Fecha:** 2026-10-18 · **Módulo:** M6 · **Estado:** Firme (elegida por el autor) · **→ Reporte:** §5.2 (RNF-06, RF-15), §5.8, §6.2, §7 · *enmienda la justificación de D-028*
+
+**Contexto.**
+- Al revisar §6, el autor preguntó por qué la separabilidad usa 200 lesiones si el MLP del M7 usa todo el train.
+- D-028 y RNF-06 lo justificaban por «viabilidad computacional»: unos 41 min por matriz con *compute-uncompute* (B1).
+- Desde H-032 los kernels se calculan con `FidelityStatevectorKernel`, que hace la matriz de 200×200 en 1.5 s y la de todo el train en unos 20 s. En simulación, el argumento del coste ya no obliga, y §6.6 lo dice.
+
+**Alternativas.**
+- *Dejar el texto como estaba* — descartada: RNF-06 contradice §6.6.
+- *Pasar todo el M6 al train completo* — descartada: obliga a rehacer las tablas de §6.2, el Spearman del M8 (cuyo orden C4/C5 cambia), la comparación con k = 8 del X3 y varias entradas, a dos días de la entrega del reporte. Además cambiaría el análisis principal después de ver los datos.
+- *Mantener las 200 como análisis principal, corregir su justificación y reportar como robustez 20 submuestras y el train completo* — **elegida**.
+
+**Decisión.**
+- El análisis principal del M6 sigue siendo la submuestra de D-028.
+- Su justificación pasa a ser el **protocolo físico**: 200 lesiones son 19,900 circuitos *compute-uncompute* por matriz; todo el train, entre 0.87 y 1.19 millones (X9).
+- El experimento X9 (H-055) se reporta en §6.2 como análisis de robustez.
+
+**Por qué.**
+- El tamaño se fijó antes de ver los datos, y la robustez muestra que la conclusión no depende de él.
+- La pregunta del proyecto es de viabilidad: el tamaño con el que el experimento se podría repetir en hardware es el relevante.
+- El atajo que hace barato el train completo solo existe en simulación (H-032).
+
+**Evidencia.** H-055.
+
+**Consecuencias.**
+- RNF-06, RF-15 y §5.8 ya no dicen «viabilidad computacional», sino el coste del protocolo físico, y citan la robustez.
+- §6.2 gana un párrafo de robustez.
+- Ninguna cifra existente de §6 cambia.
+- Las alineaciones, *g* y *d* solo se comparan entre condiciones con el mismo N.
 
 ---
 
@@ -2314,6 +2349,51 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
   - Conviene declararlo en §4.8 y ante los sinodales.
 
 **Datos.** `Code/experiments/X8_Trained_Theta.ipynb`; `Code/results/X8_cv_por_fold.csv`, `X8_test.csv`, `X8_test_diferencias.csv`, `X8_theta_entrenado.csv`, `X8_costo_gradiente.csv` y `X8_verificaciones.csv`; los QSVM de referencia, en `X4_test.csv`; figura `Docs/Figures/X8_trained_theta.png`.
+
+---
+
+### H-055 · La conclusión del M6 no depende de qué 200 lesiones se tomen ni del tamaño de la muestra
+**Fecha:** 2026-10-18 · **→ Reporte:** §5.8, §6.2, §7 · *robustez de D-028; respalda D-042*
+
+**Qué se midió (X9).**
+- La familia A (KTA centrada con su nula de 1,000 permutaciones, dimensión efectiva y *g* regularizada con el protocolo de D-032) a c = 1, y la familia B (Davies-Bouldin, Fisher y KTA lineal), sobre:
+  - la submuestra de diseño del M6;
+  - 20 submuestras estratificadas de 200 del train (`StratifiedShuffleSplit`, semilla 42). La primera coincide con la de diseño; las otras 19 comparten con ella de 25 a 30 lesiones en promedio;
+  - todo el train: 1,318 masas y 1,546 calcificaciones.
+- El test no se usó.
+- Las filas de la submuestra dentro de los kernels completos reproducen las matrices del M5, y la submuestra de diseño reproduce las métricas del M6. Pasan las 16 verificaciones.
+
+| c = 1 | Diseño (M6) | 20 submuestras (mín – máx) | Train completo |
+|---|---|---|---|
+| Masas, exceso de KTA: RBF / C4 / C5 | 0.049 / 0.003 / 0.005 | RBF 0.019–0.124; C4 y C5 ≤ 0.011 | 0.055 / 0.006 / 0.009 |
+| Calcificaciones, exceso de KTA: RBF / C4 / C5 | 0.152 / 0.006 / 0.007 | RBF 0.055–0.184; C4 y C5 ≤ 0.014 | 0.148 / 0.018 / 0.020 |
+| *g* mínima, C4 y C5 | 1.40–1.70 (√N = 14.1) | 1.31–2.87 | 2.95–3.25 (√N = 36.3 y 39.3) |
+| *d*/N, C4 / C5 | 0.92–0.94 / 0.84–0.86 | 0.82–0.95 | 0.87 / 0.70–0.72 |
+
+**Lecturas.**
+1. **La conclusión no depende de la submuestra.**
+   - En las 20 submuestras de ambos subconjuntos, el RBF conserva más alineamiento explicado por las etiquetas que los dos kernels cuánticos, sin traslape de rangos.
+   - *g* queda como mucho en 0.20·√N.
+   - En la familia B, la mejor condición clásica (C1 o C3) va delante de las dos cuánticas en las 20 submuestras y en las tres métricas.
+   - La submuestra de diseño es típica: cae dentro de la nube de las demás.
+2. **Tampoco depende de N = 200.**
+   - Con todo el train, el exceso cuántico se duplica o triplica y el del RBF no cambia. Es un efecto de N sobre un kernel concentrado: más pares fuera de la diagonal, cada uno con un traslape mínimo. Los kernels cuánticos conservan el 11–17 % (masas) y el 12–13 % (calcificaciones) del alineamiento del RBF.
+   - *g*/√N baja a ≈ 0.08.
+3. **Lo que sí depende de la muestra.**
+   - La significancia de los efectos más pequeños: C5 en masas llega a p = 0.24 en alguna submuestra, y en todo el train todos los p son 0.001. Un exceso cuántico no significativo con N = 200 es cuestión de potencia.
+   - El orden entre C4 y C5: en el kernel, C5 va delante en el 95 % de las submuestras de masas y en el 70 % de las de calcificaciones. En la familia B, el ganador cambia con la métrica: en masas, C5 va delante en Fisher en el 85 % de las submuestras y en Davies-Bouldin solo en el 15 %. Se sostiene la lectura «C4 frente a C5, sin ganador» (H-040).
+   - Los valores absolutos: la razón de Fisher de C1 es 0.24–0.27 mayor en las submuestras que en todo el train, el sesgo de muestra pequeña de una distancia de Mahalanobis estimada.
+4. **El coste en hardware.**
+   - *Compute-uncompute*: 19,900 circuitos por matriz con 200 lesiones, 867,903 con todas las masas y 1,194,285 con todas las calcificaciones.
+   - Con 1,024 disparos: 20 millones, 889 millones y 1,223 millones de ejecuciones.
+   - Simulado con el coste por par de B1: 0.8 h, 34 h y 46 h por matriz. Con los dos mapas a c = 1, 67 h y 93 h para todo el train; con las doce matrices del barrido de c, 405 h y 557 h.
+
+**Impacto.**
+- Responde a la pregunta «¿200 lesiones es poco?»: la conclusión del OE-3 se sostiene con otra muestra y con todo el train.
+- Respalda D-042.
+- En §6, las cifras de alineamiento, *g* y *d* deben citarse siempre con su N.
+
+**Datos.** `Code/experiments/X9_Sample_Size.ipynb`; `Code/results/X9_familia_a.csv`, `X9_resumen_familia_a.csv`, `X9_familia_b.csv`, `X9_orden_familia_b.csv`, `X9_costo_hardware.csv` y `X9_verificaciones.csv`; figura `Docs/Figures/X9_sample_size.png`.
 
 ---
 

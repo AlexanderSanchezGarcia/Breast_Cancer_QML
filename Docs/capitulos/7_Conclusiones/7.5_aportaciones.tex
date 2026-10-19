@@ -1,0 +1,51 @@
+% ---
+% §7.5 Aportaciones del trabajo.
+% Entradas que lo respaldan: D-019, D-005, D-016, D-032, D-033, H-012, H-013, H-019, H-033, H-034,
+% H-038, H-050, H-046.
+% ---
+
+\subsection{Aportaciones}
+\label{sec:aportaciones}
+
+% respaldo: «As future work, an interesting approach could be to separate the dataset into masses and calcifications and only then perform classification.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «It would also be interesting to test different datasets.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «Lastly, the best way to know how well this model performs would be to see how the data appears in our Hilbert space. Ideally, both classes would appear very separately in it, as tight clusters.» (Azevedo2022QuantumTransfer, p. 12)
+% respaldo: «However, in the future other embeddings can be considered (Lloyd et al. 2020).» (Azevedo2022QuantumTransfer, p. 13)
+\textbf{Respuesta a las líneas abiertas por Azevedo et al.} El trabajo retoma cuatro de las líneas que
+Azevedo et al. \cite{Azevedo2022QuantumTransfer} dejaron como trabajo futuro: separar masas y
+calcificaciones antes de clasificar, probar otro conjunto de datos, considerar otras codificaciones y
+observar cómo se distribuyen los datos en el espacio de Hilbert, donde idealmente cada clase formaría un
+conglomerado compacto. Sobre el CBIS-DDSM, con codificaciones de mapa ZZ y de Pauli, la respuesta a la
+última es que las lesiones no forman conglomerados: quedan casi ortogonales entre sí, con independencia
+de su clase. La línea que no se abordó es la ejecución en dispositivos cuánticos con menor error.
+
+% fuente: H-050; 8_masas_vs_calcificaciones.csv, 8_descriptores_radiologo.csv
+\textbf{Masas frente a calcificaciones.} En validación cruzada, con los descriptores del radiólogo
+las masas son el subconjunto más separable (AUC de 0.872 frente a 0.825); con las 67 características
+radiómicas, el menos (0.693 frente a 0.800). El análisis exploratorio acertó sobre las clases, y la
+inversión está en las características: en calcificaciones recuperan casi toda la información de los
+descriptores, y en masas mucho menos. Una hipótesis, no comprobada en este trabajo, es que los márgenes
+espiculados o mal definidos son detalles del borde que las características de la región completa no
+resumen bien. La penalización cuántica, en cambio, es similar en ambos subconjuntos: lo que cambia entre
+ellos es la señal clásica, no la codificación.
+
+% fuente: D-016, D-032, D-033, H-033, H-038
+\textbf{Un protocolo de comparación verificable.} El diseño incluye un control nulo (C2) que permite
+comprobar que las métricas no reaccionan a transformaciones que no cambian la geometría, y aplica la
+diferencia geométrica con la regularización y la batería de kernels clásicos del protocolo original. Su
+versión sin regularizar, entre 306 y 388, es un artefacto del condicionamiento numérico del kernel
+clásico. Además, el alineamiento de un kernel cercano a la identidad vale aproximadamente $1/\sqrt{N}$
+con cualquier etiquetado, por lo que solo es comparable su exceso sobre una prueba de permutación.
+Ambas precauciones son trasladables a otros estudios de kernels cuánticos.
+
+% fuente: H-012, H-013, H-019, H-034, H-046
+\textbf{Propiedades del formalismo y detalles de implementación.} Varios hallazgos de implementación
+separan lo que es una propiedad de la mecánica cuántica de lo que es una convención de Qiskit. Son
+propiedades del formalismo que, tras la capa de Hadamard, un término en X no codifica nada porque actúa
+sobre un autoestado de X, y que sin capa variacional los valores esperados en Z son nulos porque las
+compuertas diagonales solo introducen fases. Son detalles de implementación que \texttt{PauliFeatureMap}
+con los términos Z y ZZ genera el mismo circuito que \texttt{zz\_feature\_map}, y que
+\texttt{EstimatorQNN} fija por omisión una precisión de 0.015625, con la que el estimador de vector de
+estado suma ruido gaussiano a valores que se suponían exactos. Detectarlos a
+tiempo evitó dos condiciones experimentales que no medían lo que pretendían. El \textit{pipeline}
+completo se reproduce bit a bit en un entorno limpio.
