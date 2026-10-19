@@ -63,3 +63,4 @@ Especificaciones: `Docs/insumos/auditoria/` (reglas.md + A1…A6, G1). Informes:
 - 23:12 Ola 1 lanzada (7 trabajadores). Recordatorio CronCreate a la 01:27 (one-shot, solo de esta sesión). caffeinate activo 10 h.
 - 23:20 W1 (artículo) lanzado adelantando la ola 2. Espera en segundo plano con /tmp/ttscripts/esperar.sh (hace ack de entregas solo de latidos).
 - 23:40 A1 y A6 terminados y liberados. Aplicadas y verificadas: índice duplicado §6–§8, marcadores al nivel de sección, márgenes de listados, galería D4, Schuld duplicado y dos bibitems duplicados comentados. Pendiente: Anexo E con numeración TT1 (generador Code/tools/tablas_anexos.py), figuras sin \ref, 10 bibitems sin citar (esperar A4).
+- 09:05 Sesión reiniciada a las ~23:45 por cuota (el CronCreate se perdió). Fase C hecha en sesión el 19 oct 07:35–09:00: A2–A6, G1 y W1 verificados y aplicados en commits locales b0c452f…dae81b9. Informe: Docs/insumos/informe_noche_2026-10-19.md. ESTADO: TERMINADO.
