@@ -469,7 +469,14 @@ def tabla_d_paquetes():
 def tabla_e_decisiones():
     content = (ROOT / 'Other/bitacora_decisiones.md').read_text(encoding='utf-8')
     content_esc = content.replace(r'\|', '__ESCAPED_PIPE__')
-    table_rows = re.findall(r'\|\s*(D-\d{3})\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|', content_esc)
+    # Filas del índice de decisiones; las últimas pueden venir sin la celda final de sección.
+    table_rows = []
+    for line in content_esc.splitlines():
+        m = re.match(r'\|\s*(D-\d{3})\s*\|', line)
+        if m and line.count('|') >= 6:
+            cells = [c for c in line.strip().strip('|').split('|')]
+            cells += [''] * (6 - len(cells))
+            table_rows.append(tuple(cells[:6]))
     
     def clean_latex(s):
         s = s.strip()
@@ -499,7 +506,7 @@ def tabla_e_decisiones():
 
     lines = [
         r'% Generado por Code/tools/tablas_anexos.py desde Other/bitacora_decisiones.md. No editar a mano.',
-        r'\begin{longtable}{@{}llp{9.4cm}p{2.3cm}@{}}',
+        r'\begin{longtable}{@{}llp{8.4cm}p{3.0cm}@{}}',
         r'\caption{Índice cronológico de decisiones metodológicas documentadas en la bitácora.}\label{tab:anexo_decisiones} \\',
         r'\toprule',
         r'Identificador & Estado & Título de la decisión & Sección en reporte \\',
@@ -517,11 +524,41 @@ def tabla_e_decisiones():
         r'\endlastfoot',
     ]
 
+    # La columna de sección de la bitácora usa la numeración de TT1 (Metodología = §4). La sección
+    # vigente se deriva del módulo con \ref, y de la bitácora solo se conservan §1–§3, que no cambiaron.
+    # Antes de D-030 el M6 era la clasificación y el M7 la evaluación con la separabilidad;
+    # desde D-030 la separabilidad es el M6, la clasificación el M7 y la comparación el M8.
+    def secciones(tag, modulo, sec_bitacora):
+        antes_d030 = int(tag[2:]) < 30
+        refs = []
+        for a, b in re.findall(r'M(\d)(?:\s*[–-]\s*M(\d))?', modulo):
+            for n in range(int(a), int(b or a) + 1):
+                if antes_d030 and n in (6, 7):
+                    n = 13 - n
+                refs.append(rf'\ref{{sec:modulo{n}}}')
+        if re.search(r'\bX\d', modulo):
+            refs.append(r'\ref{sec:experimentos_complementarios}')
+        if 'todos' in modulo:
+            refs.append(r'\ref{sec:descripcion_general}')
+        if 'infra' in modulo:
+            refs.append(r'\ref{anx:entorno}')
+        refs += [f'{x}' for x in re.findall(r'§\s*([123]\.\d+(?:\.\d+)?)', sec_bitacora)]
+        vistos = []
+        for r_ in refs:
+            if r_ not in vistos:
+                vistos.append(r_)
+        return ', '.join(r'\S\,' + r_ for r_ in vistos)
+
     for tr in table_rows:
         tag = tr[0].strip()
         title = clean_latex(tr[2])
-        status = r'\textbf{Revertida}' if 'Revertida' in tr[4] else 'Firme'
-        sec = clean_latex(tr[5])
+        if 'Revertida' in tr[4]:
+            status = r'\textbf{Revertida}'
+        elif 'Provisional' in tr[4]:
+            status = r'\textit{Provisional}'
+        else:
+            status = 'Firme'
+        sec = secciones(tag, tr[3], tr[5])
         lines.append(f"{tag} & {status} & {title} & {sec} \\\\")
 
     lines.append(r'\end{longtable}')

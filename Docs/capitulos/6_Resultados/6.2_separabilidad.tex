@@ -16,9 +16,11 @@ en C4 (percentil 95 de 0.014 y 16\,\% bajo $10^{-3}$) y de 0.000031 en C5 (76\,\
 bajo $10^{-6}$). En contraste, el kernel clásico gaussiano RBF con parámetro $\gamma$ determinado por la
 heurística de la mediana registró una mediana fuera de la diagonal de 0.607 en ambos subconjuntos.
 
-% fuente: H-037; 5a_resumen.csv
+% fuente: H-037; X3_comparacion_k8_k12.csv (family «B, embeddings (full train)», k = 12).
+% Corregido el 2026-10-19 (auditoría A2-2): 0.056 de 5a_resumen.csv es sobre las 1,696 masas
+% (entrenamiento y prueba); sobre el entrenamiento es 0.058, como en la tabla de esta sección.
 Sobre todas las lesiones del conjunto de entrenamiento (1\,318 masas y 1\,546 calcificaciones),
-la desviación estándar media por dimensión de los valores esperados $\langle Z_i \rangle$ fue de 0.056
+la desviación estándar media por dimensión de los valores esperados $\langle Z_i \rangle$ fue de 0.058
 en masas y 0.048 en calcificaciones para C4, mientras que en C5 ascendió a 0.180 en masas y 0.178 en
 calcificaciones. En C4 las compuertas aplicadas tras la capa inicial de Hadamard son diagonales, por lo
 que el término propio en $Z$ añade una variación angular moderada frente a las fases de acoplamiento $ZZ$.

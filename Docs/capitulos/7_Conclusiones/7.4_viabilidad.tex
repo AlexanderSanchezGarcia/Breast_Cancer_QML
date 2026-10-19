@@ -11,8 +11,9 @@ En simulación, el número de qubits no fue la restricción que condicionó el d
 empleada, con 16\,GiB de memoria, el \textit{embedding} de todas las lesiones cabe en 24\,h hasta unos
 25 qubits y el kernel de $200 \times 200$ por \textit{compute-uncompute} hasta unos 22. El límite lo
 impuso el gradiente: entrenar los parámetros variacionales por \textit{parameter-shift}, la regla que
-funciona en \textit{hardware}, cuesta 5.16\,s por lesión a $k = 12$, unas 205\,h para 50 épocas,
-y deja de caber en un día a partir de unos 15 qubits.
+funciona en \textit{hardware}, cuesta 5.16\,s por lesión a $k = 12$ con la primitiva \texttt{EstimatorQNN},
+unas 205\,h para 50 épocas. Incluso con el tiempo mínimo de simulación de cada circuito (3\,ms por estado
+a $k = 12$), que es una cota inferior de ese coste, deja de caber en un día a partir de unos 15 qubits.
 
 % fuente: H-032, H-052, H-054, H-055; 8_oe6_shots_kernel.csv, 8_oe6_shots_embedding.csv, X9_costo_hardware.csv
 % respaldo: «Thus on training with a polynomial number of measurements, one ends up with a trivial model where the predictions on unseen inputs are independent of the input data.» (Thanasilp2024, p. 1)

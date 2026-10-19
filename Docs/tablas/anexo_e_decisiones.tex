@@ -1,5 +1,5 @@
 % Generado por Code/tools/tablas_anexos.py desde Other/bitacora_decisiones.md. No editar a mano.
-\begin{longtable}{@{}llp{9.4cm}p{2.3cm}@{}}
+\begin{longtable}{@{}llp{8.4cm}p{3.0cm}@{}}
 \caption{Índice cronológico de decisiones metodológicas documentadas en la bitácora.}\label{tab:anexo_decisiones} \\
 \toprule
 Identificador & Estado & Título de la decisión & Sección en reporte \\
@@ -15,44 +15,46 @@ Identificador & Estado & Título de la decisión & Sección en reporte \\
 \endfoot
 \bottomrule
 \endlastfoot
-D-001 & Firme & SelectKBest + MinMaxScaler en lugar de PCA antes del circuito & \S\,4.6, \S\,7.2 \\
-D-002 & \textbf{Revertida} & ZZFeatureMap y PauliFeatureMap como condiciones separadas & \S\,4.7, \S\,7.2 \\
-D-003 & Firme & Geometric difference como métrica de ventaja cuántica potencial & \S\,3.4.2, \S\,7.2 \\
-D-004 & Firme & Escalado angular a [0,$\pi$] y no a [0,2$\pi$] & \S\,4.6 \\
-D-005 & Firme & Masas y calcificaciones como subproblemas independientes & \S\,4.4 \\
-D-006 & Firme & PyRadiomics (Estrategia A) en lugar de encoder CNN & \S\,4.5 \\
-D-007 & Firme & Entorno \texttt{radiomics} separado, compilado desde GitHub & \S\,8.x \\
-D-008 & Firme & \texttt{binCount=32} en lugar de \texttt{binWidth} & \S\,8.x \\
-D-009 & Firme & Sin resize a 224$\times$224 en la ruta radiómica & \S\,4.4, \S\,8.x \\
-D-010 & Firme & CLAHE fuera de la ruta radiómica & \S\,4.4 \\
-D-011 & Firme & Unidad de análisis = lesión/ROI, no paciente & \S\,4.6 \\
-D-012 & Firme & Descargar por la API REST de TCIA, no con NBIA Data Retriever & \S\,8.x \\
-D-013 & Firme & Punto de operación: k=12 qubits, reps=1 & \S\,4.6, \S\,4.7 \\
-D-014 & Firme & Arquitectura B: embedding precomputado con $\theta$ fijo (semilla 42) & \S\,4.7, \S\,4.8 \\
-D-015 & \textbf{Revertida} & C5 usa \texttt{pauli\_feature\_map(paulis=['X','ZZ'])} & \S\,4.7 \\
-D-016 & Firme & C2 se declara control nulo; se mantienen cinco condiciones & \S\,4.7, \S\,6.x \\
-D-017 & Firme & La \textit{geometric difference} se calcula con \texttt{FidelityQuantumKernel} & \S\,3.4.2, \S\,4.9 \\
-D-018 & Firme & Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento & \S\,4.8, \S\,4.9 \\
+D-001 & Firme & SelectKBest + MinMaxScaler en lugar de PCA antes del circuito & \S\,\ref{sec:modulo4} \\
+D-002 & \textbf{Revertida} & ZZFeatureMap y PauliFeatureMap como condiciones separadas & \S\,\ref{sec:modulo5} \\
+D-003 & Firme & Geometric difference como métrica de ventaja cuántica potencial & \S\,\ref{sec:modulo6}, \S\,3.4.2 \\
+D-004 & Firme & Escalado angular a [0,$\pi$] y no a [0,2$\pi$] & \S\,\ref{sec:modulo4} \\
+D-005 & Firme & Masas y calcificaciones como subproblemas independientes & \S\,\ref{sec:descripcion_general} \\
+D-006 & Firme & PyRadiomics (Estrategia A) en lugar de encoder CNN & \S\,\ref{sec:modulo3} \\
+D-007 & Firme & Entorno \texttt{radiomics} separado, compilado desde GitHub & \S\,\ref{anx:entorno} \\
+D-008 & Firme & \texttt{binCount=32} en lugar de \texttt{binWidth} & \S\,\ref{sec:modulo3} \\
+D-009 & Firme & Sin resize a 224$\times$224 en la ruta radiómica & \S\,\ref{sec:modulo2} \\
+D-010 & Firme & CLAHE fuera de la ruta radiómica & \S\,\ref{sec:modulo2} \\
+D-011 & Firme & Unidad de análisis = lesión/ROI, no paciente & \S\,\ref{sec:modulo4} \\
+D-012 & Firme & Descargar por la API REST de TCIA, no con NBIA Data Retriever & \S\,\ref{sec:modulo1} \\
+D-013 & Firme & Punto de operación: k=12 qubits, reps=1 & \S\,\ref{sec:modulo4}, \S\,\ref{sec:modulo5} \\
+D-014 & Firme & Arquitectura B: embedding precomputado con $\theta$ fijo (semilla 42) & \S\,\ref{sec:modulo5}, \S\,\ref{sec:modulo7} \\
+D-015 & \textbf{Revertida} & C5 usa \texttt{pauli\_feature\_map(paulis=['X','ZZ'])} & \S\,\ref{sec:modulo5} \\
+D-016 & Firme & C2 se declara control nulo; se mantienen cinco condiciones & \S\,\ref{sec:modulo5}, \S\,\ref{sec:modulo6} \\
+D-017 & Firme & La \textit{geometric difference} se calcula con \texttt{FidelityQuantumKernel} & \S\,\ref{sec:modulo6}, \S\,3.4.2 \\
+D-018 & Firme & Validación cruzada 5-fold estratificada sobre el conjunto de entrenamiento & \S\,\ref{sec:modulo7} \\
 D-019 & Firme & Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022) & \S\,1.3, \S\,2.1.5 \\
-D-020 & Firme & Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 & \S\,4.4, \S\,8.x \\
-D-021 & Firme & Reducir cada máscara a su componente conexa mayor & \S\,4.4, \S\,8.x \\
-D-022 & Firme & Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD & \S\,4.4, \S\,8.x \\
-D-023 & Firme & M3 extrae 67 features: cuatro familias sobre la imagen original, sin filtros & \S\,4.5 \\
-D-024 & Firme & Selección por F-test con restricción de redundancia $|r|$ $\le$ 0.95 & \S\,4.6 \\
-D-025 & Firme & Escalado angular por cuantiles (uniforme $\times$ $\pi$) en lugar de min-max & \S\,4.6 \\
-D-026 & Firme & Semilla de los folds elegida por balance de clases & \S\,4.9 \\
-D-027 & Firme & $\gamma$ del RBF por heurística de la mediana (C3 y kernel clásico de la \textit{geometric difference}) & \S\,4.7, \S\,4.9 \\
-D-028 & Firme & Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas & \S\,4.9 \\
-D-029 & Firme & Kernel concentrado: se mantiene el diseño fijado de antemano y se añade un barrido del factor de escala & \S\,4.9, \S\,6.x, OE-6 \\
-D-030 & Firme & La separabilidad pasa a ser el Módulo 6; la clasificación, el M7, y la evaluación comparativa, el M8 & \S\,4.1–\S\,4.9, RF, CRISP-DM \\
-D-031 & Firme & C5 pasa a \texttt{pauli\_feature\_map(paulis=['Y','ZZ'])} & \S\,4.7, \S\,6.x \\
-D-032 & Firme & La \textit{geometric difference} sigue el protocolo de Huang et al. (Apéndice L.3) & \S\,3.4.2, \S\,4.9, RF-16 \\
-D-033 & Firme & Definiciones de las demás métricas del M6 & \S\,4.9 \\
+D-020 & Firme & Alinear cada máscara según su tipo de desajuste, no remuestrear las 80 & \S\,\ref{sec:modulo2} \\
+D-021 & Firme & Reducir cada máscara a su componente conexa mayor & \S\,\ref{sec:modulo2} \\
+D-022 & Firme & Contrato de salida de M2: caja + 20 px, intensidades crudas, NRRD & \S\,\ref{sec:modulo2}, \S\,\ref{sec:modulo3} \\
+D-023 & Firme & M3 extrae 67 features: cuatro familias sobre la imagen original, sin filtros & \S\,\ref{sec:modulo3} \\
+D-024 & Firme & Selección por F-test con restricción de redundancia $|r|$ $\le$ 0.95 & \S\,\ref{sec:modulo4} \\
+D-025 & Firme & Escalado angular por cuantiles (uniforme $\times$ $\pi$) en lugar de min-max & \S\,\ref{sec:modulo4} \\
+D-026 & Firme & Semilla de los folds elegida por balance de clases & \S\,\ref{sec:modulo4}, \S\,\ref{sec:modulo7} \\
+D-027 & Firme & $\gamma$ del RBF por heurística de la mediana (C3 y kernel clásico de la \textit{geometric difference}) & \S\,\ref{sec:modulo5}, \S\,\ref{sec:modulo6} \\
+D-028 & Firme & Separabilidad sobre 200 lesiones de train por subconjunto, estratificadas & \S\,\ref{sec:modulo5}, \S\,\ref{sec:modulo6} \\
+D-029 & Firme & Kernel concentrado: se mantiene el diseño fijado de antemano y se añade un barrido del factor de escala & \S\,\ref{sec:modulo5}, \S\,\ref{sec:modulo6} \\
+D-030 & Firme & La separabilidad pasa a ser el Módulo 6; la clasificación, el M7, y la evaluación comparativa, el M8 & \S\,\ref{sec:descripcion_general} \\
+D-031 & Firme & C5 pasa a \texttt{pauli\_feature\_map(paulis=['Y','ZZ'])} & \S\,\ref{sec:modulo5} \\
+D-032 & Firme & La \textit{geometric difference} sigue el protocolo de Huang et al. (Apéndice L.3) & \S\,\ref{sec:modulo6}, \S\,3.4.2 \\
+D-033 & Firme & Definiciones de las demás métricas del M6 & \S\,\ref{sec:modulo6} \\
 D-034 & Firme & Se reproduce la Fig. 2 de Huang et al. (2021) en el reporte & \S\,3.4.2 \\
-D-035 & Firme & Se compara contra k = 8 antes de concluir el OE-3, como experimento X3 & \S\,6.x, \S\,7, OE-6 \\
-D-036 & Firme & Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente & \S\,4.8, \S\,6.x \\
-D-037 & Firme & Análisis de sensibilidad del M7: reps = 2 en el ansatz, k = 8, semillas y configuraciones & \S\,6.x, \S\,7 \\
-D-038 & Firme & Análisis exploratorios X4 a X6: QSVM, auditoría y búsqueda de ventaja, con protocolo simétrico & \S\,6.x, \S\,7 \\
-D-039 & Firme & El Spearman del M8 se reporta como descriptivo: por subconjunto, con su distribución exacta para n = 5 & \S\,3.4, \S\,4.10, \S\,6.x \\
-D-040 & Firme & Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo & \S\,4.10, \S\,6.x, \S\,7, OE-6 \\
+D-035 & Firme & Se compara contra k = 8 antes de concluir el OE-3, como experimento X3 & \S\,\ref{sec:modulo4}, \S\,\ref{sec:modulo5}, \S\,\ref{sec:modulo6} \\
+D-036 & Firme & Protocolo de clasificación del M7: MLP 32-16, estandarización y parada temprana por paciente & \S\,\ref{sec:modulo7} \\
+D-037 & Firme & Análisis de sensibilidad del M7: reps = 2 en el ansatz, k = 8, semillas y configuraciones & \S\,\ref{sec:modulo7} \\
+D-038 & Firme & Análisis exploratorios X4 a X6: QSVM, auditoría y búsqueda de ventaja, con protocolo simétrico & \S\,\ref{sec:experimentos_complementarios} \\
+D-039 & Firme & El Spearman del M8 se reporta como descriptivo: por subconjunto, con su distribución exacta para n = 5 & \S\,\ref{sec:modulo8}, \S\,3.4 \\
+D-040 & Firme & Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo & \S\,\ref{sec:modulo8} \\
+D-041 & \textit{Provisional} & Pregunta de investigación y objetivos reformulados en el reporte final, con cambio mínimo & \S\,1.2, \S\,1.4, \S\,1.5 \\
+D-042 & Firme & Las 200 lesiones siguen como análisis principal del M6, justificadas por el protocolo físico; X9 se reporta como robustez & \S\,\ref{sec:modulo6} \\
 \end{longtable}

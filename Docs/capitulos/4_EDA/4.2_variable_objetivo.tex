@@ -63,12 +63,16 @@ La distribución de sutileza visual (\textit{subtlety}) por patología
 y tipo de hallazgo se recoge en la Figura~\ref{fig:subtlety_distribution}
 del Anexo~\ref{anx:figuras_eda}.
 
-% fuente: D-005; 1_EDA.ipynb
-La media de \textit{subtlety} en casos malignos
-(3.1 para masas, 2.8 para calcificaciones) es
-ligeramente inferior a la de casos benignos (3.4 y
-3.2 respectivamente), aunque la diferencia es pequeña.
-Este hallazgo refuta la intuición de que las lesiones
+% fuente: 1_EDA.ipynb (celda «SUBTLETY POR PATOLOGIA»); Data/cbis_ddsm_unified.csv.
+% Corregido el 2026-10-19 (auditoría A2-1): TT1 daba 3.1/2.8 frente a 3.4/3.2, cifras que no
+% salen de los datos, y en masas el sentido estaba invertido.
+La media de \textit{subtlety} en casos malignos es
+ligeramente mayor que en benignos en masas (3.98 frente
+a 3.88) y ligeramente menor en calcificaciones (3.23
+frente a 3.49), con la misma mediana dentro de cada
+subconjunto (4 en masas y 3 en calcificaciones). En
+ambos casos la diferencia es pequeña.
+Este hallazgo no respalda la intuición de que las lesiones
 malignas son necesariamente más difíciles de detectar
 visualmente: la dificultad de detección es
 aproximadamente ortogonal a la patología, lo que

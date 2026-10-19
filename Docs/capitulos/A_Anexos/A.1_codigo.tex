@@ -25,7 +25,7 @@ desajuste se debe a un factor de submuestreo de 0.870 se aplica interpolación a
 más cercano, mientras que en discrepancias de resolución nativa se preserva el anclaje
 en la esquina superior izquierda sin remuestreo continuo.
 
-\lstinputlisting[style=tt, caption={Función de alineación espacial de máscaras (\texttt{Code/2\_Preprocessing.ipynb}, celda de código 5).}, label={lst:m2_alineacion}]{codigo/m2_alineacion.py}
+\lstinputlisting[style=tt, caption={[Función de alineación espacial de máscaras]Función de alineación espacial de máscaras (\texttt{Code/2\_Preprocessing.ipynb}, celda de código 5).}, label={lst:m2_alineacion}]{codigo/m2_alineacion.py}
 
 % fuente: D-021
 La rutina \texttt{prepare\_mask} realiza el análisis morfológico de componentes conexas
@@ -33,7 +33,7 @@ mediante la función \texttt{connectedComponentsWithStats} de OpenCV. Identifica
 como la lesión patológica principal y descarta motas satélite aisladas, registrando la
 distancia euclidiana máxima y el número de píxeles eliminados para control de calidad.
 
-\lstinputlisting[style=tt, caption={Depuración y selección de componente conexa mayor (\texttt{Code/2\_Preprocessing.ipynb}, celda de código 11).}, label={lst:m2_componente}]{codigo/m2_componente.py}
+\lstinputlisting[style=tt, caption={[Depuración y selección de componente conexa mayor]Depuración y selección de componente conexa mayor (\texttt{Code/2\_Preprocessing.ipynb}, celda de código 11).}, label={lst:m2_componente}]{codigo/m2_componente.py}
 
 % fuente: D-022
 La función \texttt{export\_mammogram} formaliza el contrato de salida del Módulo 2. Calcula
@@ -41,7 +41,7 @@ la caja delimitadora ajustada a la lesión depurada y le agrega un margen de seg
 píxeles por lado, extrayendo los parches sobre las intensidades crudas de 16 bits y
 almacenándolos en formato comprimido NRRD con espaciado espacial unitario.
 
-\lstinputlisting[style=tt, caption={Recorte de región de interés con margen y exportación (\texttt{Code/2\_Preprocessing.ipynb}, celda de código 13).}, label={lst:m2_recorte}]{codigo/m2_recorte.py}
+\lstinputlisting[style=tt, caption={[Recorte de región de interés con margen y exportación]Recorte de región de interés con margen y exportación (\texttt{Code/2\_Preprocessing.ipynb}, celda de código 13).}, label={lst:m2_recorte}]{codigo/m2_recorte.py}
 
 % ------------------------------------------------------------
 \subsection{Módulo 3: Extracción de características radiómicas}\label{sec:anx_m3}
@@ -53,7 +53,7 @@ fijo de contenedor. Se inhabilitan los filtros derivados complejos y se activan 
 las cuatro familias morfológicas y texturales bidimensionales primarias (\textit{firstorder},
 \textit{shape2D}, \textit{glcm} y \textit{glrlm}), totalizando 67 características.
 
-\lstinputlisting[style=tt, caption={Configuración del extractor PyRadiomics y activación de familias (\texttt{Code/3\_Feature\_Extraction.ipynb}, celda de código 3).}, label={lst:m3_extractor}]{codigo/m3_configuracion.py}
+\lstinputlisting[style=tt, caption={[Configuración del extractor PyRadiomics y activación de familias]Configuración del extractor PyRadiomics y activación de familias (\texttt{Code/3\_Feature\_Extraction.ipynb}, celda de código 3).}, label={lst:m3_extractor}]{codigo/m3_configuracion.py}
 
 % ------------------------------------------------------------
 \subsection{Módulo 4: Selección y escalado angular}\label{sec:anx_m4}
@@ -64,7 +64,7 @@ análisis de varianza univariado, calculado estrictamente sobre los datos de ent
 Cada variable candidata se incorpora solo si el valor absoluto de su correlación de Pearson
 frente a las variables ya seleccionadas no excede el límite de redundancia $|r| \le 0.95$.
 
-\lstinputlisting[style=tt, caption={Selección voraz por $F$-test con restricción de redundancia lineal (\texttt{Code/4\_Selection\_and\_Scaling.ipynb}, celda de código 5).}, label={lst:m4_seleccion}]{codigo/m4_seleccion.py}
+\lstinputlisting[style=tt, caption={[Selección voraz por $F$-test con restricción de redundancia lineal]Selección voraz por $F$-test con restricción de redundancia lineal (\texttt{Code/4\_Selection\_and\_Scaling.ipynb}, celda de código 5).}, label={lst:m4_seleccion}]{codigo/m4_seleccion.py}
 
 % fuente: D-025
 El escalado angular utiliza \texttt{QuantileTransformer} configurado para proyectar a una
@@ -72,7 +72,7 @@ distribución uniforme y multiplicado por $\pi$. Esto asegura que cada caracter�
 de forma homogénea el intervalo angular $[0, \pi]$, mitigando la influencia de asimetrías
 y valores atípicos sin alterar el orden relativo de las observaciones de entrenamiento.
 
-\lstinputlisting[style=tt, caption={Transformación angular por cuantiles acotada a {$[0, \pi]$} (\texttt{Code/4\_Selection\_and\_Scaling.ipynb}, celda de código 8).}, label={lst:m4_escalado}]{codigo/m4_escalado.py}
+\lstinputlisting[style=tt, caption={[Transformación angular por cuantiles acotada a {$[0, \pi]$}]Transformación angular por cuantiles acotada a {$[0, \pi]$} (\texttt{Code/4\_Selection\_and\_Scaling.ipynb}, celda de código 8).}, label={lst:m4_escalado}]{codigo/m4_escalado.py}
 
 % fuente: D-018, D-026
 La conformación de los pliegues de validación cruzada utiliza \texttt{StratifiedGroupKFold}
@@ -80,7 +80,7 @@ para agrupar las lesiones por paciente. La rutina evalúa múltiples semillas de
 selecciona aquella que minimiza la desviación máxima en la proporción de malignidad entre los
 cinco pliegues, garantizando particiones homogéneas e independientes a nivel de sujeto.
 
-\lstinputlisting[style=tt, caption={Generación y balanceo de folds agrupados por paciente (\texttt{Code/4\_Selection\_and\_Scaling.ipynb}, celda de código 9).}, label={lst:m4_folds}]{codigo/m4_folds.py}
+\lstinputlisting[style=tt, caption={[Generación y balanceo de folds agrupados por paciente]Generación y balanceo de folds agrupados por paciente (\texttt{Code/4\_Selection\_and\_Scaling.ipynb}, celda de código 9).}, label={lst:m4_folds}]{codigo/m4_folds.py}
 
 % ------------------------------------------------------------
 \subsection{Módulo 5: Transformaciones cuánticas y kernels}\label{sec:anx_m5}
@@ -91,7 +91,7 @@ El cálculo del embedding cuántico combina los circuitos de codificación C4 y 
 fijo generado con semilla 42. El valor esperado local $\langle Z_i \rangle$ se obtiene de forma
 exacta multiplicando la distribución de probabilidades del vector de estado por la matriz de signos.
 
-\lstinputlisting[style=tt, caption={Construcción de mapas cuánticos, ansatz con $\theta$ fijo y cálculo de $\langle Z_i \rangle$ (\texttt{Code/5a\_Embeddings.ipynb}, celda de código 2).}, label={lst:m5_embeddings}]{codigo/m5_embeddings.py}
+\lstinputlisting[style=tt, caption={[Construcción de mapas cuánticos, ansatz con $\theta$ fijo y cálculo de $\langle Z_i \rangle$]Construcción de mapas cuánticos, ansatz con $\theta$ fijo y cálculo de $\langle Z_i \rangle$ (\texttt{Code/5a\_Embeddings.ipynb}, celda de código 2).}, label={lst:m5_embeddings}]{codigo/m5_embeddings.py}
 
 % fuente: D-017, D-027
 La computación de matrices de kernel emplea \texttt{FidelityStatevectorKernel} sobre los
@@ -99,7 +99,7 @@ vectores cuánticos precomputados, optimizando el cálculo de productos internos
 la submuestra representativa. En paralelo, se construye el kernel clásico RBF empleando el
 ancho de banda óptimo determinado por la heurística de la mediana.
 
-\lstinputlisting[style=tt, caption={Evaluación de matrices de kernel clásico y cuántico (\texttt{Code/5b\_Quantum\_Kernels.ipynb}, celda de código 4).}, label={lst:m5_kernels}]{codigo/m5_kernels.py}
+\lstinputlisting[style=tt, caption={[Evaluación de matrices de kernel clásico y cuántico]Evaluación de matrices de kernel clásico y cuántico (\texttt{Code/5b\_Quantum\_Kernels.ipynb}, celda de código 4).}, label={lst:m5_kernels}]{codigo/m5_kernels.py}
 
 % ------------------------------------------------------------
 \subsection{Módulo 6: Separabilidad geométrica}\label{sec:anx_m6}
@@ -110,7 +110,7 @@ La rutina \texttt{alignment\_with\_null} centra la matriz de kernel y calcula ta
 métrica empírica observada como su exceso respecto a la media de una distribución nula
 obtenida mediante permutaciones exhaustivas de las etiquetas binarias.
 
-\lstinputlisting[style=tt, caption={Centrado matricial y alineamiento kernel-objetivo con prueba de permutación (\texttt{Code/6\_Separability.ipynb}, celda de código 3).}, label={lst:m6_kta}]{codigo/m6_kta_permutaciones.py}
+\lstinputlisting[style=tt, caption={[Centrado matricial y alineamiento kernel-objetivo con prueba de permutación]Centrado matricial y alineamiento kernel-objetivo con prueba de permutación (\texttt{Code/6\_Separability.ipynb}, celda de código 3).}, label={lst:m6_kta}]{codigo/m6_kta_permutaciones.py}
 
 % fuente: D-017, D-032
 La evaluación de ventaja cuántica potencial implementa la diferencia geométrica regularizada
@@ -118,7 +118,7 @@ $g(K_C \parallel K_Q)$ descrita por Huang et al. El algoritmo computa la raíz s
 de la matriz cuántica y diagonaliza el kernel clásico, evaluando las cotas teóricas de
 generalización y entrenamiento sobre una grilla de parámetros de regularización $\lambda$.
 
-\lstinputlisting[style=tt, caption={Cálculo de la diferencia geométrica regularizada de Huang et al. (\texttt{Code/6\_Separability.ipynb}, celda de código 3).}, label={lst:m6_geometric_difference}]{codigo/m6_geometric_difference.py}
+\lstinputlisting[style=tt, caption={[Cálculo de la diferencia geométrica regularizada de Huang et al]Cálculo de la diferencia geométrica regularizada de Huang et al. (\texttt{Code/6\_Separability.ipynb}, celda de código 3).}, label={lst:m6_geometric_difference}]{codigo/m6_geometric_difference.py}
 
 % ------------------------------------------------------------
 \subsection{Módulo 7: Clasificación supervisada}\label{sec:anx_m7}
@@ -129,7 +129,7 @@ con estructura $k \to 32 \to 16 \to 1$, capas lineales continuas con activacione
 salida en escala logit, lo que permite integrar numéricamente la función sigmoide dentro de la
 función de costo de entropía cruzada binaria ponderada.
 
-\lstinputlisting[style=tt, caption={Definición del perceptrón multicapa para clasificación supervisada (\texttt{Code/7\_Classification.ipynb}, celda de código 3).}, label={lst:m7_mlp}]{codigo/m7_mlp.py}
+\lstinputlisting[style=tt, caption={[Definición del perceptrón multicapa para clasificación supervisada]Definición del perceptrón multicapa para clasificación supervisada (\texttt{Code/7\_Classification.ipynb}, celda de código 3).}, label={lst:m7_mlp}]{codigo/m7_mlp.py}
 
 % fuente: D-036
 El ciclo de optimización \texttt{fit\_predict} utiliza el optimizador Adam y aplica parada
@@ -137,7 +137,7 @@ temprana monitoreando la pérdida ponderada sobre una partición interna indepen
 pacientes. Si tras 40 épocas no se detecta mejoría, se detiene el entrenamiento y se
 restauran los mejores pesos obtenidos para evaluar el conjunto de prueba.
 
-\lstinputlisting[style=tt, caption={Bucle de entrenamiento con parada temprana y restauración de pesos (\texttt{Code/7\_Classification.ipynb}, celda de código 3).}, label={lst:m7_parada_temprana}]{codigo/m7_parada_temprana.py}
+\lstinputlisting[style=tt, caption={[Bucle de entrenamiento con parada temprana y restauración de pesos]Bucle de entrenamiento con parada temprana y restauración de pesos (\texttt{Code/7\_Classification.ipynb}, celda de código 3).}, label={lst:m7_parada_temprana}]{codigo/m7_parada_temprana.py}
 
 % ------------------------------------------------------------
 \subsection{Módulo 8: Evaluación comparativa y muestreo}\label{sec:anx_m8}
@@ -148,7 +148,7 @@ separabilidad geométrica y el desempeño clasificador. La rutina asigna rangos 
 condiciones empatadas y deriva la distribución nula exacta mediante las 120 permutaciones
 posibles para determinar la significación estadística bilateral.
 
-\lstinputlisting[style=tt, caption={Cálculo del coeficiente de Spearman con empates y distribución nula exacta (\texttt{Code/8\_Comparison.ipynb}, celda de código 6).}, label={lst:m8_spearman}]{codigo/m8_spearman.py}
+\lstinputlisting[style=tt, caption={[Cálculo del coeficiente de Spearman con empates y distribución nula exacta]Cálculo del coeficiente de Spearman con empates y distribución nula exacta (\texttt{Code/8\_Comparison.ipynb}, celda de código 6).}, label={lst:m8_spearman}]{codigo/m8_spearman.py}
 
 % fuente: D-040
 La cuantificación del coste por mediciones finitas simula el comportamiento de un dispositivo
@@ -156,4 +156,4 @@ físico mediante muestreo multinomial de las probabilidades exactas. Este proced
 un ejecutor ideal de disparos finitos (\textit{shots}) y permite contrastar el error empírico
 frente a la cota teórica de desviación estándar de la medición cuántica.
 
-\lstinputlisting[style=tt, caption={Muestreo multinomial de mediciones finitas y ley de dispersión (\texttt{Code/8\_Comparison.ipynb}, celda de código 17).}, label={lst:m8_muestreo}]{codigo/m8_muestreo.py}
+\lstinputlisting[style=tt, caption={[Muestreo multinomial de mediciones finitas y ley de dispersión]Muestreo multinomial de mediciones finitas y ley de dispersión (\texttt{Code/8\_Comparison.ipynb}, celda de código 17).}, label={lst:m8_muestreo}]{codigo/m8_muestreo.py}
