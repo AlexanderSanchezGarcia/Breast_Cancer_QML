@@ -74,32 +74,10 @@ def main():
     # ----------------------------------------------------
     # 2. comun/bibliografia_completa.tex y parseo de bibitems
     # ----------------------------------------------------
-    m = re.search(r"\\begin\{thebibliography\}\{[^}]*\}(.*?)\\end\{thebibliography\}", tr_text, re.DOTALL)
-    tr_bib = m.group(1).strip() if m else ""
-
-    nuevos_path = os.path.join(docs_dir, "insumos/bibitems_nuevos.tex")
-    with open(nuevos_path, "r", encoding="utf-8") as f:
-        nuevos_raw = f.read()
-    nuevos_lines = [l for l in nuevos_raw.splitlines() if not l.strip().startswith("%")]
-    nuevos_clean = "\n".join(nuevos_lines)
-    nuevos_clean = re.sub(r"\\bibitem\{huang2021power\}.*?(?=\n\s*\n|\\bibitem|\Z)", "", nuevos_clean, flags=re.DOTALL)
-    nuevos_clean = re.sub(r"\\bibitem\{TandFOnline2021\}.*?(?=\n\s*\n|\\bibitem|\Z)", "", nuevos_clean, flags=re.DOTALL).strip()
-
-    noche_path = os.path.join(docs_dir, "insumos/bibitems_noche.tex")
-    noche_clean = ""
-    if os.path.isfile(noche_path):
-        with open(noche_path, "r", encoding="utf-8") as f:
-            noche_raw = f.read()
-        noche_lines = [l for l in noche_raw.splitlines() if not l.strip().startswith("%")]
-        noche_clean = "\n".join(noche_lines).strip()
-
-    full_bib_content = (
-        "\\begin{thebibliography}{99}\n"
-        + tr_bib + "\n\n"
-        + nuevos_clean + "\n\n"
-        + noche_clean + "\n"
-        + "\\end{thebibliography}\n"
-    )
+    # Desde la integración del 2026-10-18 la bibliografía única está en Docs/bibliografia.tex
+    # (ya fusiona TT1, bibitems_nuevos y bibitems_noche); se copia tal cual.
+    with open(os.path.join(docs_dir, "bibliografia.tex"), "r", encoding="utf-8") as f:
+        full_bib_content = f.read()
     with open(os.path.join(comun_dir, "bibliografia_completa.tex"), "w", encoding="utf-8") as f:
         f.write(full_bib_content)
 

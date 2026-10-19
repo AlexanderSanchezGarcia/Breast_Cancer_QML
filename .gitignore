@@ -39,3 +39,6 @@ Docs/insumos/noche/*.pdf
 
 # Protocolo firmado (datos personales; el repositorio es público)
 Other/ESCOM/Protocolo.pdf
+
+# Cartas firmadas que se integran al reporte
+Docs/preliminares/*.pdf

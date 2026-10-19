@@ -11,7 +11,8 @@ REPORT="$DOCS/Technical_Report.tex"
 if [ "$#" -eq 0 ]; then set -- $(cd "$CAP" && ls -d [0-9]*_*/ | sed 's#/##' | sort -n); fi
 {
   awk '/\\begin\{document\}/{exit} {print}' "$REPORT"
-  [ -f "$DOCS/insumos/preambulo_extra.tex" ] && cat "$DOCS/insumos/preambulo_extra.tex"
+  # preambulo_extra.tex ya está dentro del preámbulo del reporte desde el 2026-10-18
+  grep -q 'lstdefinestyle{tt}' "$REPORT" || { [ -f "$DOCS/insumos/preambulo_extra.tex" ] && cat "$DOCS/insumos/preambulo_extra.tex"; }
   echo '\begin{document}'
   for dir in "$@"; do
     echo "% ===== $dir"
@@ -19,11 +20,8 @@ if [ "$#" -eq 0 ]; then set -- $(cd "$CAP" && ls -d [0-9]*_*/ | sed 's#/##' | so
       echo "\\input{$CAP/$dir/$f}"
     done
   done
-  echo '\begin{thebibliography}{99}'
-  sed -n '/\\begin{thebibliography}/,/\\end{thebibliography}/p' "$REPORT" | sed '1d;$d'
-  grep -v '^%' "$DOCS/insumos/bibitems_nuevos.tex" | sed '/\\bibitem{huang2021power}/,/^$/d;/\\bibitem{TandFOnline2021}/,/^$/d'
-  [ -f "$DOCS/insumos/bibitems_noche.tex" ] && grep -v '^ *%' "$DOCS/insumos/bibitems_noche.tex"
-  echo '\end{thebibliography}'
+  # Bibliografía única (TT1 + bibitems_nuevos + bibitems_noche), fusionada el 2026-10-18
+  cat "$DOCS/bibliografia.tex"
   echo '\end{document}'
 } > "$TMP/prueba.tex"
 cd "$DOCS"
