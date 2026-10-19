@@ -217,12 +217,12 @@
     (current page.north west) ++(2.0cm, -1.5cm) -- ++(0, -25.5cm);
 \end{tikzpicture}
 
+% El logo del IPN va superpuesto a la izquierda para que el encabezado quede centrado
+% en el ancho del texto, igual que el título y los nombres.
 \noindent
-\begin{minipage}[t]{0.13\textwidth}
-  \centering
-  \includegraphics[width=\linewidth]{Logos/IPN_logo.png}
-\end{minipage}%
-\begin{minipage}[t]{0.87\textwidth}
+\makebox[0pt][l]{\hspace*{-0.7cm}\raisebox{-\height}{\includegraphics[width=1.8cm]{Logos/IPN_logo.png}}}%
+\begin{minipage}[t]{\textwidth}
+  \vspace{0pt}
   \centering
   {\fontsize{20}{24}\selectfont \textbf{INSTITUTO POLITÉCNICO NACIONAL}}\\[0.3em]
   {\fontsize{16}{20}\selectfont \textbf{ESCUELA SUPERIOR DE CÓMPUTO}}\\[1.2em]
