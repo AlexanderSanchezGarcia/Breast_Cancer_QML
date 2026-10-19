@@ -1,0 +1,140 @@
+\begin{description}
+  \item[Ansatz.] Subcircuito cuántico parametrizado $W(\boldsymbol{\theta})$ que aplica una transformación variacional sobre el estado generado por el mapa de características. En este reporte se utiliza la plantilla \textit{RealAmplitudes} con capas alternadas de rotaciones $R_Y(\theta)$ y compuertas CNOT con entrelazamiento lineal (sección~3.2, ec.~\ref{eq:real_amplitudes}).
+
+  \item[AUC-ROC (\textit{Area Under the Receiver Operating Characteristic Curve} / área bajo la curva ROC).] Métrica de evaluación para clasificación binaria que cuantifica la probabilidad de que el clasificador asigne una puntuación mayor a una instancia positiva seleccionada al azar que a una negativa, evaluada a través de todos los posibles umbrales de decisión (sección~3.4, ec.~\ref{eq:auc_roc}).
+
+  \item[Base computacional (\textit{computational basis}).] Base ortonormal canónica del espacio de Hilbert bidimensional $\mathcal{H} = \mathbb{C}^2$, denotada por los estados ortogonales $|0\rangle = (1, 0)^\top$ y $|1\rangle = (0, 1)^\top$, que corresponden a los autoestados del observable de Pauli $Z$ (sección~3.1, ec.~\ref{eq:basis}).
+
+  \item[BI-RADS (\textit{Breast Imaging-Reporting and Data System}).] Sistema de estandarización radiológica desarrollado por el American College of Radiology que clasifica los hallazgos mamográficos en categorías ordinales de evaluación (0 a 6) en función del nivel de sospecha de malignidad (sección~\ref{sec:trabajos_cbis_ddsm}; anexo~\ref{anx:figuras_eda}, fig.~\ref{fig:birads_distribution}).
+
+  \item[Calcificación mamaria (\textit{breast calcification} / microcalcificación).] Depósito microscópico de sales de calcio en el parénquima mamario que aparece como foco hiperdenso de alta atenuación radiológica, evaluado clínicamente a partir de su tipo morfológico (amorfo, pleomórfico, puntiforme) y su patrón de distribución espacial (sección~\ref{sec:introduccion}; sección~\ref{sec:eda}, fig.~\ref{fig:calc_morphology}).
+
+  \item[Características de primer orden (\textit{first-order features}).] Descriptores radiómicos derivados de la distribución de frecuencias del histograma de niveles de gris de la región de interés, que describen propiedades globales como media, varianza, asimetría, curtosis y entropía sin considerar la correlación espacial entre vóxeles (sección~\ref{sec:radiomica}, ec.~\ref{eq:entropia_radiomica}).
+
+  \item[Características morfológicas (\textit{shape features} / descriptores de forma).] Descriptores radiómicos bidimensionales extraídos a partir de la máscara binaria de la lesión que cuantifican propiedades geométricas del contorno y área del tumor, tales como área, perímetro, elongación y diámetro máximo (secciones~\ref{sec:radiomica}, \ref{sec:modulo3}).
+
+  \item[CBIS-DDSM (\textit{Curated Breast Imaging Subset of DDSM}).] Conjunto de datos público y estandarizado de mamografía digital compuesto por 1\,566 pacientes y 3\,568 registros con imágenes desglosadas en masas y calcificaciones, máscaras binarias de segmentación del ROI y confirmación histopatológica binaria benigno/maligno (secciones~\ref{sec:trabajos_cbis_ddsm}, \ref{sec:eda}).
+
+  \item[Circuito cuántico parametrizado (\textit{Parameterized Quantum Circuit}, PQC).] Circuito cuántico compuesto por secuencias de compuertas unitarias fijas y compuertas gobernadas por parámetros continuos ajustables, denotado por $U(\boldsymbol{\theta}, \mathbf{x}) = W(\boldsymbol{\theta})U_\Phi(\mathbf{x})$, que implementa el mapeo del espacio de entrada a estados cuánticos y su transformación variacional (sección~3.2, ec.~\ref{eq:vqc_state}).
+
+  \item[CLAHE (\textit{Contrast Limited Adaptive Histogram Equalization} / ecualización adaptativa de histograma con limitación de contraste).] Algoritmo de preprocesamiento de imágenes que realza el contraste local dividiendo la imagen en bloques contextuales y aplicando ecualización de histograma con una cota superior a la amplificación de frecuencias para evitar la intensificación del ruido de fondo (sección~\ref{sec:modulo2}; sección~\ref{sec:datos_caracteristicas_seleccion}, fig.~\ref{fig:m3_clahe_effect}).
+
+  \item[Coeficiente de correlación de Spearman (\textit{Spearman's rank correlation coefficient}, $\rho_s$).] Medida estadística no paramétrica que evalúa la fuerza y dirección de la relación monótona entre dos variables mediante sus rangos ordenados, utilizada para cuantificar si el ordenamiento de condiciones por métricas de separabilidad se traslada al ordenamiento por métricas de clasificación (sección~\ref{sec:metricas}, ec.~\ref{eq:spearman}).
+
+  \item[Componente conexa mayor (\textit{largest connected component}).] Operación morfológica que preserva exclusivamente el conjunto contiguo de píxeles activos de mayor cardinalidad en la máscara binaria, eliminando fragmentos aislados espurios e inconsistencias de digitalización en las regiones de interés (sección~\ref{sec:modulo2}, anexo~\ref{sec:anx_m2}).
+
+  \item[Compuerta cuántica (\textit{quantum gate}).] Transformación unitaria reversible ($U^\dagger U = I$) aplicada sobre uno o más qubits que modifica sus amplitudes de probabilidad y fases preservando la norma euclidiana del estado; en el reporte se utilizan compuertas de rotación $R_X, R_Y, R_Z$, la compuerta de Hadamard $H$ y la compuerta CNOT (sección~3.1, ec.~\ref{eq:pauli}).
+
+  \item[Concentración del kernel (\textit{kernel concentration}).] Fenómeno característico en espacios de Hilbert de alta dimensión en el cual los estados cuánticos representativos de muestras distintas tienden a ser cuasi-ortogonales, provocando que la matriz de kernel converja hacia la matriz identidad ($K_{ij} \to \delta_{ij}$) y diluya la separabilidad entre clases (sección~\ref{sec:limites_ventaja}; sección~\ref{sec:separabilidad_representaciones}, fig.~\ref{fig:m5_kernel_concentration}).
+
+  % sin definición en el reporte
+  \item[Decoherencia cuántica (\textit{quantum decoherence}).] Pérdida de las propiedades cuánticas de superposición y entrelazamiento debida a la interacción disipativa no controlada entre los qubits y el entorno térmico o electromagnético circundante.
+
+  \item[DICOM (\textit{Digital Imaging and Communications in Medicine}).] Estándar biomédico para la representación, comunicación y almacenamiento de imágenes diagnósticas junto con sus metadatos clínicos y radiográficos, operando en el proyecto con mamografías de 16 bits sin pérdida con fotometría de escala de grises \texttt{MONOCHROME2} (secciones~\ref{sec:modulo1}, \ref{sec:eda}).
+
+  \item[Diferencia geométrica (\textit{geometric difference}, $g$).] Métrica espectral formalizada por Huang et al. que cuantifica la distancia entre las geometrías inducidas por un kernel cuántico $K_Q$ y una familia de kernels clásicos $K_C$; evaluada en su formulación de generalización regularizada $g_{\mathrm{gen}}$ condicionada a una baja cota de entrenamiento $g_{\mathrm{tra}}$ (sección~\ref{sec:metricas}, ecs.~\ref{eq:geometric_diff}, \ref{eq:g_gen}).
+
+  \item[Dimensión efectiva (\textit{effective dimension}, $d_{\mathrm{eff}}$).] Métrica de capacidad estadística informada por la matriz de información de Fisher que mide el volumen de espacio de hipótesis accesible por un modelo variacional o de kernel en función del número de datos disponibles $N$, restringida al intervalo $[0, N]$ (sección~\ref{sec:dimension_efectiva}, ec.~\ref{eq:dim_efectiva}).
+
+  \item[Entrelazamiento cuántico (\textit{quantum entanglement}).] Correlación no local entre múltiples qubits según la cual el estado del sistema conjunto no puede expresarse como el producto tensorial de los estados de sus componentes individuales, constituyendo un recurso fundamental en la construcción de representaciones no lineales en QML (sección~3.1, ec.~\ref{eq:multiQubit}).
+
+  \item[Escalado por cuantiles (\textit{QuantileTransformer}).] Transformación no lineal no paramétrica que mapea las características empíricas a una distribución uniforme acotada en $[0, \pi]$, garantizando un rango intercuartílico constante de $\pi/2$ y evitando la concentración espuria en ángulos extremos inducida por valores atípicos (secciones~\ref{sec:modulo4}, \ref{sec:datos_caracteristicas_seleccion}).
+
+  \item[Esfera de Bloch (\textit{Bloch sphere}).] Representación geométrica del espacio de estados puros de un qubit en la superficie de una esfera tridimensional de radio unitario, parametrizada por los ángulos de colatitud $\theta \in [0, \pi]$ y azimut $\varphi \in [0, 2\pi)$ (sección~3.1, ec.~\ref{eq:bloch}, fig.~\ref{fig:bloch}).
+
+  \item[Exactitud (\textit{accuracy}).] Proporción de predicciones clasificadas correctamente por el modelo sobre el total de instancias evaluadas, expresada como $(\mathrm{TP} + \mathrm{TN}) / (\mathrm{TP} + \mathrm{TN} + \mathrm{FP} + \mathrm{FN})$ (sección~3.4, ec.~\ref{eq:accuracy}).
+
+  \item[Exceso de KTA (\textit{KTA excess}).] Diferencia entre la alineación de kernel centrada $A_c(K, Y)$ y el valor esperado de la misma métrica bajo permutaciones uniformes de las etiquetas de clase, introducida para comparar equitativamente kernels con concentraciones dispares frente al suelo impuesto por matrices cuasi-identidad (sección~\ref{sec:metricas}, ec.~\ref{eq:kta_excess}).
+
+  \item[Feature map (\textit{quantum feature map} / mapa de características cuántico).] Circuito cuántico unitario no lineal $U_\Phi(\mathbf{x})$ que codifica un vector de características clásicas $\mathbf{x} \in [0, \pi]^k$ en un estado cuántico $|\Phi(\mathbf{x})\rangle$ dentro de un espacio de Hilbert de dimensión $2^k$ (sección~\ref{sec:feature_map}, ec.~\ref{eq:feature_map}).
+
+  \item[Fuga de datos (\textit{data leakage}).] Contaminación metodológica producida cuando información del conjunto de prueba o validación interviene en el ajuste del selector de características, los cuantiles del escalador angular o el entrenamiento de los modelos (secciones~\ref{sec:modulo4}, \ref{sec:requerimientos}).
+
+  \item[GLCM (\textit{Gray-Level Co-occurrence Matrix} / matriz de co-ocurrencia de niveles de gris).] Matriz de segundo orden que contabiliza la probabilidad conjunta de que dos píxeles separados por un desplazamiento relativo $(d, \theta)$ presenten niveles de gris específicos, a partir de la cual se calculan descriptores como contraste, disimilitud, homogeneidad y energía (sección~\ref{sec:radiomica}, ec.~\ref{eq:glcm_contraste}).
+
+  \item[GLRLM (\textit{Gray-Level Run Length Matrix} / matriz de longitudes de secuencia de niveles de gris).] Matriz estadística de textura que cuantifica la frecuencia de secuencias lineales continuas de píxeles adyacentes que comparten el mismo nivel de intensidad a lo largo de una dirección angular dada (sección~\ref{sec:radiomica}, ec.~\ref{eq:glrlm_sre}).
+
+  \item[Heurística de la mediana (\textit{median heuristic}).] Regla empírica para la selección analítica del hiperparámetro de ancho de banda en kernels gaussianos $K(\mathbf{x}, \mathbf{x}') = \exp(-\gamma \|\mathbf{x} - \mathbf{x}'\|^2)$, estableciendo $\gamma = 1 / (2 \sigma_{\mathrm{med}}^2)$ donde $\sigma_{\mathrm{med}}$ es la mediana de las distancias euclidianas entre pares de muestras de entrenamiento (sección~\ref{sec:kernel_pca}, ec.~\ref{eq:rbf_mediana}).
+
+  \item[IBSI (\textit{Image Biomarker Standardisation Initiative}).] Consorcio internacional dedicado a la estandarización de las definiciones matemáticas y requerimientos de reproducibilidad para la extracción de biomarcadores radiómicos en imagen médica computacional (secciones~\ref{sec:radiomica}, \ref{sec:modulo2}).
+
+  \item[Incrustación cuántica (\textit{quantum embedding}).] Vector real de $k$ dimensiones $\mathbf{z}(\mathbf{x}) = (\langle Z_1 \rangle, \dots, \langle Z_k \rangle)^\top \in [-1, 1]^k$ resultante de medir los valores esperados de los operadores de Pauli $Z$ sobre cada qubit tras la evolución cuántica, el cual alimenta directamente a los clasificadores clásicos (sección~\ref{sec:quantum_embedding}, ec.~\ref{eq:embedding_vector}).
+
+  \item[Índice Davies-Bouldin.] Métrica de validación de agrupamiento no supervisada que evalúa la separación entre clases computando el cociente máximo entre la suma de dispersiones internas de dos conglomerados y la distancia euclidiana entre sus centroides (sección~\ref{sec:metricas}, ec.~\ref{eq:davies_bouldin}).
+
+  \item[Kernel cuántico de fidelidad (\textit{fidelity quantum kernel}).] Función de similitud que calcula el cuadrado del producto interno entre dos estados cuánticos puros inducidos por un mapa de características: $K_Q(\mathbf{x}_i, \mathbf{x}_j) = |\langle \Phi(\mathbf{x}_i)|\Phi(\mathbf{x}_j)\rangle|^2$ (sección~\ref{sec:feature_map}, ec.~\ref{eq:quantum_kernel}).
+
+  \item[Kernel cuántico proyectado (\textit{projected quantum kernel}).] Kernel cuántico formulado por Huang et al. que calcula un kernel gaussiano clásico sobre las proyecciones locales de Pauli obtenidas de los estados cuánticos, diseñado para evadir la concentración del kernel en espacios de Hilbert de alta dimensión (sección~\ref{sec:kernel_proyectado}, ec.~\ref{eq:kpq}).
+
+  \item[Kernel PCA (\textit{Kernel Principal Component Analysis}, KPCA).] Generalización no lineal del análisis de componentes principales que resuelve la descomposición espectral de la matriz de kernel centrada en un espacio de Hilbert de reproducción inducido por una función de base radial (condición C3) (sección~\ref{sec:kernel_pca}, ec.~\ref{eq:kpca_centrado}).
+
+  \item[KTA (\textit{Kernel-Target Alignment} / alineación kernel-objetivo).] Medida normalizada de similitud espectral entre una matriz de kernel centrada $K_c$ y la matriz de etiquetas ideales centrada $Y_c$, computada mediante el producto interno de Frobenius normalizado $\langle K_c, Y_c \rangle_F / (\|K_c\|_F \|Y_c\|_F)$ (sección~\ref{sec:metricas}, ec.~\ref{eq:kta_centered}).
+
+  \item[Mamografía (\textit{mammography}).] Modalidad imagenológica diagnóstica por rayos X de baja energía para la exploración del tejido mamario, analizada en proyecciones convencionales craneocaudal (CC) y mediolateral oblicua (MLO) (sección~\ref{sec:introduccion}; sección~\ref{sec:eda}, fig.~\ref{fig:image_dimensions}).
+
+  \item[Masa mamaria (\textit{breast mass}).] Lesión mamaria tridimensional con efecto de ocupación de espacio, delimitada morfológicamente por contornos continuos e intensidades radiológicas diferenciadas del tejido conectivo y adiposo adyacente (sección~\ref{sec:introduccion}; sección~\ref{sec:eda}, fig.~\ref{fig:mass_morphology}).
+
+  \item[Meseta estéril (\textit{barren plateau}).] Patología del paisaje de optimización de algoritmos variacionales descrita por McClean et al., en la cual la varianza de los gradientes decrece exponencialmente con el número de qubits, tornando estéril la optimización por descenso de gradiente (secciones~\ref{sec:antecedentes}, \ref{sec:separabilidad_representaciones}).
+
+  \item[MLP (\textit{Multilayer Perceptron} / perceptrón multicapa).] Arquitectura neuronal densa clásica de tres capas ($12 \to 32 \to 16 \to 1$) entrenada simétricamente bajo optimizador Adam y regularización con parada temprana sobre cada una de las cinco condiciones de representación evaluadas (sección~3.3, ec.~\ref{eq:mlp_layer}; sección~\ref{sec:modulo7}).
+
+  \item[NISQ (\textit{Noisy Intermediate-Scale Quantum} / cuántica ruidosa de escala intermedia).] Denominación propuesta por Preskill para la generación actual de computadores cuánticos con 50 a unos pocos cientos de qubits físicos, carentes de tolerancia a fallos por códigos de corrección cuántica de errores (secciones~\ref{sec:alcance}, \ref{sec:antecedentes}).
+
+  \item[Operadores de Pauli (\textit{Pauli operators}).] Conjunto fundamental de matrices hermíticas y unitarias de $2 \times 2$ ($X, Y, Z$) que constituyen generadores de rotaciones cuánticas y observables elementales para la extracción de valores de expectativa en cada qubit (sección~3.1, ec.~\ref{eq:pauli}).
+
+  \item[Parada temprana (\textit{early stopping}).] Criterio de regularización algorítmica que monitorea la pérdida de entropía cruzada sobre el pliegue de validación interno e interrumpe el entrenamiento si no se registra mejora en un número fijado de épocas consecutivas (paciencia) (secciones~\ref{sec:modulo7}, \ref{sec:rendimiento_clasificacion}).
+
+  \item[Parameter-shift (\textit{parameter-shift rule} / regla de desplazamiento de parámetros).] Procedimiento exacto para estimar gradientes de funciones de costo cuánticas respecto a parámetros continuos mediante dos evaluaciones del circuito con desplazamientos simétricos de $\pm \pi/2$ radianes (sección~\ref{sec:parameter_shift}, ec.~\ref{eq:parameter_shift}).
+
+  \item[PauliFeatureMap.] Clase parametrizada de mapas de características cuánticos generada por evoluciones unitarias asociadas a tensores de compuertas de Pauli; en la condición experimental C5 se estructura mediante compuertas unarias en $Y$ y términos de acoplamiento cuadrático en $ZZ$ (sección~\ref{sec:paulifeaturemap}, ec.~\ref{eq:paulifeaturemap}).
+
+  \item[PCA lineal (\textit{Principal Component Analysis} / análisis de componentes principales).] Método algebraico no supervisado que proyecta los datos sobre los autovectores ortogonales de la matriz de covarianza muestral, adoptado en este trabajo como condición C2 para actuar como control nulo lineal estricto frente a las transformaciones no lineales (sección~\ref{sec:pca}, ec.~\ref{eq:pca_covarianza}).
+
+  \item[Ponderación de clases (\textit{class weighting}).] Ajuste en la función de costo por entropía cruzada binaria que pondera inversamente los errores de predicción por la prevalencia de cada clase, balanceando el gradiente en presencia de asimetrías muestrales clínicas (sección~3.3, ecs.~\ref{eq:weighted_bce}, \ref{eq:class_weights}).
+
+  \item[Precisión (\textit{precision} / valor predictivo positivo).] Razón entre los casos verdaderos positivos y el total de predicciones positivas formuladas por el modelo ($\mathrm{TP} / (\mathrm{TP} + \mathrm{FP})$), indicativa de la confiabilidad ante una clasificación de sospecha maligna (sección~3.4, ec.~\ref{eq:precision}).
+
+  \item[PyRadiomics.] Biblioteca especializada de código abierto en Python diseñada para la extracción analítica reproducible y conforme al estándar IBSI de descriptores radiómicos a partir de pares de imagen médica y máscara de segmentación (secciones~\ref{sec:radiomica}, \ref{sec:modulo3}).
+
+  \item[QSVM (\textit{Quantum Support Vector Machine} / máquina de vectores de soporte cuántica).] Clasificador supervisado de vectores de soporte cuya matriz de Gram clásica es reemplazada por el kernel de fidelidad cuántico $|\langle \Phi(\mathbf{x}_i)|\Phi(\mathbf{x}_j)\rangle|^2$, desacoplando el análisis de separabilidad de la medición local de observables (secciones~\ref{sec:qsvm}, \ref{sec:qsvm_ventaja}).
+
+  \item[Qubit (\textit{quantum bit} / bit cuántico).] Unidad básica de información cuántica cuyo estado $|\psi\rangle$ se define como un vector bidimensional normalizado en $\mathbb{C}^2$, expresable mediante la superposición lineal $|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$ con $|\alpha|^2 + |\beta|^2 = 1$ (sección~3.1, ec.~\ref{eq:qubit}).
+
+  % sin definición en el reporte
+  \item[Qubit lógico (\textit{logical qubit}).] Qubit protegido contra fallos y decoherencia mediante la codificación redundante y distribuida de la información cuántica en múltiples qubits físicos a través de un código de corrección cuántica de errores.
+
+  \item[Radiómica (\textit{radiomics}).] Enfoque bioinformático orientado a la extracción masiva, objetiva y reproducible de descriptores cuantitativos de alta dimensión a partir de imágenes médicas, con el fin de cuantificar patrones histológicos y morfológicos del tumor (secciones~\ref{sec:radiomica}, \ref{sec:modulo3}).
+
+  \item[Razón multivariante de Fisher (\textit{Fisher's multivariate discriminant ratio}).] Métrica de separabilidad de clases linealmente invariante ante transformaciones afines invertibles, definida como la distancia de Mahalanobis al cuadrado entre los vectores de medias muestrales de las clases normalizada por la covarianza combinada (sección~\ref{sec:metricas}, ec.~\ref{eq:fisher_multivariate}).
+
+  \item[Región de interés (ROI, \textit{Region of Interest}).] Área espacial delimitada de la mamografía que encierra la patología tumoral, extraída a resolución espacial original con un marco perimetral contextual de 20 píxeles para garantizar el cálculo radiómico reproducible (sección~\ref{sec:modulo2}; sección~\ref{sec:eda}, fig.~\ref{fig:roi_overlays}).
+
+  \item[SelectKBest.] Algoritmo de selección supervisada univariada implementado en Scikit-Learn que evalúa y jerarquiza descriptores radiómicos en función de su estadístico de prueba $F$ de ANOVA, utilizado en M4 para aislar las $k=12$ variables más discriminativas (sección~\ref{sec:modulo4}, tabla~\ref{tab:m4_seleccion}).
+
+  \item[Sensibilidad / exhaustividad (\textit{recall} / sensibilidad diagnóstica).] Tasa de verdaderos positivos respecto al universo de lesiones malignas reales ($\mathrm{TP} / (\mathrm{TP} + \mathrm{FN})$), determinante para cuantificar la capacidad de omisión de casos positivos en cribado oncológico (sección~3.4, ec.~\ref{eq:recall}).
+
+  \item[Shots / disparos.] Repeticiones independientes de la preparación y medición proyectiva de un circuito cuántico, cuyo recuento discreto permite aproximar valores esperados introduciendo una incertidumbre inversamente proporcional a $\sqrt{S}$ (sección~3.1, ec.~\ref{eq:shot_noise_variance}; sección~\ref{sec:restricciones_simulador}).
+
+  \item[Simulador de vector de estado (\textit{Statevector simulator}).] Herramienta de simulación computacional clásica (\texttt{Statevector} en Qiskit) que computa las $2^n$ amplitudes complejas exactas del estado sin incorporar ruido de muestreo ni errores de compuerta físicos (secciones~\ref{sec:modulo5}, \ref{sec:restricciones_simulador}).
+
+  \item[Superposición cuántica (\textit{quantum superposition}).] Principio cuántico por el cual un estado puro puede existir simultáneamente en una combinación lineal ponderada de múltiples estados base, formalizada en un qubit por $|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$ con coeficientes complejos no nulos (sección~3.1, ec.~\ref{eq:qubit}).
+
+  \item[SVM (\textit{Support Vector Machine} / máquina de vectores de soporte).] Modelo de clasificación discriminativo que determina el hiperplano óptimo de separación con margen máximo entre clases mediante la optimización de multiplicadores de Lagrange sobre un problema dual acoplado a productos de kernel (sección~\ref{sec:svm}, ec.~\ref{eq:svm_dual}).
+
+  % sin definición en el reporte
+  \item[Teorema de no clonación (\textit{no-cloning theorem}).] Principio fundamental derivado de la linealidad de la mecánica cuántica que establece la imposibilidad física de crear una copia idéntica y exacta de un estado cuántico arbitrario y desconocido.
+
+  \item[Transpilación (\textit{transpilation}).] Etapa de compilación y optimización que descompone las compuertas de un circuito cuántico abstracto en el conjunto de compuertas elementales nativas del hardware o backend objetivo, adaptando el circuito a su topología de acoplamiento (secciones~\ref{sec:modulo5}, \ref{sec:lecciones_implementacion}).
+
+  \item[t-SNE (\textit{t-Distributed Stochastic Neighbor Embedding}).] Algoritmo no lineal de reducción de dimensionalidad que transforma distancias euclidianas entre muestras en probabilidades condicionales para proyectar la estructura geométrica multidimensional en planos bidimensionales interpretables (sección~\ref{sec:metricas}; sección~\ref{sec:separabilidad_representaciones}, fig.~\ref{fig:m6_tsne}).
+
+  \item[Validación cruzada estratificada por grupos (\textit{StratifiedGroupKFold}).] Estrategia de validación en 5 pliegues que asegura la partición disjunta a nivel de paciente entre pliegues de entrenamiento y validación, previniendo fuga de información correlacionada y manteniendo equilibradas las proporciones de malignidad (sección~\ref{sec:modulo4}, tabla~\ref{tab:anexo_m4_folds}).
+
+  \item[Valor esperado (\textit{expectation value}).] Valor medio estadístico obtenido al evaluar un operador hermítico observable $M$ sobre un ensamble de estados cuánticos $|\psi\rangle$, denotado por $\langle M \rangle = \langle \psi|M|\psi\rangle$; en el reporte se leen observables de Pauli $Z_i$ sobre cada qubit (sección~3.1, ec.~\ref{eq:expectation}; sección~\ref{sec:quantum_embedding}).
+
+  \item[Valor F1 (\textit{F1-score}).] Media armónica que combina precisión y exhaustividad diagnóstica en un indicador escalar consolidado ($2 \cdot (\mathrm{Precision} \cdot \mathrm{Recall}) / (\mathrm{Precision} + \mathrm{Recall})$), especialmente apropiado bajo distribuciones con desbalance de clases (sección~3.4, ec.~\ref{eq:f1}).
+
+  \item[Ventaja cuántica (\textit{quantum advantage}).] Superioridad empírica o teórica demostrable de un algoritmo cuántico frente a cualquier alternativa clásica óptima en términos de complejidad o precisión; en el reporte se delimita su viabilidad sobre datos clásicos reales mediante barridos de kernels y cotas de diferencia geométrica (secciones~\ref{sec:limites_ventaja}, \ref{sec:qsvm_ventaja}).
+
+  \item[ZZFeatureMap.] Mapa de características cuántico basado en circuitos de segundo orden que codifica productos cruzados de pares de características clásicas mediante interacciones de compuertas $R_{ZZ}$ precedidas de compuertas Hadamard, asignado a la condición C4 (sección~\ref{sec:zzfeaturemap}, ec.~\ref{eq:zzfeaturemap}).
+\end{description}
