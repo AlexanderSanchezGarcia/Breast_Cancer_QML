@@ -47,9 +47,10 @@ El estudio se limita a dos mapas de características con entrelazamiento entre t
 qubits, \textit{ZZFeatureMap} y \textit{PauliFeatureMap} con los términos Y y ZZ, con una repetición
 y $k = 12$ qubits. El número de qubits se fijó por el costo de simulación y por la diversidad de
 familias de características que conserva la selección, y obliga a descartar parte de la información
-de las 67 características extraídas. Quedan fuera las codificaciones sin entrelazamiento, como la
-angular producto o la codificación en amplitudes, porque su kernel es por construcción un kernel
-clásico (sección~\ref{sec:modulo5}). Los parámetros de la capa variacional se fijan con una semilla
+de las 67 características extraídas. Quedan fuera de las cinco condiciones la codificación angular producto, sin entrelazamiento, y la
+codificación en amplitudes, porque el kernel de ambas equivale por construcción a un kernel clásico
+(sección~\ref{sec:modulo5}); solo se evalúan como control sobre las 67 características en un
+experimento complementario (sección~\ref{sec:experimentos_complementarios}). Los parámetros de la capa variacional se fijan con una semilla
 y no se entrenan, para que la separabilidad se mida sobre una representación no supervisada;
 entrenarlos se explora solo como experimento complementario.
 

@@ -69,8 +69,9 @@ $0.015625 \sqrt{2/\pi} = 0.01247$ en la referencia teórica. Además, el estimad
 discretos, sino que calcula la expectativa analítica y le adiciona ruido gaussiano continuo, generando una dependencia circular
 con pendiente log-log de $-0.5065$. En consecuencia, se invalidó aquel hallazgo preliminar y la sección de disparos de B1; para el Módulo 5 se fijó
 que toda expectativa exacta debe evaluarse con \texttt{Statevector} directo o primitivas con precisión cero explícita (\texttt{default\_precision = 0.0});
-y para modelar disparos reales en B3 y OE-6 se adoptó exclusivamente el muestreador \texttt{SamplerV2} de Aer a partir de cadenas
-de bits, verificando pendientes de $-0.4986$ en dispersión y $-0.4983$ en MAE sin suelo espurio hasta $2^{20}$ disparos.
+y para modelar disparos reales se adoptó en B3 el muestreador \texttt{SamplerV2} de Aer a partir de cadenas de bits y, en el estudio
+del OE-6, el muestreo multinomial sobre las probabilidades exactas $|\psi(\mathbf{x})|^2$, equivalente al anterior sin ruido de
+compuerta. En B3 se verificaron pendientes de $-0.4986$ en dispersión y $-0.4983$ en MAE sin suelo espurio hasta $2^{20}$ disparos.
 
 % fuente: H-032, D-017
 \textbf{Aceleración analítica mediante productos internos matriciales.} La estimación inicial de tiempo de cálculo

@@ -53,8 +53,8 @@ comparador clásico sustantivo es C3.
 % respaldo: «We introduce a class of quantum kernels that can be used for data with a group structure.» (Glick2024Covariant, p. 1)
 \textbf{Por qué mapas con entrelazamiento.} Las dos condiciones cuánticas usan mapas de una
 misma familia, con acoplamiento $ZZ$ entre todos los pares de qubits: 66 pares con $k = 12$. Se
-descartaron las codificaciones sin entrelazamiento porque su kernel es, por construcción, un
-kernel clásico. En la codificación angular, cada característica gira su propio qubit y el estado
+descartaron como condiciones la codificación angular producto, sin entrelazamiento, y la
+codificación en amplitudes, porque el kernel de ambas equivale por construcción a un kernel clásico. En la codificación angular, cada característica gira su propio qubit y el estado
 es un producto, $|\phi(\mathbf{x})\rangle = \bigotimes_{i=1}^{k} R_Y(x_i)|0\rangle$. Su fidelidad
 se factoriza en
 \begin{equation}
@@ -101,7 +101,12 @@ Los parámetros $\boldsymbol\theta$ del \textit{ansatz} \texttt{real\_amplitudes
 una repetición, se fijan una sola vez con una semilla declarada (42), muestreados de manera
 uniforme en $[0,2\pi)$, y no se entrenan. Los valores esperados $\langle Z_i\rangle$ se calculan de
 forma exacta a partir del vector de estado, una sola vez para todo el conjunto, y se guardan en
-disco. El \textit{ansatz} no puede suprimirse. En C4, el \textit{feature map} aplica compuertas de Hadamard
+disco. En el resto del reporte este diseño se denomina \emph{Arquitectura~B}: el circuito actúa como
+extractor fijo y solo se entrena el MLP sobre los valores guardados. La alternativa descartada,
+\emph{Arquitectura~A}, entrenaría $\boldsymbol\theta$ junto con el MLP, extremo a extremo, y exigiría
+evaluar el circuito y su gradiente en cada época.
+% Añadido el 2026-10-19 (auditoría A5-10): «Arquitectura A/B» se usaba en §5.11, §6.7, §6.8 y §8.1 sin definirse.
+El \textit{ansatz} no puede suprimirse. En C4, el \textit{feature map} aplica compuertas de Hadamard
 seguidas de compuertas diagonales, que cambian las fases de las amplitudes pero no sus magnitudes.
 Partiendo de $H^{\otimes k}|0\rangle$, toda amplitud conserva la magnitud $2^{-k/2}$, de modo que
 $P(q_i = 0) = 1/2$ y $\langle Z_i\rangle = 0$ para cualquier entrada. La información codificada

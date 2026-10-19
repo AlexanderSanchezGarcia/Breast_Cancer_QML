@@ -23,10 +23,14 @@ del problema, este espacio no es simplemente una versión
 ampliada del espacio clásico de entrada: su geometría está
 determinada por productos internos cuánticos
 $\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle$, no por
-distancias euclidianas. El mapeo $\phi$ introduce
-correlaciones de orden superior entre las componentes de
-$\mathbf{x}$ que los métodos de codificación clásicos no
-capturan \cite{Schuld2019QuantumML, havlicek2019supervised}.
+distancias euclidianas. Con compuertas de entrelazamiento,
+el mapeo $\phi$ hace depender el estado de productos de pares
+de componentes de $\mathbf{x}$ además de cada componente por
+separado \cite{Schuld2019QuantumML, havlicek2019supervised}; si
+la geometría resultante aporta separabilidad frente a un kernel
+clásico es una pregunta empírica, que es la que aborda este trabajo.
+% Corregido el 2026-10-19 (auditoría A5-1): decía «correlaciones de orden superior que los métodos
+% clásicos no capturan», en contradicción con §2.1.3 y §3.2.4 (interacciones de dos cuerpos como máximo).
 
 Este mapeo define implícitamente un \textit{kernel cuántico}:
 
