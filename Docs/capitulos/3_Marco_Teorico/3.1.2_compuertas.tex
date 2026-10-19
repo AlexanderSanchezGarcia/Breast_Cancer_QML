@@ -44,7 +44,7 @@ Las operaciones sobre qubits se realizan mediante \textit{compuertas cuánticas}
     \label{eq:pauli}
 \end{equation}
 
-Estas compuertas de rotación son los bloques de construcción del ansatz variacional implementado en Qiskit, donde los ángulos $\theta$ son los parámetros entrenables del circuito. La compuerta de Hadamard, definida como:
+Estas compuertas de rotación son los bloques de construcción del ansatz variacional implementado en Qiskit, donde los ángulos $\theta$ son los parámetros variacionales del circuito; en este trabajo se fijan con una semilla y no se entrenan (sección~\ref{sec:modulo5}). La compuerta de Hadamard, definida como:
 
 \begin{equation}
     H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 

@@ -16,8 +16,7 @@ separados por clase, el espacio de representación tiene
 estructura discriminativa.
 
 Como complemento visual de las métricas de separabilidad del espacio de embeddings
-(DB, Fisher multivariante y KTA lineal), se emplea el algoritmo \textit{t-Distributed Stochastic
-Neighbor Embedding} (t-SNE) \cite{vandermaaten2008tsne} como herramienta de exploración cualitativa.
+(DB, Fisher multivariante y KTA lineal), t-SNE se emplea como herramienta de exploración cualitativa.
 Para garantizar reproducibilidad, la proyección bidimensional se genera fijando
 perplejidad 30, inicialización determinista basada en las dos primeras componentes principales
 (PCA) y semilla aleatoria 42 (\texttt{sklearn.manifold.TSNE}). Se utiliza con fines

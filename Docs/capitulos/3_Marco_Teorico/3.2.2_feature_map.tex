@@ -10,7 +10,7 @@
 El bloque $U(\mathbf{x})$ define un mapeo no lineal:
 
 \begin{equation}
-  \phi: \mathbb{R}^k \rightarrow \mathcal{H}, \qquad
+  \phi: \mathbb{R}^n \rightarrow \mathcal{H}, \qquad
   \mathbf{x} \mapsto |\phi(\mathbf{x})\rangle =
   U(\mathbf{x})\,|0\rangle^{\otimes n}
   \label{eq:feature_map}
@@ -18,7 +18,8 @@ El bloque $U(\mathbf{x})$ define un mapeo no lineal:
 
 \noindent donde $\mathcal{H} = \mathbb{C}^{2^n}$ es el
 espacio de Hilbert del sistema de $n$ qubits, de dimensión
-$2^n$. Como se argumentó en la sección del planteamiento
+$2^n$. Con una característica por qubit, como en este trabajo, $n$ coincide con el número $k$ de
+características seleccionadas ($k = 12$). Como se argumentó en la sección del planteamiento
 del problema, este espacio no es simplemente una versión
 ampliada del espacio clásico de entrada: su geometría está
 determinada por productos internos cuánticos
@@ -35,7 +36,7 @@ clásico es una pregunta empírica, que es la que aborda este trabajo.
 Este mapeo define implícitamente un \textit{kernel cuántico}:
 
 \begin{equation}
-  k_Q(\mathbf{x}, \mathbf{x}') =
+  K_Q(\mathbf{x}, \mathbf{x}') =
   \left|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle
   \right|^2 =
   \left|\langle 0|^{\otimes n}\,U^\dagger(\mathbf{x}')\,
