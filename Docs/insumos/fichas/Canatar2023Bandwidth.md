@@ -47,6 +47,6 @@ No aplica: la obra no reporta una ventaja computacional cuántica frente a clasi
   - No se puede afirmar que hacer $c$ arbitrariamente pequeño resuelva el problema sin costo: forzar $c \to 0$ aplana el clasificador a una constante trivial que subajusta y pierde todo poder discriminativo.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Docs/Technical_Report.tex`, `Other/referencias_por_revisar.md`, `Other/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
+- `Docs/Technical_Report.tex`, `Other/verificacion/referencias_por_revisar.md`, `Other/verificacion/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
   - Clave incorporada en `Docs/insumos/bibitems_noche.tex` para respaldar el fundamento matemático del espectro de los kernels cuánticos.
   - Sostenido: La derivación espectral de Canatar et al. respalda íntegramente la discusión analítica de §6.4 del reporte técnico sobre el comportamiento del kernel angular de producto tensorial bajo distintas escalas $c$ y su aproximación al kernel clásico RBF.

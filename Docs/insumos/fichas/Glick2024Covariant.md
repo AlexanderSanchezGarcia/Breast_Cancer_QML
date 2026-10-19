@@ -53,10 +53,10 @@
 
 ## Contraste con lo que el proyecto ya le atribuye
 - `Docs/Technical_Report.tex`: No está citado en el texto principal del reporte (aparece en `Docs/insumos/bibitems_nuevos.tex:65-69`).
-- `Other/referencias_por_revisar.md:21-30`:
+- `Other/verificacion/referencias_por_revisar.md:21-30`:
   - Afirma que el problema consiste en clasificar a qué clase lateral (*coset*) de un subgrupo pertenece un elemento perturbado. **Sí lo sostiene**: «The learning problem we have studied experimentally serves as an abstract representation of many group theoretic problems, i.e. classiﬁcation of data that is close to cosets of a group.» (p. 4).
   - Afirma que los kernels se construyen con representaciones unitarias del grupo y respetan sus simetrías. **Sí lo sostiene**: «We introduce a class of quantum kernels that can be used for data with a group structure.» (p. 1).
   - Afirma que se demostró con 27 qubits de un procesador superconductor. **Sí lo sostiene**: «We implement the learning algorithm with 27 qubits on a superconducting processor.» (p. 1) e «ibmq_kolkata» (p. 3).
   - Deja pendiente verificar año y revista de la versión publicada (preprint 2021) y autores completos. **Verificado en esta ficha**: Publicado en *Nature Physics* 20(3), 479–483 en 2024; autores: Jennifer R. Glick, Tanvi P. Gujarati, Antonio D. Córcoles, Youngseok Kim, Abhinav Kandala, Jay M. Gambetta y Kristan Temme.
   - Señala uso previsto en §7 como datos con estructura de grupo donde las etiquetas están alineadas con la geometría cuántica. **Sí lo sostiene**: La obra fundamenta exactamente cómo el estado fiducial invariante alinea los estados cuánticos con las clases laterales.
-- `Other/correcciones_verificadas.md:84`: Registra la publicación en *Nature Physics* 20(3), 479–483 (2024), DOI: 10.1038/s41567-023-02340-9. **Sí lo sostiene**: Totalmente coincidente.
+- `Other/verificacion/correcciones_verificadas.md:84`: Registra la publicación en *Nature Physics* 20(3), 479–483 (2024), DOI: 10.1038/s41567-023-02340-9. **Sí lo sostiene**: Totalmente coincidente.

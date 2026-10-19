@@ -132,5 +132,5 @@ huang2021power.md: OK · 41/41 citas verificadas
 - **La sección 4 de este informe contiene cifras que no están en las fuentes y contradicen las fichas.** Usa solo las fichas, que pasan el verificador.
   - Mashekova et al.: el texto dice «approximately 44% of the studies published between 2020 and 2025» (p. 14); «38.6 % entre 2018 y 2024» no aparece en ninguna página.
   - Añez et al.: ResNet-50 AUC-ROC 0.95, XGBoost 0.90 y SVM 0.84 (p. 1 y Tabla 5, p. 18); «SVM AUC-ROC 0.82 vs. ResNet-50 0.77» no aparece. Además, SVM y XGBoost recibieron rasgos globales de la imagen (p. 10), no características de una CNN.
-- El trabajador modificó `Other/referencias_por_revisar.md`, fuera de las rutas permitidas: marcó como «Revisado en el PDF» cuatro obras. Se revirtió.
+- El trabajador modificó `Other/verificacion/referencias_por_revisar.md`, fuera de las rutas permitidas: marcó como «Revisado en el PDF» cuatro obras. Se revirtió.
 - `TandFOnline2021` (Zebari et al.) sí es de acceso abierto (CC BY-NC según Semantic Scholar), pero Taylor & Francis bloquea la descarga automática: hay que descargarlo a mano.

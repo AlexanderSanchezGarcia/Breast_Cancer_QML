@@ -54,6 +54,6 @@
   - No se puede afirmar que optimizar el factor de escala sea suficiente para garantizar ventaja en problemas de cientos de variables sin incorporar sesgos inductivos adicionales.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Docs/Technical_Report.tex`, `Other/referencias_por_revisar.md`, `Other/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
+- `Docs/Technical_Report.tex`, `Other/verificacion/referencias_por_revisar.md`, `Other/verificacion/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
   - Clave agregada en `Docs/insumos/bibitems_noche.tex` durante la consolidación de fuentes bibliográficas para fundamentar el concepto de ancho de banda.
   - Sostenido: La evidencia empírica de Shaydulin y Wild coincide exactamente con lo reportado en §6.4 del reporte sobre el efecto del factor de escala $c$ en el comportamiento del kernel de producto tensorial sobre 67 qubits.

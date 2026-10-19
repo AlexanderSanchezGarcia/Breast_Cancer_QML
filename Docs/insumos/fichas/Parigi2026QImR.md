@@ -60,7 +60,7 @@
   No se puede afirmar que los kernels cuánticos de imágenes brinden una precisión superior a los métodos clásicos (hubo empate estricto en MNIST y ligera ventaja clásica en Fashion-MNIST). Tampoco se puede afirmar que hayan probado imágenes mamográficas ni datos médicos reales (usaron únicamente dígitos y prendas de $16 \times 16$).
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Other/referencias_por_revisar.md:52`: «Verificado: título y arXiv:2507.22039. Compara representaciones como FRQI y NEQR para clasificación supervisada».
+- `Other/verificacion/referencias_por_revisar.md:52`: «Verificado: título y arXiv:2507.22039. Compara representaciones como FRQI y NEQR para clasificación supervisada».
   - *¿Lo sostiene la obra?* Sí. La obra compara TNR, FRQI, NEQR y QPIE en tareas de clasificación supervisada con SVM.
-- `Other/correcciones_verificadas.md:86`: «Parigi, Khosrojerdi, Caruso y Banchi, Analysis of quantum image representations for supervised classification (arXiv:2507.22039) | AVS Quantum Science 8(1), 013801 (2026)».
+- `Other/verificacion/correcciones_verificadas.md:86`: «Parigi, Khosrojerdi, Caruso y Banchi, Analysis of quantum image representations for supervised classification (arXiv:2507.22039) | AVS Quantum Science 8(1), 013801 (2026)».
   - *¿Lo sostiene la obra?* Sí. Coincide exactamente con los metadatos bibliográficos y el contenido del preprint verificado.

@@ -41,7 +41,7 @@ Para cada una: Sí / No / No lo dice, con la cita que lo sustenta o la indicaci�
 - **Qué NO se puede afirmar con esta fuente** (al menos una viñeta): lo que alguien podría atribuirle y la obra no dice.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- Busca la clave (y el apellido del primer autor) en `Docs/Technical_Report.tex`, `Other/referencias_por_revisar.md`, `Other/correcciones_verificadas.md` y `Other/bitacora_decisiones.md` con `grep -n`. Para cada atribución existente: línea, qué dice, y si la obra lo sostiene (Sí / No / Parcial), con cita.
+- Busca la clave (y el apellido del primer autor) en `Docs/Technical_Report.tex`, `Other/verificacion/referencias_por_revisar.md`, `Other/verificacion/correcciones_verificadas.md` y `Other/bitacora_decisiones.md` con `grep -n`. Para cada atribución existente: línea, qué dice, y si la obra lo sostiene (Sí / No / Parcial), con cita.
 ```
 
 ## Grupos y preguntas específicas

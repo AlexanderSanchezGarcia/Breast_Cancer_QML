@@ -52,6 +52,6 @@
   - No se puede afirmar que proyectar un kernel cuántico garantice el éxito: si el subsistema proyectado no coincide con el soporte de la función objetivo (modelo $q_w$), el método subajusta y falla por completo.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Docs/Technical_Report.tex`, `Other/referencias_por_revisar.md`, `Other/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
+- `Docs/Technical_Report.tex`, `Other/verificacion/referencias_por_revisar.md`, `Other/verificacion/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
   - No existían menciones previas a Kübler et al. en el texto ni en la bitácora del proyecto; la clave fue incorporada en `Docs/insumos/bibitems_noche.tex` durante la estructuración bibliográfica nocturna.
   - Sostenido: La inclusión de esta obra respalda sólidamente el marco teórico (§3.4) y la discusión de ventaja cuántica (§6.4), corroborando de manera independiente la conjetura de que en datos clásicos de cáncer de mama (CBIS-DDSM) los kernels cuánticos carecen de un sesgo inductivo natural que supere a los métodos clásicos calibrados.

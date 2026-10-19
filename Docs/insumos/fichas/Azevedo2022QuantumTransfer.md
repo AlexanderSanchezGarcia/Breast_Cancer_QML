@@ -71,5 +71,5 @@
     3. En el computador cuántico real (`ibm_lagos`), la exactitud es de 81%, no 84%.
 - `Other/bitacora_decisiones.md:44,366` (D-019): «Las líneas de trabajo futuro se atribuyen a Azevedo et al. (2022)».
   - *¿Lo sostiene la obra?* Sí. Se confirma plenamente que ambas líneas provienen de Azevedo et al. (2022), p. 12, y no de Incudini et al. (2022).
-- `Other/correcciones_verificadas.md:54`: «El 84 % de exactitud lo alcanzan tanto la ResNet clásica con transfer learning (C+TL) como las híbridas CQ1 y CQ4 (Tabla 4, p. 11). La diferencia que destacan está en el AUC: 0.77 frente a 0.58. En ibm_lagos la exactitud baja a 81 % (Tabla 5). Y concluyen: It is too soon to say whether or not QML can be an advantage. El nombre correcto del dataset es Breast Cancer Digital Repository».
+- `Other/verificacion/correcciones_verificadas.md:54`: «El 84 % de exactitud lo alcanzan tanto la ResNet clásica con transfer learning (C+TL) como las híbridas CQ1 y CQ4 (Tabla 4, p. 11). La diferencia que destacan está en el AUC: 0.77 frente a 0.58. En ibm_lagos la exactitud baja a 81 % (Tabla 5). Y concluyen: It is too soon to say whether or not QML can be an advantage. El nombre correcto del dataset es Breast Cancer Digital Repository».
   - *¿Lo sostiene la obra?* Sí, exactamente como lo registró dicha auditoría interna.

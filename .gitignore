@@ -36,3 +36,6 @@ Docs/capitulos/_build/
 Docs/capitulos/borrador_completo.pdf
 Docs/capitulos/*/borrador_*.pdf
 Docs/insumos/noche/*.pdf
+
+# Protocolo firmado (datos personales; el repositorio es público)
+Other/ESCOM/Protocolo.pdf

@@ -68,5 +68,5 @@
     3. No reportan intervalos de confianza ni pruebas de significación estadística, y la evaluación fue realizada en un simulador clásico (PennyLane).
 - `Docs/Technical_Report.tex:927`: Entrada en la tabla de antecedentes indicando QCCNN (PennyLane) sobre GBSG / SEER / WDBC con simulación clásica.
   - *¿Lo sostiene la obra?* Sí. La tabla describe correctamente el entorno de simulación y los datasets empleados.
-- `Other/referencias_por_revisar.md:88`: «Xiang et al. (2024), QCCNN sobre GBSG, SEER y WDBC (+5 % de accuracy)».
+- `Other/verificacion/referencias_por_revisar.md:88`: «Xiang et al. (2024), QCCNN sobre GBSG, SEER y WDBC (+5 % de accuracy)».
   - *¿Lo sostiene la obra?* Parcial (el +5% corresponde únicamente a la comparación con regresión logística en WDBC, no en los demás datasets).

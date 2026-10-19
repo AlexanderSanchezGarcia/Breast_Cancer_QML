@@ -55,6 +55,6 @@ No aplica: la obra no reporta ninguna ventaja cuántica frente a los clasificado
   - No se puede afirmar que el entrelazamiento sea siempre inocuo: en arquitecturas como `DataReuploadingClassifier` y `QuantumBoltzmannMachine` su eliminación provocó caídas de rendimiento comprobadas.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Docs/Technical_Report.tex`, `Other/referencias_por_revisar.md`, `Other/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
+- `Docs/Technical_Report.tex`, `Other/verificacion/referencias_por_revisar.md`, `Other/verificacion/correcciones_verificadas.md`, `Other/bitacora_decisiones.md`:
   - Clave agregada a `Docs/insumos/bibitems_noche.tex` durante la estructuración nocturna para dotar a la discusión metodológica del reporte del estudio comparativo más completo y riguroso existente.
   - Sostenido: La totalidad de las conclusiones del benchmark de Bowles et al. sostiene punto por punto los resultados reportados en el Capítulo 6 del reporte técnico: los clasificadores clásicos estándar no son superados por modelos cuánticos, el entrelazamiento no otorga ventaja sistemática en problemas tabulares o imágenes pequeñas y la codificación de amplitudes se ubica entre las peores estrategias de representación.

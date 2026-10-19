@@ -1,7 +1,7 @@
 # Auditoría de Afirmaciones del Reporte Técnico (TT 2026-B039)
 
 > **Insumo para la reescritura del reporte técnico.**  
-> Este documento identifica de forma exhaustiva las afirmaciones de `Docs/Technical_Report.tex` que contradicen las decisiones canónicas de `Other/bitacora_decisiones.md`, las correcciones de `Other/correcciones_verificadas.md` o que han sido modificadas en `Docs/borrador_secciones_4.md`.
+> Este documento identifica de forma exhaustiva las afirmaciones de `Docs/Technical_Report.tex` que contradicen las decisiones canónicas de `Other/bitacora_decisiones.md`, las correcciones de `Other/verificacion/correcciones_verificadas.md` o que han sido modificadas en `Docs/borrador_secciones_4.md`.
 > 
 > **Regla canónica:** Lo que establece la bitácora manda. Todas las citas textuales y números de línea fueron verificados de manera exacta contra el repositorio.
 

@@ -2,7 +2,7 @@
 
 > **Documento de diagnóstico para la reescritura de §1 y §2 del Reporte Técnico.**  
 > **Alcance de revisión:** `Docs/Technical_Report.tex`, líneas 421–468 (Abstract) y líneas 470–978 (§1 Panorama General y §2 Antecedentes, hasta antes de `\section{Marco Teórico}`). **Modo solo lectura.**  
-> **Criterio de referencia canónico:** `CLAUDE.md`, `Other/bitacora_decisiones.md`, `Other/correcciones_verificadas.md` y los textos fuente en `Docs/fuentes/txt/`.
+> **Criterio de referencia canónico:** `CLAUDE.md`, `Other/bitacora_decisiones.md`, `Other/verificacion/correcciones_verificadas.md` y los textos fuente en `Docs/fuentes/txt/`.
 
 ---
 

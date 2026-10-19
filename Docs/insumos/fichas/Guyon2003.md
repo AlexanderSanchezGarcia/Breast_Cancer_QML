@@ -34,10 +34,10 @@ No aplica: obra clásica de machine learning estadístico; no involucra ni eval�
 ## Relevancia para el TT
 - Fundamenta teóricamente los hallazgos H-030 y H-035 sobre las limitaciones de la selección univariante de características radiómicas en el CBIS-DDSM (§2.1, §5.3, D-007).
 - Justifica por qué el pipeline radiómico requirió comparar `SelectKBest` con variantes multivariantes y conjuntos aleatorios como control metodológico.
-- Conecta con la entrada de `Other/referencias_por_revisar.md:69`: «Guyon y Elisseeff (2003), An introduction to variable and feature selection, JMLR 3 | H-035 | Verificar contra la fuente».
+- Conecta con la entrada de `Other/verificacion/referencias_por_revisar.md:69`: «Guyon y Elisseeff (2003), An introduction to variable and feature selection, JMLR 3 | H-035 | Verificar contra la fuente».
 - **Qué NO se puede afirmar con esta fuente:** No se puede citar a Guyon & Elisseeff para afirmar que los métodos *wrapper* o multivariantes siempre superan a los filtros univariantes en problemas de alta dimensión. Los autores advierten explícitamente que en dominios con muchas variables y pocas muestras, los métodos multivariantes pueden sobreajustar y los filtros simples a menudo resultan más robustos.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Other/referencias_por_revisar.md:69`: «Guyon y Elisseeff (2003), An introduction to variable and feature selection, JMLR 3 | H-035 | Verificar contra la fuente». Sostiene: Sí («An Introduction to Variable and Feature Selection», p. 1).
-- `Other/correcciones_verificadas.md:93`: Registra que Guyon y Elisseeff (2003) se verifica en jmlr.org. Sostiene: Sí.
+- `Other/verificacion/referencias_por_revisar.md:69`: «Guyon y Elisseeff (2003), An introduction to variable and feature selection, JMLR 3 | H-035 | Verificar contra la fuente». Sostiene: Sí («An Introduction to Variable and Feature Selection», p. 1).
+- `Other/verificacion/correcciones_verificadas.md:93`: Registra que Guyon y Elisseeff (2003) se verifica en jmlr.org. Sostiene: Sí.
 - `Other/bitacora_decisiones.md:1681`: En H-030, analiza por qué las 12 características radiómicas elegidas por F no superan a 12 al azar. Sostiene: Sí; coincide exactamente con las advertencias de Guyon y Elisseeff sobre la insuficiencia del ranking univariante («methods that score variables individually and independently of each other are at loss to determine which combination of variables would give best performance», p. 9).

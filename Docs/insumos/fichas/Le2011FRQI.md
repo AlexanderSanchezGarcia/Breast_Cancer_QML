@@ -40,7 +40,7 @@
   No se puede afirmar que FRQI permita una preparación eficiente en tiempo polinomial respecto al número de qubits (es $O(2^{4n})$, exponencial en qubits). Tampoco se puede afirmar que FRQI clasifique patologías mamográficas ni que ofrezca ventaja computacional probada en aprendizaje automático sobre imágenes médicas.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Other/referencias_por_revisar.md:55`: «Dato a confirmar en la fuente original de FRQI: la complejidad de preparación O(2⁴ⁿ) que reporta la búsqueda».
+- `Other/verificacion/referencias_por_revisar.md:55`: «Dato a confirmar en la fuente original de FRQI: la complejidad de preparación O(2⁴ⁿ) que reporta la búsqueda».
   - *¿Lo sostiene la obra?* Sí. En la p. 7, ecuación (10), la cantidad total de compuertas simples es $2^{4n} - 3 \cdot 2^{2n} + 2n$, cuyo orden dominante es $O(2^{4n})$.
-- `Other/referencias_por_revisar.md:60`: «De memoria: Le et al. (2011) para FRQI y Zhang et al. (2013) para NEQR. No citar sin verificar».
+- `Other/verificacion/referencias_por_revisar.md:60`: «De memoria: Le et al. (2011) para FRQI y Zhang et al. (2013) para NEQR. No citar sin verificar».
   - *¿Lo sostiene la obra?* Sí. La referencia verificada corresponde exactamente a Le, Dong y Hirota (2011), *Quantum Information Processing* 10(1), 63–84.

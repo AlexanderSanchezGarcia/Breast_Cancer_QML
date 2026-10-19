@@ -19,7 +19,7 @@ y la cifra no está en ellos: puede ser derivada, venir de otra entrada, o ser u
 (la entrada no cita ningún CSV: no se puede verificar automáticamente).
 
 Uso: python Code/tools/trazabilidad_cifras.py
-Salidas: Other/trazabilidad_cifras.csv y Other/trazabilidad_cifras.md
+Salidas: Other/verificacion/trazabilidad_cifras.csv y Other/verificacion/trazabilidad_cifras.md
 """
 import re
 from pathlib import Path
@@ -78,7 +78,7 @@ def entries():
         m = re.match(r'### ([DH])-(\d{3}) · ', p)
         if m and int(m.group(2)) >= 20:
             yield f'{m.group(1)}-{m.group(2)}', p
-    yield 'borrador §4', (ROOT / 'Docs/borrador_secciones_4.md').read_text(encoding='utf-8')
+    yield 'borrador §4', (ROOT / 'Other/archivo/Docs/borrador_secciones_4.md').read_text(encoding='utf-8')
 
 
 def main():
@@ -108,7 +108,7 @@ def main():
             rows.append({'entrada': entry, 'cifra': tok, 'decimales': decimals, 'estado': status, 'cobertura_azar': cov,
                          'archivos': ', '.join(hits or near), 'citados_en_entrada': ', '.join(cited), 'contexto': context})
     df = pd.DataFrame(rows)
-    df.to_csv(ROOT / 'Other/trazabilidad_cifras.csv', index=False)
+    df.to_csv(ROOT / 'Other/verificacion/trazabilidad_cifras.csv', index=False)
     return df
 
 

@@ -38,5 +38,5 @@
   No se puede afirmar que NEQR resuelva el cuello de botella de carga de imágenes para mamografías de alta resolución, ni que proponga algoritmos de diagnóstico oncológico o kernels cuánticos para clasificación de lesiones.
 
 ## Contraste con lo que el proyecto ya le atribuye
-- `Other/referencias_por_revisar.md:60`: «De memoria: Le et al. (2011) para FRQI y Zhang et al. (2013) para NEQR. No citar sin verificar».
+- `Other/verificacion/referencias_por_revisar.md:60`: «De memoria: Le et al. (2011) para FRQI y Zhang et al. (2013) para NEQR. No citar sin verificar».
   - *¿Lo sostiene la obra?* Sí. La referencia verificada corresponde exactamente a Zhang, Lu, Gao y Wang (2013), *Quantum Information Processing* 12(8), 2833–2860.
