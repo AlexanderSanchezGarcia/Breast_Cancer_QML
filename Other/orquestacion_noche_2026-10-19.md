@@ -33,6 +33,7 @@ Especificaciones: `Docs/insumos/auditoria/` (reglas.md + A1…A6, G1). Informes:
 | A5 | Coherencia lógica | gemini-4-argon-high | task_6cd84bed88ee | ctx_b7c0eed6e377 | lanzada |
 | A6 | Formato CATT | gemini-3.8-flash-high | task_908d80912d72 | ctx_f122fd38056a | lanzada |
 | G1 | Borrador del glosario | gemini-3.8-flash-high | task_3f1cf8ec520e | ctx_72e16cd026ea | lanzada |
+| W1 | Borrador del artículo IEEE (`Docs/articulo/`, spec W1_articulo.md) | gemini-4-argon-high | task_2215eae75824 | ctx_6a1b4044de87 | lanzada |
 
 ## Fase C (coordinador, al volver la cuota)
 
@@ -60,3 +61,5 @@ Especificaciones: `Docs/insumos/auditoria/` (reglas.md + A1…A6, G1). Informes:
 ## Bitácora
 
 - 23:12 Ola 1 lanzada (7 trabajadores). Recordatorio CronCreate a la 01:27 (one-shot, solo de esta sesión). caffeinate activo 10 h.
+- 23:20 W1 (artículo) lanzado adelantando la ola 2. Espera en segundo plano con /tmp/ttscripts/esperar.sh (hace ack de entregas solo de latidos).
+- 23:40 A1 y A6 terminados y liberados. Aplicadas y verificadas: índice duplicado §6–§8, marcadores al nivel de sección, márgenes de listados, galería D4, Schuld duplicado y dos bibitems duplicados comentados. Pendiente: Anexo E con numeración TT1 (generador Code/tools/tablas_anexos.py), figuras sin \ref, 10 bibitems sin citar (esperar A4).

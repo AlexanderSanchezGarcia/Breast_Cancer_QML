@@ -172,7 +172,7 @@
   keywordstyle=\color{blue!60!black}\bfseries,
   commentstyle=\color{gray}\itshape,
   stringstyle=\color{green!40!black},
-  numbers=left, numberstyle=\tiny\color{gray}, numbersep=6pt,
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=6pt, xleftmargin=1.5em, framexleftmargin=1.5em,
   frame=single, rulecolor=\color{gray!50},
   breaklines=true, breakatwhitespace=false, columns=fullflexible, keepspaces=true,
   showstringspaces=false, tabsize=4, captionpos=t,
@@ -207,7 +207,7 @@
 % ============================================================
 % PORTADA (márgenes del formato CATT: 2 cm, 2 cm, 3 cm izq., 2 cm der.)
 % ============================================================
-\pdfbookmark[0]{Portada}{portada}
+\pdfbookmark[1]{Portada}{portada}
 \thispagestyle{empty}
 
 \begin{tikzpicture}[remember picture, overlay]
@@ -267,7 +267,7 @@
 % ============================================================
 \newpage
 \thispagestyle{empty}
-\pdfbookmark[0]{Resumen}{resumen}
+\pdfbookmark[1]{Resumen}{resumen}
 
 \begin{center}
 \begin{tabular}{ccc}
@@ -316,7 +316,7 @@
 % CARTA RESPONSIVA (escaneada, con firmas)
 % ============================================================
 \newpage
-\pdfbookmark[0]{Carta responsiva}{carta_responsiva}
+\pdfbookmark[1]{Carta responsiva}{carta_responsiva}
 \IfFileExists{preliminares/carta_responsiva.pdf}{%
   \includepdf[pages=-]{preliminares/carta_responsiva.pdf}%
 }{%
@@ -336,7 +336,7 @@
 % ============================================================
 \newpage
 \thispagestyle{empty}
-\pdfbookmark[0]{Advertencia}{advertencia}
+\pdfbookmark[1]{Advertencia}{advertencia}
 \begin{center}{\Large\textbf{Advertencia}}\end{center}
 \vspace{0.5cm}
 \noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
@@ -358,7 +358,7 @@ La Subdirección Académica de la Escuela Superior de Cómputo del Instituto Pol
 % ============================================================
 % \newpage
 % \thispagestyle{empty}
-% \pdfbookmark[0]{Agradecimientos}{agradecimientos}
+% \pdfbookmark[1]{Agradecimientos}{agradecimientos}
 % \section*{Agradecimientos}
 % ...
 % \hfill Miguel Alexander Sánchez García
@@ -367,7 +367,7 @@ La Subdirección Académica de la Escuela Superior de Cómputo del Instituto Pol
 % CARTA DE AUTORIZACIÓN DE DIFUSIÓN (antes del índice)
 % ============================================================
 \newpage
-\pdfbookmark[0]{Carta de autorización de difusión}{carta_difusion}
+\pdfbookmark[1]{Carta de autorización de difusión}{carta_difusion}
 \IfFileExists{preliminares/carta_difusion.pdf}{%
   \includepdf[pages=-]{preliminares/carta_difusion.pdf}%
 }{%
@@ -386,7 +386,7 @@ La Subdirección Académica de la Escuela Superior de Cómputo del Instituto Pol
 % ÍNDICES
 % ============================================================
 \newpage
-\pdfbookmark[0]{Índice}{indice}
+\pdfbookmark[1]{Índice}{indice}
 \tableofcontents
 \newpage
 \phantomsection
