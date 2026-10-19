@@ -14,7 +14,7 @@ de 0.011 y 23\,\% de pares con fidelidad inferior a $10^{-3}$) y de 0.000032 en 
 por debajo de $10^{-3}$ y 26\,\% por debajo de $10^{-6}$). En calcificaciones, la mediana fue de 0.0029
 en C4 (percentil 95 de 0.014 y 16\,\% bajo $10^{-3}$) y de 0.000031 en C5 (76\,\% bajo $10^{-3}$ y 28\,\%
 bajo $10^{-6}$). En contraste, el kernel clásico gaussiano RBF con parámetro $\gamma$ determinado por la
-heurística de la mediana registró una mediana fuera de la diagonal de 0.607 en ambos subconjuntos.
+heurística de la mediana registró una mediana fuera de la diagonal de 0.607 en ambos subconjuntos (figura~\ref{fig:m5_kernel_concentration}).
 
 % fuente: H-037; X3_comparacion_k8_k12.csv (family «B, embeddings (full train)», k = 12).
 % Corregido el 2026-10-19 (auditoría A2-2): 0.056 de 5a_resumen.csv es sobre las 1,696 masas
@@ -83,7 +83,7 @@ se cumple de forma consistente la condición $g \ll \sqrt{N}$, bajo la cual el m
 con cualquier vector de etiquetas. En la batería clásica extendida con gaussianos estrechos, el valor mínimo
 se reduce a 1.31 en C4 y 1.48 en C5 para masas, y a 1.38 en C4 y 1.70 en C5 para calcificaciones. Por el contrario,
 el cálculo de $g$ sin regularizar genera valores entre 306 y 388 (próximos a la cota teórica de $K_Q = I$,
-$1/\sqrt{\lambda_{\min}(K_C)} \approx 410$), producto del condicionamiento numérico de la matriz clásica invertida.
+$1/\sqrt{\lambda_{\min}(K_C)} \approx 410$), producto del condicionamiento numérico de la matriz clásica invertida (figuras~\ref{fig:m6_kernel_metrics} y~\ref{fig:m6_geometric_difference}).
 
 \begin{figure}[htbp]
 \centering
@@ -119,7 +119,7 @@ alineamiento lineal fue de 0.181 en C1 y C2 frente a 0.031 en C4 y 0.041 en C5. 
 con discrepancias numéricas del orden del límite de precisión ($< 10^{-14}$), lo cual concuerda con la invarianza
 teórica de las distancias y dispersiones ante rotaciones ortogonales bajo la condición de control nulo.
 Al evaluar la razón de Fisher sobre la totalidad del conjunto de entrenamiento, la ventaja clásica se mantuvo:
-C1 obtuvo 0.45 en masas y 1.06 en calcificaciones, frente a 0.13 y 0.42 en C4, y 0.21 y 0.31 en C5.
+C1 obtuvo 0.45 en masas y 1.06 en calcificaciones, frente a 0.13 y 0.42 en C4, y 0.21 y 0.31 en C5 (figuras~\ref{fig:m6_embedding_metrics} y~\ref{fig:m6_tsne}).
 
 \begin{figure}[htbp]
 \centering

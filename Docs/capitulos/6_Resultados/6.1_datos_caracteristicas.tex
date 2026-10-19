@@ -62,7 +62,7 @@ pero no aportó ganancia discriminativa neta. La variación mediana en $|d|$ fue
 y de $-0.010$ en calcificaciones. Las características de intensidad de primer orden sufrieron una reducción
 mediana de $|d|$ de $-0.031$ en masas y de $-0.054$ en calcificaciones, compensada únicamente por incrementos
 menores en descriptores de textura (GLRLM $+0.011$ en masas, GLCM $+0.014$ en calcificaciones), sin mejorar
-el poder de separación de las características dominantes.
+el poder de separación de las características dominantes (figuras~\ref{fig:m3_effect_sizes} y~\ref{fig:m3_clahe_effect}).
 
 \begin{figure}[htbp]
 \centering
@@ -101,7 +101,7 @@ en $0.046$\,rad (con mediana de $0.015$\,rad) y el de \texttt{shape2D\_\allowbre
 (mediana de $0.020$\,rad), en contraste con una mediana global de IQR de $0.34$\,rad en masas y $0.40$\,rad en
 calcificaciones. La adopción de una transformación por cuantiles hacia una distribución uniforme en $[0, \pi]$
 permitió que las doce características en ambos subconjuntos alcanzaran de forma homogénea un IQR de $\pi/2$
-($1.569$ a $1.572$\,rad).
+($1.569$ a $1.572$\,rad; figura~\ref{fig:m4_selection_angles}).
 
 % fuente: H-027, D-026; 4_semilla_folds.csv, 4_folds.csv
 Para la partición en cinco pliegues de validación cruzada, la agrupación por paciente evitó
@@ -143,7 +143,7 @@ en bosques aleatorios, la variación fue de $0.695 \pm 0.043$ a $0.680 \pm 0.046
 a $0.773 \pm 0.024$ en calcificaciones. Asimismo, doce características seleccionadas al azar obtuvieron desempeños
 comparables ($0.656 \pm 0.019$ y $0.659 \pm 0.023$ en masas; $0.765 \pm 0.015$ y $0.775 \pm 0.016$ en calcificaciones),
 ilustrando que las variables con mayor puntuación univariante individual no necesariamente configuran el conjunto
-óptimo debido a redundancias en la información compartida \cite{Guyon2003}.
+óptimo debido a redundancias en la información compartida \cite{Guyon2003} (figura~\ref{fig:x1_selection_auc_vs_k}).
 
 \begin{figure}[htbp]
 \centering
