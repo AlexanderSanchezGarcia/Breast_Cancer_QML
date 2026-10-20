@@ -7,6 +7,18 @@
 \subsection{Síntesis por objetivo específico}
 \label{sec:sintesis_objetivos}
 
+% fuente: H-039, H-040, H-042, H-044; 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv,
+% 6_metricas_embedding.csv, 7_cv_resumen.csv, 7_test.csv, X4_test.csv, 5a_resumen.csv, 5a_tiempos_clasicos.csv.
+% Tabla añadida el 2026-10-20; tiempos de C2 y C3 medidos con Code/tools/tiempos_transformacion.py (5a no los cronometraba).
+La Tabla~\ref{tab:resumen_resultados} reúne en un solo lugar las métricas principales de las cinco condiciones.
+En la familia de kernels, el exceso de alineamiento de C4 y C5 (0.003 a 0.007) queda muy por debajo del kernel RBF
+(0.049 en masas y 0.151 en calcificaciones) y su dimensión efectiva, cercana a 170--190 de 200, refleja la concentración.
+El mismo MLP clasifica peor sobre C4 y C5 que sobre C1--C3, mientras que una máquina de vectores de soporte sobre
+el kernel de C4 queda cerca de la que usa el kernel RBF. En costo, PCA y Kernel PCA transforman todas las lesiones
+en menos de 0.2\,s, frente a 13 a 16\,s de los dos mapas cuánticos simulados con vectores de estado.
+
+\input{tablas/resumen_resultados}
+
 A fin de articular los hallazgos empíricos obtenidos a lo largo del protocolo experimental con los compromisos
 planteados al inicio de la investigación, la Tabla~\ref{tab:sintesis_objetivos_especificos} presenta una síntesis
 estructurada por cada uno de los seis objetivos específicos (OE-1 a OE-6) formulados en el planteamiento del trabajo.

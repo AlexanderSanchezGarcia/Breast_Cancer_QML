@@ -1,0 +1,36 @@
+% Generado por Code/tools/tablas_latex.py desde 6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv, 6_metricas_embedding.csv, 7_cv_resumen.csv, 7_test.csv, X4_test.csv, 5a_resumen.csv y 5a_tiempos_clasicos.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Resumen de resultados por condición: separabilidad (M6), clasificación (M7 y X4) y tiempo de transformación (M5).}
+\label{tab:resumen_resultados}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l r r r r r r c r}
+\toprule
+ & \multicolumn{3}{c}{Kernel} & \multicolumn{2}{c}{Representación} & \multicolumn{2}{c}{AUC-ROC} & \\ \cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Condición & Exceso KTA $\uparrow$ & $d_{\mathrm{eff}}$ & $g$ & DB $\downarrow$ & Fisher $\uparrow$ & VC & Prueba [IC 95\,\%] & Tiempo (s) \\
+\midrule
+\multicolumn{9}{l}{\textit{Masas}} \\
+\quad C1 & — & — & — & 4.301 & 0.669 & 0.652 & 0.651 [0.578, 0.724] & — \\
+\quad C2 & — & — & — & 4.301 & 0.669 & 0.641 & 0.641 [0.572, 0.710] & 0.0002 \\
+\quad C3 & 0.049 & 2.8 & — & 5.564 & 0.781 & 0.648 & 0.646 [0.572, 0.721] & 0.14 \\
+\quad C4 & 0.003 & 184.0 & 1.433 & 5.898 & 0.449 & 0.565 & 0.530 [0.473, 0.587] & 13.3 \\
+\quad C5 & 0.005 & 171.3 & 1.511 & 13.346 & 0.668 & 0.563 & 0.581 [0.521, 0.644] & 14.3 \\
+\quad SVM sobre el kernel RBF & \multicolumn{6}{c}{} & 0.649 [0.574, 0.726] & — \\
+\quad QSVM sobre el kernel de C4 & \multicolumn{6}{c}{} & 0.628 [0.555, 0.703] & — \\
+\quad QSVM sobre el kernel de C5 & \multicolumn{6}{c}{} & 0.599 [0.523, 0.675] & — \\
+\multicolumn{9}{l}{\textit{Calcificaciones}} \\
+\quad C1 & — & — & — & 2.387 & 1.284 & 0.742 & 0.769 [0.694, 0.836] & — \\
+\quad C2 & — & — & — & 2.387 & 1.284 & 0.758 & 0.788 [0.719, 0.851] & 0.0002 \\
+\quad C3 & 0.151 & 2.6 & — & 2.995 & 1.390 & 0.739 & 0.758 [0.685, 0.826] & 0.20 \\
+\quad C4 & 0.006 & 187.7 & 1.400 & 6.890 & 0.399 & 0.640 & 0.633 [0.558, 0.700] & 13.9 \\
+\quad C5 & 0.007 & 167.6 & 1.701 & 6.247 & 0.753 & 0.667 & 0.652 [0.571, 0.725] & 16.1 \\
+\quad SVM sobre el kernel RBF & \multicolumn{6}{c}{} & 0.769 [0.696, 0.834] & — \\
+\quad QSVM sobre el kernel de C4 & \multicolumn{6}{c}{} & 0.759 [0.687, 0.827] & — \\
+\quad QSVM sobre el kernel de C5 & \multicolumn{6}{c}{} & 0.701 [0.620, 0.775] & — \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Separabilidad sobre 200 lesiones de entrenamiento por subconjunto y $c = 1$. Las columnas de kernel de C3 corresponden al kernel RBF, con el mismo $\gamma$ que C3; C1 y C2 no definen un kernel propio. $g$: mínimo de la \textit{geometric difference} regularizada ($\sqrt{N} \approx 14$). AUC: el mismo MLP en C1--C5; las tres últimas filas de cada bloque son clasificadores de vectores de soporte sobre el kernel (experimento X4). Tiempo: transformación de todas las lesiones del subconjunto en la máquina del proyecto; en C2 y C3, mediana de cinco repeticiones; C1 es la identidad. Con el etiquetado diseñado según Huang et al., control positivo del protocolo (sección~\ref{sec:qsvm_ventaja}), el kernel cuántico proyectado alcanza en validación cruzada 0.998 en masas y 0.994 en calcificaciones, frente a 0.800 y 0.824 del mejor clasificador clásico.}
+\end{table}

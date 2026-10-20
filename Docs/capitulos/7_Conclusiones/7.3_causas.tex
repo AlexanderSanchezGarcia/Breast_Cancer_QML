@@ -44,7 +44,10 @@ mismas lesiones las clases que mejor se ajustan a la geometría del kernel cuán
 el kernel proyectado alcanzó en validación cruzada un AUC de 0.998 en masas y 0.994 en calcificaciones frente a
 0.800 y 0.824 del mejor clásico. El protocolo, por tanto, sí detecta una ventaja cuando el etiquetado la
 permite; su ausencia es una propiedad de estas etiquetas y de las familias de kernels probadas, no del
-método de evaluación.
+método de evaluación. El etiquetado diseñado no es, sin embargo, una vía para mejorar el diagnóstico: sus
+clases se derivan del propio kernel cuántico y no de la patología confirmada, de modo que cambia el problema
+en lugar de resolverlo. Su papel es el de un control positivo del protocolo; en un problema clínico la etiqueta
+está fijada, y lo que puede diseñarse es la codificación (sección~\ref{sec:futuro_codificacion}).
 
 % fuente: H-041, H-043, H-053, H-055; X3_comparacion_k8_k12.csv, X9_resumen_familia_a.csv
 Ninguna de las elecciones de diseño que podían haber producido el resultado lo explica por sí sola: la

@@ -193,7 +193,69 @@ def theta_entrenado():
           r'Mismo protocolo que el M7; solo cambia que $\theta$ se entrena desde el sorteo del diseño, con gradientes exactos del simulador.')
 
 
+
+def t_fmt(x):
+    return '—' if pd.isna(x) else (f'{x:.4f}' if x < 0.01 else f'{x:.2f}' if x < 1 else f'{x:.1f}')
+
+
+def resumen_resultados():
+    """Tabla general de §6.8: separabilidad (M6), clasificación (M7 y X4) y tiempo de transformación (M5)."""
+    a = pd.read_csv(RES / '6_alineamiento_kernel.csv')
+    e = pd.read_csv(RES / '6_dimension_efectiva.csv')
+    g = pd.read_csv(RES / '6_diferencia_geometrica_resumen.csv')
+    m = pd.read_csv(RES / '6_metricas_embedding.csv')
+    m = m[m['sample'] == 'subsample']
+    t = pd.read_csv(RES / '7_test.csv')
+    t = t[t.analysis == 'main']
+    cv = pd.read_csv(RES / '7_cv_resumen.csv')
+    cv = cv[(cv.analysis == 'main') & (cv.config == 'base') & (cv.seed == 42) & (cv.k == 12)]
+    x4 = pd.read_csv(RES / 'X4_test.csv')
+    tq = pd.read_csv(RES / '5a_resumen.csv')
+    tc = pd.read_csv(RES / '5a_tiempos_clasicos.csv')
+    kern = {'C3': 'K_C', 'C4': 'C4', 'C5': 'C5'}   # el kernel RBF de M6 usa el mismo gamma que C3 (D-027)
+    body = []
+    for ft, title in SUBSETS:
+        body.append(f'\\multicolumn{{9}}{{l}}{{\\textit{{{title}}}}} \\\\')
+        for c in COND:
+            if c in kern:
+                k = kern[c]
+                sel = (lambda df: df[(df.finding_type == ft) & (df.kernel == k) & (df.c.isna() if k == 'K_C' else df.c == 1.0)])
+                exc, deff = f3(sel(a).iloc[0].excess_centered), f'{sel(e).iloc[0].effective_dimension:.1f}'
+            else:
+                exc = deff = '—'
+            gg = f3(g[(g.finding_type == ft) & (g['map'] == c) & (g.c == 1.0)].g_min.iloc[0]) if c in ('C4', 'C5') else '—'
+            r = m[(m.finding_type == ft) & (m.condition == c)].iloc[0]
+            v = cv[(cv.finding_type == ft) & (cv.condition == c)].iloc[0]
+            te = t[(t.finding_type == ft) & (t.condition == c)].iloc[0]
+            if c == 'C1':
+                secs = np.nan
+            elif c in ('C2', 'C3'):
+                secs = tc[(tc.finding_type == ft) & (tc.condition == c)].seconds_median.iloc[0]
+            else:
+                secs = tq[(tq.finding_type == ft) & (tq.condition == c)].total_time_seconds.iloc[0]
+            body.append(f'\\quad {c} & {exc} & {deff} & {gg} & {f3(r.davies_bouldin)} & {f3(r.fisher_j)} & '
+                        f'{f3(v.auc_mean)} & {f3(te.auc)} {ci(te.auc_ci_low, te.auc_ci_high)} & {t_fmt(secs)} \\\\')
+        for model, name in [('SVM RBF (D-027)', 'SVM sobre el kernel RBF'), ('QSVM C4, c = 1', 'QSVM sobre el kernel de C4'),
+                            ('QSVM C5, c = 1', 'QSVM sobre el kernel de C5')]:
+            r = x4[(x4.finding_type == ft) & (x4.model == model)].iloc[0]
+            body.append(f'\\quad {name} & \\multicolumn{{6}}{{c}}{{}} & {f3(r.auc)} {ci(r.auc_ci_low, r.auc_ci_high)} & — \\\\')
+    write('resumen_resultados',
+          '6_alineamiento_kernel.csv, 6_dimension_efectiva.csv, 6_diferencia_geometrica_resumen.csv, 6_metricas_embedding.csv, '
+          '7_cv_resumen.csv, 7_test.csv, X4_test.csv, 5a_resumen.csv y 5a_tiempos_clasicos.csv',
+          'Resumen de resultados por condición: separabilidad (M6), clasificación (M7 y X4) y tiempo de transformación (M5).',
+          'tab:resumen_resultados', 'l r r r r r r c r',
+          r' & \multicolumn{3}{c}{Kernel} & \multicolumn{2}{c}{Representación} & \multicolumn{2}{c}{AUC-ROC} & \\'
+          r' \cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}' '\n'
+          r'Condición & Exceso KTA $\uparrow$ & $d_{\mathrm{eff}}$ & $g$ & DB $\downarrow$ & Fisher $\uparrow$ & VC & Prueba [IC 95\,\%] & Tiempo (s)', body,
+          r'Separabilidad sobre 200 lesiones de entrenamiento por subconjunto y $c = 1$. Las columnas de kernel de C3 corresponden al kernel RBF, '
+          r'con el mismo $\gamma$ que C3; C1 y C2 no definen un kernel propio. $g$: mínimo de la \textit{geometric difference} regularizada '
+          r'($\sqrt{N} \approx 14$). AUC: el mismo MLP en C1--C5; las tres últimas filas de cada bloque son clasificadores de vectores de soporte '
+          r'sobre el kernel (experimento X4). Tiempo: transformación de todas las lesiones del subconjunto en la máquina del proyecto; '
+          r'en C2 y C3, mediana de cinco repeticiones; C1 es la identidad. Con el etiquetado diseñado según Huang et al., control positivo del '
+          r'protocolo (sección~\ref{sec:qsvm_ventaja}), el kernel cuántico proyectado alcanza en validación cruzada 0.998 en masas y 0.994 en '
+          r'calcificaciones, frente a 0.800 y 0.824 del mejor clasificador clásico.')
+
 if __name__ == '__main__':
     OUT.mkdir(parents=True, exist_ok=True)
-    for f in [seleccion, separabilidad_kernels, separabilidad_embeddings, clasificacion, diferencias, spearman, sorteos_theta, theta_entrenado]:
+    for f in [seleccion, separabilidad_kernels, separabilidad_embeddings, clasificacion, diferencias, spearman, sorteos_theta, theta_entrenado, resumen_resultados]:
         f()
