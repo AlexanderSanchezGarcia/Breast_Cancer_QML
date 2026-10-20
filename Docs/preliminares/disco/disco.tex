@@ -1,0 +1,56 @@
+% disco.tex: portada de la caja (14.2 x 12.5 cm) y serigrafía del disco (120 mm) para la entrega del DVD,
+% con la distribución de Other/ESCOM/Formato Disco TT.pdf. Imprimir al 100 % (sin «ajustar a la página»).
+% La serigrafía va impresa sobre el disco: la CATT no acepta etiquetas autoadheribles.
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[letterpaper, margin=1cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{decorations.text}
+\pagestyle{empty}
+\graphicspath{{../../}}
+
+% PENDIENTE: mes y año de la presentación de TT2.
+\newcommand{\fecha}{Noviembre 2026}
+\newcommand{\titulo}{Modelo de transformación cuántica variacional de características de cáncer de mama para un sistema híbrido de prediagnóstico}
+
+\begin{document}
+\centering
+{\small Portada de la caja: 14.2 cm $\times$ 12.5 cm (recortar por el borde)}\par\medskip
+\begin{tikzpicture}
+  \draw[gray, very thin] (0,0) rectangle (14.2,12.5);
+  \node[anchor=north west] at (0.5,12.0) {\includegraphics[height=2.2cm]{Logos/IPN_logo.png}};
+  \node[anchor=north east] at (13.7,12.0) {\includegraphics[height=1.9cm]{Logos/ESCOM_logo.png}};
+  \node[align=center] at (7.1,11.15) {\large Instituto Politécnico Nacional\\[6pt] \large Escuela Superior de Cómputo};
+  \node[align=center] at (7.1,7.9) {\bfseries\large Modelo de transformación cuántica variacional\\[2pt] \bfseries\large de características de cáncer de mama para un\\[2pt] \bfseries\large sistema híbrido de prediagnóstico};
+  \node at (7.1,6.3) {\large 2026-B039};
+  \node[anchor=north west, align=left] at (0.8,5.2) {\textbf{Presenta:}\\[3pt] \hspace{1.2cm}Miguel Alexander Sánchez García};
+  \node[anchor=north west, align=left] at (0.8,3.2) {\textbf{Directores:}\\[3pt] \hspace{1.2cm}Dr. Jesús Yaljá Montiel Pérez\\ \hspace{1.2cm}Dra. Ana María Winfield Reyes};
+  \node[anchor=south east] at (13.7,0.4) {\fecha};
+\end{tikzpicture}
+
+\vfill
+{\small Serigrafía del disco: 120 mm de diámetro, orificio de 15 mm (círculo punteado: zona sin impresión de 40 mm)}\par\medskip
+\begin{tikzpicture}
+  \draw[gray, very thin] (0,0) circle (6);
+  \draw[gray, very thin] (0,0) circle (0.75);
+  \draw[gray, very thin, dashed] (0,0) circle (2);
+  \path[decorate, decoration={text along path, text align=center, raise=-4pt,
+        text={|\bfseries\small|Modelo de transformaci{\'o}n cu{\'a}ntica variacional de caracter{\'\i}sticas de c{\'a}ncer de mama}}]
+        (0,0) ++(172:5.45) arc (172:8:5.45);
+  \path[decorate, decoration={text along path, text align=center, raise=-4pt,
+        text={|\bfseries\small|para un sistema h{\'\i}brido de prediagn{\'o}stico}}]
+        (0,0) ++(160:4.55) arc (160:20:4.55);
+  \node at (0,3.1) {2026-B039};
+  \node at (-3.6,-0.2) {\includegraphics[height=1.9cm]{Logos/IPN_logo.png}};
+  \node at (3.6,-0.2) {\includegraphics[height=1.5cm]{Logos/ESCOM_logo.png}};
+  \node[align=left, font=\footnotesize] at (-2.5,-3.2) {\textbf{Integrante:}\\ Miguel Alexander\\ Sánchez García};
+  \node[align=left, font=\footnotesize] at (2.2,-3.2) {\textbf{Directores:}\\ Dr. Jesús Yaljá Montiel Pérez\\ Dra. Ana María Winfield Reyes};
+  \node[font=\footnotesize] at (0,-5.1) {\fecha};
+\end{tikzpicture}
+\vfill
+\end{document}
