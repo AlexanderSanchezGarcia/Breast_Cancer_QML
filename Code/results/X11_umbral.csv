@@ -1,0 +1,7 @@
+finding_type,quantum_kernel,alpha_star
+mass,ZZ full (C4),0.6
+mass,ZZ linear,0.5
+mass,Projected (ZZ full),0.4
+calcification,ZZ full (C4),0.7
+calcification,ZZ linear,0.6
+calcification,Projected (ZZ full),0.5

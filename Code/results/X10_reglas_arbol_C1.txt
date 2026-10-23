@@ -1,0 +1,47 @@
+=== Masses: decision tree of depth 3 on C1 (angles in [0, pi] after the quantile scaling of M4; weights = class-weighted lesions [benign, malignant] in each leaf) ===
+|--- fo_Maximum <= 1.209
+|   |--- fo_10Percentile <= 1.075
+|   |   |--- fo_Maximum <= 0.346
+|   |   |   |--- weights: [101.608, 37.243] class: 0
+|   |   |--- fo_Maximum >  0.346
+|   |   |   |--- weights: [89.996, 90.005] class: 1
+|   |--- fo_10Percentile >  1.075
+|   |   |--- fo_90Percentile <= 0.795
+|   |   |   |--- weights: [26.128, 1.035] class: 0
+|   |   |--- fo_90Percentile >  0.795
+|   |   |   |--- weights: [115.156, 41.381] class: 0
+|--- fo_Maximum >  1.209
+|   |--- fo_Energy <= 2.310
+|   |   |--- fo_Maximum <= 3.085
+|   |   |   |--- weights: [209.990, 249.323] class: 1
+|   |   |--- fo_Maximum >  3.085
+|   |   |   |--- weights: [13.548, 2.069] class: 0
+|   |--- fo_Energy >  2.310
+|   |   |--- fo_90Percentile <= 2.008
+|   |   |   |--- weights: [36.772, 39.312] class: 1
+|   |   |--- fo_90Percentile >  2.008
+|   |   |   |--- weights: [65.803, 198.631] class: 1
+
+=== Calcifications: decision tree of depth 3 on C1 (angles in [0, pi] after the quantile scaling of M4; weights = class-weighted lesions [benign, malignant] in each leaf) ===
+|--- fo_Energy <= 2.469
+|   |--- glcm_ClusterShade <= 2.429
+|   |   |--- glrlm_RunEntropy <= 1.383
+|   |   |   |--- weights: [253.809, 152.042] class: 0
+|   |   |--- glrlm_RunEntropy >  1.383
+|   |   |   |--- weights: [199.807, 268.561] class: 1
+|   |--- glcm_ClusterShade >  2.429
+|   |   |--- fo_Skewness <= 2.419
+|   |   |   |--- weights: [47.059, 19.893] class: 0
+|   |   |--- fo_Skewness >  2.419
+|   |   |   |--- weights: [192.093, 9.947] class: 0
+|--- fo_Energy >  2.469
+|   |--- fo_Energy <= 2.819
+|   |   |--- sh_Perimeter <= 2.972
+|   |   |   |--- weights: [48.602, 137.833] class: 1
+|   |   |--- sh_Perimeter >  2.972
+|   |   |   |--- weights: [8.486, 1.421] class: 0
+|   |--- fo_Energy >  2.819
+|   |   |--- glrlm_RunEntropy <= 3.093
+|   |   |   |--- weights: [18.515, 177.619] class: 1
+|   |   |--- glrlm_RunEntropy >  3.093
+|   |   |   |--- weights: [4.629, 5.684] class: 1

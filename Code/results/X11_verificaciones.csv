@@ -1,0 +1,25 @@
+check,value,passed
+mass: no patient on both sides of an inner split,0.0,True
+calcification: no patient on both sides of an inner split,0.0,True
+"mass, ZZ full (C4): designed task and real labels reproduce X6 (AUC, g)",2.6645352591003757e-15,True
+"mass, ZZ linear: designed task and real labels reproduce X6 (AUC, g)",4.440892098500626e-16,True
+"mass, Projected (ZZ full): designed task and real labels reproduce X6 (AUC, g)",1.0658141036401503e-14,True
+"calcification, ZZ full (C4): designed task and real labels reproduce X6 (AUC, g)",6.88338275267597e-14,True
+"calcification, ZZ linear: designed task and real labels reproduce X6 (AUC, g)",1.1102230246251565e-15,True
+"calcification, Projected (ZZ full): designed task and real labels reproduce X6 (AUC, g)",1.0736300737335114e-11,True
+"mass, ZZ full (C4): the designed labels are balanced",0.5,True
+"mass, ZZ linear: the designed labels are balanced",0.5,True
+"mass, Projected (ZZ full): the designed labels are balanced",0.5,True
+"calcification, ZZ full (C4): the designed labels are balanced",0.5,True
+"calcification, ZZ linear: the designed labels are balanced",0.5,True
+"calcification, Projected (ZZ full): the designed labels are balanced",0.5,True
+"mass, ZZ full (C4): alpha = 0 is the diagnosis and alpha = 1 the designed task",0.0,True
+"mass, ZZ linear: alpha = 0 is the diagnosis and alpha = 1 the designed task",0.0,True
+"mass, Projected (ZZ full): alpha = 0 is the diagnosis and alpha = 1 the designed task",0.0,True
+"calcification, ZZ full (C4): alpha = 0 is the diagnosis and alpha = 1 the designed task",0.0,True
+"calcification, ZZ linear: alpha = 0 is the diagnosis and alpha = 1 the designed task",0.0,True
+"calcification, Projected (ZZ full): alpha = 0 is the diagnosis and alpha = 1 the designed task",0.0,True
+masks are nested in alpha: raising alpha only changes more lesions,0.0,True
+s_C / s_Q never exceeds g^2 (the bound of Huang et al.),-2.102048076560277,True
+evaluating the same labels twice gives identical results,0.0,True
+every label set was evaluated,278.0,True

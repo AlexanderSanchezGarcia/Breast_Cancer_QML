@@ -60,3 +60,19 @@ shallow no ve los tags, y `setuptools_scm` informa `0.1.dev1+g8ed579383`, como e
 `radiomics`. Un clon completo o sin blobs informa `3.1.1.dev111+g8ed579383`, como
 en `qml_cancer`. Las dos corresponden al mismo commit (`g8ed579383`). **Lo que
 ancla la reproducibilidad es el commit, no el numero de version.**
+
+## XGBoost en `qml_cancer` (2026-10-21, experimento X10)
+
+`xgboost==3.2.0` se instala con pip. Su rueda para macOS no trae la biblioteca
+OpenMP (`libomp.dylib`) y no carga sin ella. Se instalo solo esa biblioteca
+dentro del entorno, sin tocar ningun otro paquete:
+
+```bash
+conda install -n qml_cancer llvm-openmp --no-deps -y
+pip install xgboost==3.2.0
+```
+
+Sin `--no-deps`, conda tambien actualizaba `openssl` y `ca-certificates`. torch y
+scikit-learn traen su propia copia de `libomp`. Se verifico que las tres
+bibliotecas funcionan juntas en el mismo proceso, en cualquier orden de
+importacion, y que XGBoost da predicciones identicas con la misma semilla.

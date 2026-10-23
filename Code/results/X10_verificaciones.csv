@@ -1,0 +1,31 @@
+check,value,passed
+mass: Module 5 folds equal the frozen folds of M4,0.0,True
+mass: C1 is the angle vector of M4,0.0,True
+mass: no patient has lesions in two folds,0.0,True
+calcification: Module 5 folds equal the frozen folds of M4,0.0,True
+calcification: C1 is the angle vector of M4,0.0,True
+calcification: no patient has lesions in two folds,0.0,True
+mass: no patient on both sides of an inner split,0.0,True
+mass: the outer validation fold never enters its inner search,0.0,True
+mass: the test split never enters any search,0.0,True
+calcification: no patient on both sides of an inner split,0.0,True
+calcification: the outer validation fold never enters its inner search,0.0,True
+calcification: the test split never enters any search,0.0,True
+purity rule: p = 1.00 reproduces the full tree exactly,0.0,True
+purity rule: every stop is the first node of its path reaching p = 0.80,0.0,True
+additive XGB: no tree uses more than one feature,1.0,True
+positive control: on a pure interaction the additive model loses > 0.3 of AUC,0.45309995993589736,True
+positive control: on an additive label both models tie within 0.03,-0.0007515218317092343,True
+RF: refitting with the same seed reproduces the predictions exactly,0.0,True
+XGB: refitting with the same seed reproduces the predictions exactly,0.0,True
+the MLP test AUC and its bootstrap interval reproduce 7_test.csv,5.551115123125783e-17,True
+mass: no patient has lesions in two of the 3 folds,0.0,True
+mass: the D-026 rule reproduces the M4 folds with k = 5,125.0,True
+calcification: no patient has lesions in two of the 3 folds,0.0,True
+calcification: the D-026 rule reproduces the M4 folds with k = 5,168.0,True
+the 5-fold MLP replica reproduces the AUC of every fold of 7_cv_por_fold.csv,0.0,True
+"one test model per subset, classifier and representation",50.0,True
+the additive XGB never touched the test split,0.0,True
+every prediction is a probability,0.0,True
+"one size row per subset, decision tree and representation",30.0,True
+every training lesion has one cross-validated prediction per model,0.0,True

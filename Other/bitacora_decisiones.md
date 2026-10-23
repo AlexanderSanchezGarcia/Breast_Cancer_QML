@@ -65,6 +65,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Firme (validada por el autor el 2026-10-12) | §4.10, §6.x, §7, OE-6 |
 | D-041 | 2026-10-15 | Pregunta de investigación y objetivos reformulados en el reporte final, con cambio mínimo | reporte | **Provisional**: pendiente de confirmar con los directores | §1.2, §1.4, §1.5 |
 | D-042 | 2026-10-18 | Las 200 lesiones siguen como análisis principal del M6, justificadas por el protocolo físico; X9 se reporta como robustez | M6 | Firme (elegida por el autor) | §5.2, §5.8, §6.2, §7 |
+| D-043 | 2026-10-21 | Experimento X10: árboles de decisión, *random forest* y XGBoost sobre C1–C5, y sensibilidad con 3 folds; se mantienen 5 folds | X10, M7 | **Provisional**: protocolo fijado antes de correr | §5.6, §5.9, §5.11, §6.3, §8 |
+| D-044 | 2026-10-23 | Experimento X11: curva de transición entre las etiquetas del diagnóstico y las diseñadas según Huang et al., con tres kernels cuánticos | X11 | **Provisional**: protocolo fijado antes de correr | §5.11, §6.4, §7 |
 
 ### Hallazgos
 
@@ -125,6 +127,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-053 | 2026-10-10 | El sorteo de θ mueve el AUC de C4 y C5 tanto o más que la semilla del MLP, pero ninguno de 40 sorteos alcanza a C1 | La conclusión del M7 no depende de θ; su magnitud sí (déficit de 0.03 a 0.18 frente a C1): reportar el rango |
 | H-054 | 2026-10-11 | Entrenar θ junto con el MLP gana a lo sumo 0.05 de AUC y no alcanza a C1; con gradientes del simulador cuesta minutos, no cientos de horas | La conclusión del M7 se mantiene con θ entrenado; matiza la razón de costo de D-014 y H-015 (vale para el hardware, no para el simulador) |
 | H-055 | 2026-10-18 | La conclusión del M6 no depende de qué 200 lesiones se tomen ni de N: se mantiene en 20 submuestras y en todo el train | Responde a «¿200 es poco?»; el orden C4/C5 y la significancia de los efectos pequeños sí dependen de la muestra |
+| H-056 | 2026-10-21 | Con árboles, *random forest* y XGBoost ninguna representación cuántica supera a C1 con el mismo clasificador; con 3 folds la conclusión del M7 no cambia | Responde a la revisión del sinodal; en masas los ensambles dejan la brecha sin significancia porque leen mejor los ⟨Zᵢ⟩; **borrador pendiente de revisión** |
+| H-057 | 2026-10-23 | La ventaja cuántica aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico; el diagnóstico real está en el 0 % | Responde «¿en qué caso habría ventaja?»; el umbral depende de *g*; **borrador pendiente de revisión** |
 
 ### Preguntas abiertas
 
@@ -903,6 +907,116 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 - Las alineaciones, *g* y *d* solo se comparan entre condiciones con el mismo N.
 
 ---
+
+### D-043 · Experimento X10: árboles de decisión, *random forest* y XGBoost sobre C1–C5, y sensibilidad con 3 folds
+**Fecha:** 2026-10-21 · **Módulo:** X10 (M7) · **Estado:** **Provisional**: protocolo fijado antes de correr; pendiente de validar por el autor · **→ Reporte:** §5.6, §5.9, §5.11, §6.3, §8 · *precisa D-018 y D-036; sigue el patrón de D-038*
+
+**Contexto.** En la revisión del 2026-10-21, un sinodal:
+- preguntó por qué 5 folds; le parecían muchos. D-018 adoptó 5 sin dar la razón;
+- sugirió, a partir del t-SNE, probar árboles de decisión y XGBoost, porque modelan interacciones no lineales y ahí podrían rendir mejor C4 y C5;
+- pidió documentar cómo se detiene el árbol (profundidad o pureza del nodo) y explicar por qué pasa lo que pasa si los árboles mejoran.
+
+**Alternativas.**
+- *Pasar el análisis principal a 3 folds* — descartada: obliga a rehacer M4–M8 y X1–X9 a dos días del congelamiento, y sería un cambio de diseño con los resultados a la vista. La comprobación de balance muestra que 3 y 5 son defendibles.
+- *Mantener 5 folds, justificarlos y añadir una sensibilidad con 3* — **elegida**.
+- *MLP más profundo* — se deja como trabajo futuro, por decisión del autor: el M7 ya probó redes 16-8 y 64-32 (D-037).
+- *Dejar los árboles como trabajo futuro* — descartada: cuesta menos de dos horas de cómputo, y Huang et al. comparan contra *random forest*, AdaBoost y *gradient boosting* en su Fig. 2.
+
+**Decisión.** El experimento exploratorio X10 (`Code/experiments/X10_Tree_Classifiers.ipynb`) no cambia el diseño.
+
+- **Pregunta principal, fijada antes de correr.** Con el **mismo clasificador**, ¿C4 o C5 superan a C1? Dentro de cada clasificador se comparan C4−C1, C5−C1, C4−C3, C5−C3, C2−C1 y C5−C4. Comparar un árbol sobre C4 contra el MLP sobre C1 mezclaría dos cambios, y no se interpreta como ventaja.
+- **Clasificadores.** La misma malla para las cinco condiciones, con semilla 42 y pesos balanceados:
+  - **DT-depth:** profundidad máxima de 1 a 12 (pre-poda por profundidad).
+  - **DT-purity:** el árbol completo, cuya predicción se detiene en el primer nodo de la ruta con una fracción de la clase mayoritaria ≥ p, con p ∈ {0.55, 0.60, …, 1.00} (pre-poda por pureza). scikit-learn eliminó `min_impurity_split`, así que la regla se aplica sobre el árbol ajustado.
+  - **DT-ccp:** post-poda por costo-complejidad, `ccp_alpha` ∈ {0, 1e-4, …, 2e-2}.
+  - **RF:** 500 árboles; `max_features` ∈ {sqrt, 0.5, 1.0} × `min_samples_leaf` ∈ {1, 5, 20}.
+  - **XGB:** `max_depth` ∈ {2, 3, 4, 6} × `learning_rate` ∈ {0.03, 0.1} × `n_estimators` ∈ {100, 300}, con `subsample` y `colsample_bytree` de 0.8.
+- **Selección por validación cruzada anidada**, como en X6:
+  - externa: los folds congelados de M4;
+  - interna: 3 folds por paciente;
+  - los empates van a la opción más simple.
+- **Test** una vez por modelo, con bootstrap de 2,000 remuestreos por paciente, pareado.
+- **Explicación**, solo en validación cruzada:
+  - curvas de AUC en entrenamiento y validación contra cada criterio de parada;
+  - XGB aditivo (`interaction_constraints`, una feature por grupo) contra XGB completo, para separar los cortes no lineales de las interacciones;
+  - importancia por permutación;
+  - reglas del árbol de profundidad 3 sobre C1.
+- **Sensibilidad de folds.** El MLP de D-036 con 3 folds por paciente, semillas 68 y 119 elegidas con la regla de D-026, solo en validación cruzada.
+
+**Por qué.**
+- **La pregunta de los folds es de diseño, no de error.** Con 3 a 5 folds el balance es bueno; con 8 o más se degrada.
+- **5 frente a 3 es un dilema de sesgo y varianza.** Con 5 folds cada modelo entrena con el 80 % del train, contra el 67 % con 3, y la desviación entre folds se estima con 5 valores y no con 3.
+- **Sobre los árboles hay una cota previa.** C4 y C5 son funciones deterministas de la x de C1, así que ningún clasificador puede extraer de ellas más información de la etiqueta que de x (desigualdad de procesamiento de datos). Una mejora de C4 o C5 sobre C1 solo podría venir del sesgo inductivo del clasificador con datos finitos.
+
+**Evidencia.** Balance de los folds con 3 a 10, solo con etiquetas y la regla de D-026. La réplica con 5 folds reproduce los folds de M4.
+
+| Folds | Train por modelo | Desviación máx. de la proporción de malignas, mejor de 200 semillas (masas / calc.) | Malignas en el fold más pobre | Peso del paciente más grande en el fold más chico (calc.) |
+|---|---|---|---|---|
+| 3 | 67 % | 0.003 / 0.003 | 200 / 167 | 5 % |
+| 5 | 80 % | 0.011 / 0.019 | 122 / 96 | 9 % |
+| 10 | 90 % | 0.044 / 0.045 | 57 / 49 | 17 % |
+
+La tabla completa (k = 3, 4, 5, 6, 8 y 10) está en `Code/results/X10_balance_folds.csv`. Los resultados de X10 están en H-056.
+
+**Consecuencias.**
+- `qml_cancer` gana `xgboost==3.2.0` (pip) y `llvm-openmp` (conda, `--no-deps`); está documentado en `Code/env/README.md`.
+- §5.6 o §5.9 deben justificar los 5 folds con la tabla, y §5.11 debe describir X10.
+- El MLP profundo pasa a §8.
+
+---
+
+
+### D-044 · Experimento X11: curva de transición entre las etiquetas del diagnóstico y las etiquetas diseñadas
+**Fecha:** 2026-10-23 · **Módulo:** X11 (M6–M7) · **Estado:** **Provisional**: protocolo fijado antes de correr; pendiente de validar por el autor · **→ Reporte:** §5.11, §6.4, §7 · *extiende H-048; sigue el patrón de D-038*
+
+**Contexto.** Tras X10, el autor preguntó si hay algún caso con ventaja cuántica que se pueda enseñar y justificar. H-048 ya da uno: con etiquetas diseñadas según Huang et al. (sección 7 del suplemento), el kernel cuántico proyectado gana 0.998 frente a 0.800. Pero solo mide los dos extremos: las etiquetas reales, sin ventaja, y las diseñadas, con ventaja. No dice cuánta estructura cuántica necesita una tarea para que aparezca la ventaja, ni a qué distancia de ese punto está el diagnóstico.
+
+**Alternativas.**
+- *Seguir buscando variantes con las etiquetas reales hasta que alguna gane* — descartada: con decenas de comparaciones, alguna sale significativa por azar (X6 ya probó 28 candidatos).
+- *Curvas de aprendizaje con pocos datos* — queda como opción posterior (B), por decisión del autor.
+- *Recorrer el camino entre las etiquetas reales y las diseñadas* — **elegida**.
+
+**Decisión.** El experimento exploratorio X11 (`Code/experiments/X11_Designed_Label_Transition.ipynb`) no cambia el diseño.
+
+- **Kernels cuánticos:** los tres de H-048, sobre las 12 features de M4 y todo el train:
+  - ZZ completo (C4);
+  - ZZ lineal;
+  - proyectado del ZZ completo, con ancho de banda por la mediana.
+- **Etiquetas diseñadas:** exactamente las de X6 (§5).
+  - Se usa el kernel clásico más cercano de `X6_geometria.csv` y λ como el menor valor de la malla con $\lambda^2\,\|\sqrt{K_Q}(K_C+\lambda I)^{-2}\sqrt{K_Q}\|\le 0.002$.
+  - $y=\sqrt{K_Q}\,v$, binarizado por la mediana.
+  - Como el signo del vector propio es arbitrario, se orienta para que coincida con las etiquetas reales en al menos la mitad de las lesiones.
+- **Mezcla.**
+  - Cada lesión recibe un número uniforme $u$ fijo, con 5 semillas.
+  - Con peso α, la lesión toma la etiqueta diseñada si $u<\alpha$ y la real si no, con α ∈ {0, 0.1, …, 1}.
+  - α es la fracción de lesiones cuya etiqueta sigue la geometría cuántica: α = 0 es el diagnóstico real y α = 1 la tarea diseñada.
+  - Las máscaras quedan anidadas: subir α solo añade lesiones.
+- **Contendientes**, en validación cruzada sobre el train con los folds de M4; el test no se usa:
+  - **Cuántico:** QSVM con C = 1, sin hiperparámetros que elegir.
+  - **Clásico:** búsqueda anidada (3 folds internos por paciente) entre SVM lineal, polinomiales de grado 2 y 3, 9 gaussianos (la malla de Huang et al.) y XGBoost con 4 configuraciones.
+  - La asimetría favorece a lo clásico, así que una ventaja cuántica que aparezca es conservadora.
+- **Medidas por α:**
+  - AUC de cada lado;
+  - diferencia cuántico − clásico con bootstrap por paciente, promediada sobre las 5 máscaras;
+  - el cociente $s_C/s_Q$ de Huang et al. de las etiquetas mezcladas, que está acotado por $g^2$.
+- **Umbral de transición α\*, fijado antes de correr:** el menor α cuyo intervalo de la diferencia queda entero por encima de 0.
+
+**Por qué.** Convierte H-048 en una respuesta cuantitativa a «¿en qué caso habría ventaja?».
+- Mide cuánta estructura cuántica necesita la tarea (α\*).
+- Muestra que el diagnóstico real está en α = 0.
+- Enseña el papel de *g*: un kernel con *g* pequeña (C4) no puede dar una ventaja grande con ningún etiquetado, porque $s_C/s_Q \le g^2$.
+
+Las etiquetas intermedias son artificiales: el experimento es un instrumento de medida, no una tarea clínica.
+
+**Evidencia.** Ninguna todavía. Verificaciones previstas:
+- α = 1 reproduce los AUC de `X6_etiquetas_construidas.csv`, y α = 0 los de las etiquetas reales;
+- las máscaras quedan anidadas;
+- $s_C/s_Q \le g^2$ en todas las mezclas.
+
+**Consecuencias.** Resultado en H-057; párrafo en §6.4 y en §7.
+
+---
+
 
 > Las decisiones **D-001 a D-006** se tomaron durante TT1 y ya están documentadas en el reporte (§7.2 · *Decisiones metodológicas aprendidas*). Se listan en el índice para tener la traza completa; si alguna se revisa en TT2, se le abre entrada propia aquí.
 >
@@ -2394,6 +2508,129 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 - En §6, las cifras de alineamiento, *g* y *d* deben citarse siempre con su N.
 
 **Datos.** `Code/experiments/X9_Sample_Size.ipynb`; `Code/results/X9_familia_a.csv`, `X9_resumen_familia_a.csv`, `X9_familia_b.csv`, `X9_orden_familia_b.csv`, `X9_costo_hardware.csv` y `X9_verificaciones.csv`; figura `Docs/Figures/X9_sample_size.png`.
+
+---
+
+### H-056 · Con árboles de decisión, *random forest* y XGBoost, ninguna representación cuántica supera a C1 con el mismo clasificador; los ensambles achican la brecha en masas, y con 3 folds la conclusión no cambia
+**Fecha:** 2026-10-21 · **→ Reporte:** §5.6, §5.9, §5.11, §6.3, §7, §8 · *responde a la revisión del sinodal del 2026-10-21; protocolo en D-043* · **Borrador: pendiente de revisión del autor**
+
+**Pregunta principal, fijada antes de correr (D-043).** Con el mismo clasificador, ¿C4 o C5 superan a C1? **No.** En ninguno de los 6 clasificadores (tres árboles, RF, XGB y el MLP del M7) ni en ninguno de los dos subconjuntos hay una representación cuántica significativamente por encima de C1 en el test: 0 de 24 comparaciones.
+
+AUC en el test (validación cruzada anidada para elegir hiperparámetros; un ajuste por modelo):
+
+| | C1 | C2 | C3 | C4 | C5 |
+|---|---|---|---|---|---|
+| Masas, DT-depth | 0.624 | 0.637 | 0.578 | 0.554 | 0.549 |
+| Masas, DT-purity | 0.584 | 0.616 | 0.604 | 0.505 | 0.561 |
+| Masas, DT-ccp | 0.617 | 0.603 | 0.614 | 0.553 | 0.563 |
+| Masas, RF | 0.636 | 0.650 | 0.604 | 0.591 | 0.614 |
+| Masas, XGB | 0.630 | 0.641 | 0.596 | 0.590 | 0.611 |
+| Masas, MLP (M7) | 0.651 | 0.641 | 0.646 | 0.530 | 0.581 |
+| Calcif., DT-depth | 0.755 | 0.731 | 0.689 | 0.582 | 0.600 |
+| Calcif., DT-purity | 0.757 | 0.718 | 0.693 | 0.587 | 0.534 |
+| Calcif., DT-ccp | 0.768 | 0.739 | 0.699 | 0.589 | 0.600 |
+| Calcif., RF | 0.768 | 0.794 | 0.756 | 0.651 | 0.624 |
+| Calcif., XGB | 0.779 | 0.790 | 0.749 | 0.640 | 0.621 |
+| Calcif., MLP (M7) | 0.769 | 0.788 | 0.758 | 0.633 | 0.652 |
+
+**Lecturas.**
+
+1. **En calcificaciones, la brecha no depende del clasificador.** C4−C1 y C5−C1 son significativamente negativas con los cinco árboles: entre −0.12 y −0.22. Con RF: −0.117 [−0.188, −0.047] y −0.144 [−0.205, −0.084]. Con XGB: −0.139 [−0.211, −0.070] y −0.159 [−0.229, −0.094].
+2. **En masas, los ensambles achican la brecha y la vuelven no significativa.**
+   - Con RF, C4−C1 = −0.044 [−0.107, 0.019] y C5−C1 = −0.020 [−0.079, 0.033]; con XGB, −0.039 [−0.107, 0.030] y −0.018 [−0.072, 0.032].
+   - Con el MLP eran −0.122 y −0.070, significativas.
+   - La brecha se cierra **porque C4 y C5 suben**, no porque C1 baje. RF sobre C4 gana al MLP sobre C4 por +0.061 [0.010, 0.115], y XGB por +0.060 [0.006, 0.118]. Sobre C1, ni RF (−0.016 [−0.056, 0.023]) ni XGB (−0.022 [−0.050, 0.006]) mejoran al MLP.
+   - Es lo que anticipaba H-044: parte de la pérdida del M7 está en el lector de los ⟨Zᵢ⟩, y otro lector recupera una parte. Pero no alcanza a C1, y la desigualdad de procesamiento de datos impide que lo supere con un clasificador lo bastante flexible (D-043).
+   - En calcificaciones, ningún árbol mejora significativamente al MLP en ninguna representación.
+3. **Las interacciones aportan poco.** XGBoost completo contra aditivo (una feature por árbol), en validación cruzada con bootstrap por paciente:
+   - **Masas.** Hay ganancia pequeña pero significativa en C1 (+0.018 [0.007, 0.029]) y C3 (+0.021 [0.005, 0.037]). En C4 y C5 es nula (+0.006, con intervalos que contienen el cero).
+   - **Calcificaciones.** Nula en C1–C4 (de −0.011 a +0.006). La única excepción es C5: +0.045 [0.023, 0.065]. Aun así, XGB sobre C5 queda 0.159 por debajo de C1 en el test.
+   - **Respuesta a la hipótesis del sinodal.** Las representaciones cuánticas no ganan porque los árboles exploten interacciones: en C4 las interacciones no aportan nada. Lo que ganan los ensambles sobre los ⟨Zᵢ⟩ viene sobre todo de los cortes no lineales en cada entrada.
+   - **El control positivo valida la herramienta:** con una etiqueta de interacción pura, el modelo aditivo cae a 0.547 y el completo da 1.000; con una etiqueta aditiva, empatan (−0.001).
+4. **Cuánto crece un árbol.** Las curvas de entrenamiento y validación muestran el sobreajuste a la vista. Promediando las cinco condiciones:
+
+   | Profundidad | 1 | 2 | 3 | 4 | 6 | 8 | 12 |
+   |---|---|---|---|---|---|---|---|
+   | Masas, entrenamiento | 0.597 | 0.639 | 0.675 | 0.715 | 0.811 | 0.900 | 0.987 |
+   | Masas, validación | 0.576 | 0.604 | 0.600 | 0.604 | 0.578 | 0.565 | 0.552 |
+   | Calcif., entrenamiento | 0.639 | 0.701 | 0.738 | 0.774 | 0.848 | 0.915 | 0.982 |
+   | Calcif., validación | 0.617 | 0.670 | 0.686 | 0.678 | 0.657 | 0.639 | 0.605 |
+
+   - El entrenamiento sube hasta casi 1 a profundidad 12, mientras la validación toca techo a profundidad 2–4 y cae después.
+   - En las curvas promedio, el máximo de validación cae con pureza p = 0.55–0.65 y con α = 0.005–0.01.
+   - Los árboles que elige la búsqueda anidada son pequeños por profundidad (2 a 6 niveles, de 4 a 50 hojas) y por costo-complejidad (2 a 5 niveles, de 3 a 9 hojas, salvo C2 en masas con 82).
+   - Por pureza la elección es más inestable: en masas, p va de 0.55 a 0.85 y los nodos de parada de 2 a 187. Con p alta casi no se poda; la regla de pureza es la que peor controla el tamaño (`X10_tamano_arboles.csv`).
+   - Por eso un solo árbol rinde menos que los ensambles. Además, sus 2 a 42 probabilidades distintas en el test hacen que el AUC se calcule con muchos empates.
+5. **C2 frente a C1.** En teoría un árbol no es invariante a la rotación de C2, pero en la práctica C2−C1 no es significativo con ningún clasificador (de −0.040 a +0.033). El control nulo se sostiene también con árboles.
+6. **Qué usan los árboles sobre C1 (importancia por permutación).**
+   - **Masas.** Domina `firstorder_Maximum`: quitarla cuesta 0.134 de AUC al RF. Le siguen otros percentiles de intensidad. Las reglas del árbol de profundidad 3 sobre C1 en masas usan **solo** features de primer orden (Maximum, 10Percentile, 90Percentile, Energy).
+   - **Calcificaciones.** Dominan `firstorder_Energy`, `glrlm_RunEntropy` y la forma, pero ninguna pasa de 0.05: la información está repartida entre features correlacionadas. Al permutar una sola, el modelo la recupera de las demás, así que la importancia por permutación subestima a cada una.
+   - **C2 y C3.** La importancia se concentra en el primer componente (hasta 0.23), porque el PCA junta en él la varianza compartida. Es la misma información con otra base, y la razón por la que C2 rinde igual que C1 aunque el árbol no sea invariante a la rotación.
+   - **Consecuencia.** En masas, el árbol legible decide con intensidades no calibradas. Refuerza la limitación de H-023 sobre la posible confusión con el digitalizador.
+7. **Folds: con 3, la conclusión del M7 no cambia.** Es el MLP de D-036, solo en validación cruzada; la réplica con 5 folds reproduce el AUC de cada fold del M7 con diferencia 0.
+
+   | | C4−C1 con 5 folds | C4−C1 con 3 | C5−C1 con 5 | C5−C1 con 3 |
+   |---|---|---|---|---|
+   | Masas | −0.087 | −0.123 | −0.089 | −0.098 |
+   | Calcificaciones | −0.102 | −0.119 | −0.075 | −0.092 |
+
+   - Con 3 folds la desviación entre folds baja, porque los folds de validación son más grandes, pero se calcula con 3 valores.
+   - La parada temprana deja de elegir la época 1 (mínimo 8 épocas, contra 1 con 5 folds en masas).
+
+**Impacto.**
+- **Responde a la revisión.** El «no» del trabajo no depende de haber elegido un MLP: con árboles, bosques y *boosting* ninguna representación cuántica supera a C1. El matiz honesto: en masas, los ensambles dejan la brecha sin significancia, porque leen mejor los ⟨Zᵢ⟩ que el MLP.
+- **Para la defensa de los 5 folds:** la tabla de balance de D-043 más la lectura 7.
+- **Para el reporte:** §5.11 describe X10, §6.3 recibe un párrafo y la figura `X10_auc.png`, y §8 lista el MLP profundo como trabajo futuro.
+- **No cambia el diseño ni ninguna cifra existente.**
+
+**Datos.**
+- Notebook: `Code/experiments/X10_Tree_Classifiers.ipynb`.
+- Resultados en `Code/results/`: `X10_cv_por_fold.csv`, `X10_test.csv`, `X10_test_diferencias.csv`, `X10_curvas_parada.csv`, `X10_tamano_arboles.csv`, `X10_aditivo.csv`, `X10_importancia.csv`, `X10_balance_folds.csv`, `X10_folds_mlp.csv`, `X10_control_positivo.csv`, `X10_reglas_arbol_C1.txt` y `X10_verificaciones.csv`.
+- Figuras en `Docs/Figures/`: `X10_auc.png`, `X10_stopping_curves.png`, `X10_additive.png`, `X10_importance.png`, `X10_folds.png` y `X10_balance_folds.png` (la tabla de balance de D-043 como figura).
+- Predicciones: `Data/processed/x10/predicciones.parquet`.
+
+---
+
+### H-057 · La ventaja cuántica aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico; el diagnóstico real está en el 0 %
+**Fecha:** 2026-10-23 · **→ Reporte:** §5.11, §6.4, §7 · *protocolo en D-044; extiende H-048* · **Borrador: pendiente de revisión del autor**
+
+**Método.** Es X11: una mezcla entre las etiquetas reales y las diseñadas de X6 (Huang et al., sección 7 del suplemento).
+- α es la fracción de lesiones con etiqueta diseñada; se promedian 5 máscaras anidadas.
+- En el lado cuántico, un QSVM con C = 1 sin ajuste. En el lado clásico, una búsqueda anidada entre 12 SVM y 4 XGBoost.
+- Validación cruzada con los folds de M4 y bootstrap por paciente. El test no se usa.
+- α\* es el menor α con el intervalo de la diferencia entero por encima de 0.
+
+**Diferencia cuántico − mejor clásico** (AUC en validación cruzada; \* intervalo por encima de 0, − por debajo):
+
+| | α = 0 (diagnóstico) | 0.2 | 0.4 | 0.6 | 0.8 | 1 (diseñadas) | α\* |
+|---|---|---|---|---|---|---|---|
+| Masas, ZZ completo (C4) | −0.020 − | −0.006 | −0.000 | +0.011 \* | +0.021 \* | +0.035 \* | 0.6 |
+| Masas, ZZ lineal | −0.040 − | −0.024 − | +0.006 | +0.025 \* | +0.031 \* | +0.042 \* | 0.5 |
+| Masas, proyectado | −0.111 − | −0.030 | +0.043 \* | +0.095 \* | +0.114 \* | +0.141 \* | 0.4 |
+| Calcif., ZZ completo (C4) | −0.012 | +0.003 | +0.005 | +0.003 | +0.018 \* | +0.024 \* | 0.7 |
+| Calcif., ZZ lineal | −0.050 − | −0.025 − | −0.010 | +0.023 \* | +0.084 \* | +0.163 \* | 0.6 |
+| Calcif., proyectado | −0.096 − | −0.055 − | +0.009 | +0.043 \* | +0.071 \* | +0.118 \* | 0.5 |
+
+Las dos tareas puras reproducen exactamente X6 y H-048. Las mezclas varían poco entre máscaras: el AUC cuántico cambia como mucho 0.06.
+
+**Lecturas.**
+1. **Hay un caso con ventaja, y tiene un umbral.** Los tres kernels cuánticos superan al mejor clásico, incluido XGBoost, cuando la fracción de etiquetas que sigue su geometría pasa de α\* = 0.4–0.7.
+   - El proyectado, con la *g* más grande, cruza antes (0.4 y 0.5) y gana más: +0.14 en masas, 0.998 frente a 0.857.
+   - C4 cruza tarde (0.6 y 0.7) y gana poco, como mucho +0.035. Es lo que predice su *g* pequeña.
+2. **El diagnóstico real está en el extremo opuesto.** Con α = 0, los tres kernels van por detrás; el proyectado, por 0.10 a 0.11. Las etiquetas diseñadas coinciden con el diagnóstico en el 50–56 % de las lesiones, es decir, no tienen relación con él. La distancia entre el diagnóstico y la zona de ventaja es de 40 a 70 puntos de α.
+3. **El lado clásico mejora con XGBoost, pero no alcanza.** Con las etiquetas diseñadas para el proyectado, XGBoost sube el techo clásico de 0.800 (solo SVM, X6) a 0.857 en masas, y la ventaja se mantiene en +0.14. En calcificaciones, con el ZZ lineal, el mejor clásico cae a 0.568: ninguno de los 16 contendientes aprende esas etiquetas, y el QSVM llega a 0.731.
+4. **Mezclar estructuras distintas cuesta a los dos lados.** En calcificaciones, con C4 y con el ZZ lineal, ambos AUC bajan en las mezclas intermedias, porque cada estructura es ruido para la otra, y luego suben hacia α = 1.
+5. **La cota de Huang et al. se cumple pero es holgada.** El cociente $s_C/s_Q$ de las etiquetas mezcladas queda entre 0.85 y 1.38, lejos del techo $g^2$ (9.0 y 11.4 para C4). La binarización por la mediana, que pide el procedimiento, pierde casi toda la estructura que la cota mide, así que la lectura válida es la del AUC. Para el proyectado, el cociente no es interpretable porque su matriz es casi singular (como en H-048).
+
+**Impacto.**
+- **Es la respuesta para la defensa a «¿en qué caso habría ventaja?».** La ventaja existe y se puede medir sobre estas mismas lesiones y features. Aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico, y el diagnóstico benigno/maligno con features radiómicas está en el 0 %.
+- **Precisa H-048.** No es una propiedad de todo o nada: crece de forma gradual con la fracción de estructura cuántica, y su tamaño lo limita la *g* del kernel.
+- **No cambia el diseño ni ninguna cifra existente.** Las etiquetas intermedias son artificiales: es un instrumento de medida, no una tarea clínica.
+
+**Datos.**
+- Notebook: `Code/experiments/X11_Designed_Label_Transition.ipynb`.
+- Resultados en `Code/results/`: `X11_transicion.csv`, `X11_por_mascara.csv`, `X11_umbral.csv`, `X11_etiquetas_disenadas.csv` y `X11_verificaciones.csv` (24 de 24).
+- Figuras en `Docs/Figures/`: `X11_transition.png`, `X11_difference.png` y `X11_ratio.png`.
 
 ---
 
