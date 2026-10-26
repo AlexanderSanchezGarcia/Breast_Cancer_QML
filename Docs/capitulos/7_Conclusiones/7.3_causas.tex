@@ -1,7 +1,7 @@
 % ---
 % §7.3 Por qué la codificación cuántica no aumentó la separabilidad.
 % Entradas que lo respaldan: D-029, D-035, H-013, H-031, H-036, H-037, H-041, H-043, H-044,
-% H-047, H-048, H-053, H-054, H-055.
+% H-047, H-048, H-053, H-054, H-055, H-057, D-044.
 % ---
 
 \subsection{Por qué la codificación cuántica no aumentó la separabilidad}
@@ -48,6 +48,15 @@ método de evaluación. El etiquetado diseñado no es, sin embargo, una vía par
 clases se derivan del propio kernel cuántico y no de la patología confirmada, de modo que cambia el problema
 en lugar de resolverlo. Su papel es el de un control positivo del protocolo; en un problema clínico la etiqueta
 está fijada, y lo que puede diseñarse es la codificación (sección~\ref{sec:futuro_codificacion}).
+
+% fuente: H-057, D-044; X11_transicion.csv, X11_umbral.csv, X11_etiquetas_disenadas.csv
+La distancia entre ambos escenarios se puede medir. Las clases diseñadas coinciden con la patología
+confirmada en el 50 al 56\,\% de las lesiones, como dos etiquetados no relacionados. Al sustituir de forma
+gradual las etiquetas diagnósticas por las diseñadas, la ventaja cuántica aparece cuando entre el 40 y el
+70\,\% de las lesiones siguen la geometría del kernel cuántico, según el kernel, y su tamaño crece con la
+diferencia geométrica: el kernel proyectado llega a ganar 0.14 de AUC, y el de C4, como mucho 0.035. El
+diagnóstico benigno o maligno, descrito con las 12 características radiómicas, está en el extremo
+opuesto: en él, ninguna fracción de las etiquetas sigue esa geometría.
 
 % fuente: H-041, H-043, H-053, H-055; X3_comparacion_k8_k12.csv, X9_resumen_familia_a.csv
 Ninguna de las elecciones de diseño que podían haber producido el resultado lo explica por sí sola: la

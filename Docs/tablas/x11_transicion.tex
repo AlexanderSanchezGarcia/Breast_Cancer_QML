@@ -1,0 +1,25 @@
+% Generado por Code/tools/tablas_latex.py desde X11_transicion.csv, X11_umbral.csv y X6_geometria.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Diferencia de AUC entre el kernel cuántico y el mejor clasificador clásico al pasar de las etiquetas diagnósticas ($\alpha = 0$) al etiquetado diseñado ($\alpha = 1$) (experimento X11).}
+\label{tab:x11_transicion}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l r r r r r r r r}
+\toprule
+Kernel cuántico & $g$ & $\alpha=0$ & 0.2 & 0.4 & 0.6 & 0.8 & 1 & $\alpha^{*}$ \\
+\midrule
+\multicolumn{9}{l}{\textit{Masas}} \\
+\quad ZZ completo (C4) & 1.43 & $-$0.020$^{\dagger}$ & $-$0.006 & 0.000 & \textbf{\boldmath +0.011$^{*}$} & \textbf{\boldmath +0.021$^{*}$} & \textbf{\boldmath +0.035$^{*}$} & \textbf{0.6} \\
+\quad ZZ lineal & 1.60 & $-$0.040$^{\dagger}$ & $-$0.024$^{\dagger}$ & +0.006 & \textbf{\boldmath +0.025$^{*}$} & \textbf{\boldmath +0.031$^{*}$} & \textbf{\boldmath +0.042$^{*}$} & \textbf{0.5} \\
+\quad Proyectado (ZZ completo) & 9.29 & $-$0.111$^{\dagger}$ & $-$0.030 & \textbf{\boldmath +0.043$^{*}$} & \textbf{\boldmath +0.095$^{*}$} & \textbf{\boldmath +0.114$^{*}$} & \textbf{\boldmath +0.141$^{*}$} & \textbf{0.4} \\
+\multicolumn{9}{l}{\textit{Calcificaciones}} \\
+\quad ZZ completo (C4) & 1.40 & $-$0.012 & +0.003 & +0.005 & +0.003 & \textbf{\boldmath +0.018$^{*}$} & \textbf{\boldmath +0.024$^{*}$} & \textbf{0.7} \\
+\quad ZZ lineal & 1.31 & $-$0.050$^{\dagger}$ & $-$0.025$^{\dagger}$ & $-$0.010 & \textbf{\boldmath +0.023$^{*}$} & \textbf{\boldmath +0.084$^{*}$} & \textbf{\boldmath +0.163$^{*}$} & \textbf{0.6} \\
+\quad Proyectado (ZZ completo) & 8.30 & $-$0.096$^{\dagger}$ & $-$0.055$^{\dagger}$ & +0.009 & \textbf{\boldmath +0.043$^{*}$} & \textbf{\boldmath +0.071$^{*}$} & \textbf{\boldmath +0.118$^{*}$} & \textbf{0.5} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize $\alpha$: fracción de lesiones con la etiqueta diseñada; media de cinco máscaras. Validación cruzada sobre el entrenamiento; lado clásico con búsqueda anidada entre SVM lineal, polinomiales, gaussianos y XGBoost. $^{*}$ intervalo bootstrap por paciente del 95\,\% por encima de cero; $^{\dagger}$ por debajo. $\alpha^{*}$: menor $\alpha$ con el intervalo por encima de cero. $g$: \textit{geometric difference} regularizada sobre las 200 lesiones del M6. En negritas, las diferencias con ventaja cuántica significativa y el umbral.}
+\end{table}

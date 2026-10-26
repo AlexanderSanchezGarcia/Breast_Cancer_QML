@@ -1,6 +1,6 @@
 % ---
 % §7.6 Limitaciones de las conclusiones.
-% Entradas que lo respaldan: H-002, H-024, H-025, H-035, D-013, D-014, D-026, D-039, D-042, H-048, H-055.
+% Entradas que lo respaldan: H-002, H-024, H-025, H-035, D-013, D-014, D-026, D-039, D-042, H-048, H-055, H-056.
 % ---
 
 \subsection{Limitaciones}
@@ -13,7 +13,9 @@ Las conclusiones anteriores están acotadas por las siguientes condiciones:
   \item \textbf{Un solo conjunto de datos, sin calibración física.} Todos los resultados provienen del
   CBIS-DDSM, sin validación externa. Sus mamografías son películas digitalizadas sin espaciado de píxel
   ni escala de intensidad; las características de primer orden, que lideran en masas, podrían reflejar
-  en parte el digitalizador de origen.
+  en parte el digitalizador de origen. En masas, un árbol de decisión de profundidad 3 sobre las
+  características sin transformar decide solo con características de intensidad de primer orden
+  (sección~\ref{sec:rendimiento_clasificacion}).
   % fuente: D-013, H-035
   \item \textbf{Doce características.} Pasar de 67 a 12 características cuesta entre 2 y 4 puntos de AUC
   con clasificadores clásicos. La comparación es justa porque todas las condiciones parten del mismo

@@ -10,14 +10,14 @@
 Condición & AUC en VC & AUC en prueba [IC 95\,\%] & F1 & Exactitud & Precisión & Sensibilidad \\
 \midrule
 \multicolumn{7}{l}{\textit{Masas}} \\
-\quad C1 & 0.652 $\pm$ 0.068 & 0.651 [0.578, 0.724] & 0.519 & 0.638 & 0.536 & 0.503 \\
+\quad C1 & \textbf{0.652} $\pm$ 0.068 & \textbf{0.651} [0.578, 0.724] & 0.519 & 0.638 & 0.536 & 0.503 \\
 \quad C2 & 0.641 $\pm$ 0.059 & 0.641 [0.572, 0.710] & 0.512 & 0.616 & 0.507 & 0.517 \\
 \quad C3 & 0.648 $\pm$ 0.055 & 0.646 [0.572, 0.721] & 0.502 & 0.606 & 0.493 & 0.510 \\
 \quad C4 & 0.565 $\pm$ 0.079 & 0.530 [0.473, 0.587] & 0.386 & 0.529 & 0.392 & 0.381 \\
 \quad C5 & 0.563 $\pm$ 0.024 & 0.581 [0.521, 0.644] & 0.456 & 0.571 & 0.450 & 0.463 \\
 \multicolumn{7}{l}{\textit{Calcificaciones}} \\
 \quad C1 & 0.742 $\pm$ 0.038 & 0.769 [0.694, 0.836] & 0.665 & 0.666 & 0.551 & 0.837 \\
-\quad C2 & 0.758 $\pm$ 0.046 & 0.788 [0.719, 0.851] & 0.669 & 0.693 & 0.584 & 0.783 \\
+\quad C2 & \textbf{0.758} $\pm$ 0.046 & \textbf{0.788} [0.719, 0.851] & 0.669 & 0.693 & 0.584 & 0.783 \\
 \quad C3 & 0.739 $\pm$ 0.036 & 0.758 [0.685, 0.826] & 0.652 & 0.653 & 0.541 & 0.822 \\
 \quad C4 & 0.640 $\pm$ 0.041 & 0.633 [0.558, 0.700] & 0.504 & 0.607 & 0.504 & 0.504 \\
 \quad C5 & 0.667 $\pm$ 0.035 & 0.652 [0.571, 0.725] & 0.565 & 0.571 & 0.472 & 0.705 \\
@@ -25,5 +25,5 @@ Condición & AUC en VC & AUC en prueba [IC 95\,\%] & F1 & Exactitud & Precisión
 \end{tabular}
 \end{adjustbox}
 \par\smallskip
-\parbox{0.95\linewidth}{\footnotesize VC: media $\pm$ desviación estándar sobre los 5 folds de M4. Prueba: el conjunto oficial, usado una sola vez por modelo; el intervalo es un \textit{bootstrap} por paciente con 2{,}000 réplicas. Umbral de 0.5 para F1, exactitud, precisión y sensibilidad.}
+\parbox{0.95\linewidth}{\footnotesize VC: media $\pm$ desviación estándar sobre los 5 folds de M4. Prueba: el conjunto oficial, usado una sola vez por modelo; el intervalo es un \textit{bootstrap} por paciente con 2{,}000 réplicas. Umbral de 0.5 para F1, exactitud, precisión y sensibilidad. En negritas, el mayor AUC de cada subconjunto, la métrica principal.}
 \end{table}

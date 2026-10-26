@@ -19,6 +19,39 @@ en menos de 0.2\,s, frente a 13 a 16\,s de los dos mapas cuánticos simulados co
 
 \input{tablas/resumen_resultados}
 
+% Añadido el 2026-10-23: vista de conjunto de todas las comparaciones del trabajo, una por experimento.
+La Tabla~\ref{tab:mapa_comparaciones} ordena por experimento todas las comparaciones del trabajo: qué
+pregunta respondió cada una, qué se comparó, el resultado principal y su lectura. En la tarea diagnóstica,
+lo clásico va por delante o, en el mejor caso para lo cuántico, empata; lo cuántico solo gana con un
+etiquetado diseñado a partir de su propia geometría.
+
+% fuente: H-039, H-042, H-043, H-035, H-044, H-047, H-053, H-054, H-056, H-050, H-048, H-057; 6_alineamiento_kernel.csv, 7_test.csv, X1_auc_por_condicion.csv, X4_test.csv, X6_test.csv, X7_resumen.csv, X8_test.csv, X10_test.csv, X11_transicion.csv, X6_etiquetas_construidas.csv
+\begin{table}[htbp]
+\centering
+\small
+\caption{Mapa de las comparaciones del trabajo. AUC-ROC en el conjunto de prueba salvo que se indique validación cruzada (VC); masas / calcificaciones. En negritas, el mejor valor de cada comparación.}
+\label{tab:mapa_comparaciones}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{p{0.1\linewidth} p{0.2\linewidth} p{0.2\linewidth} p{0.27\linewidth} p{0.17\linewidth}}
+\toprule
+\textbf{Exp.} & \textbf{Pregunta} & \textbf{Comparación} & \textbf{Resultado} & \textbf{Lectura} \\
+\midrule
+M6 (\S\ref{sec:separabilidad_representaciones}) & ¿Separan mejor las clases las representaciones cuánticas? & Métricas de kernel y de representación en C1--C5 & Exceso de KTA de 0.003 a 0.007 en C4 y C5, frente a \textbf{0.049} / \textbf{0.151} del RBF & Clásicas por delante en todas las métricas \\
+M7 (\S\ref{sec:rendimiento_clasificacion}) & ¿Clasifica mejor el mismo perceptrón sobre C4 o C5? & MLP $12 \to 32 \to 16 \to 1$ en C1--C5 & C1: \textbf{0.651} / \textbf{0.769}; C4: 0.530 / 0.633; C5: 0.581 / 0.652 & Clásicas, de 0.07 a 0.14 por delante \\
+M7, sensibilidad & ¿Depende de la red, la semilla, \texttt{reps} o $k$? & Semillas, redes 16-8 y 64-32, sin estandarizar, 200 épocas, \texttt{reps} = 2, $k = 8$ & La semilla mueve el AUC como mucho 0.039; la brecha se mantiene & Sin cambio \\
+X1 & ¿Cuánto cuesta usar 12 de las 67 características? & Regresión logística con 67 y con 12 & \textbf{0.693} / \textbf{0.800} frente a 0.650 / 0.758 (VC) & Pérdida de 2 a 4 puntos, igual para todas las condiciones \\
+X4 & ¿Se pierde la información al codificar o al leer? & QSVM de C4, SVM RBF y MLP sobre $\langle Z_i\rangle$ & 0.628 / 0.759; \textbf{0.649} / \textbf{0.769}; 0.530 / 0.633 & Empate entre QSVM y SVM; la pérdida está en la lectura \\
+X6 & ¿Gana algún kernel cuántico con la misma búsqueda en ambos lados? & 28 candidatos cuánticos frente a 12 clásicos, búsqueda anidada & \textbf{0.656} frente a 0.652 / 0.755 frente a \textbf{0.760} & Empate \\
+X7 & ¿Sesgó el sorteo de $\boldsymbol\theta$ el resultado? & Diez sorteos de $\boldsymbol\theta$ & Ninguno alcanza a C1; déficit de 0.03 a 0.18 (VC) & Clásicas \\
+X8 & ¿Ayuda entrenar $\boldsymbol\theta$? & $\boldsymbol\theta$ entrenado frente a fijo & Gana de $+0.003$ a $+0.041$; sigue entre $-0.066$ y $-0.118$ frente a C1 & Clásicas \\
+X10 & ¿Cambia con árboles o con tres \textit{folds}? & Árboles, \textit{random forest} y XGBoost en C1--C5; MLP con tres \textit{folds} & \textit{Random forest}, C1: \textbf{0.636} / \textbf{0.768}; C4: 0.591 / 0.651; C5: 0.614 / 0.624 & Clásicas; en masas, empate con los ensambles \\
+M8 (\S\ref{sec:comparacion_global}) & ¿Cuánto separan los descriptores del radiólogo? & Regresión logística sobre forma y margen, o tipo y distribución & \textbf{0.872} / \textbf{0.825} (VC) & Referencia clínica, no competidor \\
+X6, X11 & ¿Existe una tarea con ventaja cuántica sobre estas lesiones? & QSVM proyectado frente al mejor clásico con el etiquetado diseñado & \textbf{0.998} frente a 0.857 / \textbf{0.994} frente a 0.876 (VC); $\alpha^{*}$ de 0.4 a 0.7 & Cuántico, solo con el etiquetado diseñado \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
 A fin de articular los hallazgos empíricos obtenidos a lo largo del protocolo experimental con los compromisos
 planteados al inicio de la investigación, la Tabla~\ref{tab:sintesis_objetivos_especificos} presenta una síntesis
 estructurada por cada uno de los seis objetivos específicos (OE-1 a OE-6) formulados en el planteamiento del trabajo.

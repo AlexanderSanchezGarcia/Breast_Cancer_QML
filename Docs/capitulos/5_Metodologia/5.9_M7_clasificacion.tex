@@ -25,7 +25,9 @@ Cada condición se evalúa con validación cruzada de cinco \textit{folds}, los 
 La incertidumbre del conjunto de prueba se estima con 2\,000 remuestreos \textit{bootstrap} por
 paciente, pareados entre condiciones. El selector y el escalador de M4 se ajustan una sola vez con todo
 el entrenamiento, no dentro de cada \textit{fold}, así que la validación cruzada es algo optimista;
-volver a seleccionar dentro de cada \textit{fold} cambia el AUC en 0.006 o menos.
+volver a seleccionar dentro de cada \textit{fold} cambia el AUC en 0.006 o menos. La validación cruzada se
+repitió con tres \textit{folds} agrupados por paciente como análisis de sensibilidad al número de
+\textit{folds} (sección~\ref{sec:modulo4}).
 
 Los parámetros $\boldsymbol\theta$ del circuito no se entrenan. La razón principal es de validez
 interna: C2 y C3 son transformaciones que no ven las etiquetas, y si C4 y C5 ajustaran

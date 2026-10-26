@@ -148,3 +148,33 @@ independientes: el análisis de separabilidad (M6), que mide la geometría de ca
 sin entrenar ningún clasificador, y la clasificación (M7), que entrena el mismo perceptrón
 multicapa sobre cada una. El módulo M8 compara ambos resultados. La separabilidad no alimenta a la
 clasificación: ambas consumen la salida de M5, y su relación es precisamente lo que M8 evalúa.
+
+% Añadido el 2026-10-23 (D-036, D-038, D-043, D-044): mapa de los clasificadores del reporte.
+El diseño principal usa un solo clasificador, el perceptrón multicapa de M7, para que las cinco
+condiciones se comparen con el mismo modelo. Los experimentos complementarios
+(sección~\ref{sec:experimentos_complementarios}) emplean otros clasificadores para comprobar que la
+conclusión no depende de esa elección. La tabla~\ref{tab:clasificadores} los reúne: cómo decide cada uno,
+su configuración en este trabajo y dónde se usa.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Clasificadores empleados en el trabajo.}
+\label{tab:clasificadores}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{p{0.17\linewidth} p{0.33\linewidth} p{0.3\linewidth} p{0.13\linewidth}}
+\toprule
+\textbf{Clasificador} & \textbf{Cómo decide} & \textbf{Configuración} & \textbf{Dónde} \\
+\midrule
+Perceptrón multicapa (MLP) & Combina las entradas en capas de neuronas con activación ReLU; los pesos se aprenden por descenso de gradiente & $12 \to 32 \to 16 \to 1$, Adam, parada temprana; el mismo modelo en C1--C5 & M7; referencia en X7, X8 y X10 \\
+MLP con $\boldsymbol\theta$ entrenado & El mismo perceptrón, que ajusta además los parámetros del \textit{ansatz} & MLP de M7 y los 24 parámetros de \texttt{real\_amplitudes} & X8 \\
+Regresión logística & Combinación lineal de las entradas seguida de una sigmoide & Pesos por clase balanceados & X1; descriptores del radiólogo (M8) \\
+Máquina de vectores de soporte (SVM) & Frontera de máximo margen en el espacio que define un kernel de similitud entre lesiones (sección~\ref{sec:svm}) & Kernels lineal, polinomiales y gaussianos; $C = 1$ & X4, X6 y X11 \\
+SVM con kernel cuántico (QSVM) & La misma frontera, con la similitud medida por el circuito: la fidelidad entre estados o el kernel proyectado (sección~\ref{sec:qsvm}) & Kernels de C4 y C5, mapas ZZ y kernel proyectado; $C = 1$ & X4, X6 y X11 \\
+Árbol de decisión & Preguntas sucesivas del tipo ``¿la entrada $j$ supera el umbral $t$?'' hasta una hoja, que da la proporción de malignas de su región & Detenido por profundidad, por pureza del nodo o por poda de costo-complejidad & X10 \\
+\textit{Random forest} & Promedia muchos árboles, cada uno entrenado sobre una muestra \textit{bootstrap} y con un subconjunto aleatorio de entradas en cada corte & 500 árboles & X1 y X10 \\
+XGBoost & Suma árboles poco profundos, cada uno ajustado a los errores de los anteriores (\textit{gradient boosting}) & 100 a 300 árboles de profundidad 2 a 6 & X10 y X11 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

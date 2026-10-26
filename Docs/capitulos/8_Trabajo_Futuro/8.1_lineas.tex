@@ -52,6 +52,14 @@ kernel recuperan y cuántos disparos exigen. Esta línea conserva la ventaja pr�
 que calcula la representación una sola vez, y en \textit{hardware} evita estimar un kernel cuyas entradas
 se concentran cerca de cero.
 
+% fuente: H-043, H-056, D-043; X10_test_diferencias.csv
+El lector de esos valores también puede mejorar. El perceptrón del Módulo~7 se fijó de antemano con dos
+capas ocultas, y las variantes de 16-8 y 64-32 neuronas no cambiaron el resultado. En masas, sin embargo,
+el \textit{random forest} y XGBoost extrajeron de los valores esperados de C4 unos 0.06 de AUC más que el
+perceptrón, sin alcanzar a C1. Queda por evaluar si un perceptrón más profundo y regularizado, por ejemplo
+con \textit{dropout}, recupera esa información, con la misma búsqueda anidada para las cinco condiciones
+que se usó con los árboles.
+
 \subsection{Ejecución en procesadores cuánticos}
 \label{sec:futuro_hardware}
 

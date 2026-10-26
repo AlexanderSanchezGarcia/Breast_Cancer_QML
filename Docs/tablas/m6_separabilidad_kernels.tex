@@ -7,19 +7,19 @@
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{l r r r r r}
 \toprule
-Kernel & KTA centrada & Exceso sobre permutación & $p$ & $d_{\mathrm{eff}}$ (de 200) & $g$ regularizada \\
+Kernel & KTA centrada & Exceso sobre permutación $\uparrow$ & $p$ & $d_{\mathrm{eff}}$ (de 200) & $g$ regularizada \\
 \midrule
 \multicolumn{6}{l}{\textit{Masas}} \\
-\quad RBF (clásico) & 0.059 & 0.049 & $<$0.001 & 2.8 & — \\
+\quad RBF (clásico) & 0.059 & \textbf{0.049} & $<$0.001 & 2.8 & — \\
 \quad C4, ZZ & 0.073 & 0.003 & 0.002 & 184.0 & 1.433 \\
 \quad C5, Y--ZZ & 0.075 & 0.005 & 0.003 & 171.3 & 1.511 \\
 \multicolumn{6}{l}{\textit{Calcificaciones}} \\
-\quad RBF (clásico) & 0.161 & 0.151 & $<$0.001 & 2.6 & — \\
+\quad RBF (clásico) & 0.161 & \textbf{0.151} & $<$0.001 & 2.6 & — \\
 \quad C4, ZZ & 0.077 & 0.006 & $<$0.001 & 187.7 & 1.400 \\
 \quad C5, Y--ZZ & 0.075 & 0.007 & 0.003 & 167.6 & 1.701 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
 \par\smallskip
-\parbox{0.95\linewidth}{\footnotesize El exceso es la KTA centrada menos la media de 1{,}000 permutaciones de etiquetas; $p$ es unilateral. $g$ es el mínimo de la \textit{geometric difference} regularizada sobre la batería de kernels clásicos del Apéndice L.3 de Huang et al.\; $\sqrt{N} \approx 14$.}
+\parbox{0.95\linewidth}{\footnotesize El exceso es la KTA centrada menos la media de 1{,}000 permutaciones de etiquetas; $p$ es unilateral. $g$ es el mínimo de la \textit{geometric difference} regularizada sobre la batería de kernels clásicos del Apéndice L.3 de Huang et al.\; $\sqrt{N} \approx 14$. En negritas, el mayor exceso de cada subconjunto; la KTA cruda no es comparable entre kernels.}
 \end{table}

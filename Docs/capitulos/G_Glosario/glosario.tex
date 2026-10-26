@@ -2,12 +2,15 @@
 % Borrador de G1 (auditoría nocturna 2026-10-18/19), revisado el 2026-10-19: se quitaron tres términos que el
 % reporte no usa (decoherencia, qubit lógico, no clonación) y se corrigieron dimensión efectiva, heurística de
 % la mediana, ansatz y los nombres de las funciones de Qiskit. Pendiente de revisión del autor.
+% 2026-10-23: árbol de decisión, etiquetado diseñado, poda, random forest y XGBoost (X10, X11).
 \phantomsection
 \section*{Glosario}
 \addcontentsline{toc}{section}{Glosario}
 
 \begin{description}
   \item[Ansatz.] Subcircuito cuántico parametrizado $W(\boldsymbol{\theta})$ que aplica una transformación variacional sobre el estado generado por el mapa de características. En este reporte se utiliza \texttt{real\_amplitudes}: una capa de rotaciones $R_Y$ seguida de bloques con una cadena de CNOT entre qubits vecinos y nuevas rotaciones $R_Y$; sus 24 parámetros se fijan con una semilla y no se entrenan (sección~3.2, ec.~\ref{eq:real_amplitudes}).
+
+  \item[Árbol de decisión (\textit{decision tree}).] Clasificador que divide el espacio de entrada con preguntas sucesivas sobre una sola variable (``¿la entrada $j$ supera el umbral $t$?'') hasta llegar a una hoja, cuya proporción de casos positivos es la predicción. Su crecimiento se detiene por profundidad máxima, por pureza del nodo o por poda (experimento X10; tabla~\ref{tab:clasificadores}, sección~\ref{sec:rendimiento_clasificacion}).
 
   \item[AUC-ROC (\textit{Area Under the Receiver Operating Characteristic Curve} / área bajo la curva ROC).] Métrica de evaluación para clasificación binaria que cuantifica la probabilidad de que el clasificador asigne una puntuación mayor a una instancia positiva seleccionada al azar que a una negativa, evaluada a través de todos los posibles umbrales de decisión (sección~3.4, ec.~\ref{eq:auc_roc}).
 
@@ -47,6 +50,8 @@
   \item[Escalado por cuantiles (\textit{QuantileTransformer}).] Transformación no lineal no paramétrica que mapea las características empíricas a una distribución uniforme acotada en $[0, \pi]$, garantizando un rango intercuartílico constante de $\pi/2$ y evitando la concentración espuria en ángulos extremos inducida por valores atípicos (secciones~\ref{sec:modulo4}, \ref{sec:datos_caracteristicas_seleccion}).
 
   \item[Esfera de Bloch (\textit{Bloch sphere}).] Representación geométrica del espacio de estados puros de un qubit en la superficie de una esfera tridimensional de radio unitario, parametrizada por los ángulos de colatitud $\theta \in [0, \pi]$ y azimut $\varphi \in [0, 2\pi)$ (sección~3.1, ec.~\ref{eq:bloch}, fig.~\ref{fig:bloch}).
+
+  \item[Etiquetado diseñado (\textit{engineered labels}).] Etiquetado construido según Huang et al. a partir de la geometría de un kernel cuántico y del kernel clásico más cercano, de modo que favorezca al primero; se obtiene del vector propio principal de la matriz que define la diferencia geométrica y se binariza por la mediana. No usa la patología confirmada: en este trabajo funciona como control positivo del protocolo (experimentos X6 y X11; sección~\ref{sec:qsvm_ventaja}).
 
   \item[Exactitud (\textit{accuracy}).] Proporción de predicciones clasificadas correctamente por el modelo sobre el total de instancias evaluadas, expresada como $(\mathrm{TP} + \mathrm{TN}) / (\mathrm{TP} + \mathrm{TN} + \mathrm{FP} + \mathrm{FN})$ (sección~3.4, ec.~\ref{eq:accuracy}).
 
@@ -96,6 +101,8 @@
 
   \item[PCA lineal (\textit{Principal Component Analysis} / análisis de componentes principales).] Método algebraico no supervisado que proyecta los datos sobre los autovectores ortogonales de la matriz de covarianza muestral, adoptado en este trabajo como condición C2 para actuar como control nulo lineal estricto frente a las transformaciones no lineales (sección~\ref{sec:pca}, ec.~\ref{eq:pca_covarianza}).
 
+  \item[Poda (\textit{pruning}).] Procedimiento que limita el tamaño de un árbol de decisión para evitar que memorice el entrenamiento. La pre-poda detiene el crecimiento por profundidad máxima o por pureza del nodo; la poda por costo-complejidad hace crecer el árbol completo y elimina las ramas cuya ganancia no compensa una penalización por hoja (sección~\ref{sec:rendimiento_clasificacion}, fig.~\ref{fig:x10_stopping}).
+
   \item[Ponderación de clases (\textit{class weighting}).] Ajuste en la función de costo por entropía cruzada binaria que pondera inversamente los errores de predicción por la prevalencia de cada clase, balanceando el gradiente en presencia de asimetrías muestrales clínicas (sección~3.3, ecs.~\ref{eq:weighted_bce}, \ref{eq:class_weights}).
 
   \item[Precisión (\textit{precision} / valor predictivo positivo).] Razón entre los casos verdaderos positivos y el total de predicciones positivas formuladas por el modelo ($\mathrm{TP} / (\mathrm{TP} + \mathrm{FP})$), indicativa de la confiabilidad ante una clasificación de sospecha maligna (sección~3.4, ec.~\ref{eq:precision}).
@@ -108,6 +115,8 @@
 
 
   \item[Radiómica (\textit{radiomics}).] Enfoque bioinformático orientado a la extracción masiva, objetiva y reproducible de descriptores cuantitativos de alta dimensión a partir de imágenes médicas, con el fin de cuantificar patrones histológicos y morfológicos del tumor (secciones~\ref{sec:radiomica}, \ref{sec:modulo3}).
+
+  \item[\textit{Random forest} (bosque aleatorio).] Conjunto de árboles de decisión, cada uno entrenado sobre una muestra \textit{bootstrap} del entrenamiento y con un subconjunto aleatorio de variables en cada corte, cuyas predicciones se promedian para reducir la varianza de un árbol individual (experimentos X1 y X10; tabla~\ref{tab:clasificadores}).
 
   \item[Razón multivariante de Fisher (\textit{Fisher's multivariate discriminant ratio}).] Métrica de separabilidad de clases linealmente invariante ante transformaciones afines invertibles, definida como la distancia de Mahalanobis al cuadrado entre los vectores de medias muestrales de las clases normalizada por la covarianza combinada (sección~\ref{sec:metricas}, ec.~\ref{eq:fisher_multivariate}).
 
@@ -137,6 +146,8 @@
   \item[Valor F1 (\textit{F1-score}).] Media armónica que combina precisión y exhaustividad diagnóstica en un indicador escalar consolidado ($2 \cdot (\mathrm{Precision} \cdot \mathrm{Recall}) / (\mathrm{Precision} + \mathrm{Recall})$), especialmente apropiado bajo distribuciones con desbalance de clases (sección~3.4, ec.~\ref{eq:f1}).
 
   \item[Ventaja cuántica (\textit{quantum advantage}).] Superioridad empírica o teórica demostrable de un algoritmo cuántico frente a cualquier alternativa clásica óptima en términos de complejidad o precisión; en el reporte se delimita su viabilidad sobre datos clásicos reales mediante barridos de kernels y cotas de diferencia geométrica (secciones~\ref{sec:limites_ventaja}, \ref{sec:qsvm_ventaja}).
+
+  \item[XGBoost (\textit{gradient boosting}).] Implementación de \textit{gradient boosting}: suma de árboles de decisión poco profundos en la que cada árbol se ajusta a los errores de los anteriores. Admite restricciones de interacción, que en el experimento X10 se usan para obtener un modelo aditivo, sin interacciones entre variables (tabla~\ref{tab:clasificadores}, sección~\ref{sec:rendimiento_clasificacion}).
 
   \item[\texttt{zz\_feature\_map}.] Función de Qiskit~2.x que construye el mapa de características de segundo orden que codifica productos cruzados de pares de características clásicas mediante interacciones de compuertas $R_{ZZ}$ precedidas de compuertas Hadamard, asignado a la condición C4 (sección~\ref{sec:zzfeaturemap}, ec.~\ref{eq:zzfeaturemap}).
 \end{description}

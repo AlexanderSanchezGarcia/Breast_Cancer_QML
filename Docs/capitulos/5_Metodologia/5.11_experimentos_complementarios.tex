@@ -1,7 +1,7 @@
 % ---
-% Experimentos complementarios (X1--X9) y estudios de caracterización del simulador (B1--B3).
+% Experimentos complementarios (X1--X11) y estudios de caracterización del simulador (B1--B3).
 % Sección metodológica previa al reporte de resultados.
-% Entradas que lo respaldan: H-018, H-019, H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-051, H-052, H-053, H-054, H-055, D-035, D-038, D-042.
+% Entradas que lo respaldan: H-018, H-019, H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-051, H-052, H-053, H-054, H-055, H-056, H-057, D-035, D-038, D-042, D-043, D-044.
 % ---
 
 % Las rutas en \texttt no se dividen: el estiramiento extra evita que desborden el margen.
@@ -11,8 +11,8 @@
 \label{sec:experimentos_complementarios}
 
 Con el propósito de evaluar la solidez de las conclusiones obtenidas en el protocolo principal frente a hipótesis
-alternativas o variantes metodológicas que un lector o evaluador razonable plantearía, se diseñó una batería de nueve
-experimentos complementarios (denominados X1 a X9). Estos experimentos no alteran el diseño experimental básico ni
+alternativas o variantes metodológicas que un lector o evaluador razonable plantearía, se diseñó una batería de once
+experimentos complementarios (denominados X1 a X11). Estos experimentos no alteran el diseño experimental básico ni
 los puntos de decisión congelados para el pipeline principal ($k = 12$, $reps = 1$, Arquitectura~B con vector de
 parámetros $\boldsymbol\theta$ fijo con semilla 42 y particiones independientes por paciente), sino que someten a
 prueba la sensibilidad de los hallazgos ante variaciones controladas en la selección de características, la dimensionalidad
@@ -21,11 +21,11 @@ La Tabla~\ref{tab:resumen_experimentos_complementarios} resume las característi
 los párrafos siguientes detallan su formulación metodológica. Los resultados cuantitativos derivados de estas pruebas se
 reportan en el Capítulo~\ref{sec:resultados}.
 
-% fuente: H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-053, H-054, H-055, D-035, D-038, D-042
+% fuente: H-035, H-036, H-041, H-044, H-045, H-046, H-047, H-048, H-053, H-054, H-055, H-056, H-057, D-035, D-038, D-042, D-043, D-044
 \begin{table}[htbp]
 \centering
 \small
-\caption{Resumen de diseño de los experimentos complementarios X1 a X9.}
+\caption{Resumen de diseño de los experimentos complementarios X1 a X11.}
 \label{tab:resumen_experimentos_complementarios}
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{p{0.06\linewidth} p{0.22\linewidth} p{0.28\linewidth} p{0.22\linewidth} p{0.18\linewidth} p{0.14\linewidth}}
@@ -41,6 +41,8 @@ X6 & \texttt{X6\_Searching\_}\allowbreak\texttt{for\_Advantage} & ¿Supera algú
 X7 & \texttt{X7\_Theta\_}\allowbreak\texttt{Draws} & ¿Introduce sesgo el sorteo único de $\boldsymbol\theta$? & Varía semilla de $\boldsymbol\theta$ (10 sorteos); fijo MLP. & Variabilidad de MLP y condiciones clásicas. & No (solo validación cruzada). \\
 X8 & \texttt{X8\_Trained\_}\allowbreak\texttt{Theta} & ¿Mejora la representación al entrenar $\boldsymbol\theta$? & Varía optimización de $\boldsymbol\theta$ (entrenado vs fijo); fijo MLP. & Modelo con $\boldsymbol\theta$ fijo de M7 y C1 crudo. & Sí (una vez por subconjunto y mapa). \\
 X9 & \texttt{X9\_Sample\_}\allowbreak\texttt{Size} & ¿Depende la separabilidad de la submuestra de 200 lesiones? & Varía la muestra (20 submuestras y todo el entrenamiento); fijas las métricas del M6. & Submuestra del M6 y kernel RBF. & No (solo entrenamiento). \\
+X10 & \texttt{X10\_Tree\_}\allowbreak\texttt{Classifiers} & ¿Cambia la conclusión con clasificadores de árboles o con tres \textit{folds}? & Varía el clasificador (árboles, \textit{random forest}, XGBoost) y el número de \textit{folds}; fijas las representaciones C1--C5. & Perceptrón de M7 sobre las mismas representaciones; XGBoost sin interacciones. & Sí (una vez por clasificador y representación). \\
+X11 & \texttt{X11\_Designed\_}\allowbreak\texttt{Label\_Transition} & ¿Cuánta estructura cuántica deben tener las etiquetas para que aparezca la ventaja? & Varía la fracción $\alpha$ de etiquetas diseñadas (0 a 1, cinco máscaras); fijos tres kernels cuánticos. & Mejor clasificador clásico con búsqueda anidada (SVM y XGBoost). & No (solo validación cruzada). \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -145,6 +147,36 @@ análisis principal, y sobre la totalidad del conjunto de entrenamiento, cuyo ke
 vectores de estado. Cuantifica además el número de circuitos y de disparos que exigiría cada tamaño con el protocolo
 \textit{compute-uncompute}. No utiliza el conjunto de prueba. Sus resultados se reportan en la
 Sección~\ref{sec:separabilidad_representaciones}.
+
+% fuente: H-056, D-043
+\textbf{Experimento X10: Clasificadores de árboles y número de \textit{folds}.} Implementado en
+\texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X10\_Tree\_Classifiers.ipynb}, responde a dos preguntas
+planteadas durante la revisión del trabajo: si la conclusión del Módulo~7 depende de haber usado un perceptrón multicapa, y
+si depende del número de \textit{folds}. Sobre las mismas cinco representaciones se evalúan cinco clasificadores de árboles
+(tabla~\ref{tab:clasificadores}): un árbol de decisión con tres criterios de parada, cada uno como modelo aparte (profundidad
+máxima de 1 a 12; pureza del nodo, deteniendo la predicción en el primer nodo cuya clase mayoritaria alcance una fracción
+$p$ entre 0.55 y 1; y poda por costo-complejidad), un \textit{random forest} de 500 árboles y XGBoost. Los hiperparámetros
+se eligen por validación cruzada anidada, con los \textit{folds} de M4 como externos y tres \textit{folds} internos por paciente,
+con la misma malla para las cinco representaciones. La pregunta principal, fijada antes de correr, compara cada representación
+cuántica con C1 dentro del mismo clasificador; comparar un árbol sobre C4 con el perceptrón sobre C1 mezclaría dos cambios. Para
+explicar el resultado se registran las curvas de entrenamiento y validación de cada criterio de parada, la importancia por
+permutación y un XGBoost restringido a una característica por árbol, que separa la ganancia por cortes no lineales de la ganancia
+por interacciones; un control sintético con etiquetas de interacción pura comprueba que esta prueba detecta interacciones. Por
+último, el perceptrón del Módulo~7 se reevalúa con tres \textit{folds} agrupados por paciente. Cada modelo se evalúa una sola vez
+en el conjunto de prueba. Los resultados se reportan en la sección~\ref{sec:rendimiento_clasificacion}.
+
+% fuente: H-057, D-044
+\textbf{Experimento X11: Transición entre las etiquetas diagnósticas y un etiquetado diseñado.} Desarrollado en
+\texttt{Code/}\allowbreak\texttt{experiments/}\allowbreak\texttt{X11\_Designed\_Label\_Transition.ipynb}, extiende el control
+del experimento X6. Aquel midió dos extremos, las etiquetas diagnósticas y el etiquetado diseñado según Huang et al.
+\cite{huang2021power}; este recorre el camino entre ambos para medir cuánta estructura alineada con el kernel cuántico necesita
+una tarea para que aparezca una ventaja. Con los tres kernels de X6 (mapa ZZ completo, mapa ZZ lineal y kernel proyectado),
+cada lesión conserva su etiqueta diagnóstica o toma la diseñada según una máscara aleatoria anidada: el parámetro $\alpha$, de 0
+a 1, es la fracción de lesiones con etiqueta diseñada, y se promedian cinco máscaras. El lado cuántico es un QSVM con $C = 1$,
+sin ajuste; el clásico elige por validación cruzada anidada entre SVM lineal, polinomiales, gaussianos y XGBoost, una asimetría
+que favorece a lo clásico. El umbral $\alpha^{*}$, fijado antes de correr, es el menor $\alpha$ cuyo intervalo para la diferencia
+queda por encima de cero. Las etiquetas intermedias son artificiales: el experimento es un instrumento de medida y no una tarea
+clínica, y no utiliza el conjunto de prueba. Sus resultados se presentan en la sección~\ref{sec:qsvm_ventaja}.
 
 % fuente: H-018, H-019, H-051, H-052
 \textbf{Estudios de caracterización del simulador cuántico (B1--B3).} De forma complementaria a los experimentos sobre datos radiómicos,

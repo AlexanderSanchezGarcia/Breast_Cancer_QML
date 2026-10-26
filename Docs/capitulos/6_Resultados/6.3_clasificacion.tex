@@ -77,3 +77,31 @@ En términos de viabilidad computacional, la obtención del gradiente exacto med
 \caption{Desempeño de clasificación al entrenar los parámetros variacionales $\boldsymbol\theta$ junto con la red neuronal en comparación con $\boldsymbol\theta$ fijo, la referencia clásica C1 y el clasificador de kernel cuántico.}
 \label{fig:x8_trained_theta}
 \end{figure}
+
+% fuente: H-056, D-043; X10_test.csv, X10_test_diferencias.csv
+Para comprobar si la conclusión depende del perceptrón multicapa, el experimento X10 repitió la clasificación con árboles de decisión, \textit{random forest} y XGBoost sobre las mismas cinco representaciones (cuadro~\ref{tab:x10_arboles} y figura~\ref{fig:x10_auc}). Con el mismo clasificador, ninguna representación cuántica superó a C1 en el conjunto de prueba: ninguna de las 24 comparaciones de C4 o C5 frente a C1, con seis clasificadores en dos subconjuntos, tuvo un intervalo pareado por encima de cero. En calcificaciones, C4 y C5 quedaron significativamente por debajo de C1 con los cinco clasificadores de árboles, entre 0.117 y 0.222 de AUC. En masas, los ensambles redujeron la brecha hasta hacerla no significativa: con \textit{random forest}, la diferencia frente a C1 fue de $-0.044$ [$-0.107$, $0.019$] en C4 y de $-0.020$ [$-0.079$, $0.033$] en C5; con XGBoost, de $-0.039$ [$-0.107$, $0.030$] y $-0.018$ [$-0.072$, $0.032$]. La reducción se debe a que C4 y C5 suben, no a que C1 baje: sobre C4, el \textit{random forest} y XGBoost superaron al perceptrón en $+0.061$ [$0.010$, $0.115$] y $+0.060$ [$0.006$, $0.118$], mientras que sobre C1 no lo mejoraron ($-0.016$ y $-0.022$, con intervalos que contienen el cero). Es coherente con la sección~\ref{sec:qsvm_ventaja}: parte de la información que el perceptrón no extrae de los valores esperados $\langle Z_i\rangle$ la recupera otro clasificador, sin alcanzar a C1. Aunque un árbol, que corta un eje a la vez, no es invariante a la rotación de C2, la diferencia entre C2 y C1 no fue significativa con ningún clasificador (entre $-0.040$ y $+0.033$).
+
+\input{tablas/x10_arboles}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{Figures/X10_auc.png}
+\caption{AUC-ROC en validación cruzada (círculos) y en el conjunto de prueba con su intervalo \textit{bootstrap} por paciente (rombos) de cada clasificador sobre cada representación (experimento X10).}
+\label{fig:x10_auc}
+\end{figure}
+
+% fuente: H-056; X10_aditivo.csv, X10_control_positivo.csv, X10_importancia.csv
+La ganancia de los árboles no proviene de modelar interacciones entre las entradas. Un XGBoost restringido a una sola entrada por árbol, que solo puede sumar funciones de cada entrada por separado, rindió en validación cruzada casi lo mismo que el completo: en masas, las interacciones aportaron $+0.018$ [$0.007$, $0.029$] en C1 y $+0.021$ [$0.005$, $0.037$] en C3, y nada en C4 ni en C5 ($+0.006$, con intervalos que contienen el cero); en calcificaciones, su aporte fue nulo salvo en C5 ($+0.045$ [$0.023$, $0.065$]), donde aun así XGBoost quedó por debajo de C1. Un control sintético validó la prueba: con una etiqueta de interacción pura, el modelo restringido obtuvo 0.547 y el completo 1.000. En masas, la importancia por permutación sobre C1 está dominada por el máximo de intensidad (\texttt{firstorder\_Maximum}, cuya permutación reduce el AUC del \textit{random forest} en 0.134), y un árbol de profundidad 3 decide solo con características de intensidad de primer orden, lo que refuerza la limitación sobre las intensidades no calibradas (sección~\ref{sec:limitaciones_conclusiones}).
+
+% fuente: H-056; X10_curvas_parada.csv, X10_tamano_arboles.csv
+La figura~\ref{fig:x10_stopping} muestra cómo se detuvo cada árbol. Al aumentar la profundidad máxima, el AUC de entrenamiento crece hasta 0.987 en masas y 0.982 en calcificaciones con 12 niveles, mientras que el de validación alcanza su máximo entre 2 y 5 niveles y después cae: el árbol empieza a memorizar las lesiones de entrenamiento. La búsqueda anidada eligió árboles de 2 a 6 niveles con el criterio de profundidad y de 2 a 5 con la poda por costo-complejidad, salvo C2 en masas. La regla de pureza fue la menos estable, con umbrales de 0.55 a 0.85 en masas, y con los umbrales altos apenas poda. Un árbol con pocas hojas asigna pocas probabilidades distintas, entre 2 y 42 en el conjunto de prueba, de modo que su AUC se calcula con muchos empates; esto explica parte de su desventaja frente a los ensambles.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{Figures/X10_stopping_curves.png}
+\caption{AUC de entrenamiento (línea discontinua) y de validación (línea continua) de un árbol de decisión en función de cada criterio de parada: profundidad máxima, umbral de pureza del nodo y parámetro de poda por costo-complejidad. El punto marca el valor elegido por la búsqueda anidada para el modelo final.}
+\label{fig:x10_stopping}
+\end{figure}
+
+% fuente: H-056, D-043; X10_folds_mlp.csv, X10_balance_folds.csv
+Con tres \textit{folds} en lugar de cinco, la conclusión del Módulo~7 se mantiene. La diferencia entre C4 y C1 en validación cruzada pasa de $-0.087$ a $-0.123$ en masas y de $-0.102$ a $-0.119$ en calcificaciones, y la diferencia entre C5 y C1, de $-0.089$ a $-0.098$ y de $-0.075$ a $-0.092$. La elección de cinco \textit{folds} se justifica en la sección~\ref{sec:modulo4}.

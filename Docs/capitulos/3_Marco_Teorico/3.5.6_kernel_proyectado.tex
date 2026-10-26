@@ -27,5 +27,34 @@ Esta expresión tiene una lectura directa en términos de mediciones. El estado 
 \end{equation}
 El kernel proyectado es, por tanto, un kernel gaussiano con parámetro $\gamma/2$ sobre el vector de $3n$ valores esperados $\langle X_k \rangle$, $\langle Y_k \rangle$, $\langle Z_k \rangle$ de cada qubit. Se parece al \textit{quantum embedding} de la sección~\ref{sec:quantum_embedding}, con dos diferencias: aquí se leen los tres ejes de cada qubit, y se leen directamente sobre el estado del \textit{feature map}, sin \textit{ansatz}. Su parámetro $\gamma$ es un ancho de banda que se elige como en un kernel clásico.
 
+% Añadido el 2026-10-23 (D-043, D-044): resume las tres formas de usar el estado del feature map que
+% aparecen en el reporte. Las cifras de cada una están en la tabla tab:tres_lecturas de la sección 6.4.
+Con este kernel, el reporte usa el estado de un mismo \textit{feature map} de tres maneras, que
+difieren en qué se obtiene del estado y en cómo se comparan dos lesiones (tabla~\ref{tab:lecturas_estado}).
+La distinción importa porque las tres pueden llevar a conclusiones distintas sobre la misma codificación.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Tres formas de leer el estado $|\phi(\mathbf{x})\rangle$ de un mismo \textit{feature map}.}
+\label{tab:lecturas_estado}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{p{0.2\linewidth} p{0.25\linewidth} p{0.25\linewidth} p{0.25\linewidth}}
+\toprule
+ & \textbf{Valores esperados $\langle Z_i\rangle$} & \textbf{Kernel de fidelidad} & \textbf{Kernel proyectado} \\
+\midrule
+Circuito & \textit{Feature map} seguido del \textit{ansatz} $V(\boldsymbol\theta)$ & \textit{Feature map} & \textit{Feature map} \\
+Qué se obtiene & $\langle Z_i\rangle$ de cada qubit tras el \textit{ansatz} & El solapamiento $|\langle\phi(\mathbf{x})|\phi(\mathbf{x}')\rangle|^2$ entre los estados completos & $\langle X_k\rangle$, $\langle Y_k\rangle$ y $\langle Z_k\rangle$ de cada qubit \\
+Resultado & Un vector de $n$ valores por lesión & Un valor por par de lesiones & Un vector de $3n$ valores por lesión, comparado con un kernel gaussiano \\
+Escala de la comparación & Local: un eje por qubit & Global: las $2^n$ amplitudes & Local: los tres ejes de cada qubit \\
+Depende de $\boldsymbol\theta$ & Sí & No: $V(\boldsymbol\theta)$ se cancela & No: no hay \textit{ansatz} \\
+Clasificador & Perceptrón multicapa & SVM (QSVM) & SVM \\
+Medición en un procesador & Una base ($Z$) para todos los qubits & Un circuito \textit{compute-uncompute} por par de lesiones & Tres bases ($X$, $Y$, $Z$) \\
+Dónde se usa & C4 y C5 (M5 y M7) & M6, X4 y X6 & X6 y X11 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
 % respaldo: «In numerical experiments, we ﬁnd that the classical projection increases rather than decreases the geometric difference with classical ML models.» (huang2021power, p. 6)
 En los experimentos numéricos de Huang et al., esta proyección aumentó, en lugar de reducir, la \textit{geometric difference} con los modelos clásicos \cite{huang2021power}. En este trabajo se evalúa en un experimento complementario, sobre los estados del ZZFeatureMap con el factor de escala del diseño (sección~\ref{sec:qsvm_ventaja}).

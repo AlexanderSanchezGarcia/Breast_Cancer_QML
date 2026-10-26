@@ -1,0 +1,31 @@
+% Generado por Code/tools/tablas_latex.py desde X10_test.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{AUC-ROC en el conjunto de prueba de los clasificadores de árboles y del perceptrón multicapa sobre las cinco representaciones (experimento X10).}
+\label{tab:x10_arboles}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l r r r r r}
+\toprule
+Clasificador & C1 & C2 & C3 & C4 & C5 \\
+\midrule
+\multicolumn{6}{l}{\textit{Masas}} \\
+\quad Árbol, poda por profundidad & 0.624 & \textbf{0.637} & 0.578 & 0.554 & 0.549 \\
+\quad Árbol, poda por pureza & 0.584 & \textbf{0.616} & 0.604 & 0.505 & 0.561 \\
+\quad Árbol, poda por costo-complejidad & \textbf{0.617} & 0.603 & 0.614 & 0.553 & 0.563 \\
+\quad \textit{Random forest} & 0.636 & \textbf{0.650} & 0.604 & 0.591 & 0.614 \\
+\quad XGBoost & 0.630 & \textbf{0.641} & 0.596 & 0.590 & 0.611 \\
+\quad Perceptrón multicapa (M7) & \textbf{0.651} & 0.641 & 0.646 & 0.530 & 0.581 \\
+\multicolumn{6}{l}{\textit{Calcificaciones}} \\
+\quad Árbol, poda por profundidad & \textbf{0.755} & 0.731 & 0.689 & 0.582 & 0.600 \\
+\quad Árbol, poda por pureza & \textbf{0.757} & 0.718 & 0.693 & 0.587 & 0.534 \\
+\quad Árbol, poda por costo-complejidad & \textbf{0.768} & 0.739 & 0.699 & 0.589 & 0.600 \\
+\quad \textit{Random forest} & 0.768 & \textbf{0.794} & 0.756 & 0.651 & 0.624 \\
+\quad XGBoost & 0.779 & \textbf{0.790} & 0.749 & 0.640 & 0.621 \\
+\quad Perceptrón multicapa (M7) & 0.769 & \textbf{0.788} & 0.758 & 0.633 & 0.652 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize Hiperparámetros elegidos por validación cruzada anidada con los \textit{folds} de M4; un ajuste por clasificador y representación, evaluado una sola vez. Con el mismo clasificador, ninguna representación cuántica supera a C1 con un intervalo pareado por encima de cero (sección~\ref{sec:rendimiento_clasificacion}). En negritas, la mejor representación para cada clasificador.}
+\end{table}

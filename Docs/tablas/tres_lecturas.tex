@@ -1,0 +1,23 @@
+% Generado por Code/tools/tablas_latex.py desde X6_geometria.csv, X6_etiquetas_construidas.csv y 7_cv_resumen.csv. No editar a mano: volver a correr el script.
+\begin{table}[H]
+\centering
+\small
+\caption{Tres lecturas del estado del mapa ZZ completo: valores esperados $\langle Z_i\rangle$ con perceptrón (C4), kernel de fidelidad y kernel proyectado.}
+\label{tab:tres_lecturas}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{l c c c c c c}
+\toprule
+ & \multicolumn{2}{c}{$\langle Z_i\rangle$ y MLP (C4)} & \multicolumn{2}{c}{Fidelidad (QSVM)} & \multicolumn{2}{c}{Proyectado} \\ \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & Masas & Calcif. & Masas & Calcif. & Masas & Calcif. \\
+\midrule
+Mediana del kernel fuera de la diagonal & — & — & 0.002 & 0.003 & 0.607 & 0.607 \\
+$g$ frente al modelo clásico más cercano & — & — & 1.433 & 1.400 & 9.291 & 8.297 \\
+AUC, etiquetas diagnósticas & 0.565 & 0.640 & \textbf{0.657} & \textbf{0.752} & 0.566 & 0.667 \\
+AUC, etiquetado diseñado & — & — & \textbf{0.730} & \textbf{0.829} & \textbf{0.998} & \textbf{0.994} \\
+\quad mejor SVM clásico con ese etiquetado & — & — & 0.712 & 0.807 & 0.800 & 0.824 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\par\smallskip
+\parbox{0.95\linewidth}{\footnotesize AUC en validación cruzada sobre el entrenamiento con los \textit{folds} de M4. Mediana y $g$ sobre las 200 lesiones del M6; en el kernel proyectado, la mediana de 0.607 ($e^{-1/2}$) es consecuencia de fijar el ancho de banda por la heurística de la mediana, no una propiedad del circuito. El etiquetado diseñado se construye para cada kernel, así que sus columnas no son comparables entre sí. En negritas: con las etiquetas diagnósticas, la mejor lectura de cada subconjunto; con el etiquetado diseñado, el mejor entre el kernel cuántico y el clásico.}
+\end{table}

@@ -57,5 +57,33 @@ candidatas con un criterio que solo mira las etiquetas: la menor desviación de 
 malignas entre \textit{folds}. Los \textit{folds} se fijan aquí y los usan todos los módulos
 posteriores.
 
+% fuente: D-018, D-026, D-043, H-027; X10_balance_folds.csv
+% PENDIENTE: cita para los valores habituales de 5 o 10 folds (Hastie, Tibshirani y Friedman, ESL §7.10;
+% Kohavi, 1995); ninguna está en la bibliografía ni verificada todavía (regla 2 de CLAUDE.md).
+\textbf{Número de \textit{folds}.} El número de \textit{folds} no depende del número de características,
+sino de cuántas lesiones y pacientes quedan en cada \textit{fold}. Con más
+\textit{folds}, cada modelo de la validación cruzada entrena con una fracción mayor del entrenamiento y
+se parece más al modelo final, que entrena con todo; a cambio, cada \textit{fold} de validación es más
+pequeño, su AUC es más ruidoso y la agrupación por paciente dificulta equilibrar las clases, porque los
+pacientes son bloques indivisibles: en calcificaciones hay uno con 24 lesiones, todas benignas. La
+figura~\ref{fig:balance_folds} cuantifica ese compromiso con la misma regla de elección de semilla, que
+solo usa las etiquetas. Con cinco \textit{folds}, cada modelo entrena con el 80\,\% del entrenamiento, la
+proporción de malignas de cada \textit{fold} se aparta como mucho 0.011 (masas) y 0.019 (calcificaciones)
+de la global, y el \textit{fold} más pobre conserva 122 y 96 lesiones malignas. Con diez, esa desviación
+sube a 0.044 y 0.045, el \textit{fold} más pobre baja a 57 y 49 malignas, y el paciente más grande ocupa
+el 17\,\% de su \textit{fold}. Con tres, el equilibrio mejora (desviación de 0.003), pero cada modelo
+entrena con dos tercios del entrenamiento y la dispersión entre \textit{folds} se estima con solo tres
+valores. Cinco es el mayor número de \textit{folds} con el que la desviación queda por debajo de 0.02 en
+ambos subconjuntos.
+Como análisis de sensibilidad, el clasificador del Módulo~7 se evaluó también con tres \textit{folds}
+(sección~\ref{sec:rendimiento_clasificacion}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{Figures/X10_balance_folds.png}
+\caption{Costo del número de \textit{folds} con la partición agrupada por paciente y la semilla elegida por equilibrio de clases: (A) desviación máxima de la proporción de malignas entre un \textit{fold} y el entrenamiento completo, con la semilla elegida y con la mediana de 200 semillas; (B) lesiones malignas en el \textit{fold} de validación más pobre; (C) fracción del \textit{fold} más pequeño que ocupa el paciente con más lesiones. Bajo cada valor de $k$, la fracción del entrenamiento con la que entrena cada modelo.}
+\label{fig:balance_folds}
+\end{figure}
+
 El vector $\mathbf{x}\in[0,\pi]^{12}$ resultante es el mismo para las cinco condiciones de M5, de
 forma que lo único que cambia entre ellas es la transformación.
