@@ -65,8 +65,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-040 | 2026-10-07 | Contenido del M8: OE-6 medido (qubits, shots en el embedding y en el kernel) y referencia con los descriptores del radiólogo | M8 | Firme (validada por el autor el 2026-10-12) | §4.10, §6.x, §7, OE-6 |
 | D-041 | 2026-10-15 | Pregunta de investigación y objetivos reformulados en el reporte final, con cambio mínimo | reporte | **Provisional**: pendiente de confirmar con los directores | §1.2, §1.4, §1.5 |
 | D-042 | 2026-10-18 | Las 200 lesiones siguen como análisis principal del M6, justificadas por el protocolo físico; X9 se reporta como robustez | M6 | Firme (elegida por el autor) | §5.2, §5.8, §6.2, §7 |
-| D-043 | 2026-10-21 | Experimento X10: árboles de decisión, *random forest* y XGBoost sobre C1–C5, y sensibilidad con 3 folds; se mantienen 5 folds | X10, M7 | **Provisional**: protocolo fijado antes de correr | §5.6, §5.9, §5.11, §6.3, §8 |
-| D-044 | 2026-10-23 | Experimento X11: curva de transición entre las etiquetas del diagnóstico y las diseñadas según Huang et al., con tres kernels cuánticos | X11 | **Provisional**: protocolo fijado antes de correr | §5.11, §6.4, §7 |
+| D-043 | 2026-10-21 | Experimento X10: árboles de decisión, *random forest* y XGBoost sobre C1–C5, y sensibilidad con 3 folds; se mantienen 5 folds | X10, M7 | Firme (validada por el autor el 2026-10-24; protocolo fijado antes de correr) | §5.6, §5.9, §5.11, §6.3, §8 |
+| D-044 | 2026-10-23 | Experimento X11: curva de transición entre las etiquetas del diagnóstico y las diseñadas según Huang et al., con tres kernels cuánticos | X11 | Firme (validada por el autor el 2026-10-24; protocolo fijado antes de correr) | §5.11, §6.4, §7 |
 
 ### Hallazgos
 
@@ -127,8 +127,8 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-053 | 2026-10-10 | El sorteo de θ mueve el AUC de C4 y C5 tanto o más que la semilla del MLP, pero ninguno de 40 sorteos alcanza a C1 | La conclusión del M7 no depende de θ; su magnitud sí (déficit de 0.03 a 0.18 frente a C1): reportar el rango |
 | H-054 | 2026-10-11 | Entrenar θ junto con el MLP gana a lo sumo 0.05 de AUC y no alcanza a C1; con gradientes del simulador cuesta minutos, no cientos de horas | La conclusión del M7 se mantiene con θ entrenado; matiza la razón de costo de D-014 y H-015 (vale para el hardware, no para el simulador) |
 | H-055 | 2026-10-18 | La conclusión del M6 no depende de qué 200 lesiones se tomen ni de N: se mantiene en 20 submuestras y en todo el train | Responde a «¿200 es poco?»; el orden C4/C5 y la significancia de los efectos pequeños sí dependen de la muestra |
-| H-056 | 2026-10-21 | Con árboles, *random forest* y XGBoost ninguna representación cuántica supera a C1 con el mismo clasificador; con 3 folds la conclusión del M7 no cambia | Responde a la revisión del sinodal; en masas los ensambles dejan la brecha sin significancia porque leen mejor los ⟨Zᵢ⟩; **borrador pendiente de revisión** |
-| H-057 | 2026-10-23 | La ventaja cuántica aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico; el diagnóstico real está en el 0 % | Responde «¿en qué caso habría ventaja?»; el umbral depende de *g*; **borrador pendiente de revisión** |
+| H-056 | 2026-10-21 | Con árboles, *random forest* y XGBoost ninguna representación cuántica supera a C1 con el mismo clasificador; con 3 folds la conclusión del M7 no cambia | Responde a la revisión del sinodal; en masas los ensambles dejan la brecha sin significancia porque leen mejor los ⟨Zᵢ⟩; revisado por el autor el 2026-10-24; entra en la línea principal de la defensa |
+| H-057 | 2026-10-23 | La ventaja cuántica aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico; el diagnóstico real está en el 0 % | Responde «¿en qué caso habría ventaja?»; el umbral depende de *g*; revisado por el autor el 2026-10-24; sustituye al control positivo en la defensa |
 
 ### Preguntas abiertas
 
@@ -909,7 +909,7 @@ Es un análisis de robustez: k = 12 sigue siendo el punto de operación (D-013).
 ---
 
 ### D-043 · Experimento X10: árboles de decisión, *random forest* y XGBoost sobre C1–C5, y sensibilidad con 3 folds
-**Fecha:** 2026-10-21 · **Módulo:** X10 (M7) · **Estado:** **Provisional**: protocolo fijado antes de correr; pendiente de validar por el autor · **→ Reporte:** §5.6, §5.9, §5.11, §6.3, §8 · *precisa D-018 y D-036; sigue el patrón de D-038*
+**Fecha:** 2026-10-21 · **Módulo:** X10 (M7) · **Estado:** Firme (validada por el autor el 2026-10-24; protocolo fijado antes de correr) · **→ Reporte:** §5.6, §5.9, §5.11, §6.3, §8 · *precisa D-018 y D-036; sigue el patrón de D-038*
 
 **Contexto.** En la revisión del 2026-10-21, un sinodal:
 - preguntó por qué 5 folds; le parecían muchos. D-018 adoptó 5 sin dar la razón;
@@ -967,7 +967,7 @@ La tabla completa (k = 3, 4, 5, 6, 8 y 10) está en `Code/results/X10_balance_fo
 
 
 ### D-044 · Experimento X11: curva de transición entre las etiquetas del diagnóstico y las etiquetas diseñadas
-**Fecha:** 2026-10-23 · **Módulo:** X11 (M6–M7) · **Estado:** **Provisional**: protocolo fijado antes de correr; pendiente de validar por el autor · **→ Reporte:** §5.11, §6.4, §7 · *extiende H-048; sigue el patrón de D-038*
+**Fecha:** 2026-10-23 · **Módulo:** X11 (M6–M7) · **Estado:** Firme (validada por el autor el 2026-10-24; protocolo fijado antes de correr) · **→ Reporte:** §5.11, §6.4, §7 · *extiende H-048; sigue el patrón de D-038*
 
 **Contexto.** Tras X10, el autor preguntó si hay algún caso con ventaja cuántica que se pueda enseñar y justificar. H-048 ya da uno: con etiquetas diseñadas según Huang et al. (sección 7 del suplemento), el kernel cuántico proyectado gana 0.998 frente a 0.800. Pero solo mide los dos extremos: las etiquetas reales, sin ventaja, y las diseñadas, con ventaja. No dice cuánta estructura cuántica necesita una tarea para que aparezca la ventaja, ni a qué distancia de ese punto está el diagnóstico.
 
@@ -2512,7 +2512,7 @@ Hay que aplicarlas a los artículos citados en §2 antes de redactar §2 y §7.
 ---
 
 ### H-056 · Con árboles de decisión, *random forest* y XGBoost, ninguna representación cuántica supera a C1 con el mismo clasificador; los ensambles achican la brecha en masas, y con 3 folds la conclusión no cambia
-**Fecha:** 2026-10-21 · **→ Reporte:** §5.6, §5.9, §5.11, §6.3, §7, §8 · *responde a la revisión del sinodal del 2026-10-21; protocolo en D-043* · **Borrador: pendiente de revisión del autor**
+**Fecha:** 2026-10-21 · **→ Reporte:** §5.6, §5.9, §5.11, §6.3, §7, §8 · *responde a la revisión del sinodal del 2026-10-21; protocolo en D-043* · Revisado por el autor el 2026-10-24
 
 **Pregunta principal, fijada antes de correr (D-043).** Con el mismo clasificador, ¿C4 o C5 superan a C1? **No.** En ninguno de los 6 clasificadores (tres árboles, RF, XGB y el MLP del M7) ni en ninguno de los dos subconjuntos hay una representación cuántica significativamente por encima de C1 en el test: 0 de 24 comparaciones.
 
@@ -2580,6 +2580,7 @@ AUC en el test (validación cruzada anidada para elegir hiperparámetros; un aju
 **Impacto.**
 - **Responde a la revisión.** El «no» del trabajo no depende de haber elegido un MLP: con árboles, bosques y *boosting* ninguna representación cuántica supera a C1. El matiz honesto: en masas, los ensambles dejan la brecha sin significancia, porque leen mejor los ⟨Zᵢ⟩ que el MLP.
 - **Para la defensa de los 5 folds:** la tabla de balance de D-043 más la lectura 7.
+- **En la presentación** (decisión del autor, 2026-10-24): X10 entra en la línea principal, después de la clasificación del M7, porque responde a la revisión del sinodal; la tabla de balance de los folds va como respaldo.
 - **Para el reporte:** §5.11 describe X10, §6.3 recibe un párrafo y la figura `X10_auc.png`, y §8 lista el MLP profundo como trabajo futuro.
 - **No cambia el diseño ni ninguna cifra existente.**
 
@@ -2592,7 +2593,7 @@ AUC en el test (validación cruzada anidada para elegir hiperparámetros; un aju
 ---
 
 ### H-057 · La ventaja cuántica aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico; el diagnóstico real está en el 0 %
-**Fecha:** 2026-10-23 · **→ Reporte:** §5.11, §6.4, §7 · *protocolo en D-044; extiende H-048* · **Borrador: pendiente de revisión del autor**
+**Fecha:** 2026-10-23 · **→ Reporte:** §5.11, §6.4, §7 · *protocolo en D-044; extiende H-048* · Revisado por el autor el 2026-10-24
 
 **Método.** Es X11: una mezcla entre las etiquetas reales y las diseñadas de X6 (Huang et al., sección 7 del suplemento).
 - α es la fracción de lesiones con etiqueta diseñada; se promedian 5 máscaras anidadas.
@@ -2624,6 +2625,7 @@ Las dos tareas puras reproducen exactamente X6 y H-048. Las mezclas varían poco
 
 **Impacto.**
 - **Es la respuesta para la defensa a «¿en qué caso habría ventaja?».** La ventaja existe y se puede medir sobre estas mismas lesiones y features. Aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico, y el diagnóstico benigno/maligno con features radiómicas está en el 0 %.
+- **En la presentación** (decisión del autor, 2026-10-24): la curva de transición, con el kernel proyectado en masas, sustituye a la diapositiva del control positivo de H-048. Se cita la versión publicada del suplemento (sección 7), no el «Apéndice G» de arXiv (equivalencias en `Docs/capitulos/README.md`).
 - **Precisa H-048.** No es una propiedad de todo o nada: crece de forma gradual con la fracción de estructura cuántica, y su tamaño lo limita la *g* del kernel.
 - **No cambia el diseño ni ninguna cifra existente.** Las etiquetas intermedias son artificiales: es un instrumento de medida, no una tarea clínica.
 
