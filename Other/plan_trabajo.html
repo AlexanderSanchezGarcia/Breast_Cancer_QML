@@ -101,7 +101,7 @@ button:hover{color:var(--ink)}
 <tr><td><b>7 oct ✓</b></td><td>Evaluación comparativa</td><td>M8: Spearman, masas frente a calcificaciones y OE-6 (H-049 a H-052). Se cierra la parte experimental.</td></tr>
 <tr><td><b>18 oct ✓</b></td><td>Reporte técnico completo</td><td>Capítulos integrados en Technical_Report.tex con el formato de la CATT; auditoría final del 18–19 oct: 201 páginas, 0 referencias sin resolver, glosario de 65 términos.</td></tr>
 <tr><td><b>21–23 oct ✓</b></td><td>Revisión del sinodal</td><td>X10: con árboles, random forest y XGBoost ninguna representación cuántica supera a C1 (H-056); se mantienen 5 folds. X11: la ventaja aparece cuando el 40–70 % de las etiquetas sigue la geometría cuántica, y el diagnóstico está en el 0 % (H-057). Validadas el 24 oct.</td></tr>
-<tr><td><b>~17 nov</b></td><td>Documentación y firmas</td><td>Toda la documentación entregada y las firmas del formulario de la CATT, una semana antes de la presentación.</td></tr>
+<tr><td><b>17 nov</b></td><td>Documentación y firmas</td><td>Toda la documentación entregada y las firmas del formulario de la CATT, una semana antes de la presentación.</td></tr>
 <tr><td><b>24 nov</b></td><td>Presentación de TT2</td><td>Martes 24 de noviembre de 2026, 16:00. Sustituye al plan anterior (congelamiento el 23 oct, entrega el 3 nov, ventana desde el 17 nov).</td></tr>
 </table>
 
@@ -236,7 +236,7 @@ const PHASES = [
      "X8 · θ entrenado con el MLP: gana a lo sumo 0.05 sin significancia y no alcanza a C1 ni al QSVM; matiza el costo de D-014 (H-054)",
      "Trazabilidad de cifras de la bitácora (un error: H-039 dice 0.152, es 0.151) y tablas LaTeX desde los CSV (Docs/tablas)"]]
   ]},
- {id:"f7", n:"Fase 7 · Documentación · entrega ~17 nov, presentación 24 nov", due:"2026-11-17",
+ {id:"f7", n:"Fase 7 · Documentación · entrega 17 nov, presentación 24 nov", due:"2026-11-17",
   note:"El reporte quedó completo el 18 oct: los capítulos se integraron en Technical_Report.tex con el formato de la CATT y la auditoría final del 18–19 oct (A1–A6) dejó 201 páginas, 0 referencias sin resolver y el glosario. La revisión del sinodal del 21 oct dio lugar a X10 y X11 (D-043, D-044, H-056, H-057), validados por el autor el 24 oct. Desde el 22 oct mandan otras fechas: documentación y firmas hacia el 17 nov y presentación el martes 24 nov a las 16:00. El deck se hace en Claude Design a partir del brief de Other/defensa/. Lo redacta el autor.",
   groups:[
    ["Calendario de redacción · 12 al 20 oct (replanificado el 11 oct)",[
@@ -254,7 +254,7 @@ const PHASES = [
      "X10 · árboles, random forest y XGBoost sobre C1–C5: 0 de 24 comparaciones a favor de C4/C5; con 3 folds la conclusión no cambia (D-043, H-056)",
      "X11 · transición hacia las etiquetas diseñadas: α* = 0.4–0.7, el diagnóstico real en α = 0 (D-044, H-057)",
      "Párrafos y tablas de X10/X11 en §5, §6, §7 y §8; D-043, D-044, H-056 y H-057 validadas el 24 oct"], "f7x"],
-   ["Hasta la entrega · ~17 nov",[
+   ["Hasta la entrega · 17 nov",[
      "Hacer push de los commits locales del 23 al 26 oct",
      "D-041 · confirmar con los directores la pregunta y los objetivos reformulados",
      "Puntos abiertos del informe del 19 oct (Docs/insumos/informe_noche_2026-10-19.md)",
@@ -313,7 +313,7 @@ const RISKS = [
  ["Resuelto · D-035","Comparar contra k=8 antes de concluir","Hecho en X3: con 8 qubits la concentración baja y el alineamiento cuántico crece de 1.7 a 4.6 veces, pero ninguna métrica pone a C4 o C5 por delante de las condiciones clásicas (H-041). La conclusión del OE-3 no depende de k=12."],
  ["Vigilar · H-037","Kernel de C5 extremadamente concentrado","Mediana 0.00003 frente a 0.002 de C4; entre el 26 y el 28 % de los pares queda por debajo de 10⁻⁶, un valor que en hardware exigiría unos 10⁶ disparos solo para observarlo una vez. Su embedding ⟨Zᵢ⟩, en cambio, se dispersa tres veces más que el de C4."],
  ["Resuelto · D-020 a D-022, D-036, D-040","Decisiones provisionales","El autor validó las cinco el 12 oct: la alineación por tipo de desajuste, la componente conexa mayor, el contrato de salida de M2, el protocolo del MLP y el contenido del M8. Los 7 casos discordantes se conservan y se declaran (H-020): quitar los 3 de test cambia el AUC del test entre +0.001 y +0.004. No hay que volver a correr nada."],
- ["Vigilar · calendario","Documentación el ~17 nov, presentación el 24 nov","El reporte quedó completo el 18 oct. Lo que falta es de cierre: D-041 con los directores, la fecha de TT2 en la portada, el DVD, las firmas de la CATT y la presentación. Lo opcional (curvas con pocos datos) va solo si sobra tiempo antes del 17 nov."],
+ ["Vigilar · calendario","Documentación el 17 nov, presentación el 24 nov","El reporte quedó completo el 18 oct. Lo que falta es de cierre: D-041 con los directores, la fecha de TT2 en la portada, el DVD, las firmas de la CATT y la presentación. Lo opcional (curvas con pocos datos) va solo si sobra tiempo antes del 17 nov."],
  ["Resuelto · H-053, H-054","θ fijo con una sola semilla y sin entrenar","X7: diez sorteos de θ mueven el AUC hasta 0.11, pero ninguno alcanza a C1. X8: entrenar θ gana a lo sumo 0.05 y tampoco. La conclusión del M7 no depende de θ. Queda declarar en §4.8 que el costo de D-014 vale para el hardware: en el simulador, la retropropagación sobre el vector de estado es ~3,600 veces más barata que parameter-shift."],
  ["ABIERTO · correcciones","Aplicar las correcciones verificadas","Bitácora: aplicadas el 13 oct (tarea 3: H-039, H-027, H-045, H-043, H-048, «preregistrado», H-036/H-037, D-014/H-015, D-011, H-002, D-009). Reporte: §3.4, bibliografía y las cifras de Azevedo. Lista completa en Other/verificacion/correcciones_verificadas.md."],
  ["Resuelto · D-030","Renumerar módulos en el reporte","Los capítulos reescritos usan la numeración M1–M8: separabilidad M6, clasificación M7 y evaluación M8 (§5)."],
