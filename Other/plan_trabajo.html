@@ -146,6 +146,8 @@ for (const k of ["f7.0", "f7.1", "f7.2"]) if (!(k in state)) state[k] = true;
 // Revisión del sinodal (X10, X11) y brief de la presentación, 21–24 oct (f7x.0 a f7x.2; f7p.0 y f7p.1).
 for (let i = 0; i <= 2; i++) if (!(("f7x." + i) in state)) state["f7x." + i] = true;
 for (const k of ["f7p.0", "f7p.1"]) if (!(k in state)) state[k] = true;
+// Deck aplicado en Claude Design en tres rondas, revisado y exportado a PDF, 24–26 oct (f7p.2, f7p.3, f7p.5).
+for (const k of ["f7p.2", "f7p.3", "f7p.5"]) if (!(k in state)) state[k] = true;
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
 const PHASES = [
@@ -271,7 +273,7 @@ const PHASES = [
      "Aplicar el brief en Claude Design y exportar el HTML",
      "Revisar el HTML exportado contra la bitácora y los CSV",
      "Ensayos cronometrados: ~18 min, más preguntas con R1–R10",
-     "Exportar a PDF para el DVD"], "f7p"],
+     "Exportar a PDF para el DVD (Other/defensa/Defensa TT 2026-B039.pdf)"], "f7p"],
    ["Secciones nuevas · desde el 5 oct",[
      "Sección 6 · Resultados (hoy es un párrafo)",
      "Reescribir Sección 7 · Conclusiones",
