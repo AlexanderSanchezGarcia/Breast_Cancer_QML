@@ -1,0 +1,124 @@
+{
+ "medianas_kernel_200": {
+  "RBF": 0.6016043231586934,
+  "C5": 3.2067469445932095e-05,
+  "C4_c1.0": 0.0021573906937247737,
+  "C4_c0.5": 0.0060121346326921475,
+  "C4_c0.2": 0.031915192032458906,
+  "C4_c0.1": 0.06889079180781957,
+  "C4_c0.05": 0.19897142944341523,
+  "C4_c0.02": 0.5549257196787138
+ },
+ "c_valores": [
+  1.0,
+  0.5,
+  0.2,
+  0.1,
+  0.05,
+  0.02
+ ],
+ "lesion": {
+  "case_id": "Mass-Training_P_00863_RIGHT_CC_1",
+  "x": [
+   2.165151693690263,
+   1.5787240861652596,
+   2.4962171586604027,
+   2.674547453279571,
+   2.722694268801929,
+   2.756556534918865,
+   2.7293959880064738,
+   0.4557762473044142,
+   2.5794709633569806,
+   0.27689433065611907,
+   2.953184693959004,
+   1.1861806286835066
+  ],
+  "z_c4": [
+   -0.003811367871153217,
+   0.034082132891309624,
+   -0.03315696930346489,
+   0.028231845785330403,
+   0.21894204648909796,
+   -0.036089971777202974,
+   0.02834590194435469,
+   -0.02500293684314448,
+   0.01876200287607202,
+   -0.008609241818119683,
+   0.0789256665268938,
+   -0.02203161378776537
+  ],
+  "kernel_c4_con_otra": 0.0035030040195517254,
+  "otra_case_id": "Mass-Training_P_01270_RIGHT_CC_1"
+ },
+ "x11_umbral": {
+  "mass|ZZ full (C4)": 0.6,
+  "mass|ZZ linear": 0.5,
+  "mass|Projected (ZZ full)": 0.4,
+  "calcification|ZZ full (C4)": 0.7,
+  "calcification|ZZ linear": 0.6,
+  "calcification|Projected (ZZ full)": 0.5
+ },
+ "disparos": {
+  "mass_C4": {
+   "mediana": 0.0021573906937247,
+   "lee_cero_1024": 0.214734650194108
+  },
+  "mass_C5": {
+   "mediana": 3.2067469445932095e-05,
+   "lee_cero_1024": 0.7445455258438184
+  },
+  "calcification_C4": {
+   "mediana": 0.0028607362188107,
+   "lee_cero_1024": 0.1572213435627763
+  },
+  "calcification_C5": {
+   "mediana": 3.11336793802931e-05,
+   "lee_cero_1024": 0.7155751903564553
+  }
+ },
+ "pipeline": {
+  "lesiones": 3568,
+  "pacientes": 1566,
+  "masas": 1696,
+  "calcificaciones": 1872,
+  "entrenamiento": 2864,
+  "prueba": 704,
+  "caracteristicas": 67,
+  "seleccionadas": 12,
+  "features_masas": [
+   "firstorder_Maximum",
+   "firstorder_90Percentile",
+   "firstorder_Energy",
+   "shape2D_MinorAxisLength",
+   "shape2D_MaximumDiameter",
+   "shape2D_Perimeter",
+   "shape2D_MeshSurface",
+   "shape2D_PerimeterSurfaceRatio",
+   "glrlm_GrayLevelNonUniformity",
+   "firstorder_10Percentile",
+   "glcm_Correlation",
+   "glrlm_RunLengthNonUniformity"
+  ],
+  "features_calcificaciones": [
+   "shape2D_MinorAxisLength",
+   "glrlm_RunEntropy",
+   "shape2D_Perimeter",
+   "firstorder_Skewness",
+   "glrlm_ShortRunLowGrayLevelEmphasis",
+   "glrlm_ShortRunEmphasis",
+   "glcm_JointAverage",
+   "glcm_InverseVariance",
+   "glcm_DifferenceEntropy",
+   "firstorder_Energy",
+   "glcm_ClusterShade",
+   "shape2D_PixelSurface"
+  ]
+ },
+ "fuentes": {
+  "kernels": "Data/processed/m5/kernels_mass.npz",
+  "lesion": "Data/processed/m5/emb_mass.parquet",
+  "x11": "Code/results/X11_transicion.csv, X11_umbral.csv",
+  "disparos": "Code/results/8_oe6_shots_kernel.csv",
+  "pipeline": "CLAUDE.md (dataset) y Data/processed/m4/x_*.json"
+ }
+}

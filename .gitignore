@@ -46,3 +46,7 @@ Docs/*.lol
 
 # Formatos llenados (datos personales)
 Docs/preliminares/borradores/
+
+# Intermedios de Manim y fotogramas de revisión de los clips de la defensa
+Other/defensa/manim/media/
+Other/defensa/manim/revision/
