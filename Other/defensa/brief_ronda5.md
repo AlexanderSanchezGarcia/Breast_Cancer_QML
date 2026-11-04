@@ -154,8 +154,21 @@ Actualiza el índice R0 con A0 y C0.
 
 ---
 
+## Respaldos → «Anexos»: una sola sección, sin familias
+
+Toda la sección de respaldos pasa a llamarse **Anexos** y deja de dividirse por tipo de pregunta.
+
+- **Quita los nombres de familia** de todas las etiquetas y del índice: «Básicas», «Diseño», «Resultados», «Fórmulas» y «Preguntas difíciles». Quita también los códigos A0…E6.
+- **Numeración corrida**, en el orden actual (con A0 y C0 ya añadidos donde indica esta ronda): Anexo 1, Anexo 2, … hasta el último.
+- **Etiqueta de sección de cada anexo:** «Anexo N». El título de la diapositiva no cambia.
+- **Pie:** «Anexo N / total», en lugar de «A1 / A8».
+- **Índice (la antigua R0):** se titula «Anexos». Es una lista numerada, en dos o tres columnas, con el número y el título corto de cada anexo, sin agrupar por tipo.
+- **Referencias cruzadas:** las notas del orador que mandan a un respaldo (por ejemplo, «ir al respaldo R9» en la diapositiva de la concentración) deben apuntar al nuevo número de anexo. En las notas de cada anexo, cambia «Respaldo …» por «Anexo N».
+
 ## Comprobación final antes de exportar
-- [ ] 18 diapositivas principales con contadores «n / 18»; respaldos A0 y C0 añadidos y en el índice.
+- [ ] 18 diapositivas principales con contadores «n / 18».
+- [ ] Una sola sección «Anexos», numerada de corrido (con A0 y C0 incluidos), sin nombres de familia ni códigos A–E, e índice como lista numerada.
+- [ ] Las notas del orador apuntan a los nuevos números de anexo.
 - [ ] Las imágenes de los seis videos conservan su texto alternativo, que empieza con «Video…».
 - [ ] La diapositiva 4 muestra la pregunta completa y legible, sin cortar.
 - [ ] La tabla de objetivos cabe completa y cada fila ocupa un renglón.
