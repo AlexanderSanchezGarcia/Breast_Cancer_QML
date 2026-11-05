@@ -11,6 +11,9 @@
 # - Control: en la diapositiva con video, la primera flecha → (o espacio, o Av Pág, que es lo que
 #   envían los controles remotos) reproduce el video en lugar de avanzar; la siguiente avanza.
 #   Un clic sobre el video lo pausa o reanuda. Al salir de la diapositiva, el video vuelve al inicio.
+# - Coloca las figuras del reporte en los anexos de figura: en cada diapositiva cuyo data-label empieza con
+#   «Figura X.Y.Z ·», llena el marco vacío (div con data-img-path) con Other/defensa/figuras_anexos/Fig_X.Y.Z_*.png,
+#   en base64, con texto alternativo «Figura del reporte X.Y.Z». Claude Design deja esos marcos vacíos.
 # - Incrusta las fuentes del deck (Other/defensa/fuentes/fuentes_incrustadas.css) y quita los enlaces a
 #   Google Fonts, para que el diseño no cambie si el día de la defensa no hay internet.
 import base64
@@ -20,6 +23,7 @@ from pathlib import Path
 
 CLIPS = Path(__file__).resolve().parent / 'manim' / 'clips'
 FUENTES = Path(__file__).resolve().parent / 'fuentes' / 'fuentes_incrustadas.css'
+FIGURAS = Path(__file__).resolve().parent / 'figuras_anexos'
 # Palabra clave del texto alternativo → clip
 MAPA = [
     ('proceso', 'mapa_trabajo.mp4'),
@@ -93,13 +97,46 @@ def main(entrada, salida):
     faltan = [c for _, c in MAPA if c not in usados]
     if faltan:
         print('Aviso: no se encontró imagen para', faltan)
+    s, figuras = insertar_figuras(s)
     s = re.sub(r'<link rel="stylesheet" href="https://fonts\.googleapis\.com/[^"]*">\s*', '', s)
     fuentes = '<style id="tt-fuentes">' + FUENTES.read_text(encoding='utf-8') + '</style>'
     s = s.replace('</head>', fuentes + CSS + '</head>', 1)
     s = s.replace('</body>', JS + '</body>', 1) if '</body>' in s else s + JS
     Path(salida).write_text(s, encoding='utf-8')
     print(f'{len(usados)} videos insertados: {usados}')
+    print(f'{len(figuras)} figuras del reporte insertadas')
     print(f'{salida}: {Path(salida).stat().st_size / 1e6:.1f} MB')
+
+
+
+def insertar_figuras(s):
+    archivos = {f.name.split('_')[1]: f for f in FIGURAS.glob('Fig_*.png')}
+    usadas = []
+
+    def seccion(m):
+        sec = m.group(0)
+        lab = re.search(r'data-label="Figura ([0-9A-Z.]+) ·', sec)
+        if not lab:
+            return sec
+        num = lab.group(1)
+        if num not in archivos:
+            print('Aviso: no hay PNG para la figura', num)
+            return sec
+        marco = re.search(r'(<div data-img-path="[^"]*"[^>]*>)(</div>)', sec)
+        if not marco:
+            print('Aviso: la diapositiva de la figura', num, 'no tiene marco vacío')
+            return sec
+        datos = base64.b64encode(archivos[num].read_bytes()).decode()
+        img = (f'<img alt="Figura del reporte {num}" src="data:image/png;base64,{datos}" '
+               f'style="display:block;width:100%;height:100%;object-fit:contain">')
+        usadas.append(num)
+        return sec[:marco.end(1)] + img + sec[marco.end(1):]
+
+    s = re.sub(r'<section class="deck-slide".*?</section>', seccion, s, flags=re.S)
+    faltan = sorted(set(archivos) - set(usadas))
+    if faltan:
+        print('Aviso: figuras sin diapositiva:', faltan)
+    return s, usadas
 
 
 if __name__ == '__main__':
