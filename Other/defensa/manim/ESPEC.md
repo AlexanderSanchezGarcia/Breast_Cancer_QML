@@ -91,3 +91,20 @@ Duración de unos 14 a 18 s.
 4. Final: «valor real ≈ » p con 4 decimales y, debajo, «se leen exactamente 0: C4 » `disparos()['mass_C4']['lee_cero_1024']` en % sin decimales « · C5 » `disparos()['mass_C5']['lee_cero_1024']` en %, con el rótulo «de los pares, masas».
 
 No elijas semillas para que salga un 0: usa exactamente 0…9 y muestra lo que salga. Duración de unos 14 a 18 s.
+
+### 7 · `roc_umbral` · Cómo se lee una curva ROC (ronda 7)
+Objetivo: que un jurado que no es del área entienda qué es una curva ROC y su área (AUC) antes de ver la diapositiva con las cinco curvas. Datos: `datos.roc_prueba('C1')` y `datos.roc_prueba('C4')`, las predicciones reales del MLP en las lesiones de prueba de masas. Las dos condiciones tienen las mismas lesiones en el mismo orden (el índice i es la misma lesión en las dos), así que se puede transformar punto a punto. Colores de clase: `estilo.BENIGNA` (triángulos) y `estilo.MALIGNA` (círculos); C1 en `estilo.CLASICO` y C4 en `estilo.C4`.
+
+**Composición (1920×1080):**
+- **Izquierda, unos 55 % del ancho: dos franjas horizontales**, «benignas · n» arriba y «malignas · n» abajo, con n = `n_benignas` y `n_malignas`. Cada lesión es un punto pequeño (triángulo o círculo, radio ~5–6 px) en x = su `prob`, sobre un eje común de 0 a 1 con el rótulo «probabilidad de maligno que da el MLP». Para que los puntos no se encimen, reparte cada uno verticalmente dentro de su franja con `numpy.random.default_rng(0)` (solo es acomodo visual; no cambia x).
+- **Derecha, unos 40 % del ancho: ejes cuadrados de la curva ROC**, X «1 − especificidad» y Y «sensibilidad», ambos de 0 a 1 con marcas 0, 0.5 y 1, y la diagonal punteada en `TEXTO` con el rótulo «azar».
+
+**Momentos:**
+1. Aparecen las dos franjas con las puntuaciones de C1 y un rótulo «C1» en `CLASICO`. Aparecen los ejes ROC vacíos con la diagonal.
+2. Aparece una **línea vertical «umbral»** en el extremo derecho de las franjas, con un rótulo corto: «a la derecha: se predice maligno».
+3. **El umbral barre de derecha a izquierda** (de 1 a 0) en unos 5 s. Los puntos a la derecha del umbral se ven llenos y los de la izquierda atenuados (opacidad baja). En los ejes ROC un punto se mueve a (fpr, tpr) del umbral actual y deja un trazo en `CLASICO`. Calcula fpr y tpr **de los datos** en cada fotograma: con t el umbral, tpr = fracción de malignas con prob ≥ t y fpr = fracción de benignas con prob ≥ t. Dos contadores junto a los ejes se actualizan: «sensibilidad = …» y «1 − especificidad = …», con 2 decimales.
+4. Al terminar el barrido, se sombrea suavemente (opacidad ~0.15, `CLASICO`) el área bajo la curva de C1 y aparece «AUC = » `roc_prueba('C1')['auc']` con 3 decimales, en `CLASICO`.
+5. **Cambio a C4:** los puntos se desplazan a sus puntuaciones de C4 (transformación punto a punto, ~1.5 s) y el rótulo pasa a «C4» en `C4`. El umbral vuelve a la derecha y barre otra vez, más rápido (~3 s), trazando la curva de C4 en `C4`. Al terminar, «AUC = » `roc_prueba('C4')['auc']` con 3 decimales, en `C4`. La curva y el sombreado de C1 se quedan visibles.
+6. **Final:** las dos curvas, la diagonal «azar», los dos AUC uno bajo el otro y, junto a la curva de C4, «más cerca del azar» en `C4`. Los contadores del paso 3 se ocultan. `self.wait(2)`.
+
+**Verificación obligatoria** (incluye la salida en tu reporte): el punto final del trazo de cada curva debe ser (1, 1) y la curva trazada debe coincidir con `fpr`/`tpr` de `roc_prueba(...)`. Calcula en Python el área bajo tu curva trazada (`numpy.trapz` sobre los vértices que dibujaste) y compárala con `auc`: la diferencia debe ser menor que 0.005. Duración total de unos 18 a 22 s.

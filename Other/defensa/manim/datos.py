@@ -63,3 +63,14 @@ def pipeline():
     """Conteos del trabajo (lesiones, pacientes, masas, calcificaciones, entrenamiento, prueba,
     caracteristicas, seleccionadas) y los nombres de las 12 características de cada subconjunto."""
     return dict(_RES['pipeline'])
+
+
+def roc_prueba(condicion):
+    """Predicciones reales del MLP en el conjunto de prueba de masas (Fig. 6.3.2), condicion 'C1' o 'C4'.
+    'label' (0 benigna, 1 maligna) y 'prob' (probabilidad de maligno que da el MLP), una por lesión;
+    'fpr', 'tpr' y 'umbral': la curva ROC completa de sklearn (fpr = 1 - especificidad, tpr = sensibilidad);
+    'auc', 'ic95', 'n_lesiones', 'n_malignas', 'n_benignas'. El AUC está comprobado contra 7_test.csv."""
+    d = np.load(_DIR / 'roc_prueba_masas.npz')
+    r = json.load(open(_DIR / 'roc_prueba_masas.json', encoding='utf-8'))[condicion]
+    r.update({k: d[f'{condicion}_{k}'] for k in ('label', 'prob', 'fpr', 'tpr', 'umbral')})
+    return r

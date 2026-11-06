@@ -14,6 +14,8 @@ CLASICO_3 = '#A9B7FA'    # C3
 C4 = '#E8622C'           # C4 (naranja) y kernels derivados del mapa ZZ
 C5 = '#1A9E77'           # C5 (verde)
 DESTACADO = '#DA33BF'    # cifras destacadas, con moderación
+BENIGNA = '#1A9E77'      # lesiones benignas (triángulos), como en el t-SNE del deck
+MALIGNA = '#7B4EC3'      # lesiones malignas (círculos), como en el t-SNE del deck
 
 # El deck usa Inter, que no está instalada en esta Mac; Helvetica Neue es la más parecida de las del sistema.
 FUENTE = 'Helvetica Neue'
