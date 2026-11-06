@@ -1,0 +1,647 @@
+[
+ {
+  "numero": 1,
+  "titulo": "Comparativa de trabajos relacionados en el estado del arte",
+  "pagina_reporte": 48,
+  "paginas_pdf": [
+   48
+  ],
+  "archivos": [
+   "Cuadro_1.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 1,
+  "diapositivas": [
+   "Cuadro_1_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 2,
+  "titulo": "Tres formas de leer el estado |φ(x)⟩ de un mismo feature map.",
+  "pagina_reporte": 77,
+  "paginas_pdf": [
+   77
+  ],
+  "archivos": [
+   "Cuadro_2.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 2,
+  "diapositivas": [
+   "Cuadro_2_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 3,
+  "titulo": "Composición del dataset CBIS-DDSM unificado",
+  "pagina_reporte": 78,
+  "paginas_pdf": [
+   78
+  ],
+  "archivos": [
+   "Cuadro_3.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 3,
+  "diapositivas": [
+   "Cuadro_3_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 4,
+  "titulo": "Correspondencia entre hallazgos del EDA y decisiones de diseño del pipeline",
+  "pagina_reporte": 86,
+  "paginas_pdf": [
+   86
+  ],
+  "archivos": [
+   "Cuadro_4.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 4,
+  "diapositivas": [
+   "Cuadro_4_1.png",
+   "Cuadro_4_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 5,
+  "titulo": "Clasificadores empleados en el trabajo.",
+  "pagina_reporte": 89,
+  "paginas_pdf": [
+   89
+  ],
+  "archivos": [
+   "Cuadro_5.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 5,
+  "diapositivas": [
+   "Cuadro_5_1.png",
+   "Cuadro_5_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 6,
+  "titulo": "Requerimientos funcionales del sistema",
+  "pagina_reporte": 90,
+  "paginas_pdf": [
+   90,
+   91,
+   92,
+   93
+  ],
+  "archivos": [
+   "Cuadro_6_a.png",
+   "Cuadro_6_b.png",
+   "Cuadro_6_c.png",
+   "Cuadro_6_d.png"
+  ],
+  "multipagina": true,
+  "orden_deck": 32,
+  "diapositivas": [
+   "Cuadro_6_1.png",
+   "Cuadro_6_2.png",
+   "Cuadro_6_3.png",
+   "Cuadro_6_4.png",
+   "Cuadro_6_5.png",
+   "Cuadro_6_6.png",
+   "Cuadro_6_7.png"
+  ],
+  "n_diapositivas": 7
+ },
+ {
+  "numero": 7,
+  "titulo": "Requerimientos no funcionales del sistema",
+  "pagina_reporte": 93,
+  "paginas_pdf": [
+   93,
+   94
+  ],
+  "archivos": [
+   "Cuadro_7_a.png",
+   "Cuadro_7_b.png"
+  ],
+  "multipagina": true,
+  "orden_deck": 33,
+  "diapositivas": [
+   "Cuadro_7_1.png",
+   "Cuadro_7_2.png",
+   "Cuadro_7_3.png"
+  ],
+  "n_diapositivas": 3
+ },
+ {
+  "numero": 8,
+  "titulo": "Correspondencia entre fases CRISP-DM y módulos del sistema",
+  "pagina_reporte": 95,
+  "paginas_pdf": [
+   95
+  ],
+  "archivos": [
+   "Cuadro_8.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 34,
+  "diapositivas": [
+   "Cuadro_8_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 9,
+  "titulo": "Cinco condiciones experimentales del Módulo 5",
+  "pagina_reporte": 101,
+  "paginas_pdf": [
+   101
+  ],
+  "archivos": [
+   "Cuadro_9.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 6,
+  "diapositivas": [
+   "Cuadro_9_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 10,
+  "titulo": "Resumen de diseño de los experimentos complementarios X1 a X11.",
+  "pagina_reporte": 108,
+  "paginas_pdf": [
+   108
+  ],
+  "archivos": [
+   "Cuadro_10.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 7,
+  "diapositivas": [
+   "Cuadro_10_1.png",
+   "Cuadro_10_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 11,
+  "titulo": "Las 12 características seleccionadas en cada subconjunto (M4): F-test ANOVA sobre el entrenamiento con restricción de redundancia |r| ≤ 0.95.",
+  "pagina_reporte": 116,
+  "paginas_pdf": [
+   116
+  ],
+  "archivos": [
+   "Cuadro_11.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 8,
+  "diapositivas": [
+   "Cuadro_11_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 12,
+  "titulo": "Separabilidad en la familia de kernels (M6), c = 1, 200 lesiones de entrenamiento por subconjunto.",
+  "pagina_reporte": 121,
+  "paginas_pdf": [
+   121
+  ],
+  "archivos": [
+   "Cuadro_12.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 9,
+  "diapositivas": [
+   "Cuadro_12_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 13,
+  "titulo": "Separabilidad en la familia de embeddings (M6): 200 lesiones de entrenamiento por subconjunto.",
+  "pagina_reporte": 123,
+  "paginas_pdf": [
+   123
+  ],
+  "archivos": [
+   "Cuadro_13.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 10,
+  "diapositivas": [
+   "Cuadro_13_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 14,
+  "titulo": "Comparación de métricas de separabilidad entre las configuraciones con k = 12 y k = 8 qubits (c = 1, submuestra de 200 lesiones por subconjunto).",
+  "pagina_reporte": 127,
+  "paginas_pdf": [
+   127
+  ],
+  "archivos": [
+   "Cuadro_14.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 11,
+  "diapositivas": [
+   "Cuadro_14_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 15,
+  "titulo": "Clasificación con el mismo MLP sobre las cinco representaciones (M7, k = 12).",
+  "pagina_reporte": 129,
+  "paginas_pdf": [
+   129
+  ],
+  "archivos": [
+   "Cuadro_15.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 12,
+  "diapositivas": [
+   "Cuadro_15_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 16,
+  "titulo": "Diferencias pareadas de AUC en el conjunto de prueba (M7).",
+  "pagina_reporte": 130,
+  "paginas_pdf": [
+   130
+  ],
+  "archivos": [
+   "Cuadro_16.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 13,
+  "diapositivas": [
+   "Cuadro_16_1.png",
+   "Cuadro_16_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 17,
+  "titulo": "Dependencia del AUC de C4 y C5 respecto al sorteo de θ: 10 sorteos, mismo MLP y mismos folds que el M7.",
+  "pagina_reporte": 132,
+  "paginas_pdf": [
+   132
+  ],
+  "archivos": [
+   "Cuadro_17.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 14,
+  "diapositivas": [
+   "Cuadro_17_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 18,
+  "titulo": "Efecto de entrenar θ junto con el MLP: de θ fijo (M7) a θ entrenado.",
+  "pagina_reporte": 134,
+  "paginas_pdf": [
+   134
+  ],
+  "archivos": [
+   "Cuadro_18.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 15,
+  "diapositivas": [
+   "Cuadro_18_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 19,
+  "titulo": "AUC-ROC en el conjunto de prueba de los clasificadores de árboles y del perceptrón multicapa sobre las cinco representaciones (experimento X10).",
+  "pagina_reporte": 136,
+  "paginas_pdf": [
+   136
+  ],
+  "archivos": [
+   "Cuadro_19.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 16,
+  "diapositivas": [
+   "Cuadro_19_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 20,
+  "titulo": "Tres lecturas del estado del mapa ZZ completo: valores esperados ⟨Zᵢ⟩ con perceptrón (C4), kernel de fidelidad y kernel proyectado.",
+  "pagina_reporte": 143,
+  "paginas_pdf": [
+   143
+  ],
+  "archivos": [
+   "Cuadro_20.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 17,
+  "diapositivas": [
+   "Cuadro_20_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 21,
+  "titulo": "Diferencia de AUC entre el kernel cuántico y el mejor clasificador clásico al pasar de las etiquetas diagnósticas (α = 0) al etiquetado diseñado (α = 1) (experimento X11).",
+  "pagina_reporte": 144,
+  "paginas_pdf": [
+   144
+  ],
+  "archivos": [
+   "Cuadro_21.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 18,
+  "diapositivas": [
+   "Cuadro_21_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 22,
+  "titulo": "Correlación de Spearman entre el orden de separabilidad y el de clasificación de las cinco condiciones (M8).",
+  "pagina_reporte": 145,
+  "paginas_pdf": [
+   145
+  ],
+  "archivos": [
+   "Cuadro_22.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 19,
+  "diapositivas": [
+   "Cuadro_22_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 23,
+  "titulo": "Resumen de resultados por condición: separabilidad (M6), clasificación (M7 y X4) y tiempo de transformación (M5).",
+  "pagina_reporte": 154,
+  "paginas_pdf": [
+   154
+  ],
+  "archivos": [
+   "Cuadro_23.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 20,
+  "diapositivas": [
+   "Cuadro_23_1.png",
+   "Cuadro_23_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 24,
+  "titulo": "Mapa de las comparaciones del trabajo. AUC-ROC en el conjunto de prueba salvo que se indique validación cruzada (VC); masas / calcificaciones. En negritas, el mejor valor de cada comparación.",
+  "pagina_reporte": 155,
+  "paginas_pdf": [
+   155
+  ],
+  "archivos": [
+   "Cuadro_24.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 21,
+  "diapositivas": [
+   "Cuadro_24_1.png",
+   "Cuadro_24_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 25,
+  "titulo": "Síntesis de resultados y evidencia empírica por objetivo específico.",
+  "pagina_reporte": 157,
+  "paginas_pdf": [
+   157
+  ],
+  "archivos": [
+   "Cuadro_25.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 22,
+  "diapositivas": [
+   "Cuadro_25_1.png",
+   "Cuadro_25_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 26,
+  "titulo": "Resumen del preprocesamiento, alineación de máscaras y control de calidad (Módulo 2).",
+  "pagina_reporte": 192,
+  "paginas_pdf": [
+   192
+  ],
+  "archivos": [
+   "Cuadro_26.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 23,
+  "diapositivas": [
+   "Cuadro_26_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 27,
+  "titulo": "Conjunto completo de características radiómicas seleccionadas por subconjunto (Módulo 4).",
+  "pagina_reporte": 193,
+  "paginas_pdf": [
+   193
+  ],
+  "archivos": [
+   "Cuadro_27.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 24,
+  "diapositivas": [
+   "Cuadro_27_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 28,
+  "titulo": "Características radiómicas descartadas por restricción de redundancia (Módulo 4).",
+  "pagina_reporte": 194,
+  "paginas_pdf": [
+   194
+  ],
+  "archivos": [
+   "Cuadro_28.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 25,
+  "diapositivas": [
+   "Cuadro_28_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 29,
+  "titulo": "Balance de lesiones, pacientes y proporción de malignidad por fold (Módulo 4).",
+  "pagina_reporte": 195,
+  "paginas_pdf": [
+   195
+  ],
+  "archivos": [
+   "Cuadro_29.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 26,
+  "diapositivas": [
+   "Cuadro_29_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 30,
+  "titulo": "Costes computacionales de evaluación de kernels cuánticos (Módulo 5).",
+  "pagina_reporte": 195,
+  "paginas_pdf": [
+   195
+  ],
+  "archivos": [
+   "Cuadro_30.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 27,
+  "diapositivas": [
+   "Cuadro_30_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 31,
+  "titulo": "Escalamiento computacional con el número de qubits en simulación por vector de estado (OE-6).",
+  "pagina_reporte": 196,
+  "paginas_pdf": [
+   196
+  ],
+  "archivos": [
+   "Cuadro_31.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 28,
+  "diapositivas": [
+   "Cuadro_31_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 32,
+  "titulo": "Coste computacional del cálculo de gradientes variacionales (Experimento X8).",
+  "pagina_reporte": 196,
+  "paginas_pdf": [
+   196
+  ],
+  "archivos": [
+   "Cuadro_32.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 29,
+  "diapositivas": [
+   "Cuadro_32_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 33,
+  "titulo": "Resumen de la suite de verificaciones automáticas de consistencia y correctitud.",
+  "pagina_reporte": 197,
+  "paginas_pdf": [
+   197
+  ],
+  "archivos": [
+   "Cuadro_33.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 30,
+  "diapositivas": [
+   "Cuadro_33_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 34,
+  "titulo": "Auditoría metodológica independiente de consistencia, datos y modelos (Experimento X5).",
+  "pagina_reporte": 198,
+  "paginas_pdf": [
+   198
+  ],
+  "archivos": [
+   "Cuadro_34.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 31,
+  "diapositivas": [
+   "Cuadro_34_1.png",
+   "Cuadro_34_2.png"
+  ],
+  "n_diapositivas": 2
+ },
+ {
+  "numero": 35,
+  "titulo": "Versiones de los paquetes de software fundamentales en los entornos de ejecución.",
+  "pagina_reporte": 211,
+  "paginas_pdf": [
+   211
+  ],
+  "archivos": [
+   "Cuadro_35.png"
+  ],
+  "multipagina": false,
+  "orden_deck": 35,
+  "diapositivas": [
+   "Cuadro_35_1.png"
+  ],
+  "n_diapositivas": 1
+ },
+ {
+  "numero": 36,
+  "titulo": "Índice cronológico de decisiones metodológicas documentadas en la bitácora.",
+  "pagina_reporte": 213,
+  "paginas_pdf": [
+   213,
+   214,
+   215
+  ],
+  "archivos": [
+   "Cuadro_36_a.png",
+   "Cuadro_36_b.png",
+   "Cuadro_36_c.png"
+  ],
+  "multipagina": true,
+  "orden_deck": 36,
+  "diapositivas": [
+   "Cuadro_36_1.png",
+   "Cuadro_36_2.png",
+   "Cuadro_36_3.png",
+   "Cuadro_36_4.png",
+   "Cuadro_36_5.png",
+   "Cuadro_36_6.png"
+  ],
+  "n_diapositivas": 6
+ }
+]

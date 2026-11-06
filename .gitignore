@@ -50,3 +50,7 @@ Docs/preliminares/borradores/
 # Intermedios de Manim y fotogramas de revisión de los clips de la defensa
 Other/defensa/manim/media/
 Other/defensa/manim/revision/
+# Hojas de contacto y capturas de revisión de los anexos de la defensa
+Other/defensa/tablas_anexos/revision/
+Other/defensa/anexos/revision/
+Other/defensa/__pycache__/
