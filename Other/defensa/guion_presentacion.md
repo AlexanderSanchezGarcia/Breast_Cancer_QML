@@ -1,6 +1,6 @@
 # Guion de la presentación · TT 2026-B039
 
-Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos 19 minutos** de exposición, con margen dentro de los 20.
+Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos 19 minutos** de exposición, con margen dentro de los 20. Con todo el texto son 19:35; sin las frases ✂, unos 18:55.
 
 ## Cómo leer este guion
 
@@ -9,7 +9,7 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 - **[▶ VIDEO]** = en las diapositivas con video, la primera flecha → reproduce el video; la siguiente avanza.
 - ✂ marca una frase que se puede omitir si se va tarde.
 - ① y ② son las dos partes de la pregunta; aparecen como insignias en las diapositivas de resultados.
-- Cada diapositiva tiene su tiempo y el acumulado, medidos sobre este texto a unas 130 palabras por minuto (total 18:55; sin las frases ✂, unos 18:20). Los **puntos de control** sirven para saber, durante el ensayo, si se va bien de tiempo. Si en el ensayo hablas más rápido o más lento, ajusta con las frases ✂, no acelerando.
+- Cada diapositiva tiene su tiempo y el acumulado, medidos sobre este texto a unas 130 palabras por minuto (total 19:35; sin las frases ✂, unos 18:55). Los **puntos de control** sirven para saber, durante el ensayo, si se va bien de tiempo. Si en el ensayo hablas más rápido o más lento, ajusta con las frases ✂, no acelerando.
 
 ## Antes de empezar
 
@@ -138,7 +138,7 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 >
 > **[CLIC]** Hay una razón de fondo: C4 y C5 se calculan a partir de x, como una fotocopia se saca de un original, y una fotocopia no puede tener más información que el original. ✂ Un clasificador sí puede aprovechar mejor una forma que otra con datos finitos; por eso había que medirlo.
 
-### 16 · ② La pérdida está en la lectura, no en la codificación · 0:55 (13:20)
+### 16 · ② La pérdida está en la lectura, no en la codificación · 1:00 (13:25)
 
 > Entonces, ¿dónde se pierde la información? Comparamos las dos lecturas del mismo estado: una SVM sobre el kernel completo, el círculo relleno, y el MLP sobre los 12 valores esperados, el cuadro hueco.
 >
@@ -146,7 +146,7 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 >
 > **[CLIC]** Leído a través de su kernel, el estado cuántico iguala al clásico; resumido en 12 números, pierde información. Es la película completa contra 12 fotogramas. El cuello de botella está en la lectura, no en la codificación. Aclaro que este análisis es exploratorio, posterior al diseño, y no sustituye la comparación principal.
 
-### 17 · ① ② Resumen · 0:40 (14:00)
+### 17 · ① ② Resumen · 0:40 (14:05)
 
 > Esta tabla junta las dos partes de la pregunta.
 >
@@ -154,9 +154,9 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 >
 > **[CLIC]** Y el QSVM, que usa el kernel completo, empata con la SVM clásica: **0.628** contra **0.649** en masas, y **0.759** contra **0.769** en calcificaciones. La información está en el estado; se pierde al leer 12 números.
 
-**Punto de control: 14:00.**
+**Punto de control: 14:05.**
 
-### 18 · La ventaja cuántica sí existe · 1:10 (15:10)
+### 18 · La ventaja cuántica sí existe · 1:15 (15:20)
 
 > Que aquí no haya ventaja no significa que la ventaja cuántica no exista. Huang et al. mostraron cómo construirla: diseñaron etiquetas que siguen la geometría del circuito. Es como un examen redactado con el libro que estudió el circuito.
 >
@@ -168,7 +168,7 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 >
 > **[CLIC]** La pregunta deja de ser si la ventaja existe y pasa a ser si el diagnóstico es una de esas tareas.
 
-### 19 · La ventaja aparece cuando la tarea sigue la geometría del circuito · 1:00 (16:10)
+### 19 · La ventaja aparece cuando la tarea sigue la geometría del circuito · 1:00 (16:20)
 
 > **[▶ VIDEO]** Para responderlo, mezclamos las dos tareas: α es la fracción de lesiones que toma la etiqueta diseñada; el resto conserva su diagnóstico real. Con α = 0, el diagnóstico real, el clásico va delante. La ventaja cuántica aparece a partir de **α = 0.4** con el kernel proyectado, y entre 0.5 y 0.7 con los demás, y llega a **+0.14** de AUC con la tarea diseñada, incluso contra XGBoost. Dos lecturas: el protocolo sí detecta la ventaja cuando existe, y el diagnóstico benigno o maligno, con estas características, está en el extremo opuesto. ✂ El kernel con la g más grande cruza antes y gana más, que es lo que predice la teoría. Las etiquetas intermedias son artificiales: son un instrumento de medida, no una tarea clínica.
 
@@ -176,31 +176,41 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 
 ## 04 · Viabilidad · 05 · Conclusiones · 06 · Cierre
 
-### 20 · Simular cabe; medir en hardware sería el problema · 1:00 (17:10)
+### 20 · Simular 12 qubits fue barato; entrenar θ, no · 0:55 (17:15)
 
-> En simulación exacta todo cupo: usamos 12 qubits, y en esta laptop el embedding cabe hasta unos **25** y el kernel entre 200 lesiones, es decir, la matriz de parecidos de 19,900 pares, hasta unos **22**. El problema sería el hardware.
+> **[CLIC]** ¿Cuánto costó simular? Con 12 qubits, poco; todo se ejecutó en esta laptop. La transformación clásica tarda **0.2 segundos**; el kernel de 200 lesiones, **1.5 segundos** con el atajo de la simulación, y el embedding cuántico de todas las lesiones, unos **14 segundos**. El eje es logarítmico.
 >
-> **[▶ VIDEO]** Un valor del kernel se estima como una encuesta: se repite el circuito 1,024 veces y se cuenta cuántas veces salen todos los qubits en cero. Si el valor real es 0.002, se esperan unas dos respuestas «sí» de 1,024, y muchas veces no sale ninguna. Con C4, uno de cada cinco o seis pares se leería exactamente como cero; con C5, tres de cada cuatro. El kernel sería inmedible.
+> **[CLIC]** Calcular el kernel como en un procesador real, un circuito por par, llevaría **46 minutos**.
+>
+> **[CLIC]** Y entrenar θ por parameter-shift costaría unas **191 horas** por mapa: ocho días. Por eso θ quedó fijo: la Arquitectura B es unas **1,900 veces** más barata.
+>
+> **[CLIC]** ✂ Además, cada qubit extra casi duplica el costo: un estado tarda 2.9 milisegundos con 12 qubits y 75 segundos con 28.
+
+### 21 · Medir en hardware sería el problema · 0:50 (18:05)
+
+> Una matriz de 200 lesiones son **19,900 circuitos**, y cada valor se estima como una encuesta: se repite el circuito 1,024 veces y se cuenta cuántas veces salen todos los qubits en cero. Son unos **20 millones** de ejecuciones.
+>
+> **[▶ VIDEO]** Si el valor real es 0.002, se esperan unas dos respuestas «sí», y muchas veces no sale ninguna. Con C4, uno de cada cinco o seis pares se leería como cero; con C5, tres de cada cuatro. El kernel sería inmedible.
 >
 > **[CLIC]** En cambio, los valores esperados sí toleran 1,024 disparos: el MLP queda a menos de **0.02** del AUC exacto.
 
-**Punto de control: 17:10.**
+**Punto de control: 18:05.**
 
-### 21 · Los seis objetivos se cumplieron · 1:05 (18:15)
+### 22 · Los seis objetivos se cumplieron · 0:50 (18:55)
 
 > Respondo la pregunta. **Uno**: la codificación cuántica no aumentó la separabilidad; la redujo. **Dos**: y la diferencia se nota al clasificar. Los seis objetivos se cumplieron; el objetivo era medir, no ganar.
 >
 > **[CLIC]** General: sin mayor separabilidad, y de 0.07 a 0.14 menos de AUC.
-> **[CLIC]** Uno: el pipeline, con 3,568 lesiones y sin fuga entre pacientes.
-> **[CLIC]** Dos: las cinco representaciones del mismo vector.
-> **[CLIC]** Tres: separabilidad con cuatro métricas; g muy por debajo de la raíz de N.
-> **[CLIC]** Cuatro: el mismo MLP en las cinco, con validación cruzada por paciente.
-> **[CLIC]** Cinco: separabilidad y clasificación ordenan igual las condiciones, con ρ entre 0.67 y 0.97.
-> **[CLIC]** Seis: la simulación es viable, pero en hardware el kernel sería inmedible.
+> **[CLIC]** Uno: el pipeline, sin fuga entre pacientes.
+> **[CLIC]** Dos: cinco representaciones del mismo vector.
+> **[CLIC]** Tres: cuatro métricas de separabilidad.
+> **[CLIC]** Cuatro: el mismo MLP en las cinco.
+> **[CLIC]** Cinco: separabilidad y clasificación ordenan igual las condiciones.
+> **[CLIC]** Seis: simular es viable; medir el kernel en hardware, no.
 >
 > **[CLIC]** Y como el método sí detecta la ventaja cuando existe, un resultado negativo, medido con rigor, es evidencia de viabilidad.
 
-### 22 · Lo que sigue · 0:35 (18:50)
+### 23 · Lo que sigue · 0:35 (19:30)
 
 > Cada limitación abre una línea de trabajo.
 > **[CLIC]** En la codificación: mapas que no se concentren sin perder la interacción.
@@ -208,7 +218,7 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 > **[CLIC]** En hardware: primero simular con el ruido de un dispositivo real y luego medir en uno; con 200 lesiones, una matriz de kernel exige 19,900 circuitos.
 > **[CLIC]** Y en datos: repetir el estudio con mamografía digital con escala física y validación externa.
 
-### 23 · Gracias · 0:05 (18:55)
+### 24 · Gracias · 0:05 (19:35)
 
 > Muchas gracias por su atención.
 
@@ -222,9 +232,9 @@ En orden, lo primero que se puede quitar:
 1. Las frases marcadas con ✂ (unos 40 s en total).
 2. En la 3, leer solo la fila de «Este trabajo» y el recuadro de Azevedo.
 3. En la 11, decir solo Davies-Bouldin y la frase final.
-4. En la 21, no leer las filas: decir la respuesta, avanzar los siete clics seguidos y cerrar con la última frase.
+4. En la 22, no leer las filas: decir la respuesta, avanzar los siete clics seguidos y cerrar con la última frase.
 
-Nunca recortar: la pregunta (4), la concentración (9), el 0 de 24 (15), la lectura (16), el control positivo (18) y la respuesta (21).
+Nunca recortar: la pregunta (4), la concentración (9), el 0 de 24 (15), la lectura (16), el control positivo (18) y la respuesta (22).
 
 ---
 
