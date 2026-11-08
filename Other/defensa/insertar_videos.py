@@ -218,13 +218,14 @@ JS_NAV_PLANTILLA = r"""<script id="tt-nav-js">
 </script>"""
 
 NOMBRES_INDICES = [
-    ('respuestas', 'Respuestas'),
+    ('respuestas', 'Anexos'),
     ('figuras', 'Figuras'),
     ('tablas', 'Tablas'),
 ]
 
 ETIQUETAS_INDICE = {
-    'Índice de respuestas': 'respuestas',
+    'Índice de anexos': 'respuestas',       # desde la ronda 9 (entradas por título, agrupadas por tema)
+    'Índice de respuestas': 'respuestas',   # rondas 8 y anteriores
     'Anexos': 'respuestas',
     'Índice de figuras': 'figuras',
     'Índice de figuras del reporte': 'figuras',

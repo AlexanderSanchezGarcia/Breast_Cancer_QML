@@ -178,7 +178,7 @@ Presentación: martes 24 de noviembre de 2026, 16:00. Duración objetivo: **unos
 
 ### 20 · Simular cabe; medir en hardware sería el problema · 1:00 (17:10)
 
-> En simulación exacta todo cupo: usamos 12 qubits, y en esta laptop el embedding cabe hasta unos **25** y el kernel de 200 por 200 hasta unos **22**. El problema sería el hardware.
+> En simulación exacta todo cupo: usamos 12 qubits, y en esta laptop el embedding cabe hasta unos **25** y el kernel entre 200 lesiones, es decir, la matriz de parecidos de 19,900 pares, hasta unos **22**. El problema sería el hardware.
 >
 > **[▶ VIDEO]** Un valor del kernel se estima como una encuesta: se repite el circuito 1,024 veces y se cuenta cuántas veces salen todos los qubits en cero. Si el valor real es 0.002, se esperan unas dos respuestas «sí» de 1,024, y muchas veces no sale ninguna. Con C4, uno de cada cinco o seis pares se leería exactamente como cero; con C5, tres de cada cuatro. El kernel sería inmedible.
 >
@@ -232,7 +232,7 @@ Nunca recortar: la pregunta (4), la concentración (9), el 0 de 24 (15), la lect
 
 ### Cómo moverse
 
-- **I** lleva al **índice de respuestas**; volver a pulsar **I** pasa al de figuras y luego al de tablas.
+- **I** lleva al **índice de anexos**, ordenado por tema; volver a pulsar **I** pasa al de figuras y luego al de tablas.
 - **Número + Enter** va directo a ese anexo, desde cualquier diapositiva (por ejemplo, **46** + Enter).
 - **↩ Índice**, abajo al centro de cada anexo, regresa al índice de su grupo.
 - Si un sinodal pide «la figura 6.2.3» o «el cuadro 12» del reporte, ir al índice de figuras o de tablas: cada entrada dice el número del reporte y su anexo.
@@ -267,5 +267,5 @@ Si algo no se midió, decirlo: «Eso no lo medí; lo que sí medí es…».
 | ¿Se buscó la ventaja de forma justa? | Sí: la misma búsqueda anidada en los dos lados. Con etiquetas reales, ningún kernel cuántico supera a los clásicos. | **31** |
 | ¿Por qué 5 folds? | Es el mayor número que mantiene equilibradas las clases por fold, porque los pacientes no se pueden partir. Con 3 folds la conclusión es la misma. | **21** |
 | ¿Para qué sirve C2? | Es un control nulo: rotar no cambia la información. Si una métrica distinguiera C2 de C1, la métrica estaría mal; dan exactamente lo mismo. | **19** |
-| Preguntas de fundamentos (qubit, entrelazamiento, feature map, kernel, medición, AUC) | Ir al grupo «Fundamentos» del índice de respuestas. | **2–9** |
-| Preguntas de fórmulas | Grupo «Fórmulas» del índice de respuestas. | **38–44** |
+| Preguntas de fundamentos (qubit, entrelazamiento, feature map, kernel, medición, AUC) | Grupo «Fundamentos» del índice de anexos. | **2–6, 8** |
+| Preguntas de fórmulas | Grupo «Fórmulas» del índice de anexos. | **38–44** |
