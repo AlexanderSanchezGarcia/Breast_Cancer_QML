@@ -67,6 +67,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | D-042 | 2026-10-18 | Las 200 lesiones siguen como análisis principal del M6, justificadas por el protocolo físico; X9 se reporta como robustez | M6 | Firme (elegida por el autor) | §5.2, §5.8, §6.2, §7 |
 | D-043 | 2026-10-21 | Experimento X10: árboles de decisión, *random forest* y XGBoost sobre C1–C5, y sensibilidad con 3 folds; se mantienen 5 folds | X10, M7 | Firme (validada por el autor el 2026-10-24; protocolo fijado antes de correr) | §5.6, §5.9, §5.11, §6.3, §8 |
 | D-044 | 2026-10-23 | Experimento X11: curva de transición entre las etiquetas del diagnóstico y las diseñadas según Huang et al., con tres kernels cuánticos | X11 | Firme (validada por el autor el 2026-10-24; protocolo fijado antes de correr) | §5.11, §6.4, §7 |
+| D-045 | 2026-11-09 | Experimento X12: tres lecturas más ricas del mismo estado (correlaciones ⟨ZᵢZⱼ⟩, tres bases sin ansatz y Kernel PCA del kernel de fidelidad) con el MLP del M7 | X12 | Provisional (protocolo fijado antes de correr; pendiente de validación del autor) | Anexo de la defensa |
 
 ### Hallazgos
 
@@ -129,6 +130,7 @@ Numeración correlativa, nunca se reutiliza. Si una decisión se revierte, **no 
 | H-055 | 2026-10-18 | La conclusión del M6 no depende de qué 200 lesiones se tomen ni de N: se mantiene en 20 submuestras y en todo el train | Responde a «¿200 es poco?»; el orden C4/C5 y la significancia de los efectos pequeños sí dependen de la muestra |
 | H-056 | 2026-10-21 | Con árboles, *random forest* y XGBoost ninguna representación cuántica supera a C1 con el mismo clasificador; con 3 folds la conclusión del M7 no cambia | Responde a la revisión del sinodal; en masas los ensambles dejan la brecha sin significancia porque leen mejor los ⟨Zᵢ⟩; revisado por el autor el 2026-10-24; entra en la línea principal de la defensa |
 | H-057 | 2026-10-23 | La ventaja cuántica aparece cuando entre el 40 y el 70 % de las etiquetas sigue la geometría del kernel cuántico; el diagnóstico real está en el 0 % | Responde «¿en qué caso habría ventaja?»; el umbral depende de *g*; revisado por el autor el 2026-10-24; sustituye al control positivo en la defensa |
+| H-058 | 2026-11-09 | Leer más del mismo estado (⟨ZᵢZⱼ⟩, tres bases, Kernel PCA del kernel de fidelidad) recupera parte de lo que pierden los 12 ⟨Zᵢ⟩, pero ninguna lectura alcanza a C1 | Extiende H-044 con una escala intermedia; las correlaciones gratuitas aportan poco; la predicción sobre Q falló; exploratorio, posterior a la entrega; pendiente de revisión del autor |
 
 ### Preguntas abiertas
 
@@ -1014,6 +1016,45 @@ Las etiquetas intermedias son artificiales: el experimento es un instrumento de 
 - $s_C/s_Q \le g^2$ en todas las mezclas.
 
 **Consecuencias.** Resultado en H-057; párrafo en §6.4 y en §7.
+
+---
+
+### D-045 · Experimento X12: tres lecturas más ricas del mismo estado, con el MLP del M7
+**Fecha:** 2026-11-09 · **Módulo:** X12 (M5–M7) · **Estado:** Provisional (propuesta al implementar; protocolo fijado antes de correr; pendiente de validación del autor) · **→ Reporte:** posterior a la entrega del 3 nov; anexo de respaldo para la defensa · *extiende H-044; mide la línea de §8.2*
+
+**Contexto.** H-044 sitúa la pérdida del M7 en la lectura: el QSVM sobre el kernel de C4 recupera 0.10–0.13 de AUC frente al MLP sobre los 12 ⟨Zᵢ⟩. Al preparar la defensa (2026-11-09) aparecieron tres preguntas probables sin respuesta medida:
+- §8.2 propone leer las correlaciones ⟨ZᵢZⱼ⟩, que en hardware salen de las mismas cadenas de bits que los ⟨Zᵢ⟩;
+- el kernel proyectado (X6) pasa por un vector de valores esperados por lesión, que un MLP podría recibir;
+- C3 resume un kernel clásico con Kernel PCA, y el kernel cuántico nunca se resumió así.
+
+**Alternativas.**
+- *No medirlo y responder con argumentos* — descartada por el autor.
+- *Un solo brazo* — descartada: cada pregunta pide una lectura distinta.
+- *Tres brazos con el mismo MLP* — **elegida** por el autor.
+
+**Decisión.** El experimento exploratorio X12 (`Code/experiments/X12_Richer_Readouts.ipynb`) no cambia el diseño.
+
+- **Entrada común:** los ángulos de M4, k = 12, c = 1, los feature maps de C4 y C5 y el θ de M5 (`real_amplitudes`, reps = 1, semilla 42). Valores exactos desde el vector de estado, para las 3,568 lesiones.
+- **Brazo Z (Z4, Z5):** 12 ⟨Zᵢ⟩ y 66 ⟨ZᵢZⱼ⟩ después del ansatz, 78 columnas. En hardware no cuesta mediciones extra.
+- **Brazo P (P4, P5):** ⟨Xₖ⟩, ⟨Yₖ⟩ y ⟨Zₖ⟩ de cada qubit sobre el estado del feature map, sin ansatz, 36 columnas. Se eliminan las columnas con varianza cero en train; en P4, ⟨Zₖ⟩ ≡ 0 por construcción (H-013), así que quedan 24.
+- **Brazo Q (Q4, Q5):** Kernel PCA de 12 componentes sobre el kernel de fidelidad, ajustado en todo el train y aplicado a todas las lesiones, igual que C3. Hereda el optimismo leve de C3 en la validación cruzada.
+- **Clasificador:** el MLP de D-036 sin cambios, semilla 42, folds de M4, test una sola vez y bootstrap por paciente con las mismas 2,000 réplicas del M7.
+- **Réplica de control:** C1, C4 y C5 con el mismo código deben reproducir exactamente los AUC por fold y las predicciones del test del M7.
+- **Comparaciones fijadas:** cada brazo frente a su condición de origen (Z4−C4, P4−C4, Q4−C4 y las de C5) y frente a C1. El QSVM del X4 entra como referencia, sin recalcularse.
+- **Predicción declarada:** los tres brazos por encima de C4 y C5, y por debajo de C1. Q, limitado por el espectro casi plano del kernel (dimensión efectiva de 168–188 sobre 200 en el M6).
+
+**Verificaciones previstas:**
+- los ⟨Zᵢ⟩ del brazo Z coinciden exactamente con los embeddings de M5;
+- en P4, ⟨Zₖ⟩ = 0, y en P5, ⟨Zₖ⟩ = −sin(2xₖ), con tolerancia de 10⁻¹²;
+- los valores de Z y P coinciden con `SparsePauliOp` de Qiskit en lesiones sorteadas;
+- el kernel tiene diagonal 1 y es simétrico;
+- ningún ajuste ve una lesión del test.
+
+**Por qué.** Mide la escala completa de lecturas del mismo estado con el mismo lector: 12 ⟨Zᵢ⟩ (C4) → 78 valores con el mismo costo de medición (Z) → 36 valores en tres bases (P) → 12 componentes del kernel (Q) → el kernel completo (QSVM, X4). La dimensión de entrada cambia entre brazos y se declara.
+
+**Evidencia.** Ninguna todavía.
+
+**Consecuencias.** Resultado en H-058. Al ser posterior a la entrega del reporte, va como anexo de la defensa, declarado como tal.
 
 ---
 
@@ -2633,6 +2674,48 @@ Las dos tareas puras reproducen exactamente X6 y H-048. Las mezclas varían poco
 - Notebook: `Code/experiments/X11_Designed_Label_Transition.ipynb`.
 - Resultados en `Code/results/`: `X11_transicion.csv`, `X11_por_mascara.csv`, `X11_umbral.csv`, `X11_etiquetas_disenadas.csv` y `X11_verificaciones.csv` (24 de 24).
 - Figuras en `Docs/Figures/`: `X11_transition.png`, `X11_difference.png` y `X11_ratio.png`.
+
+---
+
+### H-058 · Leer más del mismo estado recupera parte de la información perdida por los 12 ⟨Zᵢ⟩, pero ninguna lectura alcanza a C1; las correlaciones gratuitas aportan poco
+**Fecha:** 2026-11-09 · **→ Reporte:** posterior a la entrega del 3 nov; anexo de la defensa · *protocolo en D-045; extiende H-044* · Pendiente de revisión del autor
+
+**Pregunta principal, fijada antes de correr (D-045).** Con el mismo MLP del M7, ¿leer más del estado codificado que los 12 ⟨Zᵢ⟩ recupera la información que H-044 sitúa en la lectura? **En parte.** Ninguna lectura supera a C1.
+
+AUC en el test (bootstrap por paciente, las mismas 2,000 réplicas del M7; la dimensión de entrada entre paréntesis):
+
+| | 12 ⟨Zᵢ⟩ (M7) | Z: + ⟨ZᵢZⱼ⟩ (78) | P: tres bases (24 / 36) | Q: Kernel PCA (12) | Kernel completo (QSVM, X4) | C1 |
+|---|---|---|---|---|---|---|
+| Masas, estado de C4 | 0.530 | 0.553 | 0.556 | 0.600 | 0.628 | 0.651 |
+| Masas, estado de C5 | 0.581 | 0.581 | 0.621 | 0.627 | 0.599 | 0.651 |
+| Calcificaciones, estado de C4 | 0.633 | 0.648 | 0.682 | 0.742 | 0.759 | 0.769 |
+| Calcificaciones, estado de C5 | 0.652 | 0.679 | 0.737 | 0.685 | 0.701 | 0.769 |
+
+**Lecturas.**
+1. **Con el estado de C4, cuanto más del estado conserva la lectura, más recupera el MLP.** El AUC sube de forma monótona en la escala en los dos subconjuntos, del M7 al QSVM. Con C5 la escala no es monótona.
+2. **Ninguna lectura alcanza a C1.** Las 12 diferencias brazo − C1 son negativas en la estimación puntual (de −0.023 a −0.120); 8 son significativas y ninguna es positiva. Las que no son significativas son P5 y Q5 en masas, y Q4 y P5 en calcificaciones.
+3. **Las correlaciones gratuitas aportan poco.** El brazo Z gana de 0.000 a +0.028 sobre su origen, sin significancia en ningún caso. La línea de §8.2 queda medida, y su ganancia es pequeña.
+4. **Solo dos ganancias sobre el origen son significativas, de 12 comparaciones, ambas en calcificaciones:** Q4 − C4 = +0.109 [0.036, 0.182] y P5 − C5 = +0.085 [0.020, 0.151].
+5. **La predicción declarada sobre Q falló.** Las 12 componentes del Kernel PCA retienen solo del 2 al 4 % de la varianza del kernel centrado, frente al 92–93 % del RBF de C3 (`X12_espectro_kernel.csv`). Aun así, Q4 es la mejor lectura por MLP del estado de C4 en los dos subconjuntos. La información de clase está en pocas direcciones de varianza pequeña, coherente con H-044 (el QSVM decide con los pocos pares que se solapan).
+6. **Advertencia sobre P5.** Su ⟨Zₖ⟩ = −sin(2xₖ) es una función clásica de cada feature, de modo que parte de su ganancia puede venir de esas 12 columnas y no de los términos ZZ. No se probó.
+7. **La predicción sobre el orden se cumplió en dirección:** los tres brazos quedan por encima de su origen (salvo Z5 en masas, que empata) y por debajo de C1.
+
+**Impacto.**
+- **Refuerza H-044 con una escala intermedia:** la pérdida del M7 está en la lectura y se recupera gradualmente al leer más del estado, sin superar lo clásico.
+- **Responde con datos tres preguntas probables de la defensa:** ⟨ZᵢZⱼ⟩ (§8.2), el kernel proyectado como entrada del MLP y el Kernel PCA del kernel cuántico, el análogo de C3.
+- **Exploratorio y posterior a la entrega del reporte:** 24 comparaciones, sin corrección por multiplicidad. No cambia el diseño ni ninguna cifra existente.
+
+**Pendiente (2026-11-09): documentar X12.**
+- Validar D-045 y esta entrada.
+- Añadirlo a la presentación como anexo de respaldo, declarado como posterior a la entrega, y a la tarjeta de preguntas del guion (preguntas sobre ⟨ZᵢZⱼ⟩, el kernel proyectado en el MLP y el Kernel PCA del kernel cuántico).
+- Decidir si entra en una versión corregida del reporte (§5.11, §6.4 y §8.2).
+
+**Datos.**
+- Notebook: `Code/experiments/X12_Richer_Readouts.ipynb`.
+- Resultados en `Code/results/`: `X12_cv_por_fold.csv`, `X12_test.csv`, `X12_test_diferencias.csv`, `X12_espectro_kernel.csv` y `X12_verificaciones.csv` (51 de 51; la réplica de C1, C4 y C5 reproduce exactamente los AUC por fold, las predicciones y los intervalos del M7).
+- Figura: `Docs/Figures/X12_readouts.png`.
+- Lecturas y predicciones: `Data/processed/x12/`.
+- La primera corrida falló 4 verificaciones por 4–6×10⁻¹⁵: los ⟨Zᵢ⟩ se calcularon con un producto de matrices, que suma en otro orden que el producto fila por fila del M5. Se corrigió para calcularlos igual que el M5; los AUC no cambiaron.
 
 ---
 

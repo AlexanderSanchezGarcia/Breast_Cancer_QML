@@ -1,0 +1,52 @@
+check,value,passed
+"mass: Module 4 and Module 5 list the same lesions, folds and labels in the same order",0.0,True
+mass: C1 of Module 5 equals the angles of Module 4,0.0,True
+"calcification: Module 4 and Module 5 list the same lesions, folds and labels in the same order",0.0,True
+calcification: C1 of Module 5 equals the angles of Module 4,0.0,True
+theta equals the one saved by Module 5,0.0,True
+mass: the RBF bandwidth equals the one of Module 5 (D-027),0.0,True
+calcification: the RBF bandwidth equals the one of Module 5 (D-027),0.0,True
+mass: the <Z_i> of arm Z4 equal C4 of Module 5,0.0,True
+"mass: in P4, <Z_k> = 0 for every lesion (H-013)",1.863743534502582e-16,True
+mass: P4 Bloch vectors have length <= 1,-1.1102230246251565e-16,True
+mass: fidelity kernel C4 has unit diagonal and is symmetric,1.4432899320127035e-14,True
+mass: Z4 correlations match SparsePauliOp on 5 seeded lesions,6.800116025829084e-16,True
+mass: P4 values match SparsePauliOp on 5 seeded lesions,2.7755575615628914e-16,True
+mass: the <Z_i> of arm Z5 equal C5 of Module 5,0.0,True
+"mass: in P5, <Z_k> = -sin(2 x_k)",8.881784197001252e-15,True
+mass: P5 Bloch vectors have length <= 1,-1.1102230246251565e-16,True
+mass: fidelity kernel C5 has unit diagonal and is symmetric,1.7985612998927536e-14,True
+mass: Z5 correlations match SparsePauliOp on 5 seeded lesions,2.0539125955565396e-15,True
+mass: P5 values match SparsePauliOp on 5 seeded lesions,3.774758283725532e-15,True
+calcification: the <Z_i> of arm Z4 equal C4 of Module 5,0.0,True
+"calcification: in P4, <Z_k> = 0 for every lesion (H-013)",2.4540916174209393e-16,True
+calcification: P4 Bloch vectors have length <= 1,-1.1102230246251565e-16,True
+calcification: fidelity kernel C4 has unit diagonal and is symmetric,1.7763568394002505e-14,True
+calcification: Z4 correlations match SparsePauliOp on 5 seeded lesions,6.106226635438361e-16,True
+calcification: P4 values match SparsePauliOp on 5 seeded lesions,9.43689570931383e-16,True
+calcification: the <Z_i> of arm Z5 equal C5 of Module 5,0.0,True
+"calcification: in P5, <Z_k> = -sin(2 x_k)",1.0103029524088925e-14,True
+calcification: P5 Bloch vectors have length <= 1,-5.551115123125783e-16,True
+calcification: fidelity kernel C5 has unit diagonal and is symmetric,2.1760371282653068e-14,True
+calcification: Z5 correlations match SparsePauliOp on 5 seeded lesions,7.771561172376096e-16,True
+calcification: P5 values match SparsePauliOp on 5 seeded lesions,5.995204332975845e-15,True
+P4 keeps 24 columns in both subsets (the 12 <Z_k> are constant),0.0,True
+mass: C1 reproduces the fold AUCs of Module 7,0.0,True
+mass: C1 reproduces the test predictions of Module 7,0.0,True
+mass: C4 reproduces the fold AUCs of Module 7,0.0,True
+mass: C4 reproduces the test predictions of Module 7,0.0,True
+mass: C5 reproduces the fold AUCs of Module 7,0.0,True
+mass: C5 reproduces the test predictions of Module 7,0.0,True
+calcification: C1 reproduces the fold AUCs of Module 7,0.0,True
+calcification: C1 reproduces the test predictions of Module 7,0.0,True
+calcification: C4 reproduces the fold AUCs of Module 7,0.0,True
+calcification: C4 reproduces the test predictions of Module 7,0.0,True
+calcification: C5 reproduces the fold AUCs of Module 7,0.0,True
+calcification: C5 reproduces the test predictions of Module 7,0.0,True
+every fit stopped before the epoch limit,184.0,True
+mass: C1 test AUC and interval equal 7_test.csv,0.0,True
+mass: C4 test AUC and interval equal 7_test.csv,5.551115123125783e-17,True
+mass: C5 test AUC and interval equal 7_test.csv,0.0,True
+calcification: C1 test AUC and interval equal 7_test.csv,0.0,True
+calcification: C4 test AUC and interval equal 7_test.csv,0.0,True
+calcification: C5 test AUC and interval equal 7_test.csv,0.0,True
